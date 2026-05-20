@@ -50,17 +50,22 @@ export function Header() {
       <div className="vintage-container">
         <div className="flex items-center justify-between h-16 md:h-20">
           <Link href="/" className="flex items-center gap-2 group">
-            <Image
-              src="/images/vedara-logo.jpeg"
-              alt="Vedara Retreat"
-              width={120}
-              height={36}
-              className={cn(
-                'h-8 md:h-9 w-auto transition-opacity',
-                isTransparent ? 'brightness-0 invert opacity-90' : ''
-              )}
-              priority
-            />
+            <span className={cn(
+              'inline-flex rounded-lg px-2 py-1 transition-colors',
+              isTransparent ? 'bg-white/10 backdrop-blur-sm' : ''
+            )}>
+              <Image
+                src="/images/vedara-logo.jpeg"
+                alt="Vedara Retreat"
+                width={120}
+                height={36}
+                className={cn(
+                  'h-8 md:h-9 w-auto transition-all',
+                  isTransparent ? 'brightness-0 invert' : ''
+                )}
+                priority
+              />
+            </span>
           </Link>
 
           <nav className="hidden md:flex items-center gap-8">

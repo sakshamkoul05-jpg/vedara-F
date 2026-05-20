@@ -33,33 +33,6 @@ export default function HomePage() {
           animate={{ scale: 1 }}
           transition={{ duration: 3, ease: [0.25, 0.1, 0.25, 1] }}
         />
-        <div className="absolute inset-0 z-10 pointer-events-none overflow-hidden">
-          <motion.div
-            className="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.04] to-transparent"
-            animate={{ x: ['-100%', '100%'] }}
-            transition={{ duration: 10, repeat: Infinity, ease: 'linear', delay: 2 }}
-          />
-          <motion.div
-            className="absolute bottom-0 left-0 right-0 h-48 opacity-30"
-            animate={{ rotate: [0, 0.5, -0.3, 0] }}
-            transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
-            style={{ transformOrigin: 'bottom center' }}
-          >
-            <svg viewBox="0 0 1440 200" className="w-full h-full" preserveAspectRatio="xMidYMax meet">
-              <path d="M0,120 L60,40 L120,100 L180,20 L240,90 L300,10 L360,80 L420,0 L480,70 L540,10 L600,80 L660,0 L720,60 L780,10 L840,70 L900,0 L960,60 L1020,20 L1080,80 L1140,10 L1200,70 L1260,20 L1320,90 L1380,30 L1440,100 L1440,200 L0,200 Z" fill="rgba(0,0,0,0.4)" />
-              <path d="M0,140 L80,60 L160,120 L240,40 L320,110 L400,30 L480,100 L560,20 L640,90 L720,10 L800,80 L880,20 L960,90 L1040,30 L1120,100 L1200,40 L1280,110 L1360,50 L1440,120 L1440,200 L0,200 Z" fill="rgba(0,0,0,0.25)" />
-            </svg>
-          </motion.div>
-          {[{ x: 15, y: 25, d: 6 }, { x: 35, y: 40, d: 4 }, { x: 55, y: 20, d: 5 }, { x: 75, y: 45, d: 3 }, { x: 90, y: 30, d: 4 }].map((p, i) => (
-            <motion.div
-              key={i}
-              className="absolute rounded-full bg-white/15"
-              style={{ width: p.d, height: p.d, left: `${p.x}%`, top: `${p.y}%` }}
-              animate={{ x: [0, 120, 0], opacity: [0, 0.8, 0] }}
-              transition={{ duration: 8 + i * 2, repeat: Infinity, delay: i * 1.5, ease: 'linear' }}
-            />
-          ))}
-        </div>
         <div className="relative z-20 text-center px-4 max-w-4xl">
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -154,9 +127,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="relative py-28 md:py-36 overflow-hidden">
-        <div className="absolute inset-0 bg-earth-900" />
-        <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=1920&q=80)', backgroundSize: 'cover', backgroundPosition: 'center' }} />
+      <section className="relative py-28 md:py-36 overflow-hidden bg-earth-900">
         <div className="relative z-10 vintage-container">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <ScrollReveal direction="left">
@@ -182,9 +153,14 @@ export default function HomePage() {
             </ScrollReveal>
             <ScrollReveal direction="right" delay={0.2}>
               <div className="aspect-[4/5] rounded-2xl overflow-hidden shadow-2xl">
-                <div className="w-full h-full bg-earth-800 flex items-center justify-center">
-                  <Coffee className="w-16 h-16 text-earth-600" />
-                </div>
+                <motion.div
+                  className="w-full h-full bg-cover bg-center"
+                  style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=600&q=80)' }}
+                  initial={{ scale: 1.1, filter: 'blur(4px)' }}
+                  whileInView={{ scale: 1, filter: 'blur(0px)' }}
+                  transition={{ duration: 1.2, ease: [0.25, 0.1, 0.25, 1] }}
+                  viewport={{ once: true }}
+                />
               </div>
             </ScrollReveal>
           </div>

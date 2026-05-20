@@ -29,12 +29,12 @@ const amenities = [
 ];
 
 const attractions = [
-  { name: 'Jibhi Waterfall', distance: '4 km', image: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=600&q=80', desc: 'A cascading gem hidden in the forest' },
-  { name: 'Mini Thailand', distance: '1.2 km', image: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&q=80', desc: 'Serene river bend with turquoise pools' },
-  { name: 'Jalori Pass', distance: '10 km', image: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600&q=80', desc: 'High-altitude pass with sweeping views' },
-  { name: 'Serolsar Lake', distance: '10 km + trek', image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80', desc: 'Crystal-clear lake surrounded by ancient oaks' },
-  { name: 'Chehni Kothi', distance: '10 km', image: 'https://images.unsplash.com/photo-1511823162259-221c9506cdef?w=600&q=80', desc: 'Centuries-old medieval tower fortress' },
-  { name: 'Tirthan Valley', distance: '26 km', image: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=600&q=80', desc: 'Pristine valley famous for trout fishing' },
+  { name: 'Jibhi Waterfall', distance: '4 km', image: '/images/jibhi-waterfall.avif', desc: 'A cascading gem hidden in the forest' },
+  { name: 'Mini Thailand', distance: '1.2 km', image: '/images/mini-thailand.jpg', desc: 'Serene river bend with turquoise pools' },
+  { name: 'Jalori Pass', distance: '10 km', image: '/images/jalori-pass.jpg', desc: 'High-altitude pass with sweeping views' },
+  { name: 'Serolsar Lake', distance: '10 km + trek', image: '/images/seroslar-lake.webp', desc: 'Crystal-clear lake surrounded by ancient oaks' },
+  { name: 'Chehni Kothi', distance: '10 km', image: '/images/chehni-kothi.jpg', desc: 'Centuries-old medieval tower fortress' },
+  { name: 'Tirthan Valley', distance: '26 km', image: '/images/tirthan-valley.jpg', desc: 'Pristine valley famous for trout fishing' },
 ];
 
 export default function AboutPage() {
