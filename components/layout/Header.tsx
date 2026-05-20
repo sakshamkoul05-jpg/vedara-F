@@ -4,7 +4,8 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Moon, Sun, Mountain } from 'lucide-react';
+import { Menu, X, Moon, Sun } from 'lucide-react';
+import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { useThemeStore } from '@/store/theme';
 
@@ -49,16 +50,17 @@ export function Header() {
       <div className="vintage-container">
         <div className="flex items-center justify-between h-16 md:h-20">
           <Link href="/" className="flex items-center gap-2 group">
-            <Mountain className={cn(
-              'w-6 h-6 transition-colors',
-              isTransparent ? 'text-cream-100' : 'text-forest-600'
-            )} />
-            <span className={cn(
-              'font-serif text-xl font-bold transition-colors',
-              isTransparent ? 'text-cream-50' : 'text-earth-900 dark:text-cream-50'
-            )}>
-              Vedara
-            </span>
+            <Image
+              src="/images/vedara-logo.jpeg"
+              alt="Vedara Retreat"
+              width={120}
+              height={36}
+              className={cn(
+                'h-8 md:h-9 w-auto transition-opacity',
+                isTransparent ? 'brightness-0 invert opacity-90' : ''
+              )}
+              priority
+            />
           </Link>
 
           <nav className="hidden md:flex items-center gap-8">
