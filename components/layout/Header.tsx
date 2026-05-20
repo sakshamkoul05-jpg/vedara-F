@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Moon, Sun } from 'lucide-react';
+import { Menu, X, Moon, Sun, LogIn } from 'lucide-react';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { useThemeStore } from '@/store/theme';
@@ -95,6 +95,17 @@ export function Header() {
             ))}
             <Link href="/booking" className="vintage-button-primary text-xs px-5 py-2.5">
               Book Now
+            </Link>
+            <Link
+              href="/admin/login"
+              className={cn(
+                'flex items-center gap-1.5 text-xs font-medium px-3 py-2 rounded-lg transition-all',
+                isTransparent
+                  ? 'text-cream-100/80 hover:text-cream-50 border border-white/20 hover:border-white/40'
+                  : 'text-earth-600 dark:text-cream-300 hover:text-forest-600 dark:hover:text-cream-50 border border-earth-300 dark:border-earth-600 hover:border-forest-400'
+              )}
+            >
+              <LogIn className="w-3.5 h-3.5" /> Login
             </Link>
             <button
               onClick={toggle}

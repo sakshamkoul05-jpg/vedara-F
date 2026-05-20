@@ -88,26 +88,15 @@ export function Footer() {
                 <Twitter className="w-4 h-4" />
               </a>
             </div>
-            <div className="space-y-2">
-              <Link href="/booking" className="vintage-button-primary text-xs px-5 py-2.5 w-full text-center block">
-                Book Your Stay
-              </Link>
-              <Link href="/admin/login" className="vintage-button-outline text-xs px-5 py-2.5 w-full text-center block border-cream-200/20 text-cream-300 hover:text-cream-50">
-                <LogIn className="w-3 h-3 inline mr-1.5" /> Staff Login
-              </Link>
-            </div>
+            <Link href="/booking" className="vintage-button-primary text-xs px-5 py-2.5 w-full text-center block">
+              Book Your Stay
+            </Link>
           </div>
         </div>
 
         <div className="mt-12 pt-8 border-t border-earth-800 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-cream-400">
           <p>&copy; {new Date().getFullYear()} Vedara Retreat Hotels. All rights reserved.</p>
-          <div className="flex items-center gap-4">
-            <Link href="/admin/login" className="text-cream-500 hover:text-cream-300 transition-colors text-xs">
-              Staff Login
-            </Link>
-            <span className="text-cream-700">|</span>
-            <p>Crafted with care in the mountains</p>
-          </div>
+          <p>Crafted with care in the mountains</p>
         </div>
       </div>
     </footer>
