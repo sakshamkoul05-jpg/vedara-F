@@ -2,9 +2,13 @@
 
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { ArrowRight, Star, Coffee, Trees, Sparkles } from 'lucide-react';
+import { ArrowRight, Star, Coffee, Trees, Sparkles, Music, FireExtinguisher, Binoculars, Moon, MapPin, UtensilsCrossed } from 'lucide-react';
 import { ScrollReveal } from '@/components/animations/ScrollReveal';
 import { TextReveal } from '@/components/animations/TextReveal';
+import { ImageReveal } from '@/components/animations/ImageReveal';
+import { FogParticles } from '@/components/animations/FogParticles';
+import { ScrollProgress } from '@/components/animations/ScrollProgress';
+import { MagneticButton } from '@/components/animations/MagneticButton';
 
 const cottages = [
   { name: 'The Pine Perch', price: '₹8,500', desc: 'Secluded pine-wood haven with mountain views', image: '/images/hero-1.jpg' },
@@ -13,14 +17,32 @@ const cottages = [
 ];
 
 const testimonials = [
-  { name: 'Ananya & Rohit', content: '"The Pine Perch was everything we dreamed of. Waking up to the mist over the mountains, the warm fireplace at night — pure magic."', rating: 5 },
-  { name: 'Daniel Park', content: '"I wrote half my manuscript sitting by the stream at Fern Hollow. The staff was incredibly thoughtful."', rating: 5 },
-  { name: 'Emily & James', content: '"The Ridge View infinity tub under the stars — we felt like we were floating above the world."', rating: 5 },
+  { name: 'Ananya & Rohit', content: '"The Pine Perch was everything we dreamed of. Waking up to the mist over the mountains, the warm fireplace at night — pure magic."', rating: 5, location: 'Mumbai, India' },
+  { name: 'Daniel Park', content: '"I wrote half my manuscript sitting by the stream at Fern Hollow. The staff was incredibly thoughtful."', rating: 5, location: 'Seoul, South Korea' },
+  { name: 'Emily & James', content: '"The Ridge View infinity tub under the stars — we felt like we were floating above the world."', rating: 5, location: 'Melbourne, Australia' },
+];
+
+const experiences = [
+  { icon: FireExtinguisher, title: 'Bonfire Nights', desc: 'Gather around crackling fires under a canopy of stars with warm drinks and stories.' },
+  { icon: Music, title: 'Music Nights', desc: 'Live acoustic sessions with local artists echoing through the valley.' },
+  { icon: Trees, title: 'Nature Walks', desc: 'Guided treks through cedar forests to hidden waterfalls and panoramic viewpoints.' },
+  { icon: Moon, title: 'Star Gazing', desc: 'Unpolluted Himalayan skies reveal constellations you have never seen before.' },
+  { icon: Coffee, title: 'Cafe Evenings', desc: 'Handcrafted coffee and wood-fired meals as the sun sets behind the pines.' },
+];
+
+const nearbyAttractions = [
+  { name: 'Jibhi Waterfall', distance: '4 km', icon: MapPin },
+  { name: 'Mini Thailand', distance: '1.2 km', icon: MapPin },
+  { name: 'Jalori Pass', distance: '10 km', icon: MapPin },
+  { name: 'Serolsar Lake', distance: '10 km + trek', icon: MapPin },
 ];
 
 export default function HomePage() {
   return (
     <>
+      <ScrollProgress />
+      <FogParticles opacity={0.15} count={20} color="255,255,255" speed={0.2} />
+
       <section className="relative h-screen flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-black/70 z-10" />
         <motion.div
@@ -63,12 +85,16 @@ export default function HomePage() {
             transition={{ delay: 1.3, duration: 0.8 }}
             className="flex flex-col sm:flex-row gap-4 justify-center"
           >
-            <Link href="/booking" className="vintage-button-primary text-base px-8 py-4">
-              Reserve Your Cottage
-            </Link>
-            <Link href="/cottages" className="vintage-button bg-white/10 text-cream-50 border border-cream-200/30 hover:bg-white/20 backdrop-blur-sm px-8 py-4">
-              Explore Cottages
-            </Link>
+            <MagneticButton>
+              <Link href="/booking" className="vintage-button-primary text-base px-8 py-4 inline-block">
+                Reserve Your Cottage
+              </Link>
+            </MagneticButton>
+            <MagneticButton>
+              <Link href="/cottages" className="vintage-button bg-white/10 text-cream-50 border border-cream-200/30 hover:bg-white/20 backdrop-blur-sm px-8 py-4 inline-block">
+                Explore Cottages
+              </Link>
+            </MagneticButton>
           </motion.div>
         </div>
         <motion.div
@@ -81,6 +107,37 @@ export default function HomePage() {
             <ArrowRight className="w-5 h-5 rotate-90" />
           </motion.div>
         </motion.div>
+      </section>
+
+      <section className="relative py-28 md:py-36 overflow-hidden bg-earth-900">
+        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=1920&q=80)', backgroundSize: 'cover', backgroundAttachment: 'fixed' }} />
+        <div className="relative z-10 vintage-container">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <ScrollReveal direction="left">
+              <div>
+                <p className="text-clay-400 text-sm tracking-[0.2em] uppercase mb-4 font-sans">Welcome to Vedara</p>
+                <h2 className="font-serif text-4xl md:text-5xl text-cream-50 mb-6">A Story Rooted in the Mountains</h2>
+                <p className="text-cream-200/80 text-lg leading-relaxed mb-6">
+                  Nestled in the serene village of Ghiyagi, within the untouched landscapes of Jibhi, Vedara was born from a simple belief — that the most profound luxury is found in stillness, connection, and the raw beauty of the Himalayas.
+                </p>
+                <p className="text-cream-200/60 leading-relaxed mb-8">
+                  With just six handcrafted cottages and a soulful cafe, we offer more than a stay. We offer a chance to pause, breathe, and remember what truly matters.
+                </p>
+                <Link href="/about" className="vintage-button bg-clay-500 hover:bg-clay-600 text-cream-50 px-8 py-3.5">
+                  Read Our Story <ArrowRight className="w-4 h-4 ml-2" />
+                </Link>
+              </div>
+            </ScrollReveal>
+            <ScrollReveal direction="right" delay={0.2}>
+              <div className="aspect-[4/5] rounded-2xl overflow-hidden shadow-2xl">
+                <ImageReveal
+                  src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=600&q=80"
+                  alt="Mountain landscape at Vedara"
+                />
+              </div>
+            </ScrollReveal>
+          </div>
+        </div>
       </section>
 
       <section className="section-padding bg-cream-50 dark:bg-earth-900">
@@ -127,6 +184,32 @@ export default function HomePage() {
         </div>
       </section>
 
+      <section className="relative py-28 md:py-36 overflow-hidden bg-forest-800">
+        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1920&q=80)', backgroundSize: 'cover', backgroundAttachment: 'fixed' }} />
+        <div className="relative z-10 vintage-container">
+          <ScrollReveal>
+            <div className="text-center max-w-3xl mx-auto mb-16">
+              <p className="text-clay-300 text-sm tracking-[0.2em] uppercase mb-4 font-sans">Experiences</p>
+              <h2 className="font-serif text-4xl md:text-5xl text-cream-50 mb-6">Moments That Stay With You</h2>
+              <p className="text-cream-200/70 text-lg">Beyond the cottages, a world of experiences awaits — each designed to bring you closer to the mountains and to yourself.</p>
+            </div>
+          </ScrollReveal>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+            {experiences.map((exp, i) => (
+              <ScrollReveal key={exp.title} delay={i * 0.1}>
+                <div className="group vintage-card bg-white/10 backdrop-blur-sm border-cream-200/10 p-6 text-center hover:bg-white/20 transition-all duration-500">
+                  <div className="w-14 h-14 rounded-full bg-clay-500/20 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-500">
+                    <exp.icon className="w-7 h-7 text-clay-300" />
+                  </div>
+                  <h3 className="font-serif text-lg text-cream-50 mb-2">{exp.title}</h3>
+                  <p className="text-cream-200/60 text-sm leading-relaxed">{exp.desc}</p>
+                </div>
+              </ScrollReveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section className="relative py-28 md:py-36 overflow-hidden bg-earth-900">
         <div className="relative z-10 vintage-container">
           <div className="grid md:grid-cols-2 gap-12 items-center">
@@ -146,20 +229,18 @@ export default function HomePage() {
                     </div>
                   ))}
                 </div>
-                <Link href="/cafe" className="vintage-button bg-clay-500 hover:bg-clay-600 text-cream-50 px-8 py-3.5">
-                  Explore Menu <ArrowRight className="w-4 h-4 ml-2" />
-                </Link>
+                <MagneticButton>
+                  <Link href="/cafe" className="vintage-button bg-clay-500 hover:bg-clay-600 text-cream-50 px-8 py-3.5 inline-block">
+                    Explore Menu <ArrowRight className="w-4 h-4 ml-2" />
+                  </Link>
+                </MagneticButton>
               </div>
             </ScrollReveal>
             <ScrollReveal direction="right" delay={0.2}>
               <div className="aspect-[4/5] rounded-2xl overflow-hidden shadow-2xl">
-                <motion.div
-                  className="w-full h-full bg-cover bg-center"
-                  style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=600&q=80)' }}
-                  initial={{ scale: 1.1, filter: 'blur(4px)' }}
-                  whileInView={{ scale: 1, filter: 'blur(0px)' }}
-                  transition={{ duration: 1.2, ease: [0.25, 0.1, 0.25, 1] }}
-                  viewport={{ once: true }}
+                <ImageReveal
+                  src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=600&q=80"
+                  alt="The Forest Pantry Cafe"
                 />
               </div>
             </ScrollReveal>
@@ -178,18 +259,67 @@ export default function HomePage() {
           <div className="grid md:grid-cols-3 gap-8">
             {testimonials.map((t, i) => (
               <ScrollReveal key={t.name} delay={i * 0.15}>
-                <div className="vintage-card p-8">
+                <motion.div
+                  className="vintage-card p-8 relative overflow-hidden"
+                  whileHover={{ y: -4, boxShadow: '0 20px 40px rgba(0,0,0,0.08)' }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-clay-500/5 to-transparent rounded-bl-full" />
                   <div className="flex gap-1 mb-4">
                     {Array.from({ length: t.rating }).map((_, i) => (
-                      <Star key={i} className="w-4 h-4 fill-clay-400 text-clay-400" />
+                      <motion.div
+                        key={i}
+                        initial={{ opacity: 0, scale: 0 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: i * 0.1 + t.rating * 0.1 }}
+                      >
+                        <Star className="w-4 h-4 fill-clay-400 text-clay-400" />
+                      </motion.div>
                     ))}
                   </div>
-                  <p className="text-earth-700 dark:text-cream-300 text-sm leading-relaxed mb-6">{t.content}</p>
-                  <p className="font-serif text-foreground font-medium">{t.name}</p>
+                  <p className="text-earth-700 dark:text-cream-300 text-sm leading-relaxed mb-6 italic">&ldquo;{t.content.replace(/"/g, '')}&rdquo;</p>
+                  <div className="border-t border-border/50 pt-4">
+                    <p className="font-serif text-foreground font-medium">{t.name}</p>
+                    <p className="text-xs text-muted-foreground">{t.location}</p>
+                  </div>
+                </motion.div>
+              </ScrollReveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="section-padding">
+        <div className="vintage-container">
+          <ScrollReveal>
+            <div className="text-center max-w-3xl mx-auto mb-16">
+              <p className="text-clay-500 text-sm tracking-[0.2em] uppercase mb-4 font-sans">Explore Nearby</p>
+              <h2 className="section-title mb-6">Discover the Valley</h2>
+              <p className="section-subtitle">Vedara is your gateway to the raw beauty of Jibhi and beyond</p>
+            </div>
+          </ScrollReveal>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {nearbyAttractions.map((place, i) => (
+              <ScrollReveal key={place.name} delay={i * 0.1}>
+                <div className="vintage-card p-6 flex items-start gap-4 group hover:border-clay-300 transition-colors">
+                  <div className="w-11 h-11 rounded-xl bg-clay-100 dark:bg-clay-900/30 flex items-center justify-center flex-shrink-0">
+                    <place.icon className="w-5 h-5 text-clay-500" />
+                  </div>
+                  <div>
+                    <h3 className="font-medium text-foreground text-sm group-hover:text-clay-600 transition-colors">{place.name}</h3>
+                    <span className="text-xs text-muted-foreground">{place.distance}</span>
+                  </div>
                 </div>
               </ScrollReveal>
             ))}
           </div>
+          <ScrollReveal delay={0.3}>
+            <div className="text-center mt-10">
+              <Link href="/about" className="vintage-button-outline text-sm">
+                View All Attractions <ArrowRight className="w-4 h-4 ml-2" />
+              </Link>
+            </div>
+          </ScrollReveal>
         </div>
       </section>
 
@@ -201,9 +331,11 @@ export default function HomePage() {
             <p className="text-cream-200/80 text-lg max-w-xl mx-auto mb-8">
               Book your mountain story today. Early check-in and late check-out available on request.
             </p>
-            <Link href="/booking" className="vintage-button bg-cream-50 text-forest-800 hover:bg-cream-100 px-10 py-4 text-base">
-              Begin Your Journey <Sparkles className="w-4 h-4 ml-2" />
-            </Link>
+            <MagneticButton>
+              <Link href="/booking" className="vintage-button bg-cream-50 text-forest-800 hover:bg-cream-100 px-10 py-4 text-base inline-block">
+                Begin Your Journey <Sparkles className="w-4 h-4 ml-2" />
+              </Link>
+            </MagneticButton>
           </ScrollReveal>
         </div>
       </section>

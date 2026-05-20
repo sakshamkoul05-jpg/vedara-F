@@ -1,10 +1,15 @@
 import type { Metadata } from 'next';
-import { Inter, Playfair_Display } from 'next/font/google';
+import { Inter, Libre_Caslon_Text } from 'next/font/google';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { ChatBot } from '@/components/chatbot/ChatBot';
 import { ThemeInitializer } from '@/components/layout/ThemeInitializer';
 import { SmoothScroll } from '@/components/layout/SmoothScroll';
+import { LanternToggle } from '@/components/animations/LanternToggle';
+import { FogParticles } from '@/components/animations/FogParticles';
+import { ParallaxCursor } from '@/components/animations/ParallaxCursor';
+import { ScrollProgress } from '@/components/animations/ScrollProgress';
+import { Toaster } from 'react-hot-toast';
 import '@/styles/globals.css';
 
 const inter = Inter({
@@ -13,9 +18,10 @@ const inter = Inter({
   display: 'swap',
 });
 
-const playfair = Playfair_Display({
+const libreCaslon = Libre_Caslon_Text({
   subsets: ['latin'],
-  variable: '--font-playfair',
+  weight: ['400', '700'],
+  variable: '--font-libre-caslon',
   display: 'swap',
 });
 
@@ -36,15 +42,37 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${inter.variable} ${playfair.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`${inter.variable} ${libreCaslon.variable}`} suppressHydrationWarning>
       <body className="min-h-screen bg-background text-foreground antialiased">
         <ThemeInitializer />
+        <ScrollProgress />
+        <FogParticles />
+        <ParallaxCursor />
+        <LanternToggle />
         <SmoothScroll>
           <Header />
           <main>{children}</main>
           <Footer />
           <ChatBot />
         </SmoothScroll>
+        <Toaster
+          position="top-right"
+          toastOptions={{
+            duration: 4000,
+            style: {
+              background: '#2d5536',
+              color: '#fefcf5',
+              borderRadius: '12px',
+              fontSize: '14px',
+            },
+            success: {
+              iconTheme: { primary: '#fefcf5', secondary: '#2d5536' },
+            },
+            error: {
+              style: { background: '#7f1d1d', color: '#fefcf5' },
+            },
+          }}
+        />
       </body>
     </html>
   );

@@ -24,7 +24,7 @@ export default function EmployeeDashboardPage() {
     }
 
     if (tab === 'bookings') {
-      api.get('/bookings/all?limit=10', token).then((res: any) => setBookings(res.bookings || [])).catch(() => {});
+      api.get('/bookings/all?limit=5', token).then((res: any) => setBookings(res.bookings || [])).catch(() => {});
     } else {
       api.get('/cafe/kitchen', token).then((res: any) => setOrders(res.data || [])).catch(() => {});
     }

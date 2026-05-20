@@ -171,3 +171,112 @@ export interface SiteSettings {
   socialLinks?: { platform: string; url: string }[];
   [key: string]: any;
 }
+
+export interface CMSContent {
+  homepage: {
+    heroTitle: string
+    heroSubtitle: string
+    heroImage: string
+    introText: string
+    features: { title: string; description: string; icon: string }[]
+  }
+  about: {
+    title: string
+    content: string
+    images: string[]
+    mission: string
+    vision: string
+  }
+  policies: {
+    cancellation: string
+    checkIn: string
+    checkOut: string
+    houseRules: string
+    petPolicy: string
+    smokingPolicy: string
+  }
+  seo: {
+    metaTitle: string
+    metaDescription: string
+    ogImage: string
+    keywords: string[]
+  }
+}
+
+export interface Coupon {
+  id: string
+  code: string
+  discount: number
+  discountType: 'PERCENTAGE' | 'FIXED'
+  minAmount: number
+  maxUses: number
+  usedCount: number
+  maxUsesPerUser: number
+  isActive: boolean
+  expiresAt: string | null
+  createdAt: string
+}
+
+export interface DashboardRevenue {
+  period: string
+  total: number
+  bookings: number
+  cafe: number
+  refunds: number
+  net: number
+  chartData: { date: string; amount: number }[]
+}
+
+export interface DashboardOccupancy {
+  overall: number
+  totalCottages: number
+  bookedCottages: number
+  availableCottages: number
+  monthlyData: { month: string; occupancy: number }[]
+  cottageBreakdown: { name: string; occupancy: number; bookings: number }[]
+}
+
+export interface ContactMessage {
+  id: string
+  name: string
+  email: string
+  phone: string | null
+  subject: string
+  message: string
+  isRead: boolean
+  createdAt: string
+}
+
+export interface InventoryItem {
+  id: string
+  name: string
+  category: string
+  quantity: number
+  unit: string
+  minStock: number
+  price: number
+  updatedAt: string
+}
+
+export interface StaffTask {
+  id: string
+  title: string
+  description: string | null
+  assignedTo: string
+  assignedToName: string
+  status: 'PENDING' | 'IN_PROGRESS' | 'COMPLETED' | 'CANCELLED'
+  priority: 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT'
+  dueDate: string | null
+  createdAt: string
+}
+
+export interface StaffAttendance {
+  id: string
+  employeeId: string
+  employeeName: string
+  date: string
+  checkIn: string | null
+  checkOut: string | null
+  status: 'PRESENT' | 'ABSENT' | 'HALF_DAY' | 'LEAVE' | 'HOLIDAY'
+  notes: string | null
+}

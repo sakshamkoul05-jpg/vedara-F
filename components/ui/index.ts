@@ -1,2 +1,11 @@
-export { Button } from './button';
+export { Button, buttonVariants } from './button';
 export { Input } from './input';
+export { Badge, badgeVariants } from './badge';
+export { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from './select';
+export { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from './dialog';
+export { ToastProvider, ToastViewport, Toast, ToastTitle, ToastDescription, ToastClose, useToast, ToastContainer } from './toast';
+export { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from './card';
+export { Tabs, TabsList, TabsTrigger, TabsContent } from './tabs';
+export { Separator } from './separator';
+export { Switch } from './switch';
+export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from './tooltip';
