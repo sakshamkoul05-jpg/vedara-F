@@ -5,7 +5,7 @@ import { ScrollReveal } from '@/components/animations/ScrollReveal';
 import { TextReveal } from '@/components/animations/TextReveal';
 import { Button } from '@/components/ui/button';
 import { CafeCategory, CafeItem } from '@/types';
-import { api } from '@/lib/api';
+import { endpoints } from '@/lib/api';
 import { formatPrice } from '@/lib/utils';
 import { useCartStore } from '@/store/cart';
 import { Coffee, Plus, Minus, ShoppingBag, X, Leaf, Check, User } from 'lucide-react';
@@ -22,7 +22,7 @@ export default function CafePage() {
   const { items, tableNumber, setTableNumber, addItem, removeItem, updateQuantity, clearCart, total, itemCount } = useCartStore();
 
   useEffect(() => {
-    api.cafe.menu().then((res: any) => {
+    endpoints.cafe.menu().then((res: any) => {
       setMenu(res.data);
       if (res.data.length > 0) setActiveCategory(res.data[0].slug);
       setLoading(false);
@@ -31,7 +31,7 @@ export default function CafePage() {
 
   const handleOrder = async () => {
     try {
-      await api.cafe.createOrder({
+      await endpoints.cafe.createOrder({
         tableNumber,
         guestName,
         items: items.map((i) => ({ itemId: i.itemId, quantity: i.quantity })),

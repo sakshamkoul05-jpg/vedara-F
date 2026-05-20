@@ -34,17 +34,17 @@ async function request<T = any>(endpoint: string, options: RequestOptions = {}):
 }
 
 export const api = {
-  get: <T = any>(endpoint: string, token?: string) =>
-    request<T>(endpoint, { token }),
+  get: <T = any>(endpoint: string, token?: string | null) =>
+    request<T>(endpoint, { token: token || undefined }),
 
-  post: <T = any>(endpoint: string, body: any, token?: string) =>
-    request<T>(endpoint, { method: 'POST', body, token }),
+  post: <T = any>(endpoint: string, body: any, token?: string | null) =>
+    request<T>(endpoint, { method: 'POST', body, token: token || undefined }),
 
-  put: <T = any>(endpoint: string, body: any, token?: string) =>
-    request<T>(endpoint, { method: 'PUT', body, token }),
+  put: <T = any>(endpoint: string, body: any, token?: string | null) =>
+    request<T>(endpoint, { method: 'PUT', body, token: token || undefined }),
 
-  delete: <T = any>(endpoint: string, token?: string) =>
-    request<T>(endpoint, { method: 'DELETE', token }),
+  delete: <T = any>(endpoint: string, token?: string | null) =>
+    request<T>(endpoint, { method: 'DELETE', token: token || undefined }),
 };
 
 export const endpoints = {
@@ -74,7 +74,7 @@ export const endpoints = {
   },
   auth: {
     login: (email: string, password: string) => api.post('/auth/login', { email, password }),
-    profile: (token: string) => api.get('/auth/profile', token),
+    profile: (token: string | null) => api.get('/auth/profile', token || undefined),
   },
   chatbot: {
     chat: (message: string, history?: any[]) => api.post('/chatbot/chat', { message, history }),

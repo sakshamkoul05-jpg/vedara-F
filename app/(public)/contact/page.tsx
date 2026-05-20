@@ -5,7 +5,7 @@ import { ScrollReveal } from '@/components/animations/ScrollReveal';
 import { TextReveal } from '@/components/animations/TextReveal';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { api } from '@/lib/api';
+import { endpoints } from '@/lib/api';
 import { Mail, Phone, MapPin, Clock, Send, Check } from 'lucide-react';
 
 export default function ContactPage() {
@@ -17,7 +17,7 @@ export default function ContactPage() {
     e.preventDefault();
     setLoading(true);
     try {
-      await api.contact.submit(form);
+      await endpoints.contact.submit(form);
       setSubmitted(true);
       setForm({ name: '', email: '', phone: '', subject: '', message: '' });
     } catch {

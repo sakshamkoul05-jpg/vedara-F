@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/auth';
-import { api } from '@/lib/api';
+import { endpoints } from '@/lib/api';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Mountain } from 'lucide-react';
@@ -21,7 +21,7 @@ export default function AdminLoginPage() {
     setError('');
     setLoading(true);
     try {
-      const res = await api.auth.login(email, password);
+      const res = await endpoints.auth.login(email, password);
       setAuth(res.data.user, res.data.accessToken);
       const role = res.data.user.role;
       if (role === 'SUPER_ADMIN' || role === 'MANAGER') {

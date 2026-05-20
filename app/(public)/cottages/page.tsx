@@ -18,7 +18,7 @@ export default function CottagesPage() {
   const [checkOut, setCheckOut] = useState('');
 
   useEffect(() => {
-    api.cottages.list().then((res: any) => {
+    api.get('/cottages').then((res: any) => {
       setCottages(res.data);
       setLoading(false);
     }).catch(() => setLoading(false));

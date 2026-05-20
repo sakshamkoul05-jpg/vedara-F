@@ -30,7 +30,7 @@ export default function BookingPage() {
   const [paymentLoading, setPaymentLoading] = useState(false);
 
   useEffect(() => {
-    api.cottages.list().then((res: any) => setCottages(res.data)).catch(() => {});
+    api.get('/cottages').then((res: any) => setCottages(res.data)).catch(() => {});
   }, []);
 
   const handleAvailabilityCheck = async () => {

@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MessageCircle, X, Send, Bot, User } from 'lucide-react';
-import { api } from '@/lib/api';
+import { endpoints } from '@/lib/api';
 
 interface Message {
   role: 'user' | 'assistant';
@@ -33,7 +33,7 @@ export function ChatBot() {
 
     try {
       const history = messages.slice(-6).map((m) => ({ role: m.role, content: m.content }));
-      const res = await api.chatbot.chat(userMessage, history);
+      const res = await endpoints.chatbot.chat(userMessage, history);
       setMessages((prev) => [...prev, { role: 'assistant', content: res.data.reply }]);
     } catch {
       setMessages((prev) => [

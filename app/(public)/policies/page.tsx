@@ -47,7 +47,7 @@ export default function PoliciesPage() {
   const [openFaq, setOpenFaq] = useState<string | null>(null);
 
   useEffect(() => {
-    api.cms?.getFAQs?.().then((res: any) => setFaqs(res.data)).catch(() => {});
+    api.get('/cms/faqs').then((res: any) => setFaqs(res.data)).catch(() => {});
   }, []);
 
   return (
