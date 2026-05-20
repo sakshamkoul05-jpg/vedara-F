@@ -1,20 +1,23 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/auth';
 import { AdminSidebar } from './AdminSidebar';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const { token, user } = useAuthStore();
   const router = useRouter();
+  const pathname = usePathname();
+  const isLoginPage = pathname === '/admin/login';
 
   useEffect(() => {
-    if (!token) {
+    if (!token && !isLoginPage) {
       router.push('/admin/login');
     }
-  }, [token, router]);
+  }, [token, isLoginPage, router]);
 
+  if (isLoginPage) return <>{children}</>;
   if (!token) return null;
 
   return (

@@ -163,6 +163,9 @@ export function Header() {
               <Link href="/booking" className="vintage-button-primary w-full text-center">
                 Book Your Stay
               </Link>
+              <Link href="/admin/login" className="flex items-center justify-center gap-2 text-sm text-earth-500 dark:text-cream-400 hover:text-forest-600 dark:hover:text-cream-50 py-2 border-t border-earth-200 dark:border-earth-700 pt-4">
+                <LogIn className="w-4 h-4" /> Staff Login
+              </Link>
             </nav>
           </motion.div>
         )}
