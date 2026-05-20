@@ -22,18 +22,41 @@ export default function HomePage() {
   return (
     <>
       <section className="relative h-screen flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/60 z-10" />
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1472396961693-142e6e269027?w=1920&q=80)' }}
-        />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-black/70 z-10" />
         <motion.div
-          initial={{ scale: 1.1 }}
-          animate={{ scale: 1 }}
-          transition={{ duration: 2, ease: [0.25, 0.1, 0.25, 1] }}
           className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1472396961693-142e6e269027?w=1920&q=80)' }}
+          style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1470071459604-7b8ec44ffd4e?w=1920&q=80)' }}
+          initial={{ scale: 1.15 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 3, ease: [0.25, 0.1, 0.25, 1] }}
         />
+        <div className="absolute inset-0 z-10 pointer-events-none overflow-hidden">
+          <motion.div
+            className="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.04] to-transparent"
+            animate={{ x: ['-100%', '100%'] }}
+            transition={{ duration: 10, repeat: Infinity, ease: 'linear', delay: 2 }}
+          />
+          <motion.div
+            className="absolute bottom-0 left-0 right-0 h-48 opacity-30"
+            animate={{ rotate: [0, 0.5, -0.3, 0] }}
+            transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
+            style={{ transformOrigin: 'bottom center' }}
+          >
+            <svg viewBox="0 0 1440 200" className="w-full h-full" preserveAspectRatio="xMidYMax meet">
+              <path d="M0,120 L60,40 L120,100 L180,20 L240,90 L300,10 L360,80 L420,0 L480,70 L540,10 L600,80 L660,0 L720,60 L780,10 L840,70 L900,0 L960,60 L1020,20 L1080,80 L1140,10 L1200,70 L1260,20 L1320,90 L1380,30 L1440,100 L1440,200 L0,200 Z" fill="rgba(0,0,0,0.4)" />
+              <path d="M0,140 L80,60 L160,120 L240,40 L320,110 L400,30 L480,100 L560,20 L640,90 L720,10 L800,80 L880,20 L960,90 L1040,30 L1120,100 L1200,40 L1280,110 L1360,50 L1440,120 L1440,200 L0,200 Z" fill="rgba(0,0,0,0.25)" />
+            </svg>
+          </motion.div>
+          {[{ x: 15, y: 25, d: 6 }, { x: 35, y: 40, d: 4 }, { x: 55, y: 20, d: 5 }, { x: 75, y: 45, d: 3 }, { x: 90, y: 30, d: 4 }].map((p, i) => (
+            <motion.div
+              key={i}
+              className="absolute rounded-full bg-white/15"
+              style={{ width: p.d, height: p.d, left: `${p.x}%`, top: `${p.y}%` }}
+              animate={{ x: [0, 120, 0], opacity: [0, 0.8, 0] }}
+              transition={{ duration: 8 + i * 2, repeat: Infinity, delay: i * 1.5, ease: 'linear' }}
+            />
+          ))}
+        </div>
         <div className="relative z-20 text-center px-4 max-w-4xl">
           <motion.p
             initial={{ opacity: 0, y: 20 }}

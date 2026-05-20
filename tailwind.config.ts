@@ -58,6 +58,8 @@ const config: Config = {
         'float': 'float 6s ease-in-out infinite',
         'reveal': 'reveal 1.2s ease-out',
         'shimmer': 'shimmer 2s infinite',
+        'wind-sweep': 'windSweep 12s linear infinite',
+        'tree-sway': 'treeSway 4s ease-in-out infinite',
       },
       keyframes: {
         fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } },
@@ -65,6 +67,8 @@ const config: Config = {
         float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-20px)' } },
         reveal: { '0%': { clipPath: 'inset(0 100% 0 0)' }, '100%': { clipPath: 'inset(0 0 0 0)' } },
         shimmer: { '0%': { backgroundPosition: '-200% 0' }, '100%': { backgroundPosition: '200% 0' } },
+        windSweep: { '0%': { transform: 'translateX(-100%)' }, '100%': { transform: 'translateX(100vw)' } },
+        treeSway: { '0%, 100%': { transform: 'rotate(0deg) skewX(0deg)' }, '25%': { transform: 'rotate(0.3deg) skewX(0.5deg)' }, '75%': { transform: 'rotate(-0.3deg) skewX(-0.5deg)' } },
       },
       backgroundImage: {
         'vintage-paper': "url('/images/textures/paper-bg.jpg')",
