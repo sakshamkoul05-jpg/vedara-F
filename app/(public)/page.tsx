@@ -25,7 +25,10 @@ export default function HomePage() {
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-black/70 z-10" />
         <motion.div
           className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1470071459604-7b8ec44ffd4e?w=1920&q=80)' }}
+          style={{
+            backgroundImage: 'url(/images/hero-bg.webp)',
+            filter: 'saturate(0.85) brightness(0.75) contrast(1.15) sepia(0.15)',
+          }}
           initial={{ scale: 1.15 }}
           animate={{ scale: 1 }}
           transition={{ duration: 3, ease: [0.25, 0.1, 0.25, 1] }}
