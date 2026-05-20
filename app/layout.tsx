@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     template: '%s | Vedara Retreat',
   },
   description: 'A cozy mountain retreat with 6 luxury cottages and a premium cafe. Experience slow living in the heart of the mountains.',
-  keywords: ['mountain retreat', 'luxury cottages', 'Himachal Pradesh', 'boutique hotel', 'mountain cafe', 'Vedara'],
+  keywords: ['mountain retreat', 'luxury cottages', 'Himachal Pradesh', 'boutique hotel', 'mountain cafe', 'Vedara', 'boutique stay in Jibhi', 'luxury cottages Jibhi', 'Tirthan Valley stay', 'nature retreat Himachal', 'boutique resort in Jibhi', 'luxury stay in Tirthan Valley', 'jacuzzi cottages in Jibhi', 'couple friendly stay in Jibhi', 'mountain retreat Himachal', 'boutique café stay in Himachal'],
   openGraph: {
     title: 'Vedara Retreat — Mountain Stories, Crafted for You',
     description: 'A cozy mountain retreat with 6 luxury cottages and a premium cafe.',

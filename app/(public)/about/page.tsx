@@ -16,7 +16,7 @@ const highlights = [
   { icon: Home, label: '6 Cottages', desc: '18–22 guests, intimate and exclusive' },
   { icon: MapPin, label: 'Ghiyagi, Jibhi', desc: 'Untouched Himalayan beauty, away from crowds' },
   { icon: Leaf, label: 'Launch 2026', desc: 'A sanctuary of wisdom, wilderness, and quiet luxury' },
-  { icon: Users, label: 'Target Guests', desc: 'Couples, families, solo travellers, remote workers, small groups' },
+  { icon: Users, label: 'Target Guests', desc: 'Couples, families, solo travellers, remote workers — a couple friendly stay in Jibhi' },
 ];
 
 const amenities = [
@@ -62,7 +62,7 @@ export default function AboutPage() {
             <ScrollReveal direction="right">
               <div className="prose prose-earth dark:prose-invert max-w-none">
                 <p className="text-lg text-earth-700 dark:text-cream-200 leading-relaxed mb-6">
-                  Nestled in the serene village of <strong>Ghiyagi</strong>, within the untouched landscapes of Jibhi, where cedar forests whisper through the mountains and time moves with quiet grace, Vedara was envisioned as a retreat for those who seek more than just a getaway.
+                  Nestled in the serene village of <strong>Ghiyagi</strong>, within the untouched landscapes of Jibhi, where cedar forests whisper through the mountains and time moves with quiet grace, Vedara was envisioned as a <strong>boutique stay in Jibhi</strong> for those who seek more than just a getaway.
                 </p>
                 <p className="text-earth-600 dark:text-cream-300 leading-relaxed mb-6">
                   Inspired by the essence of wisdom, reflection, and the soul of the forest, Vedara is a space that invites you to slow down, breathe deeply, and reconnect with what truly matters.
@@ -76,9 +76,9 @@ export default function AboutPage() {
                 <p className="text-earth-600 dark:text-cream-300 leading-relaxed mb-6">
                   Intentionally intimate and away from the rush of crowded resorts, Vedara adapts effortlessly to every guest — whether you are a traveller seeking stillness, a couple seeking intimacy, or a family longing to reconnect.
                 </p>
-                <p className="text-forest-600 dark:text-forest-400 font-medium italic">
-                  Because true luxury is not excess. It is stillness, connection, warmth, and unforgettable moments.
-                </p>
+              <p className="text-forest-600 dark:text-forest-400 font-medium italic">
+                A <strong>luxury stay in Tirthan Valley</strong> where true luxury is not excess. It is stillness, connection, warmth, and unforgettable moments.
+              </p>
               </div>
             </ScrollReveal>
           </div>
@@ -91,7 +91,7 @@ export default function AboutPage() {
             <div className="text-center max-w-3xl mx-auto mb-12">
               <p className="text-clay-500 text-sm tracking-[0.2em] uppercase mb-4 font-sans">About the Property</p>
               <h2 className="section-title mb-6">Vedara — Himalayan Boutique Retreat</h2>
-              <p className="section-subtitle">6 cottages | 18–22 guests | Launch 2026 | Ghiyagi, Jibhi</p>
+              <p className="section-subtitle">6 luxury cottages Jibhi | 18–22 guests | Launch 2026 | A nature retreat Himachal</p>
             </div>
           </ScrollReveal>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
