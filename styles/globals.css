@@ -1,0 +1,142 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 39 30% 96%;
+    --foreground: 24 15% 20%;
+    --card: 0 0% 100%;
+    --card-foreground: 24 15% 20%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 24 15% 20%;
+    --primary: 142 30% 28%;
+    --primary-foreground: 39 30% 96%;
+    --secondary: 24 20% 85%;
+    --secondary-foreground: 24 15% 20%;
+    --muted: 24 15% 92%;
+    --muted-foreground: 24 10% 50%;
+    --accent: 18 60% 55%;
+    --accent-foreground: 39 30% 96%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 39 30% 96%;
+    --border: 24 15% 85%;
+    --input: 24 15% 85%;
+    --ring: 142 30% 28%;
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    --background: 24 15% 10%;
+    --foreground: 39 30% 92%;
+    --card: 24 15% 14%;
+    --card-foreground: 39 30% 92%;
+    --popover: 24 15% 14%;
+    --popover-foreground: 39 30% 92%;
+    --primary: 142 25% 35%;
+    --primary-foreground: 39 30% 96%;
+    --secondary: 24 15% 20%;
+    --secondary-foreground: 39 30% 92%;
+    --muted: 24 15% 18%;
+    --muted-foreground: 24 10% 65%;
+    --accent: 18 55% 45%;
+    --accent-foreground: 39 30% 96%;
+    --destructive: 0 62% 50%;
+    --destructive-foreground: 39 30% 96%;
+    --border: 24 15% 25%;
+    --input: 24 15% 25%;
+    --ring: 142 25% 35%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+
+  h1, h2, h3, h4, h5 {
+    @apply font-serif;
+  }
+
+  ::selection {
+    @apply bg-forest-500/20 text-forest-900;
+  }
+}
+
+@layer components {
+  .vintage-container {
+    @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .vintage-card {
+    @apply bg-card border border-border/50 rounded-2xl shadow-sm hover:shadow-md transition-all duration-500;
+  }
+
+  .vintage-button {
+    @apply inline-flex items-center justify-center rounded-full px-6 py-3 font-sans text-sm font-medium transition-all duration-300;
+  }
+
+  .vintage-button-primary {
+    @apply vintage-button bg-forest-600 text-cream-50 hover:bg-forest-700 shadow-md hover:shadow-lg;
+  }
+
+  .vintage-button-secondary {
+    @apply vintage-button bg-earth-100 text-earth-800 hover:bg-earth-200 border border-earth-200;
+  }
+
+  .vintage-button-outline {
+    @apply vintage-button border-2 border-forest-600 text-forest-700 hover:bg-forest-50;
+  }
+
+  .vintage-input {
+    @apply w-full rounded-xl border border-earth-200 bg-white px-4 py-3 font-sans text-sm text-earth-900 placeholder:text-earth-400 focus:border-forest-500 focus:outline-none focus:ring-2 focus:ring-forest-500/20 transition-all;
+  }
+
+  .vintage-label {
+    @apply block text-sm font-medium text-earth-700 mb-1.5;
+  }
+
+  .section-padding {
+    @apply py-20 md:py-28 lg:py-32;
+  }
+
+  .section-title {
+    @apply font-serif text-3xl md:text-4xl lg:text-5xl text-foreground tracking-tight;
+  }
+
+  .section-subtitle {
+    @apply text-muted-foreground text-base md:text-lg max-w-2xl mx-auto;
+  }
+}
+
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
