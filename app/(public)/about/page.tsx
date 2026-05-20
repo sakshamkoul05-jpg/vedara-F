@@ -6,9 +6,9 @@ import { ImageReveal } from '@/components/animations/ImageReveal';
 import { Mountain, Heart, Shield, Leaf, Home, Coffee, MapPin, Users, Wifi, Car, Flame, TreePine, UtensilsCrossed, ExternalLink } from 'lucide-react';
 
 const values = [
-  { icon: Leaf, title: 'Slow Living', desc: 'A retreat for those who seek more than just a getaway — to slow down, breathe deeply, and reconnect with what truly matters.' },
-  { icon: Heart, title: 'Soulful Hospitality', desc: 'Every detail reflects a balance between refined comfort and the raw beauty of the Himalayas, creating experiences that feel deeply personal.' },
-  { icon: Shield, title: 'Intimate by Design', desc: 'With just six thoughtfully designed cottages, we offer privacy, exclusivity, and a deeply personal stay experience.' },
+  { icon: Leaf, title: 'Slow Living', desc: 'A retreat for those who seek more than just a getaway — to slow down, breathe deeply, and reconnect with what truly matters in the Himalayas.' },
+  { icon: Heart, title: 'Soulful Hospitality', desc: 'Every detail reflects a balance between refined comfort and the raw beauty of the mountains, creating experiences that feel deeply personal.' },
+  { icon: Shield, title: 'Intimate by Design', desc: 'With just six thoughtfully designed cottages, we offer privacy, exclusivity, and a deeply personal boutique resort in Jibhi experience.' },
   { icon: Coffee, title: 'Café + Stay Experience', desc: 'Anchored by a curated in-house café that creates a social yet serene atmosphere where conversations, coffee, and calm coexist.' },
 ];
 
@@ -17,6 +17,8 @@ const highlights = [
   { icon: MapPin, label: 'Ghiyagi, Jibhi', desc: 'Untouched Himalayan beauty, away from crowds' },
   { icon: Leaf, label: 'Launch 2026', desc: 'A sanctuary of wisdom, wilderness, and quiet luxury' },
   { icon: Users, label: 'Target Guests', desc: 'Couples, families, solo travellers, remote workers — a couple friendly stay in Jibhi' },
+  { icon: Wifi, label: 'High-Speed WiFi', desc: 'Available throughout the property' },
+  { icon: Mountain, label: 'What Makes Us Unique', desc: 'Boutique by Design • Café + Stay Experience • Untouched Location' },
 ];
 
 const amenities = [
@@ -29,12 +31,12 @@ const amenities = [
 ];
 
 const attractions = [
-  { name: 'Jibhi Waterfall', distance: '4 km', image: '/images/jibhi-waterfall.avif', desc: 'A cascading gem hidden in the forest' },
-  { name: 'Mini Thailand', distance: '1.2 km', image: '/images/mini-thailand.jpg', desc: 'Serene river bend with turquoise pools' },
-  { name: 'Jalori Pass', distance: '10 km', image: '/images/jalori-pass.jpg', desc: 'High-altitude pass with sweeping views' },
-  { name: 'Serolsar Lake', distance: '10 km + trek', image: '/images/seroslar-lake.webp', desc: 'Crystal-clear lake surrounded by ancient oaks' },
-  { name: 'Chehni Kothi', distance: '10 km', image: '/images/chehni-kothi.jpg', desc: 'Centuries-old medieval tower fortress' },
-  { name: 'Tirthan Valley', distance: '26 km', image: '/images/tirthan-valley.jpg', desc: 'Pristine valley famous for trout fishing' },
+  { name: 'Jibhi Waterfall', distance: '4 km', image: '/images/jibhi-waterfall.avif', desc: 'A cascading gem hidden in the forest — a perfect spot for a peaceful afternoon.' },
+  { name: 'Mini Thailand', distance: '1.2 km', image: '/images/mini-thailand.jpg', desc: 'Serene river bend with turquoise pools, known as a boutique stay in Jibhi highlight.' },
+  { name: 'Jalori Pass', distance: '10 km', image: '/images/jalori-pass.jpg', desc: 'High-altitude pass with sweeping views — a must for any nature retreat Himachal visit.' },
+  { name: 'Serolsar Lake', distance: '10 km + trek', image: '/images/seroslar-lake.webp', desc: 'Crystal-clear lake surrounded by ancient oaks — a luxury stay in Tirthan Valley experience.' },
+  { name: 'Chehni Kothi', distance: '10 km', image: '/images/chehni-kothi.jpg', desc: 'Centuries-old medieval tower fortress offering a glimpse into local history.' },
+  { name: 'Tirthan Valley', distance: '26 km', image: '/images/tirthan-valley.jpg', desc: 'Pristine valley famous for trout fishing — ideal for luxury cottages Jibhi explorers.' },
 ];
 
 export default function AboutPage() {
@@ -269,6 +271,29 @@ export default function AboutPage() {
               </ScrollReveal>
             ))}
           </div>
+        </div>
+      </section>
+
+      <section className="section-padding bg-cream-50 dark:bg-earth-900">
+        <div className="vintage-container">
+          <ScrollReveal>
+            <div className="text-center max-w-4xl mx-auto">
+              <p className="text-clay-500 text-sm tracking-[0.2em] uppercase mb-4 font-sans">SEO Keywords</p>
+              <h2 className="section-title mb-8">Discover Vedara</h2>
+              <div className="flex flex-wrap justify-center gap-3">
+                {[
+                  'Boutique Stay in Jibhi', 'Luxury Cottages Jibhi', 'Tirthan Valley Stay',
+                  'Nature Retreat Himachal', 'Boutique Resort in Jibhi', 'Luxury Stay in Tirthan Valley',
+                  'Jacuzzi Cottages in Jibhi', 'Couple Friendly Stay in Jibhi', 'Mountain Retreat Himachal',
+                  'Boutique Café Stay in Himachal', 'Himalayan Boutique Retreat', 'Vedara Jibhi'
+                ].map((kw) => (
+                  <span key={kw} className="px-4 py-2 rounded-full bg-forest-100 dark:bg-forest-900/30 text-forest-700 dark:text-forest-300 text-sm font-medium border border-forest-200 dark:border-forest-700">
+                    {kw}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </ScrollReveal>
         </div>
       </section>
     </>

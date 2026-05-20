@@ -712,7 +712,7 @@ function CouponsTab({ token, showToast }: { token: string | null; showToast: (ms
   };
 
   const openNew = () => {
-    setEditing({ code: '', discount: '', discountType: 'PERCENTAGE', minAmount: 0, maxUses: 100, maxUsesPerUser: 1, isActive: true, expiresAt: '' });
+    setEditing({ code: '', discount: '', discountType: 'PERCENTAGE', minAmount: 0, maxUses: 100, maxUsesPerUser: 1, isActive: true, expiresAt: '', description: '', voucherType: 'BOTH' });
     setDialogOpen(true);
   };
 
@@ -749,6 +749,7 @@ function CouponsTab({ token, showToast }: { token: string | null; showToast: (ms
                       <span className="text-xs text-muted-foreground ml-3">
                         Min: {formatPrice(item.minAmount || 0)} • Used: {item.usedCount || 0}/{item.maxUses || '∞'}
                       </span>
+                      {item.description && <p className="text-xs text-muted-foreground mt-0.5">{item.description}</p>}
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
@@ -757,6 +758,9 @@ function CouponsTab({ token, showToast }: { token: string | null; showToast: (ms
                     </Badge>
                     {item.expiresAt && new Date(item.expiresAt) < new Date() && (
                       <Badge variant="danger" size="sm">Expired</Badge>
+                    )}
+                    {item.voucherType && item.voucherType !== 'BOTH' && (
+                      <Badge variant="outline" size="sm">{item.voucherType}</Badge>
                     )}
                     <Button variant="ghost" size="icon" onClick={() => openEdit(item)}><Edit className="w-3.5 h-3.5" /></Button>
                     <Button variant="ghost" size="icon" onClick={() => handleDelete(item.id)} className="text-red-500"><Trash2 className="w-3.5 h-3.5" /></Button>
@@ -797,6 +801,10 @@ function CouponsTab({ token, showToast }: { token: string | null; showToast: (ms
                   </SelectContent>
                 </Select>
               </div>
+              <div className="col-span-2">
+                <label className="vintage-label">Description</label>
+                <Input value={editing.description || ''} onChange={(e) => setEditing({ ...editing, description: e.target.value })} placeholder="Seasonal discount for summer bookings" />
+              </div>
               <div>
                 <label className="vintage-label">Min Amount (₹)</label>
                 <Input type="number" value={editing.minAmount || 0} onChange={(e) => setEditing({ ...editing, minAmount: Number(e.target.value) })} />
@@ -812,6 +820,17 @@ function CouponsTab({ token, showToast }: { token: string | null; showToast: (ms
               <div className="col-span-2">
                 <label className="vintage-label">Expires At</label>
                 <Input type="date" value={editing.expiresAt ? editing.expiresAt.slice(0, 10) : ''} onChange={(e) => setEditing({ ...editing, expiresAt: e.target.value || null })} />
+              </div>
+              <div className="col-span-2">
+                <label className="vintage-label">Voucher Scope</label>
+                <Select value={editing.voucherType || 'BOTH'} onValueChange={(v) => setEditing({ ...editing, voucherType: v })}>
+                  <SelectTrigger><SelectValue /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="BOTH">All Orders (Booking + Cafe)</SelectItem>
+                    <SelectItem value="BOOKING">Booking Only</SelectItem>
+                    <SelectItem value="CAFE">Cafe Only</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
               <div className="col-span-2">
                 <label className="flex items-center gap-2 text-sm text-foreground cursor-pointer">

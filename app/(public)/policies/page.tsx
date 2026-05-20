@@ -61,11 +61,25 @@ const policySections = [
     ),
   },
   {
+    value: 'rescheduling',
+    title: 'Rescheduling & Date Change Policy',
+    content: (
+      <div className="space-y-3 text-sm leading-relaxed text-muted-foreground">
+        <p>We understand that travel plans can shift. We offer flexibility under the following conditions:</p>
+        <ul className="list-disc pl-5 space-y-1">
+          <li>One complimentary date change may be permitted if the request is made at least <strong className="text-foreground">10 days</strong> prior to the original arrival date.</li>
+          <li>All rescheduling is strictly subject to availability.</li>
+          <li>If the revised dates fall into a higher price bracket (e.g., peak season, holidays, or weekend rates), the tariff difference will apply and must be cleared to secure the new dates.</li>
+        </ul>
+      </div>
+    ),
+  },
+  {
     value: 'checkin-checkout',
     title: 'Check-in / Check-out',
     content: (
       <div className="space-y-3 text-sm leading-relaxed text-muted-foreground">
-        <p><strong className="text-foreground">Check-In Time:</strong> 2:00 PM</p>
+        <p><strong className="text-foreground">Check-In Time:</strong> 1:00 PM</p>
         <p><strong className="text-foreground">Check-Out Time:</strong> 11:00 AM</p>
         <p>Early check-in or late check-out is strictly subject to availability and may incur additional charges. Please inform us at least 24 hours in advance if you require an adjusted schedule.</p>
         <p><strong className="text-foreground">Identification:</strong> In accordance with local government regulations, all guests must present a valid government-issued photo ID (Aadhaar, Passport, or Driving License) upon check-in. Foreign nationals must present a valid Passport and Visa/e-Visa.</p>
@@ -113,9 +127,10 @@ const policySections = [
     title: 'Smoking & Pets',
     content: (
       <div className="space-y-3 text-sm leading-relaxed text-muted-foreground">
-        <p><strong className="text-foreground">Smoking Policy:</strong> All cottages are strictly non-smoking — this includes cigarettes, e-cigarettes, vapes, cigars, and sheesha/hookah. Designated smoking areas are available on balconies and in the cafe garden.</p>
+        <p><strong className="text-foreground">Strictly Non-Smoking Rooms:</strong> To maintain our pristine Himalayan indoor environment and ensure guest safety, all cottages are strictly non-smoking. This includes cigarettes, e-cigarettes, vapes, cigars, and sheesha/hookah.</p>
+        <p><strong className="text-foreground">Balconies & Cafe:</strong> While you can smoke in the balconies and cafe, we have designated smoking areas for wider safety.</p>
         <p><strong className="text-foreground">Hazardous Items:</strong> Due to the timber and stone architecture of our cottages, the use of candles, incense sticks (agarbatti), personal room heaters, or cooking appliances inside the rooms is strictly prohibited.</p>
-        <p><strong className="text-foreground">Pet Policy:</strong> To maintain an allergen-free environment and ensure the comfort of all visitors, Vedara is currently a pet-free property. We are unable to accommodate pets of any size.</p>
+        <p><strong className="text-foreground">Pet Policy:</strong> To maintain an allergen-free environment and ensure the comfort of all visitors, The Vedara is currently a pet-free property. We are unable to accommodate pets of any size.</p>
       </div>
     ),
   },

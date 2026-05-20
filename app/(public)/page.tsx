@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { ArrowRight, Star, Coffee, Trees, Sparkles, Music, FireExtinguisher, Binoculars, Moon, MapPin, UtensilsCrossed } from 'lucide-react';
@@ -56,14 +57,16 @@ export default function HomePage() {
           transition={{ duration: 3, ease: [0.25, 0.1, 0.25, 1] }}
         />
         <div className="relative z-20 text-center px-4 max-w-4xl">
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 0.8 }}
-            className="text-cream-200 text-sm md:text-base tracking-[0.3em] uppercase mb-6 font-sans"
-          >
-            Vedara Retreat Hotels
-          </motion.p>
+          <div className="mb-8 flex justify-center">
+            <Image
+              src="/images/vedlogo.jpeg"
+              alt="Vedara"
+              width={180}
+              height={60}
+              className="h-auto w-auto logo-light"
+              priority
+            />
+          </div>
           <TextReveal
             as="h1"
             className="text-5xl md:text-7xl lg:text-8xl font-serif text-cream-50 leading-tight mb-6"
