@@ -2,7 +2,8 @@
 
 import { ScrollReveal } from '@/components/animations/ScrollReveal';
 import { TextReveal } from '@/components/animations/TextReveal';
-import { Mountain, Heart, Shield, Leaf, Home, Coffee, MapPin, Users } from 'lucide-react';
+import { ImageReveal } from '@/components/animations/ImageReveal';
+import { Mountain, Heart, Shield, Leaf, Home, Coffee, MapPin, Users, Wifi, Car, Flame, TreePine, UtensilsCrossed, ExternalLink } from 'lucide-react';
 
 const values = [
   { icon: Leaf, title: 'Slow Living', desc: 'A retreat for those who seek more than just a getaway — to slow down, breathe deeply, and reconnect with what truly matters.' },
@@ -16,6 +17,24 @@ const highlights = [
   { icon: MapPin, label: 'Ghiyagi, Jibhi', desc: 'Untouched Himalayan beauty, away from crowds' },
   { icon: Leaf, label: 'Launch 2026', desc: 'A sanctuary of wisdom, wilderness, and quiet luxury' },
   { icon: Users, label: 'Target Guests', desc: 'Couples, families, solo travellers, remote workers, small groups' },
+];
+
+const amenities = [
+  { icon: Coffee, label: 'In-house Café', desc: 'Multi-cuisine + Himachali delicacies' },
+  { icon: Flame, label: 'Bonfire & Outdoor Seating', desc: 'Evening gatherings under the stars' },
+  { icon: Mountain, label: 'Mountain View', desc: 'Panoramic Himalayan vistas from every corner' },
+  { icon: TreePine, label: 'Garden & Relaxation Spaces', desc: 'Lush green spaces to unwind' },
+  { icon: Car, label: 'Parking', desc: 'Complimentary on-site parking' },
+  { icon: UtensilsCrossed, label: 'Activities', desc: 'Nature walks, waterfall visits, Jalori Pass, café evenings' },
+];
+
+const attractions = [
+  { name: 'Jibhi Waterfall', distance: '4 km', image: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=600&q=80', desc: 'A cascading gem hidden in the forest' },
+  { name: 'Mini Thailand', distance: '1.2 km', image: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&q=80', desc: 'Serene river bend with turquoise pools' },
+  { name: 'Jalori Pass', distance: '10 km', image: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600&q=80', desc: 'High-altitude pass with sweeping views' },
+  { name: 'Serolsar Lake', distance: '10 km + trek', image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80', desc: 'Crystal-clear lake surrounded by ancient oaks' },
+  { name: 'Chehni Kothi', distance: '10 km', image: 'https://images.unsplash.com/photo-1511823162259-221c9506cdef?w=600&q=80', desc: 'Centuries-old medieval tower fortress' },
+  { name: 'Tirthan Valley', distance: '26 km', image: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=600&q=80', desc: 'Pristine valley famous for trout fishing' },
 ];
 
 export default function AboutPage() {
@@ -152,6 +171,76 @@ export default function AboutPage() {
                   </div>
                   <h3 className="font-serif text-xl text-foreground mb-3">{item.title}</h3>
                   <p className="text-muted-foreground text-sm leading-relaxed">{item.desc}</p>
+                </div>
+              </ScrollReveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="section-padding">
+        <div className="vintage-container">
+          <ScrollReveal>
+            <div className="text-center max-w-3xl mx-auto mb-16">
+              <p className="text-clay-500 text-sm tracking-[0.2em] uppercase mb-4 font-sans">Amenities</p>
+              <h2 className="section-title mb-6">Facilities & Experiences</h2>
+              <p className="section-subtitle">Every comfort thoughtfully curated for your mountain stay</p>
+            </div>
+          </ScrollReveal>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {amenities.map((a, i) => (
+              <ScrollReveal key={a.label} delay={i * 0.08}>
+                <div className="vintage-card p-6 flex items-start gap-4">
+                  <div className="w-11 h-11 rounded-xl bg-forest-100 dark:bg-forest-900/30 flex items-center justify-center flex-shrink-0">
+                    <a.icon className="w-5 h-5 text-forest-600 dark:text-forest-400" />
+                  </div>
+                  <div>
+                    <h3 className="font-medium text-foreground text-sm">{a.label}</h3>
+                    <p className="text-muted-foreground text-xs mt-0.5">{a.desc}</p>
+                  </div>
+                </div>
+              </ScrollReveal>
+            ))}
+          </div>
+          <ScrollReveal delay={0.2}>
+            <div className="mt-8 vintage-card p-5 inline-flex items-center gap-3 mx-auto">
+              <Wifi className="w-5 h-5 text-forest-500" />
+              <span className="text-sm text-foreground"><strong>High-speed WiFi</strong> available throughout the property</span>
+            </div>
+          </ScrollReveal>
+        </div>
+      </section>
+
+      <section className="section-padding bg-cream-50 dark:bg-earth-900">
+        <div className="vintage-container">
+          <ScrollReveal>
+            <div className="text-center max-w-3xl mx-auto mb-16">
+              <p className="text-clay-500 text-sm tracking-[0.2em] uppercase mb-4 font-sans">Explore Nearby</p>
+              <h2 className="section-title mb-6">Attractions Around Vedara</h2>
+              <p className="section-subtitle">Discover the raw beauty of Jibhi and beyond</p>
+            </div>
+          </ScrollReveal>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {attractions.map((place, i) => (
+              <ScrollReveal key={place.name} delay={i * 0.1}>
+                <div className="group vintage-card overflow-hidden">
+                  <div className="aspect-[16/10] overflow-hidden">
+                    <ImageReveal
+                      src={place.image}
+                      alt={place.name}
+                      className="w-full h-full"
+                    />
+                  </div>
+                  <div className="p-5">
+                    <div className="flex items-start justify-between mb-2">
+                      <h3 className="font-serif text-lg text-foreground group-hover:text-forest-600 transition-colors">{place.name}</h3>
+                      <span className="text-xs font-medium px-2.5 py-1 rounded-full bg-clay-100 dark:bg-clay-900/30 text-clay-600 dark:text-clay-400 whitespace-nowrap">{place.distance}</span>
+                    </div>
+                    <p className="text-muted-foreground text-sm">{place.desc}</p>
+                    <div className="flex items-center gap-1 text-xs text-forest-600 dark:text-forest-400 mt-3 font-medium">
+                      <ExternalLink className="w-3 h-3" /> Explore
+                    </div>
+                  </div>
                 </div>
               </ScrollReveal>
             ))}
