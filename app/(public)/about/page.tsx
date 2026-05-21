@@ -274,28 +274,6 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="section-padding bg-cream-50 dark:bg-earth-900">
-        <div className="vintage-container">
-          <ScrollReveal>
-            <div className="text-center max-w-4xl mx-auto">
-              <p className="text-clay-500 text-sm tracking-[0.2em] uppercase mb-4 font-sans">SEO Keywords</p>
-              <h2 className="section-title mb-8">Discover Vedara</h2>
-              <div className="flex flex-wrap justify-center gap-3">
-                {[
-                  'Boutique Stay in Jibhi', 'Luxury Cottages Jibhi', 'Tirthan Valley Stay',
-                  'Nature Retreat Himachal', 'Boutique Resort in Jibhi', 'Luxury Stay in Tirthan Valley',
-                  'Jacuzzi Cottages in Jibhi', 'Couple Friendly Stay in Jibhi', 'Mountain Retreat Himachal',
-                  'Boutique Café Stay in Himachal', 'Himalayan Boutique Retreat', 'Vedara Jibhi'
-                ].map((kw) => (
-                  <span key={kw} className="px-4 py-2 rounded-full bg-forest-100 dark:bg-forest-900/30 text-forest-700 dark:text-forest-300 text-sm font-medium border border-forest-200 dark:border-forest-700">
-                    {kw}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </ScrollReveal>
-        </div>
-      </section>
     </>
   );
 }
