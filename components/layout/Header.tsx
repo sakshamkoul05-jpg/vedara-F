@@ -61,7 +61,7 @@ export function Header() {
                 height={36}
                 className={cn(
                   'h-8 md:h-9 w-auto transition-all',
-                  isTransparent ? 'brightness-0 invert' : ''
+                  ''
                 )}
                 priority
               />

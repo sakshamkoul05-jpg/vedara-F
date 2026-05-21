@@ -72,7 +72,7 @@ export default function HomePage() {
             className="text-5xl md:text-7xl lg:text-8xl font-serif text-cream-50 leading-tight mb-6"
             delay={0.5}
           >
-            Where Mountains Tell Stories
+            Vedara Retreat
           </TextReveal>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
