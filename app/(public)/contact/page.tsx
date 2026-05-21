@@ -98,7 +98,7 @@ export default function ContactPage() {
                     <Mail className="w-5 h-5 text-clay-500 mt-0.5" />
                     <div>
                       <h3 className="font-medium text-foreground">Email</h3>
-                      <a href="mailto:hello@vedara.com" className="text-muted-foreground text-sm hover:text-forest-600">hello@vedara.com</a>
+                      <a href="mailto:vedararetreat@gmail.com" className="text-muted-foreground text-sm hover:text-forest-600">vedararetreat@gmail.com</a>
                     </div>
                   </div>
                 </div>
@@ -107,7 +107,7 @@ export default function ContactPage() {
                     <Phone className="w-5 h-5 text-clay-500 mt-0.5" />
                     <div>
                       <h3 className="font-medium text-foreground">Phone</h3>
-                      <a href="tel:+919999999999" className="text-muted-foreground text-sm hover:text-forest-600">+91-99999-99999</a>
+                      <a href="tel:+919118882242" className="text-muted-foreground text-sm hover:text-forest-600">+91-91188-82242</a>
                     </div>
                   </div>
                 </div>
@@ -116,7 +116,7 @@ export default function ContactPage() {
                     <MapPin className="w-5 h-5 text-clay-500 mt-0.5" />
                     <div>
                       <h3 className="font-medium text-foreground">Address</h3>
-                      <p className="text-muted-foreground text-sm">Mountain Valley Road, Near Pine Forest, Himachal Pradesh, India</p>
+                      <p className="text-muted-foreground text-sm">Ghiyagi, Jibhi, Manali, Himachal Pradesh, India</p>
                     </div>
                   </div>
                 </div>

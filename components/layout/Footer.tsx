@@ -37,14 +37,14 @@ export function Footer() {
               offering six unique cottages and a cozy mountain cafe.
             </p>
             <div className="space-y-3 text-sm">
-              <a href="mailto:hello@vedara.com" className="flex items-center gap-2 text-cream-300 hover:text-cream-50 transition-colors">
-                <Mail className="w-4 h-4" /> hello@vedara.com
+              <a href="mailto:vedararetreat@gmail.com" className="flex items-center gap-2 text-cream-300 hover:text-cream-50 transition-colors">
+                <Mail className="w-4 h-4" /> vedararetreat@gmail.com
               </a>
-              <a href="tel:+919999999999" className="flex items-center gap-2 text-cream-300 hover:text-cream-50 transition-colors">
-                <Phone className="w-4 h-4" /> +91-99999-99999
+              <a href="tel:+919118882242" className="flex items-center gap-2 text-cream-300 hover:text-cream-50 transition-colors">
+                <Phone className="w-4 h-4" /> +91-91188-82242
               </a>
               <span className="flex items-center gap-2 text-cream-300">
-                <MapPin className="w-4 h-4" /> Mountain Valley, Himachal Pradesh
+                <MapPin className="w-4 h-4" /> Ghiyagi, Jibhi, Manali
               </span>
             </div>
           </div>

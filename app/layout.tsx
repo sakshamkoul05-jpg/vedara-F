@@ -72,12 +72,14 @@ const jsonLd = {
   name: 'Vedara — Himalayan Boutique Retreat',
   description: 'Boutique stay in Jibhi offering luxury cottages, couple-friendly mountain retreat, and café experience in Himachal Pradesh. Top hotel in Jibhi for Tirthan Valley stays.',
   url: siteUrl,
-  telephone: '+91-99999-99999',
-  email: 'hello@vedara.com',
+  telephone: '+91-9118882242',
+  email: 'vedararetreat@gmail.com',
   address: {
     '@type': 'PostalAddress',
+    streetAddress: 'Ghiyagi',
     addressLocality: 'Jibhi',
     addressRegion: 'Himachal Pradesh',
+    postalCode: '175123',
     addressCountry: 'IN',
   },
   geo: {
