@@ -7,7 +7,7 @@ import { api } from '@/lib/api';
 import { ScrollReveal } from '@/components/animations/ScrollReveal';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Coffee, Plus, X, Check, Search } from 'lucide-react';
+import { Coffee, Plus, X, Check, Search, TrendingUp, ToggleLeft, ToggleRight, Save, Edit3, Loader2 } from 'lucide-react';
 import { formatPrice } from '@/lib/utils';
 
 export default function EmployeeCafePage() {
@@ -17,7 +17,17 @@ export default function EmployeeCafePage() {
   const [orders, setOrders] = useState<any[]>([]);
   const [tab, setTab] = useState('orders');
   const [search, setSearch] = useState('');
+  const [editingPrice, setEditingPrice] = useState<string | null>(null);
+  const [priceInput, setPriceInput] = useState('');
+  const [togglingId, setTogglingId] = useState<string | null>(null);
   const [newItem, setNewItem] = useState({ name: '', description: '', price: '', categoryId: '', isVegetarian: true });
+
+  // Analytics state
+  const [dailySales, setDailySales] = useState<any>(null);
+  const [monthlySales, setMonthlySales] = useState<any>(null);
+  const [topItems, setTopItems] = useState<any[]>([]);
+  const [salesChart, setSalesChart] = useState<any[]>([]);
+  const [analyticsLoading, setAnalyticsLoading] = useState(false);
 
   useEffect(() => { hydrate(); }, [hydrate]);
 
@@ -32,9 +42,22 @@ export default function EmployeeCafePage() {
       if (tab === 'orders') {
         const res = await api.get('/cafe/kitchen', token);
         setOrders(res.data || []);
-      } else {
-        const res = await api.get('/cafe/menu');
+      } else if (tab === 'menu') {
+        const res = await api.get('/cafe/menu?staff=true');
         setMenu(res.data || []);
+      } else if (tab === 'analytics') {
+        setAnalyticsLoading(true);
+        const [dailyRes, monthlyRes, topRes, chartRes] = await Promise.all([
+          api.get('/cafe/analytics/daily', token),
+          api.get('/cafe/analytics/monthly', token),
+          api.get('/cafe/analytics/top-items?limit=10', token),
+          api.get('/cafe/analytics/sales-chart?days=7', token),
+        ]);
+        setDailySales(dailyRes.data);
+        setMonthlySales(monthlyRes.data);
+        setTopItems(topRes.data || []);
+        setSalesChart(chartRes.data || []);
+        setAnalyticsLoading(false);
       }
     } catch {}
   };
@@ -44,6 +67,31 @@ export default function EmployeeCafePage() {
       await api.put(`/cafe/orders/${orderId}/status`, { status }, token);
       loadData();
     } catch {}
+  };
+
+  const handleToggleAvailability = async (itemId: string, current: boolean) => {
+    setTogglingId(itemId);
+    try {
+      await api.put(`/cafe/items/${itemId}`, { isAvailable: !current }, token);
+      setMenu(prev => prev.map(cat => ({
+        ...cat,
+        items: cat.items.map((i: any) => i.id === itemId ? { ...i, isAvailable: !current } : i),
+      })));
+    } catch {}
+    setTogglingId(null);
+  };
+
+  const handleSavePrice = async (itemId: string) => {
+    const price = parseFloat(priceInput);
+    if (isNaN(price) || price <= 0) return;
+    try {
+      await api.put(`/cafe/items/${itemId}`, { price }, token);
+      setMenu(prev => prev.map(cat => ({
+        ...cat,
+        items: cat.items.map((i: any) => i.id === itemId ? { ...i, price } : i),
+      })));
+    } catch {}
+    setEditingPrice(null);
   };
 
   const handleAddItem = async () => {
@@ -76,15 +124,19 @@ export default function EmployeeCafePage() {
         </div>
 
         <div className="flex gap-3 mb-6">
-          {['orders', 'menu'].map((t) => (
+          {[
+            { id: 'orders', label: 'Live Orders', icon: Coffee },
+            { id: 'menu', label: 'Menu Editor', icon: Edit3 },
+            { id: 'analytics', label: 'Analytics', icon: TrendingUp },
+          ].map(t => (
             <button
-              key={t}
-              onClick={() => setTab(t)}
-              className={`px-5 py-2.5 rounded-full text-sm font-medium capitalize transition-all ${
-                tab === t ? 'bg-forest-600 text-cream-50' : 'bg-earth-100 dark:bg-earth-800 text-earth-600'
+              key={t.id}
+              onClick={() => setTab(t.id)}
+              className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all ${
+                tab === t.id ? 'bg-forest-600 text-cream-50' : 'bg-earth-100 dark:bg-earth-800 text-earth-600'
               }`}
             >
-              <Coffee className="w-4 h-4 inline mr-1.5" /> {t === 'orders' ? 'Live Orders' : 'Menu Editor'}
+              <t.icon className="w-4 h-4 inline mr-1.5" /> {t.label}
             </button>
           ))}
         </div>
@@ -160,21 +212,64 @@ export default function EmployeeCafePage() {
 
             <div className="grid md:grid-cols-2 gap-8">
               <div>
-                <h3 className="font-serif text-lg text-foreground mb-4">Current Menu</h3>
+                <h3 className="font-serif text-lg text-foreground mb-4">Menu Inventory</h3>
                 {menu.map((cat: any) => (
                   <div key={cat.id} className="mb-6">
                     <h4 className="font-medium text-forest-600 dark:text-forest-400 text-sm uppercase tracking-wide mb-2">{cat.name}</h4>
                     {cat.items
                       .filter((i: any) => !search || i.name.toLowerCase().includes(search.toLowerCase()))
                       .map((item: any) => (
-                        <div key={item.id} className="flex justify-between items-center py-2 border-b border-border/50">
-                          <div>
-                            <p className="text-sm text-foreground">{item.name}</p>
-                            <p className="text-xs text-muted-foreground">{formatPrice(item.price)}</p>
+                        <div key={item.id} className="flex items-center gap-2 py-2 border-b border-border/50">
+                          <button
+                            onClick={() => handleToggleAvailability(item.id, item.isAvailable)}
+                            disabled={togglingId === item.id}
+                            className={`flex-shrink-0 p-1 rounded transition-colors ${
+                              item.isAvailable ? 'text-forest-600 hover:text-forest-500' : 'text-red-400 hover:text-red-500'
+                            }`}
+                            title={item.isAvailable ? 'Mark out of stock' : 'Mark in stock'}
+                          >
+                            {togglingId === item.id ? (
+                              <Loader2 className="w-4 h-4 animate-spin" />
+                            ) : item.isAvailable ? (
+                              <ToggleRight className="w-5 h-5" />
+                            ) : (
+                              <ToggleLeft className="w-5 h-5" />
+                            )}
+                          </button>
+                          <div className="flex-1 min-w-0">
+                            <p className={`text-sm ${item.isAvailable ? 'text-foreground' : 'text-muted-foreground line-through'}`}>
+                              {item.name}
+                            </p>
                           </div>
-                          <span className={`px-2 py-0.5 rounded text-xs ${item.isAvailable ? 'bg-forest-100 text-forest-700' : 'bg-red-100 text-red-600'}`}>
-                            {item.isAvailable ? 'Available' : 'Unavailable'}
-                          </span>
+                          <div className="flex items-center gap-1 flex-shrink-0">
+                            {editingPrice === item.id ? (
+                              <div className="flex items-center gap-1">
+                                <input
+                                  type="number"
+                                  value={priceInput}
+                                  onChange={(e) => setPriceInput(e.target.value)}
+                                  className="w-20 px-2 py-1 text-xs rounded border border-border bg-background"
+                                  autoFocus
+                                  onKeyDown={(e) => { if (e.key === 'Enter') handleSavePrice(item.id); if (e.key === 'Escape') setEditingPrice(null); }}
+                                />
+                                <button onClick={() => handleSavePrice(item.id)} className="p-1 text-forest-600 hover:text-forest-500">
+                                  <Check className="w-3.5 h-3.5" />
+                                </button>
+                                <button onClick={() => setEditingPrice(null)} className="p-1 text-muted-foreground hover:text-foreground">
+                                  <X className="w-3.5 h-3.5" />
+                                </button>
+                              </div>
+                            ) : (
+                              <>
+                                <span className={`text-xs font-medium ${item.isAvailable ? 'text-foreground' : 'text-muted-foreground'}`}>
+                                  {formatPrice(item.price)}
+                                </span>
+                                <button onClick={() => { setEditingPrice(item.id); setPriceInput(String(item.price)); }} className="p-1 text-muted-foreground hover:text-forest-600">
+                                  <Edit3 className="w-3 h-3" />
+                                </button>
+                              </>
+                            )}
+                          </div>
                         </div>
                       ))}
                   </div>
@@ -221,6 +316,84 @@ export default function EmployeeCafePage() {
                 </div>
               </div>
             </div>
+          </div>
+        )}
+
+        {tab === 'analytics' && (
+          <div>
+            {analyticsLoading ? (
+              <div className="flex justify-center py-20">
+                <Loader2 className="w-8 h-8 text-forest-600 animate-spin" />
+              </div>
+            ) : (
+              <div className="space-y-8">
+                {/* Summary Cards */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="vintage-card p-6">
+                    <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Today's Sales</p>
+                    <p className="text-3xl font-bold text-foreground">
+                      {dailySales ? formatPrice(dailySales.total) : '₹0'}
+                    </p>
+                    <p className="text-xs text-muted-foreground mt-1">{dailySales?.count || 0} orders completed</p>
+                  </div>
+                  <div className="vintage-card p-6">
+                    <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">This Month</p>
+                    <p className="text-3xl font-bold text-foreground">
+                      {monthlySales ? formatPrice(monthlySales.total) : '₹0'}
+                    </p>
+                    <p className="text-xs text-muted-foreground mt-1">{monthlySales?.count || 0} orders</p>
+                  </div>
+                </div>
+
+                {/* Sales Chart */}
+                {salesChart.length > 0 && (
+                  <div className="vintage-card p-6">
+                    <h3 className="font-serif text-lg text-foreground mb-4">Last 7 Days</h3>
+                    <div className="flex items-end gap-2 h-32">
+                      {salesChart.map((day: any) => {
+                        const max = Math.max(...salesChart.map(d => d.total), 1);
+                        const height = (day.total / max) * 100;
+                        return (
+                          <div key={day.date} className="flex-1 flex flex-col items-center gap-1">
+                            <span className="text-[10px] text-muted-foreground">{formatPrice(day.total)}</span>
+                            <div
+                              className="w-full rounded-t bg-forest-500/70 hover:bg-forest-500 transition-all"
+                              style={{ height: `${Math.max(height, 4)}%` }}
+                            />
+                            <span className="text-[10px] text-muted-foreground">
+                              {new Date(day.date).toLocaleDateString('en-IN', { weekday: 'short' })}
+                            </span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+
+                {/* Top Selling Items */}
+                <div className="vintage-card p-6">
+                  <h3 className="font-serif text-lg text-foreground mb-4">Top 10 Selling Items</h3>
+                  {topItems.length === 0 ? (
+                    <p className="text-muted-foreground text-sm">No sales data yet</p>
+                  ) : (
+                    <div className="space-y-3">
+                      {topItems.map((item: any, i: number) => (
+                        <div key={item.itemId} className="flex items-center gap-4">
+                          <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
+                            i < 3 ? 'bg-amber-100 text-amber-700' : 'bg-earth-100 text-earth-600'
+                          }`}>{i + 1}</span>
+                          <div className="flex-1">
+                            <p className="text-sm text-foreground">{item.name}</p>
+                            <p className="text-xs text-muted-foreground">{formatPrice(item.price)} each</p>
+                          </div>
+                          <span className="text-sm font-semibold text-forest-600">{item.totalSold} sold</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
         )}
       </div>

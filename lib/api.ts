@@ -66,8 +66,16 @@ export const endpoints = {
       api.get(`/bookings/my-bookings?${phone ? `phone=${phone}` : ''}${email ? `email=${email}` : ''}`),
   },
   cafe: {
-    menu: () => api.get('/cafe/menu'),
+    menu: (staff = false) => api.get(`/cafe/menu${staff ? '?staff=true' : ''}`),
+    staffMenu: () => api.get('/cafe/menu?staff=true'),
     createOrder: (data: any) => api.post('/cafe/orders', data),
+    updateItem: (id: string, data: any, token: string | null) => api.put(`/cafe/items/${id}`, data, token),
+    analytics: {
+      daily: (token: string | null) => api.get('/cafe/analytics/daily', token),
+      monthly: (token: string | null) => api.get('/cafe/analytics/monthly', token),
+      topItems: (token: string | null, limit = 10) => api.get(`/cafe/analytics/top-items?limit=${limit}`, token),
+      salesChart: (token: string | null, days = 7) => api.get(`/cafe/analytics/sales-chart?days=${days}`, token),
+    },
   },
   contact: {
     submit: (data: any) => api.post('/contact', data),
