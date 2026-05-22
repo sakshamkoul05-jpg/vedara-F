@@ -6,17 +6,21 @@ import { useAuthStore } from '@/store/auth';
 import { AdminSidebar } from './AdminSidebar';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
-  const { token, user } = useAuthStore();
+  const { token, user, hydrated, hydrate } = useAuthStore();
   const router = useRouter();
   const pathname = usePathname();
   const isLoginPage = pathname === '/admin/login';
 
+  useEffect(() => { hydrate(); }, [hydrate]);
+
   useEffect(() => {
+    if (!hydrated) return;
     if (!token && !isLoginPage) {
       router.push('/admin/login');
     }
-  }, [token, isLoginPage, router]);
+  }, [token, isLoginPage, router, hydrated]);
 
+  if (!hydrated) return null;
   if (isLoginPage) return <>{children}</>;
   if (!token) return null;
 

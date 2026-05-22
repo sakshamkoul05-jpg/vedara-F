@@ -31,7 +31,7 @@ const orderStatusActions: Record<string, { label: string; nextStatus: string }> 
 };
 
 export default function EmployeeDashboardPage() {
-  const { user, token, logout } = useAuthStore();
+  const { user, token, logout, hydrated, hydrate } = useAuthStore();
   const router = useRouter();
   const [bookings, setBookings] = useState<any[]>([]);
   const [orders, setOrders] = useState<any[]>([]);
@@ -39,13 +39,16 @@ export default function EmployeeDashboardPage() {
   const [loading, setLoading] = useState(true);
   const [updatingId, setUpdatingId] = useState<string | null>(null);
 
+  useEffect(() => { hydrate(); }, [hydrate]);
+
   useEffect(() => {
+    if (!hydrated) return;
     if (!token) { router.push('/admin/login'); return; }
     if (user?.role === 'SUPER_ADMIN' || user?.role === 'MANAGER') {
       router.push('/admin/dashboard');
       return;
     }
-  }, [token, user, router]);
+  }, [token, user, router, hydrated]);
 
   useEffect(() => {
     if (!token) return;

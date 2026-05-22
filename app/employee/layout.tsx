@@ -13,18 +13,21 @@ const employeeNav = [
 ];
 
 export default function EmployeeLayout({ children }: { children: React.ReactNode }) {
-  const { token, user, logout } = useAuthStore();
+  const { token, user, logout, hydrated, hydrate } = useAuthStore();
   const router = useRouter();
   const pathname = usePathname();
 
+  useEffect(() => { hydrate(); }, [hydrate]);
+
   useEffect(() => {
+    if (!hydrated) return;
     if (!token) { router.push('/admin/login'); return; }
     if (user?.role === 'SUPER_ADMIN' || user?.role === 'MANAGER') {
       router.push('/admin/dashboard');
     }
-  }, [token, user, router]);
+  }, [token, user, router, hydrated]);
 
-  if (!token) return null;
+  if (!hydrated || !token) return null;
 
   return (
     <div className="min-h-screen bg-cream-50 dark:bg-earth-900">

@@ -11,7 +11,7 @@ import { Coffee, Plus, X, Check, Search } from 'lucide-react';
 import { formatPrice } from '@/lib/utils';
 
 export default function EmployeeCafePage() {
-  const { user, token, logout } = useAuthStore();
+  const { user, token, logout, hydrated, hydrate } = useAuthStore();
   const router = useRouter();
   const [menu, setMenu] = useState<any[]>([]);
   const [orders, setOrders] = useState<any[]>([]);
@@ -19,10 +19,13 @@ export default function EmployeeCafePage() {
   const [search, setSearch] = useState('');
   const [newItem, setNewItem] = useState({ name: '', description: '', price: '', categoryId: '', isVegetarian: true });
 
+  useEffect(() => { hydrate(); }, [hydrate]);
+
   useEffect(() => {
+    if (!hydrated) return;
     if (!token) { router.push('/admin/login'); return; }
     loadData();
-  }, [token, tab]);
+  }, [token, tab, hydrated]);
 
   const loadData = async () => {
     try {
