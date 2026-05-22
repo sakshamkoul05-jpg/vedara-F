@@ -32,9 +32,10 @@ export default function AdminLoginPage() {
     try {
       const res = await endpoints.auth.login(email, password);
       setAuth(res.data.user, res.data.accessToken);
-      const role = res.data.user.role;
-      if (role === 'SUPER_ADMIN' || role === 'MANAGER') {
-        router.push('/admin/dashboard');
+      if (portal === 'admin') {
+        router.push(role === 'SUPER_ADMIN' || role === 'MANAGER' ? '/admin/dashboard' : '/admin/dashboard');
+      } else if (portal === 'cafe') {
+        router.push('/employee/cafe');
       } else {
         router.push('/employee/dashboard');
       }
