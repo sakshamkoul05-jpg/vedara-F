@@ -32,6 +32,7 @@ export default function AdminLoginPage() {
     try {
       const res = await endpoints.auth.login(email, password);
       setAuth(res.data.user, res.data.accessToken);
+      document.cookie = `vd_token=${res.data.accessToken}; path=/; max-age=604800; SameSite=Lax`;
       const role = res.data.user.role;
       if (portal === 'admin') {
         router.push('/admin/dashboard');
