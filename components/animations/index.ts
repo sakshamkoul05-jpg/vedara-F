@@ -5,5 +5,4 @@ export { ParallaxSection } from './ParallaxSection';
 export { FogParticles } from './FogParticles';
 export { MagneticButton } from './MagneticButton';
 export { ParallaxCursor } from './ParallaxCursor';
-export { LanternToggle } from './LanternToggle';
 export { ScrollProgress } from './ScrollProgress';

@@ -5,7 +5,6 @@ import { Footer } from '@/components/layout/Footer';
 import { ChatBot } from '@/components/chatbot/ChatBot';
 import { ThemeInitializer } from '@/components/layout/ThemeInitializer';
 import { SmoothScroll } from '@/components/layout/SmoothScroll';
-import { LanternToggle } from '@/components/animations/LanternToggle';
 import { FogParticles } from '@/components/animations/FogParticles';
 import { ParallaxCursor } from '@/components/animations/ParallaxCursor';
 import { ScrollProgress } from '@/components/animations/ScrollProgress';
@@ -128,7 +127,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ScrollProgress />
         <FogParticles />
         <ParallaxCursor />
-        <LanternToggle />
         <SmoothScroll>
           <Header />
           <main>{children}</main>
