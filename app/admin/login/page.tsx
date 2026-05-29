@@ -6,12 +6,11 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { useAuthStore } from '@/store/auth';
 import { endpoints } from '@/services/api';
-import { FogParticles } from '@/components/animations/FogParticles';
-import { User, KeyRound, ArrowRight, Eye, EyeOff, Shield, Coffee, Users, X } from 'lucide-react';
+import { User, KeyRound, ArrowRight, Eye, EyeOff, Shield, Coffee, Users, X, Mountain } from 'lucide-react';
 
 const portalTabs = [
   { id: 'admin', label: 'Admin', icon: Shield, desc: 'Full CMS & analytics' },
-  { id: 'cafe', label: 'Café Ops', icon: Coffee, desc: 'Kitchen & menu mgmt' },
+  { id: 'cafe', label: 'Cafe Ops', icon: Coffee, desc: 'Kitchen & menu mgmt' },
   { id: 'staff', label: 'Staff', icon: Users, desc: 'Service & tasks' },
 ];
 
@@ -33,7 +32,6 @@ export default function AdminLoginPage() {
       const res = await endpoints.auth.login(email, password);
       setAuth(res.data.user, res.data.accessToken);
       document.cookie = `vd_token=${res.data.accessToken}; path=/; max-age=604800; SameSite=Lax`;
-      const role = res.data.user.role;
       if (portal === 'admin') {
         router.push('/admin/dashboard');
       } else if (portal === 'cafe') {
@@ -49,46 +47,45 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="min-h-screen relative flex items-center justify-center overflow-hidden bg-earth-900">
-      <FogParticles opacity={0.12} count={15} color="200,200,200" speed={0.15} />
-      <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{
-          backgroundImage: 'url(https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1920&q=80)',
-          filter: 'brightness(0.3) saturate(0.8)',
-        }}
-      />
-      <div className="absolute inset-0 bg-gradient-to-t from-earth-900/80 via-transparent to-earth-900/60" />
-      <div className="absolute inset-0 bg-gradient-to-r from-forest-900/20 to-transparent" />
+    <div className="min-h-screen flex bg-cream-50 dark:bg-earth-950">
+      <div className="hidden lg:flex lg:w-1/2 bg-forest-700 relative overflow-hidden items-center justify-center">
+        <div className="absolute inset-0 bg-gradient-to-br from-forest-800 to-forest-600" />
+        <div className="absolute inset-0 opacity-5" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=60)', backgroundSize: 'cover' }} />
+        <div className="relative z-10 px-16 text-center">
+          <Mountain className="w-16 h-16 text-cream-200/30 mx-auto mb-8" />
+          <h1 className="font-serif text-4xl text-cream-50 mb-4 leading-tight">The Vedara</h1>
+          <p className="text-cream-200/60 text-lg font-light">Himalayan Boutique Retreat</p>
+          <div className="mt-12 flex items-center justify-center gap-8 text-cream-200/40 text-xs tracking-widest uppercase">
+            <span>Ghiyagi, Jibhi</span>
+            <span className="w-1 h-1 rounded-full bg-cream-200/30" />
+            <span>Himachal Pradesh</span>
+          </div>
+        </div>
+      </div>
 
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
-        className="relative z-10 w-full max-w-md px-4"
-      >
-        <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-8 md:p-10 shadow-2xl">
-          <div className="text-center mb-6 relative">
-            <button
-              onClick={() => router.push('/')}
-              className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white/60 hover:text-white transition-all"
-              title="Close"
-            >
-              <X className="w-4 h-4" />
-            </button>
-            <Image
-              src="/images/vedlogo.jpeg"
-              alt="Vedara"
-              width={120}
-              height={44}
-              className="h-auto w-auto mx-auto mb-4 logo-light"
-              priority
-            />
-            <h1 className="font-serif text-xl text-white/90">Vedara Retreat Ops</h1>
-            <p className="text-white/50 text-xs mt-0.5 tracking-wider">— Vedara Retreat —</p>
+      <div className="flex-1 flex items-center justify-center px-6 py-12">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="w-full max-w-sm"
+        >
+          <div className="lg:hidden flex items-center gap-3 mb-10">
+            <div className="w-10 h-10 rounded-full bg-forest-600 flex items-center justify-center">
+              <Mountain className="w-5 h-5 text-cream-50" />
+            </div>
+            <div>
+              <h1 className="font-serif text-lg font-semibold text-foreground">The Vedara</h1>
+              <p className="text-xs text-muted-foreground">Operations Portal</p>
+            </div>
           </div>
 
-          <div className="flex gap-1.5 mb-6 bg-white/5 rounded-xl p-1">
+          <div className="hidden lg:block mb-8">
+            <h2 className="font-serif text-2xl text-foreground mb-1">Operations Portal</h2>
+            <p className="text-sm text-muted-foreground">Sign in to manage your property</p>
+          </div>
+
+          <div className="flex gap-1.5 mb-8 bg-earth-100 dark:bg-earth-800 rounded-xl p-1">
             {portalTabs.map((t) => {
               const Icon = t.icon;
               return (
@@ -97,12 +94,12 @@ export default function AdminLoginPage() {
                   onClick={() => setPortal(t.id)}
                   className={`flex-1 flex flex-col items-center gap-1 py-2.5 px-2 rounded-lg text-xs transition-all ${
                     portal === t.id
-                      ? 'bg-forest-600/30 text-forest-300 shadow-sm'
-                      : 'text-white/40 hover:text-white/70'
+                      ? 'bg-white dark:bg-earth-700 text-forest-700 dark:text-forest-300 shadow-sm font-medium'
+                      : 'text-muted-foreground hover:text-foreground'
                   }`}
                 >
                   <Icon className="w-4 h-4" />
-                  <span className="font-medium">{t.label}</span>
+                  <span>{t.label}</span>
                 </button>
               );
             })}
@@ -113,48 +110,45 @@ export default function AdminLoginPage() {
               <motion.div
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: 'auto' }}
-                className="bg-red-500/10 border border-red-500/20 text-red-300 text-sm p-3 rounded-xl"
+                className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 text-sm p-3 rounded-lg"
               >
                 {error}
               </motion.div>
             )}
 
             <div>
-              <label className="block text-white/60 text-xs font-medium mb-1.5 tracking-wide">Email / ID</label>
+              <label className="block text-sm font-medium text-foreground mb-1.5">Email</label>
               <div className="relative">
-                <User className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
+                <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
                   placeholder={portal === 'admin' ? 'admin@vedara.com' : portal === 'cafe' ? 'cafe@vedara.com' : 'staff@vedara.com'}
-                  className="w-full pl-10 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/25 text-sm focus:outline-none focus:border-forest-400 focus:ring-1 focus:ring-forest-400/30 transition-all"
+                  className="w-full pl-10 pr-4 py-2.5 bg-white dark:bg-earth-800 border border-border rounded-lg text-foreground placeholder-muted-foreground text-sm focus:outline-none focus:border-forest-500 focus:ring-2 focus:ring-forest-500/20 transition-all"
                 />
               </div>
             </div>
 
             <div>
               <div className="flex items-center justify-between mb-1.5">
-                <label className="block text-white/60 text-xs font-medium tracking-wide">Passkey</label>
-                <button type="button" className="text-forest-400/70 hover:text-forest-300 text-xs transition-colors">
-                  Recover Access
-                </button>
+                <label className="block text-sm font-medium text-foreground">Password</label>
               </div>
               <div className="relative">
-                <KeyRound className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
+                <KeyRound className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                 <input
                   type={showPassword ? 'text' : 'password'}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  placeholder="••••••••"
-                  className="w-full pl-10 pr-10 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/25 text-sm focus:outline-none focus:border-forest-400 focus:ring-1 focus:ring-forest-400/30 transition-all"
+                  placeholder="Enter password"
+                  className="w-full pl-10 pr-10 py-2.5 bg-white dark:bg-earth-800 border border-border rounded-lg text-foreground placeholder-muted-foreground text-sm focus:outline-none focus:border-forest-500 focus:ring-2 focus:ring-forest-500/20 transition-all"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-white/40 hover:text-white/60 transition-colors"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
                 >
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
@@ -164,7 +158,7 @@ export default function AdminLoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3.5 rounded-xl bg-forest-600 hover:bg-forest-500 text-white font-medium text-sm transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 group shadow-lg shadow-forest-900/20"
+              className="w-full py-2.5 rounded-lg bg-forest-600 hover:bg-forest-700 text-white font-medium text-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 mt-6"
             >
               {loading ? (
                 <span className="flex items-center gap-2">
@@ -172,21 +166,24 @@ export default function AdminLoginPage() {
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
                   </svg>
-                  Signing In...
+                  Signing in...
                 </span>
               ) : (
                 <span className="flex items-center gap-2">
-                  Sign In <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+                  Sign In <ArrowRight className="w-4 h-4" />
                 </span>
               )}
             </button>
           </form>
 
-          <p className="text-center text-white/20 text-xs mt-6 leading-relaxed">
-            Pull rope for light &bull; &copy; 2026 Vedara Retreat
-          </p>
-        </div>
-      </motion.div>
+          <button
+            onClick={() => router.push('/')}
+            className="mt-6 w-full text-center text-xs text-muted-foreground hover:text-foreground transition-colors"
+          >
+            Back to website
+          </button>
+        </motion.div>
+      </div>
     </div>
   );
 }

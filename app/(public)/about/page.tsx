@@ -300,9 +300,14 @@ export default function AboutPage() {
                       <span className="text-xs font-medium px-2.5 py-1 rounded-full bg-clay-100 dark:bg-clay-900/30 text-clay-600 dark:text-clay-400 whitespace-nowrap">{place.distance}</span>
                     </div>
                     <p className="text-muted-foreground text-sm">{place.desc}</p>
-                    <div className="flex items-center gap-1 text-xs text-forest-600 dark:text-forest-400 mt-3 font-medium">
+                    <a
+                      href={'https://www.google.com/maps/search/' + place.name.replace(/ /g, '+') + '+Himachal+Pradesh'}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 text-xs text-forest-600 dark:text-forest-400 mt-3 font-medium hover:underline"
+                    >
                       <ExternalLink className="w-3 h-3" /> Explore
-                    </div>
+                    </a>
                   </div>
                 </div>
               </ScrollReveal>

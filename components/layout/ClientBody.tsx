@@ -1,6 +1,7 @@
 'use client';
 
 import dynamic from 'next/dynamic';
+import { usePathname } from 'next/navigation';
 import { SmoothScroll } from '@/components/layout/SmoothScroll';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
@@ -13,6 +14,33 @@ const ParallaxCursor = dynamic(() => import('@/components/animations/ParallaxCur
 const ChatBot = dynamic(() => import('@/components/chatbot/ChatBot').then(m => ({ default: m.ChatBot })), { ssr: false });
 
 export function ClientBody({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+  const isAdmin = pathname.startsWith('/admin') && pathname !== '/admin/login';
+  const isEmployee = pathname.startsWith('/employee');
+
+  if (isAdmin || isEmployee) {
+    return (
+      <>
+        <ThemeInitializer />
+        <Toaster
+          position="top-right"
+          toastOptions={{
+            duration: 4000,
+            style: {
+              background: '#2d5536',
+              color: '#fefcf5',
+              borderRadius: '12px',
+              fontSize: '14px',
+            },
+            success: { iconTheme: { primary: '#fefcf5', secondary: '#2d5536' } },
+            error: { style: { background: '#7f1d1d', color: '#fefcf5' } },
+          }}
+        />
+        {children}
+      </>
+    );
+  }
+
   return (
     <>
       <ThemeInitializer />
@@ -35,12 +63,8 @@ export function ClientBody({ children }: { children: React.ReactNode }) {
             borderRadius: '12px',
             fontSize: '14px',
           },
-          success: {
-            iconTheme: { primary: '#fefcf5', secondary: '#2d5536' },
-          },
-          error: {
-            style: { background: '#7f1d1d', color: '#fefcf5' },
-          },
+          success: { iconTheme: { primary: '#fefcf5', secondary: '#2d5536' } },
+          error: { style: { background: '#7f1d1d', color: '#fefcf5' } },
         }}
       />
     </>

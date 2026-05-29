@@ -4,12 +4,13 @@ import { useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { useAuthStore } from '@/store/auth';
 import Link from 'next/link';
+import Image from 'next/image';
 import { cn } from '@/lib/utils';
-import { LayoutDashboard, Coffee, LogOut, Mountain } from 'lucide-react';
+import { LayoutDashboard, Coffee, LogOut, Mountain, ChevronLeft } from 'lucide-react';
 
 const employeeNav = [
   { href: '/employee/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { href: '/employee/cafe', label: 'Cafe', icon: Coffee },
+  { href: '/employee/cafe', label: 'Cafe Orders', icon: Coffee },
 ];
 
 export default function EmployeeLayout({ children }: { children: React.ReactNode }) {
@@ -30,14 +31,26 @@ export default function EmployeeLayout({ children }: { children: React.ReactNode
   if (!hydrated || !token) return null;
 
   return (
-    <div className="min-h-screen bg-cream-50 dark:bg-earth-900">
-      <header className="fixed top-0 left-0 right-0 z-50 border-b border-border bg-white/90 dark:bg-earth-800/90 backdrop-blur-md">
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-earth-50 dark:bg-earth-950">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-earth-900 border-b border-earth-200 dark:border-earth-800">
+        <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-6">
-            <Link href="/employee/dashboard" className="flex items-center gap-2">
-              <Mountain className="h-6 w-6 text-forest-600" />
-              <span className="font-serif text-lg font-semibold text-foreground">Vedara</span>
+            <Link href="/employee/dashboard" className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
+                <Image
+                  src="/images/vedara-logo.jpeg"
+                  alt="Vedara"
+                  width={32}
+                  height={32}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="hidden sm:block">
+                <span className="font-serif text-sm font-semibold text-foreground leading-tight block">Vedara Retreat</span>
+                <span className="text-[10px] text-muted-foreground uppercase tracking-wider">Staff Portal</span>
+              </div>
             </Link>
+            <div className="h-6 w-px bg-earth-200 dark:bg-earth-700 hidden sm:block" />
             <nav className="flex items-center gap-1">
               {employeeNav.map((item) => {
                 const Icon = item.icon;
@@ -46,39 +59,41 @@ export default function EmployeeLayout({ children }: { children: React.ReactNode
                     key={item.href}
                     href={item.href}
                     className={cn(
-                      'flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors',
+                      'flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-[13px] font-medium transition-colors',
                       pathname === item.href
-                        ? 'bg-forest-100 text-forest-700 dark:bg-forest-900/30 dark:text-forest-300'
-                        : 'text-muted-foreground hover:text-foreground hover:bg-earth-100 dark:hover:bg-earth-700'
+                        ? 'bg-forest-50 dark:bg-forest-900/20 text-forest-700 dark:text-forest-300'
+                        : 'text-earth-500 dark:text-earth-400 hover:text-foreground hover:bg-earth-50 dark:hover:bg-earth-800'
                     )}
                   >
-                    <Icon className="h-4 w-4" />
+                    <Icon className="w-3.5 h-3.5" />
                     {item.label}
                   </Link>
                 );
               })}
             </nav>
           </div>
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2 text-sm">
-              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-forest-600 text-cream-50 text-xs font-bold">
-                {user?.name?.charAt(0) || 'E'}
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2">
+              <div className="w-7 h-7 rounded-full bg-forest-100 dark:bg-forest-900/30 flex items-center justify-center text-forest-700 dark:text-forest-300 text-[10px] font-bold flex-shrink-0">
+                {user?.name?.charAt(0) || 'S'}
               </div>
               <div className="hidden sm:block">
-                <p className="text-sm font-medium text-foreground leading-tight">{user?.name}</p>
-                <p className="text-xs text-muted-foreground">{user?.role?.replace(/_/g, ' ')}</p>
+                <p className="text-xs font-medium text-foreground leading-tight">{user?.name}</p>
+                <p className="text-[10px] text-muted-foreground">{user?.role?.replace(/_/g, ' ')}</p>
               </div>
             </div>
+            <div className="h-6 w-px bg-earth-200 dark:bg-earth-700" />
             <button
               onClick={() => { logout(); router.push('/admin/login'); }}
-              className="rounded-full p-2 text-muted-foreground hover:bg-earth-100 dark:hover:bg-earth-700 transition-colors"
+              className="rounded-lg p-1.5 text-earth-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors"
+              title="Sign out"
             >
-              <LogOut className="h-4 w-4" />
+              <LogOut className="w-4 h-4" />
             </button>
           </div>
         </div>
       </header>
-      <main className="pt-16">
+      <main className="pt-14">
         {children}
       </main>
     </div>
