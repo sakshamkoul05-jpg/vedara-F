@@ -5,6 +5,7 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ScrollReveal } from '@/components/animations/ScrollReveal';
 import { TextReveal } from '@/components/animations/TextReveal';
+import { BackButton } from '@/components/layout/BackButton';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
@@ -14,8 +15,10 @@ import { formatPrice, calculateNights } from '@/lib/utils';
 import { useCouponStore } from '@/store/coupon';
 import {
   Calendar, Home, User, Check, ArrowRight, ArrowLeft,
-  Percent, Tag, Loader2, CreditCard, Sparkles, Gift
+  Percent, Tag, Loader2, CreditCard, Sparkles, Gift, ChevronDown
 } from 'lucide-react';
+
+const idProofTypes = ['Aadhaar Card', 'PAN Card', 'Passport', 'Driving License'];
 
 export default function BookingPage() {
   const searchParams = useSearchParams();
@@ -30,6 +33,12 @@ export default function BookingPage() {
   const [guestName, setGuestName] = useState('');
   const [guestEmail, setGuestEmail] = useState('');
   const [guestPhone, setGuestPhone] = useState('');
+  const [idProofType, setIdProofType] = useState('');
+  const [idProofNumber, setIdProofNumber] = useState('');
+  const [address, setAddress] = useState('');
+  const [city, setCity] = useState('');
+  const [state, setState] = useState('');
+  const [pincode, setPincode] = useState('');
   const [specialRequests, setSpecialRequests] = useState('');
   const [cottages, setCottages] = useState<Cottage[]>([]);
   const [loading, setLoading] = useState(false);
@@ -66,11 +75,20 @@ export default function BookingPage() {
 
   const handleCreateBooking = async () => {
     if (!selectedCottage || !guestName || !guestPhone) {
-      alert('Please fill in all required fields');
+      alert('Please fill in all required fields (Name and Phone)');
+      return;
+    }
+    if (!idProofType || !idProofNumber) {
+      alert('Please provide ID proof details');
+      return;
+    }
+    if (!address || !city || !state || !pincode) {
+      alert('Please provide your complete address');
       return;
     }
     setPaymentLoading(true);
     try {
+      const fullAddress = `${address}, ${city}, ${state} - ${pincode}`;
       const res = await api.post('/bookings', {
         guestName, guestEmail, guestPhone,
         cottageId: selectedCottage,
@@ -78,6 +96,8 @@ export default function BookingPage() {
         adults, children,
         specialRequests,
         couponCode: isValid ? code : null,
+        idProof: `${idProofType}: ${idProofNumber}`,
+        address: fullAddress,
       });
 
       const { booking, razorpayOrder } = res.data;
@@ -100,7 +120,7 @@ export default function BookingPage() {
             setBookingData({ ...booking, confirmed: true });
             setStep(4);
           } catch {
-            alert('Payment verification failed. Please contact support.');
+            alert('Payment verification failed. Please contact support at +91-91188-82242.');
           }
         },
         prefill: { name: guestName, email: guestEmail, contact: guestPhone },
@@ -132,6 +152,7 @@ export default function BookingPage() {
     <>
       <section className="pt-32 pb-12 bg-cream-50 dark:bg-earth-900">
         <div className="vintage-container">
+          <BackButton />
           <ScrollReveal>
             <p className="text-clay-500 text-sm tracking-[0.2em] uppercase mb-4 font-sans">Reservations</p>
             <TextReveal as="h1" className="section-title max-w-3xl">
@@ -189,14 +210,14 @@ export default function BookingPage() {
                         <h2 className="font-serif text-2xl text-foreground mb-6">Choose Your Dates</h2>
                         <div className="space-y-4">
                           <div>
-                            <label className="vintage-label">Check-in Date</label>
+                            <label className="vintage-label">Check-in Date *</label>
                             <div className="relative">
                               <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-earth-400" />
                               <Input type="date" value={checkIn} onChange={(e) => setCheckIn(e.target.value)} min={new Date().toISOString().split('T')[0]} className="pl-10" />
                             </div>
                           </div>
                           <div>
-                            <label className="vintage-label">Check-out Date</label>
+                            <label className="vintage-label">Check-out Date *</label>
                             <div className="relative">
                               <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-earth-400" />
                               <Input type="date" value={checkOut} onChange={(e) => setCheckOut(e.target.value)} min={checkIn || new Date().toISOString().split('T')[0]} className="pl-10" />
@@ -235,7 +256,7 @@ export default function BookingPage() {
                             <h3 className="font-serif text-lg text-foreground mb-1">{cottage.name}</h3>
                             <p className="text-sm text-muted-foreground mb-3 line-clamp-2">{cottage.shortDesc || cottage.description}</p>
                             <span className="text-forest-600 dark:text-forest-400 font-semibold">{formatPrice(cottage.pricePerNight)}<span className="text-earth-400 font-normal text-xs">/night</span></span>
-                            {!isAvailable && <span className="block text-red-500 text-xs mt-2">Not available</span>}
+                            {!isAvailable && <span className="block text-red-500 text-xs mt-2">Not available for selected dates</span>}
                           </motion.button>
                         );
                       })}
@@ -274,7 +295,7 @@ export default function BookingPage() {
                         <div className="space-y-4">
                           <div>
                             <label className="vintage-label">Full Name *</label>
-                            <Input value={guestName} onChange={(e) => setGuestName(e.target.value)} placeholder="Your name" />
+                            <Input value={guestName} onChange={(e) => setGuestName(e.target.value)} placeholder="As on ID proof" />
                           </div>
                           <div className="grid grid-cols-2 gap-4">
                             <div>
@@ -286,6 +307,57 @@ export default function BookingPage() {
                               <Input value={guestPhone} onChange={(e) => setGuestPhone(e.target.value)} placeholder="+91-99999-99999" />
                             </div>
                           </div>
+
+                          <div className="border-t border-border pt-4">
+                            <h3 className="font-medium text-foreground mb-3 text-sm">ID Proof *</h3>
+                            <div className="grid grid-cols-2 gap-4">
+                              <div>
+                                <label className="vintage-label">ID Type</label>
+                                <div className="relative">
+                                  <select
+                                    value={idProofType}
+                                    onChange={(e) => setIdProofType(e.target.value)}
+                                    className="vintage-input appearance-none pr-10"
+                                  >
+                                    <option value="">Select ID type</option>
+                                    {idProofTypes.map((type) => (
+                                      <option key={type} value={type}>{type}</option>
+                                    ))}
+                                  </select>
+                                  <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-earth-400 pointer-events-none" />
+                                </div>
+                              </div>
+                              <div>
+                                <label className="vintage-label">ID Number</label>
+                                <Input value={idProofNumber} onChange={(e) => setIdProofNumber(e.target.value)} placeholder="Enter ID number" />
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="border-t border-border pt-4">
+                            <h3 className="font-medium text-foreground mb-3 text-sm">Address *</h3>
+                            <div className="space-y-3">
+                              <div>
+                                <label className="vintage-label">Street Address</label>
+                                <Input value={address} onChange={(e) => setAddress(e.target.value)} placeholder="House/Flat no, Street, Locality" />
+                              </div>
+                              <div className="grid grid-cols-3 gap-3">
+                                <div>
+                                  <label className="vintage-label">City</label>
+                                  <Input value={city} onChange={(e) => setCity(e.target.value)} placeholder="City" />
+                                </div>
+                                <div>
+                                  <label className="vintage-label">State</label>
+                                  <Input value={state} onChange={(e) => setState(e.target.value)} placeholder="State" />
+                                </div>
+                                <div>
+                                  <label className="vintage-label">Pincode</label>
+                                  <Input value={pincode} onChange={(e) => setPincode(e.target.value)} placeholder="000000" />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
                           <div className="grid grid-cols-2 gap-4">
                             <div>
                               <label className="vintage-label">Adults</label>
@@ -301,7 +373,7 @@ export default function BookingPage() {
                             <textarea
                               value={specialRequests}
                               onChange={(e) => setSpecialRequests(e.target.value)}
-                              placeholder="Any special requests?"
+                              placeholder="Any special requests or preferences?"
                               className="vintage-input min-h-[80px] resize-none"
                             />
                           </div>
@@ -381,7 +453,7 @@ export default function BookingPage() {
                         </motion.div>
                         <h2 className="font-serif text-3xl text-foreground mb-4">Booking Confirmed!</h2>
                         <p className="text-muted-foreground mb-6">
-                          Thank you! Your booking has been confirmed. A confirmation email has been sent.
+                          Thank you! Your booking has been confirmed. A confirmation email has been sent to {guestEmail || 'your email'}.
                         </p>
                         <div className="bg-earth-50 dark:bg-earth-800 rounded-xl p-6 mb-8 text-left">
                           <p className="text-sm text-muted-foreground mb-1">Booking Reference</p>
@@ -397,6 +469,9 @@ export default function BookingPage() {
                             </div>
                           </div>
                         </div>
+                        <p className="text-xs text-muted-foreground mb-6">
+                          WhatsApp confirmation sent to +91-91188-82242 and email to vedararetreat@gmail.com
+                        </p>
                         <Button variant="primary" onClick={() => router.push('/')}>Back to Home</Button>
                       </div>
                     </ScrollReveal>
@@ -450,7 +525,7 @@ export default function BookingPage() {
                               </div>
                             )}
                             <div className="flex justify-between">
-                              <span className="text-muted-foreground">Taxes (12%)</span>
+                              <span className="text-muted-foreground">GST (12%)</span>
                               <span className="text-foreground">{formatPrice(taxes)}</span>
                             </div>
                             <div className="border-t border-border pt-2 flex justify-between">

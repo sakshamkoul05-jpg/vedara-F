@@ -8,6 +8,7 @@ import { ScrollReveal } from '@/components/animations/ScrollReveal';
 import { TextReveal } from '@/components/animations/TextReveal';
 import { ImageReveal } from '@/components/animations/ImageReveal';
 import { MagneticButton } from '@/components/animations/MagneticButton';
+import { HeroCarousel } from '@/components/home/HeroCarousel';
 
 const cottages = [
   { name: 'Monal Haven', price: '₹12,000', desc: 'Premium duplex with jacuzzi, attic yoga balcony, and sweeping mountain views', image: '/images/hero-1.jpg' },
@@ -16,9 +17,9 @@ const cottages = [
 ];
 
 const testimonials = [
-  { name: 'Ananya & Rohit', content: 'The Pine Perch was everything we dreamed of. Waking up to the mist over the mountains, the warm fireplace at night — pure magic.', rating: 5, location: 'Mumbai, India' },
-  { name: 'Daniel Park', content: 'I wrote half my manuscript sitting by the stream at Fern Hollow. The staff was incredibly thoughtful.', rating: 5, location: 'Seoul, South Korea' },
-  { name: 'Emily & James', content: 'The Ridge View infinity tub under the stars — we felt like we were floating above the world.', rating: 5, location: 'Melbourne, Australia' },
+  { name: 'Ananya & Rohit', content: 'Monal Haven was everything we dreamed of. Waking up to the mist over the mountains, the jacuzzi under the stars — pure magic.', rating: 5, location: 'Mumbai, India' },
+  { name: 'Daniel Park', content: 'I wrote half my manuscript sitting on the balcony at Whistling Thrush. The staff was incredibly thoughtful.', rating: 5, location: 'Seoul, South Korea' },
+  { name: 'Emily & James', content: 'Koklass Cove was perfection. The attic yoga balcony, the sweeping views — we felt like we were floating above the world.', rating: 5, location: 'Melbourne, Australia' },
 ];
 
 const experiences = [
@@ -40,18 +41,7 @@ export default function HomePage() {
   return (
     <>
       <section id="hero" className="relative h-screen flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-black/70 z-10" />
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="metadata"
-          poster="/images/hero-bg.webp"
-          className="absolute inset-0 w-full h-full object-cover"
-        >
-          <source src="/videos/hero-drone.mp4" type="video/mp4" />
-        </video>
+        <HeroCarousel />
         <div className="relative z-20 text-center px-4 max-w-4xl">
           <TextReveal
             as="h1"
@@ -68,13 +58,22 @@ export default function HomePage() {
           >
             Seven handcrafted cottages, one cozy café — a slow-living mountain escape crafted for those who seek stillness.
           </motion.p>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.3, duration: 0.8 }}
+          >
+            <Link href="/booking" className="vintage-button bg-cream-50 text-forest-800 hover:bg-cream-100 px-10 py-4 text-base inline-block">
+              Book Your Stay <ArrowRight className="w-4 h-4 ml-2" />
+            </Link>
+          </motion.div>
         </div>
         <motion.button
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 2, duration: 1 }}
           onClick={() => document.getElementById('booking-bar')?.scrollIntoView({ behavior: 'smooth' })}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 cursor-pointer"
+          className="absolute bottom-16 left-1/2 -translate-x-1/2 z-20 cursor-pointer"
           aria-label="Scroll to booking section"
         >
           <motion.div animate={{ y: [0, 8, 0] }} transition={{ duration: 2, repeat: Infinity }} className="text-cream-200/60">
@@ -112,7 +111,7 @@ export default function HomePage() {
       </section>
 
       <section className="relative py-28 md:py-36 overflow-hidden bg-earth-900">
-        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=1920&q=80)', backgroundSize: 'cover' }} />
+        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1585409677983-0f6c41ca9c3b?w=1920&q=80)', backgroundSize: 'cover' }} />
         <div className="relative z-10 vintage-container">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <ScrollReveal direction="left">
@@ -133,8 +132,8 @@ export default function HomePage() {
             <ScrollReveal direction="right" delay={0.2}>
               <div className="aspect-[4/5] rounded-2xl overflow-hidden shadow-2xl">
                 <ImageReveal
-                  src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=600&q=80"
-                  alt="Mountain landscape at Vedara"
+                  src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80"
+                  alt="Himalayan mountain landscape at Vedara"
                 />
               </div>
             </ScrollReveal>
@@ -157,8 +156,8 @@ export default function HomePage() {
             {cottages.map((cottage, i) => (
               <ScrollReveal key={cottage.name} delay={i * 0.15}>
                 <div className="group vintage-card overflow-hidden">
-                  <div className="aspect-[4/3] overflow-hidden">
-                    <div className="w-full h-full bg-earth-200 dark:bg-earth-700 group-hover:scale-105 transition-transform duration-700 flex items-center justify-center text-earth-400">
+                  <div className="aspect-[4/3] overflow-hidden bg-earth-200 dark:bg-earth-700">
+                    <div className="w-full h-full bg-gradient-to-br from-forest-200 to-earth-300 dark:from-forest-900 dark:to-earth-700 group-hover:scale-105 transition-transform duration-700 flex items-center justify-center text-earth-400">
                       <Trees className="w-12 h-12" />
                     </div>
                   </div>
@@ -186,8 +185,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="relative py-28 md:py-36 overflow-hidden bg-forest-800">
-        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1920&q=80)', backgroundSize: 'cover' }} />
+      <section id="experiences" className="relative py-28 md:py-36 overflow-hidden bg-forest-800">
+        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1920&q=80)', backgroundSize: 'cover' }} />
         <div className="relative z-10 vintage-container">
           <ScrollReveal>
             <div className="text-center max-w-3xl mx-auto mb-16">
@@ -321,9 +320,12 @@ export default function HomePage() {
           </div>
           <ScrollReveal delay={0.3}>
             <div className="text-center mt-10">
-              <a href="#how-to-reach" className="vintage-button-outline text-sm" onClick={(e) => { e.preventDefault(); document.getElementById('how-to-reach')?.scrollIntoView({ behavior: 'smooth' }); }}>
+              <button
+                onClick={() => document.getElementById('how-to-reach')?.scrollIntoView({ behavior: 'smooth' })}
+                className="vintage-button-outline text-sm"
+              >
                 Explore Nearby Attractions <ArrowRight className="w-4 h-4 ml-2" />
-              </a>
+              </button>
             </div>
           </ScrollReveal>
         </div>
@@ -371,7 +373,7 @@ export default function HomePage() {
       </section>
 
       <section className="py-20 md:py-28 bg-forest-700 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=1920&q=80)', backgroundSize: 'cover' }} />
+        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1585409677983-0f6c41ca9c3b?w=1920&q=80)', backgroundSize: 'cover' }} />
         <div className="relative z-10 vintage-container text-center">
           <ScrollReveal>
             <h2 className="font-serif text-3xl md:text-5xl text-cream-50 mb-4">Ready to Escape?</h2>

@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { ArrowRight, Users, Bed, Bath, Maximize } from 'lucide-react';
 import { ScrollReveal } from '@/components/animations/ScrollReveal';
 import { TextReveal } from '@/components/animations/TextReveal';
+import { BackButton } from '@/components/layout/BackButton';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { api } from '@/lib/api';
@@ -29,6 +30,7 @@ export default function CottagesPage() {
       <section className="pt-32 pb-20 bg-cream-50 dark:bg-earth-900">
         <div className="vintage-container">
           <ScrollReveal>
+            <BackButton />
             <p className="text-clay-500 text-sm tracking-[0.2em] uppercase mb-4 font-sans">Accommodations</p>
             <TextReveal as="h1" className="section-title max-w-3xl">
               Find Your Mountain Retreat

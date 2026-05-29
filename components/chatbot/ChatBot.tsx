@@ -75,7 +75,7 @@ export function ChatBot() {
         href="https://wa.me/919118882242"
         target="_blank"
         rel="noopener noreferrer"
-        className="fixed bottom-6 left-20 z-40 w-14 h-14 rounded-full bg-emerald-500 text-white shadow-lg hover:bg-emerald-600 transition-all hover:scale-105 flex items-center justify-center"
+        className="fixed bottom-6 left-24 z-40 w-14 h-14 rounded-full bg-emerald-500 text-white shadow-lg hover:bg-emerald-600 transition-all hover:scale-105 flex items-center justify-center"
         title="Chat on WhatsApp"
         aria-label="Chat on WhatsApp"
       >

@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ScrollReveal } from '@/components/animations/ScrollReveal';
 import { TextReveal } from '@/components/animations/TextReveal';
+import { BackButton } from '@/components/layout/BackButton';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { CafeCategory, CafeItem, CafeOrder } from '@/types';
@@ -94,6 +95,7 @@ export default function CafePage() {
         <div className="vintage-container">
           <ScrollReveal>
             <p className="text-clay-500 text-sm tracking-[0.2em] uppercase mb-4 font-sans">Cafe Charade</p>
+            <BackButton />
             <TextReveal as="h1" className="section-title max-w-3xl">
               Cafe Charade
             </TextReveal>

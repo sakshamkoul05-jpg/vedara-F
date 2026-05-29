@@ -113,6 +113,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="geo.placename" content="Jibhi" />
         <meta name="geo.position" content="31.4875;77.5410" />
         <meta name="ICBM" content="31.4875, 77.5410" />
+        <script src="https://checkout.razorpay.com/v1/checkout.js" async></script>
       </head>
       <body className="min-h-screen bg-background text-foreground antialiased">
         <ClientBody>{children}</ClientBody>
