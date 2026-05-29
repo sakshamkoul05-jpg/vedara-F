@@ -7,7 +7,7 @@ import { motion } from 'framer-motion';
 import { useAuthStore } from '@/store/auth';
 import { endpoints } from '@/services/api';
 import { FogParticles } from '@/components/animations/FogParticles';
-import { User, KeyRound, ArrowRight, Eye, EyeOff, Shield, Coffee, Users } from 'lucide-react';
+import { User, KeyRound, ArrowRight, Eye, EyeOff, Shield, Coffee, Users, X } from 'lucide-react';
 
 const portalTabs = [
   { id: 'admin', label: 'Admin', icon: Shield, desc: 'Full CMS & analytics' },
@@ -68,7 +68,14 @@ export default function AdminLoginPage() {
         className="relative z-10 w-full max-w-md px-4"
       >
         <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-8 md:p-10 shadow-2xl">
-          <div className="text-center mb-6">
+          <div className="text-center mb-6 relative">
+            <button
+              onClick={() => router.push('/')}
+              className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white/60 hover:text-white transition-all"
+              title="Close"
+            >
+              <X className="w-4 h-4" />
+            </button>
             <Image
               src="/images/vedlogo.jpeg"
               alt="Vedara"
@@ -77,7 +84,7 @@ export default function AdminLoginPage() {
               className="h-auto w-auto mx-auto mb-4 logo-light"
               priority
             />
-            <h1 className="font-serif text-xl text-white/90">Himalayan Sanctuary Ops</h1>
+            <h1 className="font-serif text-xl text-white/90">Vedara Retreat Ops</h1>
             <p className="text-white/50 text-xs mt-0.5 tracking-wider">— Vedara Retreat —</p>
           </div>
 
@@ -165,11 +172,11 @@ export default function AdminLoginPage() {
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
                   </svg>
-                  Entering the Sanctuary...
+                  Signing In...
                 </span>
               ) : (
                 <span className="flex items-center gap-2">
-                  Enter the Sanctuary <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+                  Sign In <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
                 </span>
               )}
             </button>

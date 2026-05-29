@@ -1,26 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Mountain, Mail, Phone, MapPin, Instagram, Facebook, Twitter, LogIn } from 'lucide-react';
-
-const footerLinks = {
-  explore: [
-    { href: '/cottages', label: 'Cottages' },
-    { href: '/cafe', label: 'Our Cafe' },
-    { href: '/gallery', label: 'Gallery' },
-    { href: '/about', label: 'About Us' },
-  ],
-  support: [
-    { href: '/contact', label: 'Contact' },
-    { href: '/policies', label: 'Policies' },
-    { href: '/policies', label: 'FAQs' },
-    { href: '/policies', label: 'Cancellation' },
-  ],
-  legal: [
-    { href: '/policies', label: 'Terms & Conditions' },
-    { href: '/policies', label: 'Privacy Policy' },
-  ],
-};
+import { Mountain, Mail, Phone, MapPin, Facebook, Instagram } from 'lucide-react';
 
 export function Footer() {
   return (
@@ -30,7 +11,7 @@ export function Footer() {
           <div className="lg:col-span-2">
             <Link href="/" className="flex items-center gap-2 mb-4">
               <Mountain className="w-6 h-6 text-cream-100" />
-              <span className="font-serif text-xl font-bold text-cream-50">Vedara Retreat</span>
+              <span className="font-serif text-xl font-bold text-cream-50">The Vedara — A Himalayan Boutique Retreat</span>
             </Link>
             <p className="text-cream-300 text-sm leading-relaxed max-w-sm mb-6">
               Where mountains tell stories. A handcrafted escape nestled in the heart of nature,
@@ -44,7 +25,7 @@ export function Footer() {
                 <Phone className="w-4 h-4" /> +91-91188-82242
               </a>
               <span className="flex items-center gap-2 text-cream-300">
-                <MapPin className="w-4 h-4" /> Ghiyagi, Jibhi, Manali
+                <MapPin className="w-4 h-4" /> Ghiyagi, Jibhi, Himachal Pradesh — 175123
               </span>
             </div>
           </div>
@@ -52,40 +33,31 @@ export function Footer() {
           <div>
             <h4 className="font-serif text-cream-50 font-semibold mb-4">Explore</h4>
             <ul className="space-y-3">
-              {footerLinks.explore.map((link) => (
-                <li key={link.label}>
-                  <Link href={link.href} className="text-sm text-cream-300 hover:text-cream-50 transition-colors">
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
+              <li><Link href="/about" className="text-sm text-cream-300 hover:text-cream-50 transition-colors">About Us</Link></li>
+              <li><Link href="/cottages" className="text-sm text-cream-300 hover:text-cream-50 transition-colors">Our Stays</Link></li>
+              <li><Link href="/cafe" className="text-sm text-cream-300 hover:text-cream-50 transition-colors">Café Charade</Link></li>
+              <li><Link href="/gallery" className="text-sm text-cream-300 hover:text-cream-50 transition-colors">Gallery</Link></li>
             </ul>
           </div>
 
           <div>
             <h4 className="font-serif text-cream-50 font-semibold mb-4">Support</h4>
             <ul className="space-y-3">
-              {footerLinks.support.map((link) => (
-                <li key={link.label}>
-                  <Link href={link.href} className="text-sm text-cream-300 hover:text-cream-50 transition-colors">
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
+              <li><Link href="/contact" className="text-sm text-cream-300 hover:text-cream-50 transition-colors">Contact Us</Link></li>
+              <li><Link href="/policies" className="text-sm text-cream-300 hover:text-cream-50 transition-colors">Policies</Link></li>
+              <li><Link href="/policies#faqs" className="text-sm text-cream-300 hover:text-cream-50 transition-colors">FAQs</Link></li>
+              <li><Link href="/policies#cancellation" className="text-sm text-cream-300 hover:text-cream-50 transition-colors">Cancellation</Link></li>
             </ul>
           </div>
 
           <div>
             <h4 className="font-serif text-cream-50 font-semibold mb-4">Connect</h4>
             <div className="flex gap-3 mb-6">
-              <a href="#" className="w-9 h-9 rounded-full bg-earth-800 flex items-center justify-center hover:bg-forest-600 transition-colors">
-                <Instagram className="w-4 h-4" />
-              </a>
-              <a href="#" className="w-9 h-9 rounded-full bg-earth-800 flex items-center justify-center hover:bg-forest-600 transition-colors">
+              <a href="https://facebook.com/vedara" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-earth-800 flex items-center justify-center hover:bg-forest-600 transition-colors" title="Facebook">
                 <Facebook className="w-4 h-4" />
               </a>
-              <a href="#" className="w-9 h-9 rounded-full bg-earth-800 flex items-center justify-center hover:bg-forest-600 transition-colors">
-                <Twitter className="w-4 h-4" />
+              <a href="https://instagram.com/vedara" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-earth-800 flex items-center justify-center hover:bg-forest-600 transition-colors" title="Instagram">
+                <Instagram className="w-4 h-4" />
               </a>
             </div>
             <Link href="/booking" className="vintage-button-primary text-xs px-5 py-2.5 w-full text-center block">
@@ -95,8 +67,8 @@ export function Footer() {
         </div>
 
         <div className="mt-12 pt-8 border-t border-earth-800 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-cream-400">
-          <p>&copy; {new Date().getFullYear()} Vedara Retreat Hotels. All rights reserved.</p>
-          <p>Crafted with care in the mountains</p>
+          <p>&copy; {new Date().getFullYear()} The Vedara. All rights reserved.</p>
+          <p className="text-cream-500">Crafted with care in the Himalayas</p>
         </div>
       </div>
     </footer>

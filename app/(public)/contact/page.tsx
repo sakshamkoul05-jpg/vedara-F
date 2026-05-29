@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { BackButton } from '@/components/layout/BackButton';
 import { ScrollReveal } from '@/components/animations/ScrollReveal';
 import { TextReveal } from '@/components/animations/TextReveal';
 import { Button } from '@/components/ui/button';
@@ -31,6 +32,7 @@ export default function ContactPage() {
     <>
       <section className="pt-32 pb-20 bg-cream-50 dark:bg-earth-900">
         <div className="vintage-container">
+          <BackButton />
           <ScrollReveal>
             <p className="text-clay-500 text-sm tracking-[0.2em] uppercase mb-4 font-sans">Get in Touch</p>
             <TextReveal as="h1" className="section-title max-w-3xl">
@@ -116,7 +118,7 @@ export default function ContactPage() {
                     <MapPin className="w-5 h-5 text-clay-500 mt-0.5" />
                     <div>
                       <h3 className="font-medium text-foreground">Address</h3>
-                      <p className="text-muted-foreground text-sm">Ghiyagi, Jibhi, Manali, Himachal Pradesh, India</p>
+                      <p className="text-muted-foreground text-sm">Ghiyagi, Jibhi, Himachal Pradesh — 175123</p>
                     </div>
                   </div>
                 </div>
@@ -125,8 +127,8 @@ export default function ContactPage() {
                     <Clock className="w-5 h-5 text-clay-500 mt-0.5" />
                     <div>
                       <h3 className="font-medium text-foreground">Reception Hours</h3>
-                      <p className="text-muted-foreground text-sm">Daily: 6:00 AM – 10:00 PM</p>
-                      <p className="text-muted-foreground text-sm">Cafe: 7:00 AM – 9:00 PM</p>
+                      <p className="text-muted-foreground text-sm">Daily: 8:00 AM – 10:30 PM</p>
+                      <p className="text-muted-foreground text-sm">Cafe: 8:00 AM – 10:30 PM</p>
                     </div>
                   </div>
                 </div>

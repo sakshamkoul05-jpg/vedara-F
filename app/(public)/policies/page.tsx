@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import * as Accordion from '@radix-ui/react-accordion';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown, HelpCircle } from 'lucide-react';
+import { BackButton } from '@/components/layout/BackButton';
 import { ScrollReveal } from '@/components/animations/ScrollReveal';
 import { TextReveal } from '@/components/animations/TextReveal';
 import { api } from '@/lib/api';
@@ -150,9 +151,20 @@ const policySections = [
 
 export default function PoliciesPage() {
   const [faqs, setFaqs] = useState<FAQ[]>([]);
+  const [policyValue, setPolicyValue] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     api.get('/cms/faqs').then((res: any) => setFaqs(res.data)).catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    const hash = window.location.hash.replace('#', '');
+    if (hash && policySections.some(s => s.value === hash)) {
+      setPolicyValue(hash);
+      setTimeout(() => {
+        document.getElementById(hash)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 300);
+    }
   }, []);
 
   const displayFaqs = faqs.length > 0 ? faqs : [
@@ -161,13 +173,14 @@ export default function PoliciesPage() {
     { id: '3', question: 'Is there WiFi available?', answer: 'Yes, all cottages and common areas have complimentary high-speed WiFi.', category: null, sortOrder: 3 },
     { id: '4', question: 'What payment methods do you accept?', answer: 'We accept all major credit/debit cards, UPI, and net banking via Razorpay.', category: null, sortOrder: 4 },
     { id: '5', question: 'Is the cafe open to outside visitors?', answer: 'Absolutely! Our cafe is open to all from 7:00 AM to 9:00 PM. Non-guests are welcome.', category: null, sortOrder: 5 },
-    { id: '6', question: 'Can I modify or cancel my booking?', answer: 'Yes, subject to our cancellation policy. Please refer to the Cancellation Policy section for detailed terms.', category: null, sortOrder: 6 },
+    { id: '6', question: 'Can I modify or cancel my booking?', answer: 'Yes, subject to our cancellation policy. Please refer to the <a href="/policies#cancellation" class="text-forest-600 dark:text-forest-400 underline hover:no-underline">Cancellation Policy section</a> for detailed terms.', category: null, sortOrder: 6 },
   ];
 
   return (
     <>
       <section className="pt-32 pb-20 bg-cream-50 dark:bg-earth-900">
         <div className="vintage-container">
+          <BackButton />
           <ScrollReveal>
             <p className="text-clay-500 text-sm tracking-[0.2em] uppercase mb-4 font-sans">Information</p>
             <TextReveal as="h1" className="section-title max-w-3xl">
@@ -184,11 +197,11 @@ export default function PoliciesPage() {
         <div className="vintage-container">
           <div className="grid lg:grid-cols-2 gap-12">
             <div>
-              <h2 className="font-serif text-2xl text-foreground mb-8">Hotel Policies</h2>
-              <Accordion.Root type="single" collapsible className="space-y-3">
+              <h2 id="policies" className="font-serif text-2xl text-foreground mb-8">Hotel Policies</h2>
+              <Accordion.Root type="single" collapsible value={policyValue} onValueChange={setPolicyValue} className="space-y-3">
                 {policySections.map((section, i) => (
                   <ScrollReveal key={section.value} delay={i * 0.05}>
-                    <Accordion.Item value={section.value} className="vintage-card overflow-hidden">
+                    <Accordion.Item value={section.value} className="vintage-card overflow-hidden" id={section.value}>
                       <Accordion.Header className="flex">
                         <Accordion.Trigger className="w-full p-5 flex items-center justify-between text-left group">
                           <span className="font-medium text-foreground text-sm pr-4">{section.title}</span>
@@ -206,7 +219,7 @@ export default function PoliciesPage() {
               </Accordion.Root>
             </div>
 
-            <div>
+            <div id="faqs">
               <h2 className="font-serif text-2xl text-foreground mb-8">Frequently Asked Questions</h2>
               <Accordion.Root type="single" collapsible className="space-y-3">
                 {displayFaqs.map((faq, i) => (
@@ -223,7 +236,7 @@ export default function PoliciesPage() {
                       </Accordion.Header>
                       <Accordion.Content className="overflow-hidden data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up">
                         <div className="px-5 pb-5">
-                          <p className="text-muted-foreground text-sm leading-relaxed">{faq.answer}</p>
+                          <p className="text-muted-foreground text-sm leading-relaxed" dangerouslySetInnerHTML={{ __html: faq.answer }} />
                         </div>
                       </Accordion.Content>
                     </Accordion.Item>

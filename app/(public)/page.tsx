@@ -44,10 +44,20 @@ export default function HomePage() {
       <ScrollProgress />
       <FogParticles opacity={0.15} count={20} color="255,255,255" speed={0.2} />
 
-      <section className="relative h-screen flex items-center justify-center overflow-hidden">
+      <section id="hero" className="relative h-screen flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-black/70 z-10" />
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          poster="/images/hero-bg.webp"
+          className="absolute inset-0 w-full h-full object-cover"
+        >
+          <source src="/videos/hero-drone.mp4" type="video/mp4" />
+        </video>
         <motion.div
-          className="absolute inset-0 bg-cover bg-center"
+          className="absolute inset-0 bg-cover bg-center hidden"
           style={{
             backgroundImage: 'url(/images/hero-bg.webp)',
             filter: 'saturate(0.85) brightness(0.75) contrast(1.15) sepia(0.15)',
@@ -62,7 +72,7 @@ export default function HomePage() {
             className="text-5xl md:text-7xl lg:text-8xl font-serif text-cream-50 leading-tight mb-6"
             delay={0.5}
           >
-            Vedara Retreat
+            The Vedara — A Himalayan Boutique Retreat
           </TextReveal>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -72,34 +82,46 @@ export default function HomePage() {
           >
             Six handcrafted cottages, one cozy cafe — a slow-living mountain escape crafted for those who seek stillness.
           </motion.p>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.3, duration: 0.8 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center"
-          >
-            <MagneticButton>
-              <Link href="/booking" className="vintage-button-primary text-base px-8 py-4 inline-block">
-                Reserve Your Cottage
-              </Link>
-            </MagneticButton>
-            <MagneticButton>
-              <Link href="/cottages" className="vintage-button bg-white/10 text-cream-50 border border-cream-200/30 hover:bg-white/20 backdrop-blur-sm px-8 py-4 inline-block">
-                Explore Cottages
-              </Link>
-            </MagneticButton>
-          </motion.div>
         </div>
-        <motion.div
+        <motion.button
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 2, duration: 1 }}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20"
+          onClick={() => document.getElementById('booking-bar')?.scrollIntoView({ behavior: 'smooth' })}
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 cursor-pointer"
         >
           <motion.div animate={{ y: [0, 8, 0] }} transition={{ duration: 2, repeat: Infinity }} className="text-cream-200/60">
             <ArrowRight className="w-5 h-5 rotate-90" />
           </motion.div>
-        </motion.div>
+        </motion.button>
+      </section>
+
+      <section id="booking-bar" className="relative z-30 -mt-12 mb-12 px-4">
+        <div className="vintage-container max-w-4xl">
+          <div className="bg-cream-50 dark:bg-earth-800 rounded-2xl shadow-xl border border-earth-200 dark:border-earth-700 p-4 md:p-6">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-3 items-end">
+              <div>
+                <label className="block text-xs font-medium text-earth-600 dark:text-cream-300 mb-1">Property</label>
+                <select className="w-full rounded-xl border border-earth-200 dark:border-earth-600 bg-white dark:bg-earth-700 px-3 py-2.5 text-sm text-earth-900 dark:text-cream-100 focus:outline-none focus:border-forest-500">
+                  <option>The Vedara — Himalayan Boutique Retreat</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-earth-600 dark:text-cream-300 mb-1">Check In</label>
+                <input type="date" className="w-full rounded-xl border border-earth-200 dark:border-earth-600 bg-white dark:bg-earth-700 px-3 py-2.5 text-sm text-earth-900 dark:text-cream-100 focus:outline-none focus:border-forest-500" />
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-earth-600 dark:text-cream-300 mb-1">Check Out</label>
+                <input type="date" className="w-full rounded-xl border border-earth-200 dark:border-earth-600 bg-white dark:bg-earth-700 px-3 py-2.5 text-sm text-earth-900 dark:text-cream-100 focus:outline-none focus:border-forest-500" />
+              </div>
+              <div>
+                <Link href="/booking" className="vintage-button-primary text-sm px-6 py-2.5 w-full text-center block">
+                  BOOK NOW
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
 
       <section className="relative py-28 md:py-36 overflow-hidden bg-earth-900">
@@ -109,7 +131,7 @@ export default function HomePage() {
             <ScrollReveal direction="left">
               <div>
                 <p className="text-clay-400 text-sm tracking-[0.2em] uppercase mb-4 font-sans">Welcome to Vedara</p>
-                <h2 className="font-serif text-4xl md:text-5xl text-cream-50 mb-6">A Story Rooted in the Mountains</h2>
+                <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-cream-50 mb-6">A Story Rooted in the Mountains</h2>
                 <p className="text-cream-200/80 text-lg leading-relaxed mb-6">
                   Nestled in the serene village of Ghiyagi, within the untouched landscapes of Jibhi, Vedara was born from a simple belief — that the most profound luxury is found in stillness, connection, and the raw beauty of the Himalayas.
                 </p>
@@ -138,7 +160,7 @@ export default function HomePage() {
           <ScrollReveal>
             <div className="text-center max-w-3xl mx-auto mb-16">
               <p className="text-clay-500 text-sm tracking-[0.2em] uppercase mb-4 font-sans">Our Cottages</p>
-              <h2 className="section-title mb-6">Six Stories, Six Sanctuaries</h2>
+              <h2 className="section-title mb-6">Six Stories, Six Retreats</h2>
               <p className="section-subtitle">
                 Each cottage is a world unto itself, crafted with local materials, vintage furnishings, and unobstructed views of the mountain wilderness.
               </p>
@@ -209,7 +231,7 @@ export default function HomePage() {
             <ScrollReveal direction="left">
               <div>
                 <p className="text-clay-400 text-sm tracking-[0.2em] uppercase mb-4 font-sans">Our Cafe</p>
-                <h2 className="font-serif text-4xl md:text-5xl text-cream-50 mb-6">The Forest Pantry</h2>
+                <h2 className="font-serif text-4xl md:text-5xl text-cream-50 mb-6">Café Charade</h2>
                 <p className="text-cream-200/80 text-lg leading-relaxed mb-8">
                   Nestled beside a whispering stream, our cafe serves handcrafted coffee, wood-fired meals,
                   and mountain-fresh bakes. Open from sunrise to starlight — for guests and wanderers alike.
@@ -233,7 +255,7 @@ export default function HomePage() {
               <div className="aspect-[4/5] rounded-2xl overflow-hidden shadow-2xl">
                 <ImageReveal
                   src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=600&q=80"
-                  alt="The Forest Pantry Cafe"
+                  alt="Café Charade at The Vedara"
                 />
               </div>
             </ScrollReveal>
@@ -309,7 +331,7 @@ export default function HomePage() {
           <ScrollReveal delay={0.3}>
             <div className="text-center mt-10">
               <Link href="/about" className="vintage-button-outline text-sm">
-                View All Attractions <ArrowRight className="w-4 h-4 ml-2" />
+                Explore Nearby Attractions <ArrowRight className="w-4 h-4 ml-2" />
               </Link>
             </div>
           </ScrollReveal>

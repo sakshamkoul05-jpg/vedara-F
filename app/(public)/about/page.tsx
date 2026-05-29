@@ -1,5 +1,6 @@
 'use client';
 
+import { BackButton } from '@/components/layout/BackButton';
 import { ScrollReveal } from '@/components/animations/ScrollReveal';
 import { TextReveal } from '@/components/animations/TextReveal';
 import { ImageReveal } from '@/components/animations/ImageReveal';
@@ -15,8 +16,8 @@ const values = [
 const highlights = [
   { icon: Home, label: '6 Cottages', desc: '18–22 guests, intimate and exclusive' },
   { icon: MapPin, label: 'Ghiyagi, Jibhi', desc: 'Untouched Himalayan beauty, away from crowds' },
-  { icon: Leaf, label: 'Launch 2026', desc: 'A sanctuary of wisdom, wilderness, and quiet luxury' },
-  { icon: Users, label: 'Target Guests', desc: 'Couples, families, solo travellers, remote workers — a couple friendly stay in Jibhi' },
+  { icon: Leaf, label: 'Launch 2026', desc: 'A haven of wisdom, wilderness, and quiet luxury' },
+  { icon: Users, label: 'Target Guests', desc: 'Families, solo travellers, remote workers, and groups seeking stillness' },
   { icon: Wifi, label: 'High-Speed WiFi', desc: 'Available throughout the property' },
   { icon: Mountain, label: 'What Makes Us Unique', desc: 'Boutique by Design • Café + Stay Experience • Untouched Location' },
 ];
@@ -44,10 +45,11 @@ export default function AboutPage() {
     <>
       <section className="pt-32 pb-20 bg-cream-50 dark:bg-earth-900">
         <div className="vintage-container">
+          <BackButton />
           <ScrollReveal>
             <p className="text-clay-500 text-sm tracking-[0.2em] uppercase mb-4 font-sans">Our Story</p>
             <TextReveal as="h1" className="section-title max-w-4xl">
-              Vedara — a sanctuary of wisdom, wilderness, and quiet luxury.
+              Vedara — a haven of wisdom, wilderness, and quiet luxury.
             </TextReveal>
           </ScrollReveal>
         </div>
@@ -76,7 +78,7 @@ export default function AboutPage() {
                   Mornings begin with golden light through the pines, bird song echoing through the mountains, and the aroma of freshly brewed coffee rising through the valley. Afternoons unfold slowly beside flowing rivers and quiet conversations, while evenings are filled with starlit skies, the gentle sound of the flowing river, and a rare sense of calm.
                 </p>
                 <p className="text-earth-600 dark:text-cream-300 leading-relaxed mb-6">
-                  Intentionally intimate and away from the rush of crowded resorts, Vedara adapts effortlessly to every guest — whether you are a traveller seeking stillness, a couple seeking intimacy, or a family longing to reconnect.
+                  Intentionally intimate and away from the rush of crowded resorts, Vedara adapts effortlessly to every guest — whether you are a traveller seeking stillness or a family longing to reconnect.
                 </p>
               <p className="text-forest-600 dark:text-forest-400 font-medium italic">
                 A <strong>luxury stay in Tirthan Valley</strong> where true luxury is not excess. It is stillness, connection, warmth, and unforgettable moments.
@@ -208,6 +210,65 @@ export default function AboutPage() {
             <div className="mt-8 vintage-card p-5 inline-flex items-center gap-3 mx-auto">
               <Wifi className="w-5 h-5 text-forest-500" />
               <span className="text-sm text-foreground"><strong>High-speed WiFi</strong> available throughout the property</span>
+            </div>
+          </ScrollReveal>
+        </div>
+      </section>
+
+      <section className="section-padding bg-earth-900">
+        <div className="vintage-container">
+          <ScrollReveal>
+            <div className="text-center max-w-3xl mx-auto mb-16">
+              <p className="text-clay-400 text-sm tracking-[0.2em] uppercase mb-4 font-sans">Getting Here</p>
+              <h2 className="font-serif text-4xl md:text-5xl text-cream-50 mb-6">How to Reach Vedara</h2>
+              <p className="text-cream-200/70 text-lg">Your journey to the mountains, simplified.</p>
+            </div>
+          </ScrollReveal>
+          <div className="grid md:grid-cols-3 gap-8">
+            <ScrollReveal delay={0.1}>
+              <div className="vintage-card bg-white/10 backdrop-blur-sm border-cream-200/10 p-6 text-center">
+                <div className="w-14 h-14 rounded-full bg-clay-500/20 flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-7 h-7 text-clay-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 21a9 9 0 100-18 9 9 0 000 18z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 7v4l2 2" /></svg>
+                </div>
+                <h3 className="font-serif text-lg text-cream-50 mb-2">By Air</h3>
+                <p className="text-cream-200/60 text-sm leading-relaxed">
+                  Nearest airport: <strong className="text-cream-200">Kullu-Bhuntar Airport</strong> (70 km, ~2.5 hr drive). Taxis and private cabs available from the airport. Delhi to Kullu flights operate daily.
+                </p>
+              </div>
+            </ScrollReveal>
+            <ScrollReveal delay={0.2}>
+              <div className="vintage-card bg-white/10 backdrop-blur-sm border-cream-200/10 p-6 text-center">
+                <div className="w-14 h-14 rounded-full bg-clay-500/20 flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-7 h-7 text-clay-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                </div>
+                <h3 className="font-serif text-lg text-cream-50 mb-2">By Train</h3>
+                <p className="text-cream-200/60 text-sm leading-relaxed">
+                  Nearest railway station: <strong className="text-cream-200">Joginder Nagar Railway Station</strong> (80 km). For broader connectivity, <strong className="text-cream-200">Chandigarh</strong> (280 km) and <strong className="text-cream-200">Pathankot</strong> (200 km) are major railheads with taxi services to Jibhi.
+                </p>
+              </div>
+            </ScrollReveal>
+            <ScrollReveal delay={0.3}>
+              <div className="vintage-card bg-white/10 backdrop-blur-sm border-cream-200/10 p-6 text-center">
+                <div className="w-14 h-14 rounded-full bg-clay-500/20 flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-7 h-7 text-clay-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                </div>
+                <h3 className="font-serif text-lg text-cream-50 mb-2">By Road</h3>
+                <p className="text-cream-200/60 text-sm leading-relaxed">
+                  Vedara is located in Ghiyagi, Jibhi — a 5–6 hr scenic drive from Chandigarh via NH-5. Regular HRTC buses run from Delhi and Chandigarh to Aut (30 km from Jibhi). We can arrange pickup upon request.
+                </p>
+              </div>
+            </ScrollReveal>
+          </div>
+          <ScrollReveal delay={0.2}>
+            <div className="mt-8 text-center">
+              <a
+                href="https://maps.google.com/maps?q=Ghiyagi+Jibhi+Himachal+Pradesh"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="vintage-button bg-clay-500 hover:bg-clay-600 text-cream-50 px-8 py-3.5 inline-flex items-center gap-2"
+              >
+                <MapPin className="w-4 h-4" /> Open in Google Maps
+              </a>
             </div>
           </ScrollReveal>
         </div>

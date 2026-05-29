@@ -4,6 +4,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ScrollReveal } from '@/components/animations/ScrollReveal';
 import { TextReveal } from '@/components/animations/TextReveal';
+import { BackButton } from '@/components/layout/BackButton';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { CafeCategory, CafeItem, CafeOrder } from '@/types';
@@ -118,8 +119,9 @@ export default function CafePage() {
     <>
       <section className="pt-32 pb-16 bg-cream-50 dark:bg-earth-900 transition-colors">
         <div className="vintage-container">
+          <BackButton />
           <ScrollReveal>
-            <p className="text-clay-500 dark:text-cream-400 text-sm tracking-[0.2em] uppercase mb-4 font-sans font-semibold">The Forest Pantry</p>
+            <p className="text-clay-500 dark:text-cream-400 text-sm tracking-[0.2em] uppercase mb-4 font-sans font-semibold">Café Charade</p>
             <TextReveal as="h1" className="section-title max-w-3xl font-serif">
               Good Food, Mountain Mood
             </TextReveal>
@@ -138,12 +140,15 @@ export default function CafePage() {
                 <p className="text-cream-200/80 leading-relaxed mb-6">
                   Nestled beside a whispering stream, our cafe is more than a place to eat — it is a space where time slows down. The aroma of freshly ground coffee mingles with the scent of pine, and every dish is crafted with ingredients sourced from the surrounding valleys.
                 </p>
-                <div className="flex flex-wrap gap-3">
-                  <div className="flex items-center gap-2 text-cream-200 text-sm bg-white/10 rounded-full px-4 py-2 border border-white/5">
-                    <Clock className="w-3.5 h-3.5 text-clay-300 animate-pulse" /> 7:00 AM – 9:00 PM
+                <div className="flex flex-wrap gap-2">
+                  <div className="flex items-center gap-1.5 text-cream-200 text-xs bg-white/10 rounded-full px-3 py-1.5 border border-white/5">
+                    <UtensilsCrossed className="w-3 h-3 text-clay-300" /> Breakfast: 8:00 – 10:30 AM
                   </div>
-                  <div className="flex items-center gap-2 text-cream-200 text-sm bg-white/10 rounded-full px-4 py-2 border border-white/5">
-                    <UtensilsCrossed className="w-3.5 h-3.5 text-clay-300" /> Multi-cuisine
+                  <div className="flex items-center gap-1.5 text-cream-200 text-xs bg-white/10 rounded-full px-3 py-1.5 border border-white/5">
+                    <UtensilsCrossed className="w-3 h-3 text-clay-300" /> Lunch: 12:00 – 3:00 PM
+                  </div>
+                  <div className="flex items-center gap-1.5 text-cream-200 text-xs bg-white/10 rounded-full px-3 py-1.5 border border-white/5">
+                    <UtensilsCrossed className="w-3 h-3 text-clay-300" /> Dinner: 6:30 – 10:30 PM
                   </div>
                 </div>
               </div>
@@ -418,7 +423,7 @@ export default function CafePage() {
               <Sparkles className="w-8 h-8 mx-auto mb-4 text-clay-300 animate-bounce" />
               <h2 className="font-serif text-2xl md:text-3xl mb-3 font-bold">Reserve a Table</h2>
               <p className="text-cream-200/80 max-w-lg mx-auto mb-6 text-sm">
-                Planning a special evening? Reserve your table at The Forest Pantry and let us curate a memorable dining experience amidst the mountains.
+                Planning a special evening? Reserve your table at Café Charade and let us curate a memorable dining experience amidst the mountains.
               </p>
               <Button variant="secondary" size="lg" onClick={() => document.getElementById('menu-section')?.scrollIntoView({ behavior: 'smooth' })}>
                 Browse Menu <ArrowRight className="w-4 h-4 ml-2" />
