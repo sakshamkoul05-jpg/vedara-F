@@ -5,7 +5,7 @@ import { useAuthStore } from '@/store/auth';
 import { api } from '@/lib/api';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Search, Filter, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Search, Filter, ChevronLeft, ChevronRight, Check, X, Loader2 } from 'lucide-react';
 import { formatDateShort, formatPrice } from '@/lib/utils';
 
 const statusColors: Record<string, string> = {
@@ -24,6 +24,34 @@ export function BookingsPage() {
   const [totalPages, setTotalPages] = useState(1);
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
+  const [actionLoading, setActionLoading] = useState<string | null>(null);
+
+  const handleApprove = async (bookingId: string) => {
+    if (!token) return;
+    setActionLoading(bookingId);
+    try {
+      await api.post(`/bookings/${bookingId}/approve`, {}, token);
+      setBookings((prev) => prev.map((b) => b.id === bookingId ? { ...b, status: 'CONFIRMED' } : b));
+    } catch (err: any) {
+      alert(err.message || 'Failed to approve booking');
+    } finally {
+      setActionLoading(null);
+    }
+  };
+
+  const handleReject = async (bookingId: string) => {
+    if (!token) return;
+    const reason = prompt('Enter reason for rejection (optional):');
+    setActionLoading(bookingId);
+    try {
+      await api.post(`/bookings/${bookingId}/reject`, { reason: reason || undefined }, token);
+      setBookings((prev) => prev.map((b) => b.id === bookingId ? { ...b, status: 'CANCELLED' } : b));
+    } catch (err: any) {
+      alert(err.message || 'Failed to reject booking');
+    } finally {
+      setActionLoading(null);
+    }
+  };
 
   useEffect(() => {
     if (!token) return;
@@ -103,6 +131,26 @@ export function BookingsPage() {
                   )}
                 </div>
               </div>
+              {booking.status === 'PENDING' && (
+                <div className="flex gap-2 mt-3 pt-3 border-t border-border">
+                  <button
+                    onClick={() => handleApprove(booking.id)}
+                    disabled={actionLoading === booking.id}
+                    className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-forest-600 text-white text-xs font-medium hover:bg-forest-700 transition-colors disabled:opacity-50"
+                  >
+                    {actionLoading === booking.id ? <Loader2 className="w-3 h-3 animate-spin" /> : <Check className="w-3 h-3" />}
+                    Approve
+                  </button>
+                  <button
+                    onClick={() => handleReject(booking.id)}
+                    disabled={actionLoading === booking.id}
+                    className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-red-500 text-white text-xs font-medium hover:bg-red-600 transition-colors disabled:opacity-50"
+                  >
+                    {actionLoading === booking.id ? <Loader2 className="w-3 h-3 animate-spin" /> : <X className="w-3 h-3" />}
+                    Reject
+                  </button>
+                </div>
+              )}
               {booking.specialRequests && (
                 <p className="text-xs text-muted-foreground mt-2 italic">"{booking.specialRequests}"</p>
               )}
