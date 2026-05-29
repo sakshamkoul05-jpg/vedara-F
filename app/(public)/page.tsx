@@ -3,24 +3,22 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { ArrowRight, Star, Coffee, Trees, Sparkles, Music, FireExtinguisher, Binoculars, Moon, MapPin, UtensilsCrossed } from 'lucide-react';
+import { ArrowRight, Star, Coffee, Trees, Sparkles, Music, FireExtinguisher, Moon, MapPin } from 'lucide-react';
 import { ScrollReveal } from '@/components/animations/ScrollReveal';
 import { TextReveal } from '@/components/animations/TextReveal';
 import { ImageReveal } from '@/components/animations/ImageReveal';
-import { FogParticles } from '@/components/animations/FogParticles';
-import { ScrollProgress } from '@/components/animations/ScrollProgress';
 import { MagneticButton } from '@/components/animations/MagneticButton';
 
 const cottages = [
-  { name: 'The Pine Perch', price: '₹8,500', desc: 'Secluded pine-wood haven with mountain views', image: '/images/hero-1.jpg' },
-  { name: 'The Cedar Nook', price: '₹7,500', desc: 'Intimate cedar retreat with private garden', image: '/images/hero-2.jpg' },
-  { name: 'The Maple Suite', price: '₹14,000', desc: 'Spacious family cottage with wraparound veranda', image: '/images/hero-3.jpg' },
+  { name: 'Monal Haven', price: '₹12,000', desc: 'Premium duplex with jacuzzi, attic yoga balcony, and sweeping mountain views', image: '/images/hero-1.jpg' },
+  { name: 'Koklass Cove', price: '₹12,500', desc: 'Our largest duplex — two viewing balconies, private jacuzzi, and unmatched privacy', image: '/images/hero-2.jpg' },
+  { name: 'Magpie Retreat', price: '₹11,000', desc: 'Charming duplex with deep-soak bath tub and dual-balcony setup', image: '/images/hero-3.jpg' },
 ];
 
 const testimonials = [
-  { name: 'Ananya & Rohit', content: '"The Pine Perch was everything we dreamed of. Waking up to the mist over the mountains, the warm fireplace at night — pure magic."', rating: 5, location: 'Mumbai, India' },
-  { name: 'Daniel Park', content: '"I wrote half my manuscript sitting by the stream at Fern Hollow. The staff was incredibly thoughtful."', rating: 5, location: 'Seoul, South Korea' },
-  { name: 'Emily & James', content: '"The Ridge View infinity tub under the stars — we felt like we were floating above the world."', rating: 5, location: 'Melbourne, Australia' },
+  { name: 'Ananya & Rohit', content: 'The Pine Perch was everything we dreamed of. Waking up to the mist over the mountains, the warm fireplace at night — pure magic.', rating: 5, location: 'Mumbai, India' },
+  { name: 'Daniel Park', content: 'I wrote half my manuscript sitting by the stream at Fern Hollow. The staff was incredibly thoughtful.', rating: 5, location: 'Seoul, South Korea' },
+  { name: 'Emily & James', content: 'The Ridge View infinity tub under the stars — we felt like we were floating above the world.', rating: 5, location: 'Melbourne, Australia' },
 ];
 
 const experiences = [
@@ -28,7 +26,7 @@ const experiences = [
   { icon: Music, title: 'Music Nights', desc: 'Live acoustic sessions with local artists echoing through the valley.' },
   { icon: Trees, title: 'Nature Walks', desc: 'Guided treks through cedar forests to hidden waterfalls and panoramic viewpoints.' },
   { icon: Moon, title: 'Star Gazing', desc: 'Unpolluted Himalayan skies reveal constellations you have never seen before.' },
-  { icon: Coffee, title: 'Cafe Evenings', desc: 'Handcrafted coffee and wood-fired meals as the sun sets behind the pines.' },
+  { icon: Coffee, title: 'Café Evenings', desc: 'Handcrafted coffee and wood-fired meals as the sun sets behind the pines.' },
 ];
 
 const nearbyAttractions = [
@@ -41,9 +39,6 @@ const nearbyAttractions = [
 export default function HomePage() {
   return (
     <>
-      <ScrollProgress />
-      <FogParticles opacity={0.15} count={20} color="255,255,255" speed={0.2} />
-
       <section id="hero" className="relative h-screen flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-black/70 z-10" />
         <video
@@ -51,21 +46,12 @@ export default function HomePage() {
           muted
           loop
           playsInline
+          preload="metadata"
           poster="/images/hero-bg.webp"
           className="absolute inset-0 w-full h-full object-cover"
         >
           <source src="/videos/hero-drone.mp4" type="video/mp4" />
         </video>
-        <motion.div
-          className="absolute inset-0 bg-cover bg-center hidden"
-          style={{
-            backgroundImage: 'url(/images/hero-bg.webp)',
-            filter: 'saturate(0.85) brightness(0.75) contrast(1.15) sepia(0.15)',
-          }}
-          initial={{ scale: 1.15 }}
-          animate={{ scale: 1 }}
-          transition={{ duration: 3, ease: [0.25, 0.1, 0.25, 1] }}
-        />
         <div className="relative z-20 text-center px-4 max-w-4xl">
           <TextReveal
             as="h1"
@@ -80,7 +66,7 @@ export default function HomePage() {
             transition={{ delay: 1, duration: 0.8 }}
             className="text-cream-200 text-lg md:text-xl max-w-2xl mx-auto mb-10 font-sans leading-relaxed"
           >
-            Six handcrafted cottages, one cozy cafe — a slow-living mountain escape crafted for those who seek stillness.
+            Seven handcrafted cottages, one cozy café — a slow-living mountain escape crafted for those who seek stillness.
           </motion.p>
         </div>
         <motion.button
@@ -89,6 +75,7 @@ export default function HomePage() {
           transition={{ delay: 2, duration: 1 }}
           onClick={() => document.getElementById('booking-bar')?.scrollIntoView({ behavior: 'smooth' })}
           className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 cursor-pointer"
+          aria-label="Scroll to booking section"
         >
           <motion.div animate={{ y: [0, 8, 0] }} transition={{ duration: 2, repeat: Infinity }} className="text-cream-200/60">
             <ArrowRight className="w-5 h-5 rotate-90" />
@@ -98,7 +85,7 @@ export default function HomePage() {
 
       <section id="booking-bar" className="relative z-30 -mt-12 mb-12 px-4">
         <div className="vintage-container max-w-4xl">
-          <div className="bg-cream-50 dark:bg-earth-800 rounded-2xl shadow-xl border border-earth-200 dark:border-earth-700 p-4 md:p-6">
+          <div className="bg-white/80 dark:bg-earth-800/80 backdrop-blur-md rounded-2xl shadow-xl border border-earth-200 dark:border-earth-700 p-4 md:p-6">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-3 items-end">
               <div>
                 <label className="block text-xs font-medium text-earth-600 dark:text-cream-300 mb-1">Property</label>
@@ -116,7 +103,7 @@ export default function HomePage() {
               </div>
               <div>
                 <Link href="/booking" className="vintage-button-primary text-sm px-6 py-2.5 w-full text-center block">
-                  BOOK NOW
+                  Book Your Stay
                 </Link>
               </div>
             </div>
@@ -125,7 +112,7 @@ export default function HomePage() {
       </section>
 
       <section className="relative py-28 md:py-36 overflow-hidden bg-earth-900">
-        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=1920&q=80)', backgroundSize: 'cover', backgroundAttachment: 'fixed' }} />
+        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=1920&q=80)', backgroundSize: 'cover' }} />
         <div className="relative z-10 vintage-container">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <ScrollReveal direction="left">
@@ -136,7 +123,7 @@ export default function HomePage() {
                   Nestled in the serene village of Ghiyagi, within the untouched landscapes of Jibhi, Vedara was born from a simple belief — that the most profound luxury is found in stillness, connection, and the raw beauty of the Himalayas.
                 </p>
                 <p className="text-cream-200/60 leading-relaxed mb-8">
-                  With just six handcrafted cottages and a soulful cafe, we offer more than a stay. We offer a chance to pause, breathe, and remember what truly matters.
+                  With seven handcrafted cottages and a soulful café, we offer more than a stay. We offer a chance to pause, breathe, and remember what truly matters.
                 </p>
                 <Link href="/about" className="vintage-button bg-clay-500 hover:bg-clay-600 text-cream-50 px-8 py-3.5">
                   Read Our Story <ArrowRight className="w-4 h-4 ml-2" />
@@ -160,9 +147,9 @@ export default function HomePage() {
           <ScrollReveal>
             <div className="text-center max-w-3xl mx-auto mb-16">
               <p className="text-clay-500 text-sm tracking-[0.2em] uppercase mb-4 font-sans">Our Cottages</p>
-              <h2 className="section-title mb-6">Six Stories, Six Retreats</h2>
+              <h2 className="section-title mb-6">Seven Stories, Seven Retreats</h2>
               <p className="section-subtitle">
-                Each cottage is a world unto itself, crafted with local materials, vintage furnishings, and unobstructed views of the mountain wilderness.
+                Each cottage is a world unto itself — named after the birds of the valley and crafted with local materials, premium furnishings, and unobstructed mountain views.
               </p>
             </div>
           </ScrollReveal>
@@ -200,7 +187,7 @@ export default function HomePage() {
       </section>
 
       <section className="relative py-28 md:py-36 overflow-hidden bg-forest-800">
-        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1920&q=80)', backgroundSize: 'cover', backgroundAttachment: 'fixed' }} />
+        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1920&q=80)', backgroundSize: 'cover' }} />
         <div className="relative z-10 vintage-container">
           <ScrollReveal>
             <div className="text-center max-w-3xl mx-auto mb-16">
@@ -230,11 +217,15 @@ export default function HomePage() {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <ScrollReveal direction="left">
               <div>
-                <p className="text-clay-400 text-sm tracking-[0.2em] uppercase mb-4 font-sans">Our Cafe</p>
+                <p className="text-clay-400 text-sm tracking-[0.2em] uppercase mb-4 font-sans">Our Café</p>
                 <h2 className="font-serif text-4xl md:text-5xl text-cream-50 mb-6">Café Charade</h2>
-                <p className="text-cream-200/80 text-lg leading-relaxed mb-8">
-                  Nestled beside a whispering stream, our cafe serves handcrafted coffee, wood-fired meals,
-                  and mountain-fresh bakes. Open from sunrise to starlight — for guests and wanderers alike.
+                <p className="text-cream-200/80 text-lg leading-relaxed mb-4">
+                  Nestled beside a whispering stream, Café Charade serves handcrafted coffee, wood-fired meals, and mountain-fresh bakes.
+                </p>
+                <p className="text-cream-200/60 text-sm mb-8 space-y-1">
+                  <span className="block">Breakfast 7:30 AM – 10:00 AM</span>
+                  <span className="block">Lunch 12:00 PM – 3:30 PM</span>
+                  <span className="block">Dinner 7:00 PM – 10:00 PM</span>
                 </p>
                 <div className="grid grid-cols-2 gap-4 mb-8">
                   {['Artisan Coffee', 'Wood-Fired', 'Fresh Bakes', 'Evening Sips'].map((item) => (
@@ -292,7 +283,7 @@ export default function HomePage() {
                       </motion.div>
                     ))}
                   </div>
-                  <p className="text-earth-700 dark:text-cream-300 text-sm leading-relaxed mb-6 italic">&ldquo;{t.content.replace(/"/g, '')}&rdquo;</p>
+                  <p className="text-earth-700 dark:text-cream-300 text-sm leading-relaxed mb-6 italic">&ldquo;{t.content}&rdquo;</p>
                   <div className="border-t border-border/50 pt-4">
                     <p className="font-serif text-foreground font-medium">{t.name}</p>
                     <p className="text-xs text-muted-foreground">{t.location}</p>
@@ -330,11 +321,52 @@ export default function HomePage() {
           </div>
           <ScrollReveal delay={0.3}>
             <div className="text-center mt-10">
-              <Link href="/about" className="vintage-button-outline text-sm">
+              <a href="#how-to-reach" className="vintage-button-outline text-sm" onClick={(e) => { e.preventDefault(); document.getElementById('how-to-reach')?.scrollIntoView({ behavior: 'smooth' }); }}>
                 Explore Nearby Attractions <ArrowRight className="w-4 h-4 ml-2" />
-              </Link>
+              </a>
             </div>
           </ScrollReveal>
+        </div>
+      </section>
+
+      <section id="how-to-reach" className="section-padding bg-cream-50 dark:bg-earth-900">
+        <div className="vintage-container">
+          <ScrollReveal>
+            <div className="text-center max-w-3xl mx-auto mb-16">
+              <p className="text-clay-500 text-sm tracking-[0.2em] uppercase mb-4 font-sans">Getting Here</p>
+              <h2 className="section-title mb-6">How to Reach The Vedara</h2>
+              <p className="section-subtitle">Your journey to Ghiyagi, Jibhi begins here</p>
+            </div>
+          </ScrollReveal>
+          <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+            <ScrollReveal delay={0.1}>
+              <div className="vintage-card p-8 text-center">
+                <div className="w-14 h-14 rounded-full bg-forest-100 dark:bg-forest-900/30 flex items-center justify-center mx-auto mb-4">
+                  <MapPin className="w-7 h-7 text-forest-600 dark:text-forest-400" />
+                </div>
+                <h3 className="font-serif text-lg mb-3">By Road</h3>
+                <p className="text-muted-foreground text-sm leading-relaxed">Delhi to Jibhi via Mandi-Aut-Larji. ~480 km, approximately 10–11 hours. Buses available from Delhi ISBT to Aut, then taxi to Jibhi.</p>
+              </div>
+            </ScrollReveal>
+            <ScrollReveal delay={0.2}>
+              <div className="vintage-card p-8 text-center">
+                <div className="w-14 h-14 rounded-full bg-clay-100 dark:bg-clay-900/30 flex items-center justify-center mx-auto mb-4">
+                  <MapPin className="w-7 h-7 text-clay-500" />
+                </div>
+                <h3 className="font-serif text-lg mb-3">By Rail</h3>
+                <p className="text-muted-foreground text-sm leading-relaxed">Nearest broad-gauge station: Amb Andaura (~120 km). Nearest narrow-gauge: Shimla or Joginder Nagar. Taxis available from all stations.</p>
+              </div>
+            </ScrollReveal>
+            <ScrollReveal delay={0.3}>
+              <div className="vintage-card p-8 text-center">
+                <div className="w-14 h-14 rounded-full bg-cream-200 dark:bg-cream-800/30 flex items-center justify-center mx-auto mb-4">
+                  <MapPin className="w-7 h-7 text-clay-600 dark:text-clay-400" />
+                </div>
+                <h3 className="font-serif text-lg mb-3">By Air</h3>
+                <p className="text-muted-foreground text-sm leading-relaxed">Bhuntar Airport (Kullu) is the nearest, ~50 km from Jibhi. Flights from Delhi and Chandigarh. Taxi from Bhuntar to Ghiyagi takes ~1.5 hours.</p>
+              </div>
+            </ScrollReveal>
+          </div>
         </div>
       </section>
 

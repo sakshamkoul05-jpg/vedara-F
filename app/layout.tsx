@@ -1,14 +1,6 @@
 import type { Metadata } from 'next';
 import { Inter, Libre_Caslon_Text } from 'next/font/google';
-import { Header } from '@/components/layout/Header';
-import { Footer } from '@/components/layout/Footer';
-import { ChatBot } from '@/components/chatbot/ChatBot';
-import { ThemeInitializer } from '@/components/layout/ThemeInitializer';
-import { SmoothScroll } from '@/components/layout/SmoothScroll';
-import { FogParticles } from '@/components/animations/FogParticles';
-import { ParallaxCursor } from '@/components/animations/ParallaxCursor';
-import { ScrollProgress } from '@/components/animations/ScrollProgress';
-import { Toaster } from 'react-hot-toast';
+import { ClientBody } from '@/components/layout/ClientBody';
 import '@/styles/globals.css';
 
 const inter = Inter({
@@ -68,7 +60,7 @@ export const metadata: Metadata = {
 
 const jsonLd = {
   '@context': 'https://schema.org',
-  '@type': ' lodgingBusiness',
+  '@type': 'LodgingBusiness',
   name: 'The Vedara — A Himalayan Boutique Retreat',
   description: 'Himalayan luxury retreat in Jibhi offering handcrafted cottages, Café Charade, and serene nature experiences in Himachal Pradesh.',
   url: siteUrl,
@@ -123,34 +115,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="ICBM" content="31.4875, 77.5410" />
       </head>
       <body className="min-h-screen bg-background text-foreground antialiased">
-        <ThemeInitializer />
-        <ScrollProgress />
-        <FogParticles />
-        <ParallaxCursor />
-        <SmoothScroll>
-          <Header />
-          <main>{children}</main>
-          <Footer />
-          <ChatBot />
-        </SmoothScroll>
-        <Toaster
-          position="top-right"
-          toastOptions={{
-            duration: 4000,
-            style: {
-              background: '#2d5536',
-              color: '#fefcf5',
-              borderRadius: '12px',
-              fontSize: '14px',
-            },
-            success: {
-              iconTheme: { primary: '#fefcf5', secondary: '#2d5536' },
-            },
-            error: {
-              style: { background: '#7f1d1d', color: '#fefcf5' },
-            },
-          }}
-        />
+        <ClientBody>{children}</ClientBody>
       </body>
     </html>
   );

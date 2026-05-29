@@ -30,7 +30,7 @@ export function FogParticles({ opacity = 0.3, count = 30, color = '255,255,255',
       particles.push({
         x: Math.random() * w,
         y: Math.random() * h,
-        size: Math.random() * 120 + 40,
+        size: Math.random() * 250 + 100,
         speedX: (Math.random() - 0.5) * speed * 0.3,
         speedY: (Math.random() - 0.5) * speed * 0.1,
         opacity: Math.random() * 0.4 + 0.1,
@@ -103,3 +103,4 @@ export function FogParticles({ opacity = 0.3, count = 30, color = '255,255,255',
     />
   );
 }
+

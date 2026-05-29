@@ -7,15 +7,15 @@ export function Footer() {
   return (
     <footer className="bg-earth-900 text-cream-200">
       <div className="vintage-container py-16 md:py-20">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 lg:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8">
           <div className="lg:col-span-2">
             <Link href="/" className="flex items-center gap-2 mb-4">
               <Mountain className="w-6 h-6 text-cream-100" />
-              <span className="font-serif text-xl font-bold text-cream-50">The Vedara — A Himalayan Boutique Retreat</span>
+              <span className="font-serif text-xl font-bold text-cream-50">The Vedara — Himalayan Boutique Retreat</span>
             </Link>
             <p className="text-cream-300 text-sm leading-relaxed max-w-sm mb-6">
-              Where mountains tell stories. A handcrafted escape nestled in the heart of nature,
-              offering six unique cottages and a cozy mountain cafe.
+              A handcrafted escape nestled in the heart of the Himalayas,
+              offering seven boutique cottages and a soulful mountain café.
             </p>
             <div className="space-y-3 text-sm">
               <a href="mailto:vedararetreat@gmail.com" className="flex items-center gap-2 text-cream-300 hover:text-cream-50 transition-colors">
@@ -24,8 +24,8 @@ export function Footer() {
               <a href="tel:+919118882242" className="flex items-center gap-2 text-cream-300 hover:text-cream-50 transition-colors">
                 <Phone className="w-4 h-4" /> +91-91188-82242
               </a>
-              <span className="flex items-center gap-2 text-cream-300">
-                <MapPin className="w-4 h-4" /> Ghiyagi, Jibhi, Himachal Pradesh — 175123
+              <span className="flex items-start gap-2 text-cream-300">
+                <MapPin className="w-4 h-4 mt-0.5 flex-shrink-0" /> Ghiyagi, Jibhi, Himachal Pradesh — 175123
               </span>
             </div>
           </div>
@@ -37,6 +37,7 @@ export function Footer() {
               <li><Link href="/cottages" className="text-sm text-cream-300 hover:text-cream-50 transition-colors">Our Stays</Link></li>
               <li><Link href="/cafe" className="text-sm text-cream-300 hover:text-cream-50 transition-colors">Café Charade</Link></li>
               <li><Link href="/gallery" className="text-sm text-cream-300 hover:text-cream-50 transition-colors">Gallery</Link></li>
+              <li><Link href="/#how-to-reach" className="text-sm text-cream-300 hover:text-cream-50 transition-colors">How to Reach</Link></li>
             </ul>
           </div>
 
@@ -48,19 +49,15 @@ export function Footer() {
               <li><Link href="/policies#faqs" className="text-sm text-cream-300 hover:text-cream-50 transition-colors">FAQs</Link></li>
               <li><Link href="/policies#cancellation" className="text-sm text-cream-300 hover:text-cream-50 transition-colors">Cancellation</Link></li>
             </ul>
-          </div>
-
-          <div>
-            <h4 className="font-serif text-cream-50 font-semibold mb-4">Connect</h4>
-            <div className="flex gap-3 mb-6">
-              <a href="https://facebook.com/vedara" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-earth-800 flex items-center justify-center hover:bg-forest-600 transition-colors" title="Facebook">
+            <div className="flex gap-3 mt-6">
+              <a href="https://facebook.com/vedara" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-earth-800 flex items-center justify-center hover:bg-forest-600 transition-colors" aria-label="Facebook">
                 <Facebook className="w-4 h-4" />
               </a>
-              <a href="https://instagram.com/vedara" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-earth-800 flex items-center justify-center hover:bg-forest-600 transition-colors" title="Instagram">
+              <a href="https://instagram.com/vedara" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-earth-800 flex items-center justify-center hover:bg-forest-600 transition-colors" aria-label="Instagram">
                 <Instagram className="w-4 h-4" />
               </a>
             </div>
-            <Link href="/booking" className="vintage-button-primary text-xs px-5 py-2.5 w-full text-center block">
+            <Link href="/booking" className="vintage-button-primary text-xs px-5 py-2.5 w-full text-center block mt-4">
               Book Your Stay
             </Link>
           </div>
@@ -68,7 +65,7 @@ export function Footer() {
 
         <div className="mt-12 pt-8 border-t border-earth-800 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-cream-400">
           <p>&copy; {new Date().getFullYear()} The Vedara. All rights reserved.</p>
-          <p className="text-cream-500">Crafted with care in the Himalayas</p>
+          <p>Ghiyagi, Jibhi, Himachal Pradesh — 175123</p>
         </div>
       </div>
     </footer>

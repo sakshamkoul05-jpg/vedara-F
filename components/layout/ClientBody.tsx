@@ -1,0 +1,48 @@
+'use client';
+
+import dynamic from 'next/dynamic';
+import { SmoothScroll } from '@/components/layout/SmoothScroll';
+import { Header } from '@/components/layout/Header';
+import { Footer } from '@/components/layout/Footer';
+import { ThemeInitializer } from '@/components/layout/ThemeInitializer';
+import { ScrollProgress } from '@/components/animations/ScrollProgress';
+import { Toaster } from 'react-hot-toast';
+
+const FogParticles = dynamic(() => import('@/components/animations/FogParticles').then(m => ({ default: m.FogParticles })), { ssr: false });
+const ParallaxCursor = dynamic(() => import('@/components/animations/ParallaxCursor').then(m => ({ default: m.ParallaxCursor })), { ssr: false });
+const ChatBot = dynamic(() => import('@/components/chatbot/ChatBot').then(m => ({ default: m.ChatBot })), { ssr: false });
+
+export function ClientBody({ children }: { children: React.ReactNode }) {
+  return (
+    <>
+      <ThemeInitializer />
+      <ScrollProgress />
+      <FogParticles />
+      <ParallaxCursor />
+      <SmoothScroll>
+        <Header />
+        <main>{children}</main>
+        <Footer />
+        <ChatBot />
+      </SmoothScroll>
+      <Toaster
+        position="top-right"
+        toastOptions={{
+          duration: 4000,
+          style: {
+            background: '#2d5536',
+            color: '#fefcf5',
+            borderRadius: '12px',
+            fontSize: '14px',
+          },
+          success: {
+            iconTheme: { primary: '#fefcf5', secondary: '#2d5536' },
+          },
+          error: {
+            style: { background: '#7f1d1d', color: '#fefcf5' },
+          },
+        }}
+      />
+    </>
+  );
+}

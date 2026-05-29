@@ -31,7 +31,7 @@ export default function CottagesPage() {
           <ScrollReveal>
             <p className="text-clay-500 text-sm tracking-[0.2em] uppercase mb-4 font-sans">Accommodations</p>
             <TextReveal as="h1" className="section-title max-w-3xl">
-              Find Your Mountain Sanctuary
+              Find Your Mountain Retreat
             </TextReveal>
           </ScrollReveal>
         </div>
