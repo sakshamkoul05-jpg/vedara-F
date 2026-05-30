@@ -135,7 +135,7 @@ export default function CafePage() {
                 {popularItems.map((item, i) => (
                   <motion.div
                     key={item.name}
-                    className="vintage-card bg-white/10 backdrop-blur-sm border-cream-200/10 p-4 text-center"
+                    className="vintage-card bg-white/10 backdrop-blur-sm border-cream-200/10 p-4 text-center font-sans"
                     whileHover={{ y: -2 }}
                     transition={{ delay: i * 0.05 }}
                   >

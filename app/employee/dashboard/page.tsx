@@ -122,22 +122,22 @@ export default function EmployeeDashboardPage() {
         <div className="flex gap-3 mb-6">
           <button
             onClick={() => setTab('bookings')}
-            className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
-              tab === 'bookings'
-                ? 'bg-forest-600 text-cream-50 shadow-md'
-                : 'bg-earth-100 dark:bg-earth-800 text-earth-600 dark:text-earth-300 hover:bg-earth-200'
-            }`}
-          >
-            <Calendar className="w-4 h-4 inline mr-1.5 -mt-0.5" />
-            Bookings
-          </button>
-          <button
-            onClick={() => setTab('orders')}
-            className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
-              tab === 'orders'
-                ? 'bg-forest-600 text-cream-50 shadow-md'
-                : 'bg-earth-100 dark:bg-earth-800 text-earth-600 dark:text-earth-300 hover:bg-earth-200'
-            }`}
+className={`px-5 py-2 rounded-full text-sm font-sans font-medium transition-all duration-300 ${
+               tab === 'bookings'
+                 ? 'bg-forest-600 text-cream-50 shadow-md'
+                 : 'bg-earth-100 dark:bg-earth-800 text-earth-600 dark:text-earth-300 hover:bg-earth-200'
+             }`}
+           >
+             <Calendar className="w-4 h-4 inline mr-1.5 -mt-0.5" />
+             Bookings
+           </button>
+           <button
+             onClick={() => setTab('orders')}
+             className={`px-5 py-2 rounded-full text-sm font-sans font-medium transition-all duration-300 ${
+               tab === 'orders'
+                 ? 'bg-forest-600 text-cream-50 shadow-md'
+                 : 'bg-earth-100 dark:bg-earth-800 text-earth-600 dark:text-earth-300 hover:bg-earth-200'
+             }`}
           >
             <Coffee className="w-4 h-4 inline mr-1.5 -mt-0.5" />
             Kitchen Orders
@@ -164,7 +164,7 @@ export default function EmployeeDashboardPage() {
               <div className="space-y-4">
                 {bookings.map((booking: any, i: number) => (
                   <ScrollReveal key={booking.id} delay={i * 0.05}>
-                    <div className="backdrop-blur bg-white/60 dark:bg-earth-800/60 border border-white/20 dark:border-earth-700/30 rounded-xl p-5 shadow-sm hover:shadow-md transition-all duration-300">
+                    <div className="backdrop-blur bg-white/60 dark:bg-earth-800/60 border border-white/20 dark:border-earth-700/30 rounded-xl p-5 shadow-sm hover:shadow-md transition-all duration-300 font-sans">
                       <div className="flex items-start justify-between">
                         <div className="space-y-1.5 flex-1 min-w-0">
                           <div className="flex items-center gap-2">
@@ -235,7 +235,7 @@ export default function EmployeeDashboardPage() {
               <div className="space-y-4">
                 {orders.map((order: any, i: number) => (
                   <ScrollReveal key={order.id} delay={i * 0.05} direction="left">
-                    <div className="backdrop-blur bg-white/60 dark:bg-earth-800/60 border border-white/20 dark:border-earth-700/30 rounded-xl p-5 shadow-sm hover:shadow-md transition-all duration-300">
+                    <div className="backdrop-blur bg-white/60 dark:bg-earth-800/60 border border-white/20 dark:border-earth-700/30 rounded-xl p-5 shadow-sm hover:shadow-md transition-all duration-300 font-sans">
                       <div className="flex items-start justify-between mb-4">
                         <div>
                           <div className="flex items-center gap-2 mb-1">

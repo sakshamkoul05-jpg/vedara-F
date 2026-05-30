@@ -84,7 +84,7 @@ export default function HomePage() {
 
       <section id="booking-bar" className="relative z-30 -mt-12 mb-12 px-4">
         <div className="vintage-container max-w-4xl">
-          <div className="bg-white/80 dark:bg-earth-800/80 backdrop-blur-md rounded-2xl shadow-xl border border-earth-200 dark:border-earth-700 p-4 md:p-6">
+          <div className="bg-white/80 dark:bg-earth-800/80 backdrop-blur-md rounded-2xl shadow-xl border border-earth-200 dark:border-earth-700 p-4 md:p-6 font-sans">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-3 items-end">
               <div>
                 <label className="block text-xs font-medium text-earth-600 dark:text-cream-300 mb-1">Property</label>
@@ -198,7 +198,7 @@ export default function HomePage() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
             {experiences.map((exp, i) => (
               <ScrollReveal key={exp.title} delay={i * 0.1}>
-                <div className="group vintage-card bg-white/10 backdrop-blur-sm border-cream-200/10 p-6 text-center hover:bg-white/20 transition-all duration-500">
+                <div className="group vintage-card bg-white/10 backdrop-blur-sm border-cream-200/10 p-6 text-center hover:bg-white/20 transition-all duration-500 font-sans">
                   <div className="w-14 h-14 rounded-full bg-clay-500/20 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-500">
                     <exp.icon className="w-7 h-7 text-clay-300" />
                   </div>

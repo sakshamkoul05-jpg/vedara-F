@@ -226,7 +226,7 @@ export default function AboutPage() {
           </ScrollReveal>
           <div className="grid md:grid-cols-3 gap-8">
             <ScrollReveal delay={0.1}>
-              <div className="vintage-card bg-white/10 backdrop-blur-sm border-cream-200/10 p-6 text-center">
+              <div className="vintage-card bg-white/10 backdrop-blur-sm border-cream-200/10 p-6 text-center font-sans">
                 <div className="w-14 h-14 rounded-full bg-clay-500/20 flex items-center justify-center mx-auto mb-4">
                   <svg className="w-7 h-7 text-clay-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 21a9 9 0 100-18 9 9 0 000 18z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 7v4l2 2" /></svg>
                 </div>
@@ -237,7 +237,7 @@ export default function AboutPage() {
               </div>
             </ScrollReveal>
             <ScrollReveal delay={0.2}>
-              <div className="vintage-card bg-white/10 backdrop-blur-sm border-cream-200/10 p-6 text-center">
+              <div className="vintage-card bg-white/10 backdrop-blur-sm border-cream-200/10 p-6 text-center font-sans">
                 <div className="w-14 h-14 rounded-full bg-clay-500/20 flex items-center justify-center mx-auto mb-4">
                   <svg className="w-7 h-7 text-clay-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
                 </div>
@@ -248,7 +248,7 @@ export default function AboutPage() {
               </div>
             </ScrollReveal>
             <ScrollReveal delay={0.3}>
-              <div className="vintage-card bg-white/10 backdrop-blur-sm border-cream-200/10 p-6 text-center">
+              <div className="vintage-card bg-white/10 backdrop-blur-sm border-cream-200/10 p-6 text-center font-sans">
                 <div className="w-14 h-14 rounded-full bg-clay-500/20 flex items-center justify-center mx-auto mb-4">
                   <svg className="w-7 h-7 text-clay-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
                 </div>

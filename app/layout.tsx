@@ -115,7 +115,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="ICBM" content="31.4875, 77.5410" />
         <script src="https://checkout.razorpay.com/v1/checkout.js" async></script>
       </head>
-      <body className="min-h-screen bg-background text-foreground antialiased">
+      <body className="min-h-screen bg-background text-foreground font-sans antialiased">
         <ClientBody>{children}</ClientBody>
       </body>
     </html>
