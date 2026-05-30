@@ -13,7 +13,8 @@ import { api, endpoints } from '@/services/api';
 import { formatDateShort, formatPrice } from '@/lib/utils';
 import {
   Save, Plus, Trash2, Edit, X, Check, Image as ImageIcon, Star, Tag,
-  HelpCircle, MessageSquare, Home, Settings, ChevronUp, ChevronDown, Link as LinkIcon
+  HelpCircle, MessageSquare, Home, Settings, ChevronUp, ChevronDown, Link as LinkIcon,
+  ToggleLeft, ToggleRight
 } from 'lucide-react';
 
 type ToastState = { message: string; type: 'success' | 'error' } | null;
@@ -232,7 +233,7 @@ function CottagesTab({ token, showToast }: { token: string | null; showToast: (m
 
   const loadCottages = async () => {
     try {
-      const res = await api.get('/cottages', token);
+      const res = await api.get('/cms/cottages', token);
       setCottages(Array.isArray(res) ? res : (res.data || []));
     } catch {} finally {
       setLoading(false);
@@ -244,11 +245,21 @@ function CottagesTab({ token, showToast }: { token: string | null; showToast: (m
     setDialogOpen(true);
   };
 
+  const handleToggleActive = async (cottage: any) => {
+    if (!token) return;
+    try {
+      await api.put(`/cms/cottages/${cottage.id}`, { isActive: !cottage.isActive }, token);
+      setCottages(cottages.map(c => c.id === cottage.id ? { ...c, isActive: !c.isActive } : c));
+    } catch {
+      showToast('Failed to toggle availability', 'error');
+    }
+  };
+
   const handleSave = async () => {
     if (!token || !editingCottage) return;
     setSaving(true);
     try {
-      await api.put(`/cottages/${editingCottage.id}`, editingCottage, token);
+      await api.put(`/cms/cottages/${editingCottage.id}`, editingCottage, token);
       showToast('Cottage updated');
       setDialogOpen(false);
       setEditingCottage(null);
@@ -279,14 +290,18 @@ function CottagesTab({ token, showToast }: { token: string | null; showToast: (m
         {cottages.map((cottage, idx) => (
           <ScrollReveal key={cottage.id} delay={idx * 0.05}>
             <div className="vintage-card p-5">
-              <div className="flex justify-between items-start mb-3">
+                <div className="flex justify-between items-start mb-3">
                 <div className="flex-1 min-w-0">
                   <h3 className="font-serif text-lg text-foreground truncate">{cottage.name}</h3>
                   <p className="text-xs text-muted-foreground truncate">{cottage.shortDesc || cottage.description?.slice(0, 60)}</p>
                 </div>
-                <Badge variant={cottage.isActive ? 'success' : 'secondary'} size="sm">
-                  {cottage.isActive ? 'Active' : 'Inactive'}
-                </Badge>
+                <button
+                  onClick={() => handleToggleActive(cottage)}
+                  className={`shrink-0 transition-colors ${cottage.isActive ? 'text-green-600 hover:text-green-800' : 'text-muted-foreground hover:text-foreground'}`}
+                  title={cottage.isActive ? 'Click to deactivate' : 'Click to activate'}
+                >
+                  {cottage.isActive ? <ToggleRight className="w-6 h-6" /> : <ToggleLeft className="w-6 h-6" />}
+                </button>
               </div>
               <div className="flex items-center gap-4 text-sm text-muted-foreground mb-4">
                 <span>{formatPrice(cottage.pricePerNight)}/night</span>
@@ -301,7 +316,10 @@ function CottagesTab({ token, showToast }: { token: string | null; showToast: (m
                   <span className="text-xs text-muted-foreground">+{cottage.amenities.length - 3}</span>
                 )}
               </div>
-              <div className="mt-4 pt-3 border-t border-border flex justify-end">
+              <div className="mt-4 pt-3 border-t border-border flex justify-between items-center">
+                <Badge variant={cottage.isActive ? 'success' : 'secondary'} size="sm">
+                  {cottage.isActive ? 'Active' : 'Inactive'}
+                </Badge>
                 <Button variant="secondary" size="sm" onClick={() => handleEdit(cottage)}>
                   <Edit className="w-3.5 h-3.5 mr-1.5" /> Edit
                 </Button>
