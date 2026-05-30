@@ -1,13 +1,17 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MessageCircle, X, Send, Bot } from 'lucide-react';
+import { MessageCircle, X, Send, Bot, Phone, MessageCircleMore } from 'lucide-react';
 import { endpoints } from '@/lib/api';
+import { io, Socket } from 'socket.io-client';
+
+const SOCKET_URL = process.env.NEXT_PUBLIC_API_URL?.replace('/api', '') || 'http://localhost:5000';
 
 interface Message {
-  role: 'user' | 'assistant';
+  role: 'user' | 'assistant' | 'live-user' | 'live-admin';
   content: string;
+  senderName?: string;
 }
 
 function WhatsAppIcon({ className }: { className?: string }) {
@@ -25,40 +29,96 @@ export function ChatBot() {
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [mode, setMode] = useState<'ai' | 'live' | 'name-prompt'>('ai');
+  const [guestName, setGuestName] = useState('');
+  const [conversationId, setConversationId] = useState<string | null>(null);
+  const [socket, setSocket] = useState<Socket | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  const handleSend = async () => {
-    if (!input.trim() || isLoading) return;
+  useEffect(() => {
+    if (!socket) return;
+    socket.on('chat:connected', (data: { conversationId: string; message: any }) => {
+      setConversationId(data.conversationId);
+      setMessages(prev => [...prev, { role: 'live-admin', content: data.message.content, senderName: 'System' }]);
+    });
+    socket.on('chat:reply', (data: { message: any }) => {
+      setMessages(prev => [...prev, { role: 'live-admin', content: data.message.content, senderName: data.message.senderName || 'Agent' }]);
+    });
+    socket.on('chat:closed', () => {
+      setMessages(prev => [...prev, { role: 'assistant', content: 'This conversation has been closed. Feel free to start a new chat anytime!' }]);
+      setMode('ai');
+      setConversationId(null);
+      socket.close();
+      setSocket(null);
+    });
+    socket.on('chat:error', (data: { message: string }) => {
+      setMessages(prev => [...prev, { role: 'assistant', content: data.message }]);
+      setMode('ai');
+    });
+    return () => {
+      socket.off('chat:connected');
+      socket.off('chat:reply');
+      socket.off('chat:closed');
+      socket.off('chat:error');
+    };
+  }, [socket]);
 
+  const handleSend = useCallback(async () => {
+    if (!input.trim() || isLoading) return;
     const userMessage = input.trim();
     setInput('');
-    setMessages((prev) => [...prev, { role: 'user', content: userMessage }]);
-    setIsLoading(true);
 
+    if (mode === 'live' && socket && conversationId) {
+      setMessages(prev => [...prev, { role: 'live-user', content: userMessage }]);
+      socket.emit('chat:message', { conversationId, content: userMessage, senderName: guestName });
+      return;
+    }
+
+    setMessages(prev => [...prev, { role: 'user', content: userMessage }]);
+    setIsLoading(true);
     try {
-      const history = messages.slice(-6).map((m) => ({ role: m.role, content: m.content }));
+      const history = messages.slice(-6).map(m => ({ role: m.role === 'live-user' ? 'user' : m.role === 'live-admin' ? 'assistant' : m.role, content: m.content }));
       const res = await endpoints.chatbot.chat(userMessage, history);
-      setMessages((prev) => [...prev, { role: 'assistant', content: res.data.reply }]);
+      setMessages(prev => [...prev, { role: 'assistant', content: res.data.reply }]);
     } catch {
-      setMessages((prev) => [
-        ...prev,
-        { role: 'assistant', content: 'I\'m having trouble connecting. You can call us at +91-91188-82242 or message us on WhatsApp.' },
-      ]);
+      setMessages(prev => [...prev, { role: 'assistant', content: 'I\'m having trouble connecting. You can call us at +91-91188-82242 or message us on WhatsApp.' }]);
     } finally {
       setIsLoading(false);
     }
+  }, [input, isLoading, mode, socket, conversationId, messages, guestName]);
+
+  const startLiveChat = () => {
+    setMode('name-prompt');
+  };
+
+  const submitName = () => {
+    if (!guestName.trim()) return;
+    setMode('live');
+    const s = io(SOCKET_URL, { transports: ['websocket', 'polling'] });
+    setSocket(s);
+    s.on('connect', () => {
+      s.emit('chat:request', { name: guestName.trim() });
+    });
+    setMessages(prev => [...prev, { role: 'assistant', content: 'Connecting you to live support...' }]);
   };
 
   const handleQuickAction = (text: string) => {
     if (text === 'Live Support') {
-      window.open('https://wa.me/919118882242?text=Hello%20Vedara%2C%20I%20need%20assistance', '_blank');
+      if (mode === 'live') return;
+      startLiveChat();
       return;
     }
     setInput(text);
+  };
+
+  const handleCloseLiveChat = () => {
+    if (socket && conversationId) {
+      socket.emit('chat:close', { conversationId });
+    }
   };
 
   return (
@@ -93,83 +153,146 @@ export function ChatBot() {
           >
             <div className="bg-forest-600 p-4 flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Bot className="w-5 h-5 text-cream-100" />
-                <span className="font-serif text-cream-50 font-semibold">Mountain Concierge</span>
+                {mode === 'live' ? (
+                  <MessageCircleMore className="w-5 h-5 text-cream-100" />
+                ) : (
+                  <Bot className="w-5 h-5 text-cream-100" />
+                )}
+                <span className="font-serif text-cream-50 font-semibold">
+                  {mode === 'live' ? 'Live Support' : 'Mountain Concierge'}
+                </span>
               </div>
-              <button
-                onClick={() => setIsOpen(false)}
-                className="text-cream-100 hover:text-cream-50 transition-transform hover:rotate-90 p-1"
-                aria-label="Close chatbot"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            <div className="bg-forest-700/10 px-4 py-2 flex gap-2 overflow-x-auto">
-              <button onClick={() => handleQuickAction('Show me cottages')} className="text-xs bg-white dark:bg-earth-700 px-3 py-1.5 rounded-full whitespace-nowrap border border-earth-200 dark:border-earth-600 text-earth-700 dark:text-cream-200 hover:bg-forest-600 hover:text-cream-50 hover:border-forest-600 transition-colors">
-                Cottages
-              </button>
-              <button onClick={() => handleQuickAction('Café menu')} className="text-xs bg-white dark:bg-earth-700 px-3 py-1.5 rounded-full whitespace-nowrap border border-earth-200 dark:border-earth-600 text-earth-700 dark:text-cream-200 hover:bg-forest-600 hover:text-cream-50 hover:border-forest-600 transition-colors">
-                Café Menu
-              </button>
-              <button onClick={() => handleQuickAction('Booking info')} className="text-xs bg-white dark:bg-earth-700 px-3 py-1.5 rounded-full whitespace-nowrap border border-earth-200 dark:border-earth-600 text-earth-700 dark:text-cream-200 hover:bg-forest-600 hover:text-cream-50 hover:border-forest-600 transition-colors">
-                Booking
-              </button>
-              <button onClick={() => handleQuickAction('Live Support')} className="text-xs bg-white dark:bg-earth-700 px-3 py-1.5 rounded-full whitespace-nowrap border border-earth-200 dark:border-earth-600 text-earth-700 dark:text-cream-200 hover:bg-emerald-500 hover:text-white hover:border-emerald-500 transition-colors">
-                Live Support
-              </button>
-            </div>
-
-            <div className="flex-1 overflow-y-auto p-4 space-y-3">
-              {messages.map((msg, i) => (
-                <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                  <div
-                    className={`max-w-[80%] rounded-2xl px-4 py-2.5 text-sm ${
-                      msg.role === 'user'
-                        ? 'bg-forest-600 text-cream-50 rounded-br-sm'
-                        : 'bg-earth-100 dark:bg-earth-700 text-earth-800 dark:text-cream-200 rounded-bl-sm'
-                    }`}
+              <div className="flex items-center gap-1">
+                {mode === 'live' && (
+                  <button
+                    onClick={handleCloseLiveChat}
+                    className="text-cream-100 hover:text-cream-50 p-1 text-xs"
+                    title="End live chat"
                   >
-                    {msg.role === 'assistant' ? <p className="leading-relaxed whitespace-pre-line">{msg.content}</p> : <p className="leading-relaxed">{msg.content}</p>}
-                  </div>
-                </div>
-              ))}
-              {isLoading && (
-                <div className="flex justify-start">
-                  <div className="bg-earth-100 dark:bg-earth-700 rounded-2xl rounded-bl-sm px-4 py-2.5">
-                    <div className="flex gap-1">
-                      <span className="w-2 h-2 bg-earth-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                      <span className="w-2 h-2 bg-earth-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                      <span className="w-2 h-2 bg-earth-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
-                    </div>
-                  </div>
-                </div>
-              )}
-              <div ref={messagesEndRef} />
-            </div>
-
-            <div className="p-3 border-t border-earth-200 dark:border-earth-700">
-              <div className="flex gap-2">
-                <input
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-                  placeholder="Ask me anything..."
-                  className="flex-1 rounded-xl border border-earth-200 dark:border-earth-600 bg-white dark:bg-earth-700 px-3 py-2 text-sm text-earth-900 dark:text-cream-100 placeholder:text-earth-400 focus:outline-none focus:border-forest-500"
-                />
+                    <Phone className="w-4 h-4" />
+                  </button>
+                )}
                 <button
-                  onClick={handleSend}
-                  disabled={!input.trim() || isLoading}
-                  className="p-2 rounded-xl bg-forest-600 text-cream-50 hover:bg-forest-700 disabled:opacity-50 transition-colors"
-                  aria-label="Send message"
+                  onClick={() => { setIsOpen(false); if (socket) { socket.close(); setSocket(null); } setMode('ai'); setConversationId(null); }}
+                  className="text-cream-100 hover:text-cream-50 transition-transform hover:rotate-90 p-1"
+                  aria-label="Close chatbot"
                 >
-                  <Send className="w-4 h-4" />
+                  <X className="w-5 h-5" />
                 </button>
               </div>
             </div>
+
+            {mode !== 'live' && mode !== 'name-prompt' && (
+              <div className="bg-forest-700/10 px-4 py-2 flex gap-2 overflow-x-auto">
+                <button onClick={() => handleQuickAction('Show me cottages')} className="text-xs bg-white dark:bg-earth-700 px-3 py-1.5 rounded-full whitespace-nowrap border border-earth-200 dark:border-earth-600 text-earth-700 dark:text-cream-200 hover:bg-forest-600 hover:text-cream-50 hover:border-forest-600 transition-colors">
+                  Cottages
+                </button>
+                <button onClick={() => handleQuickAction('Café menu')} className="text-xs bg-white dark:bg-earth-700 px-3 py-1.5 rounded-full whitespace-nowrap border border-earth-200 dark:border-earth-600 text-earth-700 dark:text-cream-200 hover:bg-forest-600 hover:text-cream-50 hover:border-forest-600 transition-colors">
+                  Café Menu
+                </button>
+                <button onClick={() => handleQuickAction('Booking info')} className="text-xs bg-white dark:bg-earth-700 px-3 py-1.5 rounded-full whitespace-nowrap border border-earth-200 dark:border-earth-600 text-earth-700 dark:text-cream-200 hover:bg-forest-600 hover:text-cream-50 hover:border-forest-600 transition-colors">
+                  Booking
+                </button>
+                <button onClick={() => handleQuickAction('Live Support')} className="text-xs bg-white dark:bg-earth-700 px-3 py-1.5 rounded-full whitespace-nowrap border border-earth-200 dark:border-earth-600 text-earth-700 dark:text-cream-200 hover:bg-emerald-500 hover:text-white hover:border-emerald-500 transition-colors">
+                  Live Support
+                </button>
+              </div>
+            )}
+
+            {mode === 'name-prompt' ? (
+              <div className="flex-1 flex items-center justify-center p-6">
+                <div className="w-full space-y-4">
+                  <div className="text-center">
+                    <MessageCircleMore className="w-10 h-10 text-forest-600 mx-auto mb-2" />
+                    <h3 className="font-serif text-lg text-foreground">Live Support</h3>
+                    <p className="text-sm text-muted-foreground mt-1">Please tell us your name to connect with our team.</p>
+                  </div>
+                  <input
+                    value={guestName}
+                    onChange={(e) => setGuestName(e.target.value)}
+                    onKeyDown={(e) => e.key === 'Enter' && submitName()}
+                    placeholder="Your name"
+                    className="w-full rounded-xl border border-border bg-white dark:bg-earth-700 px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-forest-500"
+                    autoFocus
+                  />
+                  <div className="flex gap-2">
+                    <Button variant="secondary" size="sm" className="flex-1" onClick={() => setMode('ai')}>Back</Button>
+                    <Button variant="primary" size="sm" className="flex-1" onClick={submitName} disabled={!guestName.trim()}>Connect</Button>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="flex-1 overflow-y-auto p-4 space-y-3">
+                {messages.slice(mode === 'live' ? -20 : undefined).map((msg, i) => (
+                  <div key={i} className={`flex ${msg.role === 'user' || msg.role === 'live-user' ? 'justify-end' : 'justify-start'}`}>
+                    <div className={`max-w-[80%] rounded-2xl px-4 py-2.5 text-sm ${
+                      msg.role === 'user' || msg.role === 'live-user'
+                        ? 'bg-forest-600 text-cream-50 rounded-br-sm'
+                        : msg.role === 'live-admin'
+                        ? 'bg-emerald-100 dark:bg-emerald-900/30 text-earth-800 dark:text-cream-200 rounded-bl-sm'
+                        : 'bg-earth-100 dark:bg-earth-700 text-earth-800 dark:text-cream-200 rounded-bl-sm'
+                    }`}>
+                      {msg.senderName && (msg.role === 'live-admin' || msg.role === 'live-user') && (
+                        <div className="text-xs opacity-70 mb-0.5">{msg.senderName}</div>
+                      )}
+                      {msg.role === 'assistant' ? <p className="leading-relaxed whitespace-pre-line">{msg.content}</p> : <p className="leading-relaxed">{msg.content}</p>}
+                    </div>
+                  </div>
+                ))}
+                {isLoading && (
+                  <div className="flex justify-start">
+                    <div className="bg-earth-100 dark:bg-earth-700 rounded-2xl rounded-bl-sm px-4 py-2.5">
+                      <div className="flex gap-1">
+                        <span className="w-2 h-2 bg-earth-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                        <span className="w-2 h-2 bg-earth-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                        <span className="w-2 h-2 bg-earth-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                      </div>
+                    </div>
+                  </div>
+                )}
+                <div ref={messagesEndRef} />
+              </div>
+            )}
+
+            {mode !== 'name-prompt' && (
+              <div className="p-3 border-t border-earth-200 dark:border-earth-700">
+                <div className="flex gap-2">
+                  <input
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    onKeyDown={(e) => e.key === 'Enter' && handleSend()}
+                    placeholder={mode === 'live' ? 'Type your message...' : 'Ask me anything...'}
+                    className="flex-1 rounded-xl border border-earth-200 dark:border-earth-600 bg-white dark:bg-earth-700 px-3 py-2 text-sm text-earth-900 dark:text-cream-100 placeholder:text-earth-400 focus:outline-none focus:border-forest-500"
+                  />
+                  <button
+                    onClick={handleSend}
+                    disabled={!input.trim() || isLoading}
+                    className="p-2 rounded-xl bg-forest-600 text-cream-50 hover:bg-forest-700 disabled:opacity-50 transition-colors"
+                    aria-label="Send message"
+                  >
+                    <Send className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            )}
           </motion.div>
         )}
       </AnimatePresence>
     </>
+  );
+}
+
+function Button({ variant, size, className, onClick, disabled, children }: any) {
+  const base = variant === 'primary'
+    ? 'bg-forest-600 text-cream-50 hover:bg-forest-700'
+    : 'bg-earth-200 dark:bg-earth-700 text-foreground hover:bg-earth-300 dark:hover:bg-earth-600';
+  return (
+    <button
+      onClick={onClick}
+      disabled={disabled}
+      className={`rounded-xl px-4 py-2 text-sm font-medium transition-colors disabled:opacity-50 ${base} ${className || ''}`}
+    >
+      {children}
+    </button>
   );
 }

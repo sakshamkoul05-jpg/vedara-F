@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { useAuthStore } from '@/store/auth';
 import { api } from '@/lib/api';
 import { DashboardStats } from '@/types';
-import { Calendar, Coffee, MessageCircle, Users, TrendingUp, Building2, Activity, LogOut, LayoutDashboard, Settings } from 'lucide-react';
+import { Calendar, Coffee, MessageCircle, Users, TrendingUp, Building2, Activity, LogOut, LayoutDashboard, Settings, MessageCircleMore } from 'lucide-react';
 import { BookingsPage } from '../BookingsPage';
 import { CafeManagementPage } from '../CafeManagementPage';
 
@@ -59,6 +59,9 @@ export default function AdminDashboardPage() {
             <p className="text-muted-foreground text-sm">Welcome back, {user?.name}</p>
           </div>
           <div className="flex items-center gap-3">
+            <Link href="/admin/chat" className="px-3 py-1.5 rounded-lg bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 text-xs text-emerald-700 dark:text-emerald-300 hover:border-emerald-400 transition-colors">
+              <MessageCircleMore className="w-3.5 h-3.5 inline mr-1" /> Live Chat
+            </Link>
             <Link href="/admin/cms" className="px-3 py-1.5 rounded-lg bg-white dark:bg-earth-800 border border-border text-xs text-foreground hover:border-forest-400 transition-colors">
               <Settings className="w-3.5 h-3.5 inline mr-1" /> Settings
             </Link>
