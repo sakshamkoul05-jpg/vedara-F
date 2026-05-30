@@ -36,6 +36,41 @@ const mockCottage: Cottage = {
   ],
 };
 
+function CottageDescription({ text }: { text: string }) {
+  const blocks = text.split('\n\n').filter(Boolean);
+  return (
+    <div className="space-y-5">
+      {blocks.map((block, i) => {
+        const lines = block.split('\n').filter(Boolean);
+        if (lines.length === 1) {
+          if (!lines[0].includes('•') && lines[0].length < 50) {
+            return <h4 key={i} className="font-serif text-lg text-foreground">{lines[0]}</h4>;
+          }
+          return <p key={i} className="text-muted-foreground leading-relaxed">{lines[0]}</p>;
+        }
+        if (lines.length > 1) {
+          const rest = lines[0].length < 50 ? lines.slice(1) : lines;
+          const header = lines[0].length < 50 ? lines[0] : null;
+          return (
+            <div key={i}>
+              {header && <h4 className="font-serif text-lg text-foreground mb-2">{header}</h4>}
+              <div className="space-y-1.5">
+                {rest.map((line, j) => (
+                  <div key={j} className="flex items-start gap-2 text-muted-foreground">
+                    <span className="text-forest-500 mt-1.5 shrink-0">•</span>
+                    <span>{line.replace(/^•\s*/, '')}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          );
+        }
+        return <p key={i} className="text-muted-foreground leading-relaxed">{lines.join(' ')}</p>;
+      })}
+    </div>
+  );
+}
+
 const allMockCottages: Record<string, Cottage> = {
   '1': mockCottage,
   '2': { ...mockCottage, id: '2', slug: 'cedar-nook', name: 'The Cedar Nook', pricePerNight: 7500, capacity: 2, bedrooms: 1, bathrooms: 1, size: 350, description: 'Intimate cedar retreat with private garden. Perfect for couples seeking a quiet escape surrounded by the fragrance of cedar forests.', shortDesc: 'Intimate cedar retreat with private garden', seasonalPricings: mockCottage.seasonalPricings },
@@ -178,7 +213,7 @@ export default function CottageDetailPage() {
                 <div>
                   <p className="text-clay-500 text-sm tracking-[0.2em] uppercase mb-3 font-sans">The Cottage</p>
                   <h2 className="font-serif text-3xl text-foreground mb-4">About This Sanctuary</h2>
-                  <p className="text-muted-foreground leading-relaxed">{cottage.description}</p>
+                  <CottageDescription text={cottage.description} />
                 </div>
               </ScrollReveal>
 
