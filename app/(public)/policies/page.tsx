@@ -8,6 +8,7 @@ import { BackButton } from '@/components/layout/BackButton';
 import { ScrollReveal } from '@/components/animations/ScrollReveal';
 import { TextReveal } from '@/components/animations/TextReveal';
 import { api } from '@/lib/api';
+import { FormattedText } from '@/components/ui/formatted-text';
 import { FAQ } from '@/types';
 
 const policySections = [
@@ -236,7 +237,7 @@ export default function PoliciesPage() {
                       </Accordion.Header>
                       <Accordion.Content className="overflow-hidden data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up">
                         <div className="px-5 pb-5">
-                          <p className="text-muted-foreground text-sm leading-relaxed" dangerouslySetInnerHTML={{ __html: faq.answer }} />
+                          <FormattedText text={faq.answer} />
                         </div>
                       </Accordion.Content>
                     </Accordion.Item>

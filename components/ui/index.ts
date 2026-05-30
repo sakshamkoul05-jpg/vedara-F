@@ -9,3 +9,4 @@ export { Tabs, TabsList, TabsTrigger, TabsContent } from './tabs';
 export { Separator } from './separator';
 export { Switch } from './switch';
 export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from './tooltip';
+export { FormattedText } from './formatted-text';

@@ -130,7 +130,7 @@ export function ChatBot() {
                         : 'bg-earth-100 dark:bg-earth-700 text-earth-800 dark:text-cream-200 rounded-bl-sm'
                     }`}
                   >
-                    <p className="leading-relaxed">{msg.content}</p>
+                    {msg.role === 'assistant' ? <p className="leading-relaxed whitespace-pre-line">{msg.content}</p> : <p className="leading-relaxed">{msg.content}</p>}
                   </div>
                 </div>
               ))}

@@ -13,6 +13,7 @@ import { ScrollReveal } from '@/components/animations/ScrollReveal';
 import { TextReveal } from '@/components/animations/TextReveal';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { FormattedText } from '@/components/ui/formatted-text';
 import { api } from '@/lib/api';
 import { Cottage, SeasonalPricing } from '@/types';
 import { formatPrice, calculateNights } from '@/lib/utils';
@@ -35,41 +36,6 @@ const mockCottage: Cottage = {
     { id: 's2', cottageId: '1', name: 'Spring Season', startDate: '2026-03-01', endDate: '2026-05-31', pricePerNight: 10500, minStay: 2, isActive: true },
   ],
 };
-
-function CottageDescription({ text }: { text: string }) {
-  const blocks = text.split('\n\n').filter(Boolean);
-  return (
-    <div className="space-y-5">
-      {blocks.map((block, i) => {
-        const lines = block.split('\n').filter(Boolean);
-        if (lines.length === 1) {
-          if (!lines[0].includes('•') && lines[0].length < 50) {
-            return <h4 key={i} className="font-serif text-lg text-foreground">{lines[0]}</h4>;
-          }
-          return <p key={i} className="text-muted-foreground leading-relaxed">{lines[0]}</p>;
-        }
-        if (lines.length > 1) {
-          const rest = lines[0].length < 50 ? lines.slice(1) : lines;
-          const header = lines[0].length < 50 ? lines[0] : null;
-          return (
-            <div key={i}>
-              {header && <h4 className="font-serif text-lg text-foreground mb-2">{header}</h4>}
-              <div className="space-y-1.5">
-                {rest.map((line, j) => (
-                  <div key={j} className="flex items-start gap-2 text-muted-foreground">
-                    <span className="text-forest-500 mt-1.5 shrink-0">•</span>
-                    <span>{line.replace(/^•\s*/, '')}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          );
-        }
-        return <p key={i} className="text-muted-foreground leading-relaxed">{lines.join(' ')}</p>;
-      })}
-    </div>
-  );
-}
 
 const allMockCottages: Record<string, Cottage> = {
   '1': mockCottage,
@@ -213,7 +179,7 @@ export default function CottageDetailPage() {
                 <div>
                   <p className="text-clay-500 text-sm tracking-[0.2em] uppercase mb-3 font-sans">The Cottage</p>
                   <h2 className="font-serif text-3xl text-foreground mb-4">About This Sanctuary</h2>
-                  <CottageDescription text={cottage.description} />
+                  <FormattedText text={cottage.description} />
                 </div>
               </ScrollReveal>
 
