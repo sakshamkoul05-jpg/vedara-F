@@ -50,10 +50,10 @@ export function Footer() {
               <li><Link href="/policies#cancellation" className="text-sm text-cream-300 hover:text-cream-50 transition-colors">Cancellation</Link></li>
             </ul>
             <div className="flex gap-3 mt-6">
-              <a href="https://facebook.com/vedara" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-earth-800 flex items-center justify-center hover:bg-forest-600 transition-colors" aria-label="Facebook">
+              <a href="https://facebook.com/vedararetreat" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-earth-800 flex items-center justify-center hover:bg-forest-600 transition-colors" aria-label="Facebook">
                 <Facebook className="w-4 h-4" />
               </a>
-              <a href="https://instagram.com/vedara" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-earth-800 flex items-center justify-center hover:bg-forest-600 transition-colors" aria-label="Instagram">
+              <a href="https://instagram.com/vedararetreat" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-earth-800 flex items-center justify-center hover:bg-forest-600 transition-colors" aria-label="Instagram">
                 <Instagram className="w-4 h-4" />
               </a>
             </div>

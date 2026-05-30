@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Moon, Sun, LogIn, Mail, Phone, Facebook, Instagram, Youtube } from 'lucide-react';
+import { Menu, X, Moon, Sun, LogIn, Mail, Phone, Facebook, Instagram } from 'lucide-react';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { useThemeStore } from '@/store/theme';
@@ -106,7 +106,7 @@ export function Header() {
               <Mail className="w-4 h-4" />
             </a>
             <a
-              href="https://facebook.com/vedara"
+              href="https://facebook.com/vedararetreat"
               target="_blank"
               rel="noopener noreferrer"
               className={cn(
@@ -120,7 +120,7 @@ export function Header() {
               <Facebook className="w-4 h-4" />
             </a>
             <a
-              href="https://instagram.com/vedara"
+              href="https://instagram.com/vedararetreat"
               target="_blank"
               rel="noopener noreferrer"
               className={cn(
@@ -132,20 +132,6 @@ export function Header() {
               aria-label="Instagram"
             >
               <Instagram className="w-4 h-4" />
-            </a>
-            <a
-              href="https://youtube.com/@vedara"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={cn(
-                'p-1.5 rounded-full transition-colors',
-                isTransparent
-                  ? 'text-cream-100/60 hover:text-cream-50'
-                  : 'text-earth-500 dark:text-cream-400 hover:text-forest-600 dark:hover:text-cream-50'
-              )}
-              aria-label="YouTube"
-            >
-              <Youtube className="w-4 h-4" />
             </a>
 
             <div className={cn('h-5 w-px mx-1', isTransparent ? 'bg-white/20' : 'bg-earth-300 dark:bg-earth-600')} />
