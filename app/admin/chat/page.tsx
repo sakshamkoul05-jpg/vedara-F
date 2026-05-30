@@ -6,8 +6,7 @@ import { api } from '@/services/api';
 import { io, Socket } from 'socket.io-client';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { FormattedText } from '@/components/ui/formatted-text';
-import { MessageCircle, Send, X, Phone, Mail, User, Clock, ArrowLeft } from 'lucide-react';
+import { MessageCircle, Send, X, Phone, Mail, Clock, Bell, BellRing } from 'lucide-react';
 
 const SOCKET_URL = process.env.NEXT_PUBLIC_API_URL?.replace('/api', '') || 'http://localhost:5000';
 
@@ -31,6 +30,23 @@ type ChatMsg = {
   createdAt: string;
 };
 
+function playNotificationSound() {
+  try {
+    const ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.frequency.value = 800;
+    osc.type = 'sine';
+    gain.gain.setValueAtTime(0.3, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime + 0.3);
+    setTimeout(() => ctx.close(), 500);
+  } catch {}
+}
+
 export default function AdminChatPage() {
   const { token, user } = useAuthStore();
   const [conversations, setConversations] = useState<Conversation[]>([]);
@@ -39,7 +55,22 @@ export default function AdminChatPage() {
   const [input, setInput] = useState('');
   const [socket, setSocket] = useState<Socket | null>(null);
   const [connected, setConnected] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const prevTitle = useRef('');
+
+  useEffect(() => {
+    prevTitle.current = document.title;
+  }, []);
+
+  useEffect(() => {
+    if (unreadCount > 0) {
+      document.title = `(${unreadCount}) Live Chat - Vedara Admin`;
+    } else {
+      document.title = prevTitle.current || 'Live Chat - Vedara Admin';
+    }
+    return () => { document.title = prevTitle.current; };
+  }, [unreadCount]);
 
   useEffect(() => {
     if (!token) return;
@@ -56,10 +87,14 @@ export default function AdminChatPage() {
     });
     socket.on('chat:new', (data: { conversation: Conversation }) => {
       setConversations(prev => [data.conversation, ...prev.filter(c => c.id !== data.conversation.id)]);
+      if (!document.hasFocus()) setUnreadCount(prev => prev + 1);
+      playNotificationSound();
     });
     socket.on('chat:message', (data: { conversationId: string; message: ChatMsg }) => {
       if (selectedId === data.conversationId) {
         setMessages(prev => [...prev, data.message]);
+      } else if (!document.hasFocus()) {
+        setUnreadCount(prev => prev + 1);
       }
       setConversations(prev => prev.map(c => c.id === data.conversationId ? { ...c, status: 'ACTIVE' } : c));
     });
@@ -97,6 +132,12 @@ export default function AdminChatPage() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
+  useEffect(() => {
+    const handleFocus = () => setUnreadCount(0);
+    window.addEventListener('focus', handleFocus);
+    return () => window.removeEventListener('focus', handleFocus);
+  }, []);
+
   const handleSend = () => {
     if (!input.trim() || !socket || !selectedId || !user) return;
     socket.emit('chat:admin-reply', {
@@ -119,22 +160,27 @@ export default function AdminChatPage() {
     <div className="flex h-screen pt-16 bg-cream-50 dark:bg-earth-900">
       <div className="w-80 border-r border-border bg-white dark:bg-earth-800 flex flex-col">
         <div className="p-4 border-b border-border">
-          <h2 className="font-serif text-lg text-foreground flex items-center gap-2">
-            <MessageCircle className="w-5 h-5 text-forest-600" />
-            Live Chats
-          </h2>
+          <div className="flex items-center justify-between">
+            <h2 className="font-serif text-lg text-foreground flex items-center gap-2">
+              <MessageCircle className="w-5 h-5 text-forest-600" />
+              Live Chats
+            </h2>
+            {unreadCount > 0 && (
+              <Badge variant="success" size="sm" className="animate-pulse">
+                <BellRing className="w-3 h-3 mr-1" />{unreadCount} new
+              </Badge>
+            )}
+          </div>
           <p className="text-xs text-muted-foreground mt-0.5">{conversations.length} active</p>
         </div>
         <div className="flex-1 overflow-y-auto">
           {conversations.length === 0 ? (
-            <div className="p-6 text-center text-sm text-muted-foreground">
-              No active conversations
-            </div>
+            <div className="p-6 text-center text-sm text-muted-foreground">No active conversations</div>
           ) : (
             conversations.map(conv => (
               <button
                 key={conv.id}
-                onClick={() => setSelectedId(conv.id)}
+                onClick={() => { setSelectedId(conv.id); }}
                 className={`w-full text-left p-4 border-b border-border hover:bg-earth-50 dark:hover:bg-earth-700/50 transition-colors ${
                   selectedId === conv.id ? 'bg-forest-50 dark:bg-forest-900/20 border-l-4 border-l-forest-600' : ''
                 }`}

@@ -7,8 +7,9 @@ import { api } from '@/services/api';
 import { ScrollReveal } from '@/components/animations/ScrollReveal';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Calendar, Coffee, ClipboardList, LogOut, Bell, User, ChevronRight, Clock, CheckCircle2, XCircle, UtensilsCrossed, Loader2 } from 'lucide-react';
+import { Calendar, Coffee, ClipboardList, LogOut, Bell, User, ChevronRight, Clock, CheckCircle2, XCircle, UtensilsCrossed, Loader2, MessageCircle } from 'lucide-react';
 import { formatDateShort, formatPrice } from '@/lib/utils';
+import { ChatWidget } from '@/components/admin/ChatWidget';
 
 const statusBadgeVariant: Record<string, 'success' | 'warning' | 'danger' | 'default'> = {
   CONFIRMED: 'success',
@@ -308,6 +309,7 @@ className={`px-5 py-2 rounded-full text-sm font-sans font-medium transition-all 
           </div>
         )}
       </div>
+      <ChatWidget />
     </div>
   );
 }

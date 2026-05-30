@@ -12,6 +12,7 @@ import { Badge } from '@/components/ui/badge'
 import { ScrollReveal } from '@/components/animations/ScrollReveal'
 import { formatPrice } from '@/lib/utils'
 import Image from 'next/image'
+import { ChatWidget } from '@/components/admin/ChatWidget'
 
 const TABS = ['Overview', 'Menu Management', 'Orders', 'Inventory', 'Staff'] as const
 type Tab = typeof TABS[number]
@@ -463,6 +464,7 @@ export default function CafeAdminPage() {
         {activeTab === 'Inventory' && renderInventory()}
         {activeTab === 'Staff' && renderStaff()}
       </div>
+      <ChatWidget />
     </div>
   )
 }
