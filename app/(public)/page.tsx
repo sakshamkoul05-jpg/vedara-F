@@ -11,9 +11,9 @@ import { MagneticButton } from '@/components/animations/MagneticButton';
 import { HeroCarousel } from '@/components/home/HeroCarousel';
 
 const cottages = [
-  { id: 'cmpsk4f3x0004l3cfqvn89nyy', name: 'Monal Haven', price: '₹12,000', desc: 'Premium duplex with jacuzzi, attic yoga balcony, and sweeping mountain views', image: '/images/hero-1.jpg' },
-  { id: 'cmpsk4f410005l3cfrh9xk86g', name: 'Koklass Cove', price: '₹12,500', desc: 'Our largest duplex — two viewing balconies, private jacuzzi, and unmatched privacy', image: '/images/hero-2.jpg' },
-  { id: 'cmpsk4f430006l3cft2vuuxz6', name: 'Magpie Retreat', price: '₹11,000', desc: 'Charming duplex with deep-soak bath tub and dual-balcony setup', image: '/images/hero-3.jpg' },
+  { slug: 'monal-haven', name: 'Monal Haven', price: '₹12,000', desc: 'Premium duplex with jacuzzi, attic yoga balcony, and sweeping mountain views', image: '/images/hero-1.jpg' },
+  { slug: 'koklass-cove', name: 'Koklass Cove', price: '₹12,500', desc: 'Our largest duplex — two viewing balconies, private jacuzzi, and unmatched privacy', image: '/images/hero-2.jpg' },
+  { slug: 'magpie-retreat', name: 'Magpie Retreat', price: '₹11,000', desc: 'Charming duplex with deep-soak bath tub and dual-balcony setup', image: '/images/hero-3.jpg' },
 ];
 
 const testimonials = [
@@ -165,7 +165,7 @@ export default function HomePage() {
                       <span className="text-forest-600 dark:text-forest-400 font-semibold text-sm">{cottage.price}<span className="text-earth-400 font-normal text-xs">/night</span></span>
                     </div>
                     <p className="text-muted-foreground text-sm mb-4">{cottage.desc}</p>
-                    <Link href={`/cottages/${cottage.id}`} className="text-forest-600 dark:text-forest-400 text-sm font-medium inline-flex items-center gap-1 group-hover:gap-2 transition-all">
+                    <Link href={`/cottages/slug/${cottage.slug}`} className="text-forest-600 dark:text-forest-400 text-sm font-medium inline-flex items-center gap-1 group-hover:gap-2 transition-all">
                       View Details <ArrowRight className="w-3 h-3" />
                     </Link>
                   </div>
