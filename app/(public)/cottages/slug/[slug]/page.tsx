@@ -55,7 +55,8 @@ export default function CottageBySlugPage() {
   const effectivePrice = activeSeasonal ? activeSeasonal.pricePerNight : (cottage?.pricePerNight || 0);
   const totalAmount = nights * effectivePrice;
 
-  const images = cottage?.images?.length ? cottage.images : Array.from({ length: 6 }, (_, i) => `https://images.unsplash.com/photo-${['1504384308090-c894fdcc538d', '1554118811-1e0d58224f24', '1506905925346-21bda4d32df4', '1476514525535-07fb3b4ae5f1', '1519681393784-d120267933ba', '1469476568026-46a7f7b2f9c2'][i]}?w=800&q=80`);
+  const parsedImages = typeof cottage?.images === 'string' ? JSON.parse(cottage.images as string) : (cottage?.images || []);
+  const images = Array.isArray(parsedImages) && parsedImages.length ? parsedImages : Array.from({ length: 6 }, (_, i) => `https://images.unsplash.com/photo-${['1504384308090-c894fdcc538d', '1554118811-1e0d58224f24', '1506905925346-21bda4d32df4', '1476514525535-07fb3b4ae5f1', '1519681393784-d120267933ba', '1469476568026-46a7f7b2f9c2'][i]}?w=800&q=80`);
 
   if (loading) {
     return (
