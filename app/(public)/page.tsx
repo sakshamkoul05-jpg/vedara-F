@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import { useState } from 'react';
 import { ArrowRight, Star, Coffee, Trees, Sparkles, Music, FireExtinguisher, Moon, MapPin } from 'lucide-react';
 import { ScrollReveal } from '@/components/animations/ScrollReveal';
 import { TextReveal } from '@/components/animations/TextReveal';
@@ -38,6 +39,15 @@ const nearbyAttractions = [
 ];
 
 export default function HomePage() {
+  const [homeCheckIn, setHomeCheckIn] = useState('');
+  const [homeCheckOut, setHomeCheckOut] = useState('');
+
+  const handleHomeBooking = (e: React.MouseEvent) => {
+    if (!homeCheckIn || !homeCheckOut) return;
+    const params = new URLSearchParams({ checkIn: homeCheckIn, checkOut: homeCheckOut });
+    window.location.href = `/booking?${params}`;
+  };
+
   return (
     <>
       <section id="hero" className="relative h-screen flex items-center justify-center overflow-hidden">
@@ -94,16 +104,16 @@ export default function HomePage() {
               </div>
               <div>
                 <label className="block text-xs font-medium text-earth-600 dark:text-cream-300 mb-1">Check In</label>
-                <input type="date" className="w-full rounded-xl border border-earth-200 dark:border-earth-600 bg-white dark:bg-earth-700 px-3 py-2.5 text-sm text-earth-900 dark:text-cream-100 focus:outline-none focus:border-forest-500" />
+                <input type="date" value={homeCheckIn} onChange={(e) => setHomeCheckIn(e.target.value)} className="w-full rounded-xl border border-earth-200 dark:border-earth-600 bg-white dark:bg-earth-700 px-3 py-2.5 text-sm text-earth-900 dark:text-cream-100 focus:outline-none focus:border-forest-500" />
               </div>
               <div>
                 <label className="block text-xs font-medium text-earth-600 dark:text-cream-300 mb-1">Check Out</label>
-                <input type="date" className="w-full rounded-xl border border-earth-200 dark:border-earth-600 bg-white dark:bg-earth-700 px-3 py-2.5 text-sm text-earth-900 dark:text-cream-100 focus:outline-none focus:border-forest-500" />
+                <input type="date" value={homeCheckOut} onChange={(e) => setHomeCheckOut(e.target.value)} className="w-full rounded-xl border border-earth-200 dark:border-earth-600 bg-white dark:bg-earth-700 px-3 py-2.5 text-sm text-earth-900 dark:text-cream-100 focus:outline-none focus:border-forest-500" />
               </div>
               <div>
-                <Link href="/booking" className="vintage-button-primary text-sm px-6 py-2.5 w-full text-center block">
-                  Book Your Stay
-                </Link>
+                <a onClick={handleHomeBooking} className="vintage-button-primary text-sm px-6 py-2.5 w-full text-center block cursor-pointer">
+                  {homeCheckIn && homeCheckOut ? 'Check Availability' : 'Book Your Stay'}
+                </a>
               </div>
             </div>
           </div>
