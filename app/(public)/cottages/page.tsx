@@ -1,9 +1,8 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
-import { ArrowRight, Users, Bed, Bath, Maximize, Loader2 } from 'lucide-react';
+import { ArrowRight, Users, Bed, Bath, Maximize, Loader2, XCircle, CheckCircle } from 'lucide-react';
 import { ScrollReveal } from '@/components/animations/ScrollReveal';
 import { TextReveal } from '@/components/animations/TextReveal';
 import { BackButton } from '@/components/layout/BackButton';
@@ -14,16 +13,27 @@ import { Cottage } from '@/types';
 import { formatPrice } from '@/lib/utils';
 
 export default function CottagesPage() {
-  const router = useRouter();
   const [cottages, setCottages] = useState<Cottage[]>([]);
   const [loading, setLoading] = useState(true);
   const [checkIn, setCheckIn] = useState('');
   const [checkOut, setCheckOut] = useState('');
+  const [availabilityChecked, setAvailabilityChecked] = useState(false);
+  const [checking, setChecking] = useState(false);
 
-  const handleCheckAvailability = () => {
+  const handleCheckAvailability = useCallback(async () => {
     if (!checkIn || !checkOut) return;
-    router.push(`/booking?checkIn=${checkIn}&checkOut=${checkOut}`);
-  };
+    setChecking(true);
+    setAvailabilityChecked(false);
+    try {
+      const res: any = await api.get(`/bookings/available-cottages?checkIn=${checkIn}&checkOut=${checkOut}`);
+      setCottages(res.data);
+      setAvailabilityChecked(true);
+    } catch {
+      setAvailabilityChecked(true);
+    } finally {
+      setChecking(false);
+    }
+  }, [checkIn, checkOut]);
 
   useEffect(() => {
     api.get('/cottages').then((res: any) => {
@@ -60,8 +70,8 @@ export default function CottagesPage() {
                   <Input type="date" value={checkOut} onChange={(e) => setCheckOut(e.target.value)} />
                 </div>
                 <div className="flex items-end">
-                  <Button variant="primary" size="md" className="w-full" onClick={handleCheckAvailability} disabled={!checkIn || !checkOut}>
-                    Check Availability
+                  <Button variant="primary" size="md" className="w-full" onClick={handleCheckAvailability} disabled={!checkIn || !checkOut || checking}>
+                    {checking ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Checking...</> : 'Check Availability'}
                   </Button>
                 </div>
                 <div className="flex items-end">
@@ -91,12 +101,31 @@ export default function CottagesPage() {
               ))}
             </div>
           ) : (
+            <>
+              {availabilityChecked && (
+                <div className="flex items-center justify-between mb-6">
+                  <p className="text-sm text-muted-foreground">
+                    {cottages.filter((c: any) => c.isAvailable).length} of {cottages.length} cottages available for these dates
+                  </p>
+                  <button onClick={() => { setAvailabilityChecked(false); api.get('/cottages').then((res: any) => setCottages(res.data)); }} className="text-sm text-forest-600 dark:text-forest-400 hover:underline">
+                    Show all cottages
+                  </button>
+                </div>
+              )}
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {cottages.map((cottage, i) => (
+              {cottages.map((cottage: any, i) => {
+                const slug = cottage.slug || cottage.name.toLowerCase().replace(/\s+/g, '-');
+                const available = availabilityChecked ? cottage.isAvailable : true;
+                return (
                 <ScrollReveal key={cottage.id} delay={i * 0.1}>
-                  <Link href={`/cottages/${cottage.id}`} className="group block">
-                    <div className="vintage-card overflow-hidden">
-                      <div className="aspect-[4/3] overflow-hidden bg-earth-100 dark:bg-earth-800">
+                  <Link href={`/cottages/slug/${slug}`} className="group block">
+                    <div className={`vintage-card overflow-hidden ${availabilityChecked && !available ? 'opacity-50' : ''}`}>
+                      <div className="aspect-[4/3] overflow-hidden bg-earth-100 dark:bg-earth-800 relative">
+                        {availabilityChecked && !available && (
+                          <div className="absolute inset-0 bg-black/40 z-10 flex items-center justify-center">
+                            <span className="bg-earth-900/80 text-cream-50 px-4 py-2 rounded-full text-sm font-medium">Not available</span>
+                          </div>
+                        )}
                         <img
                           src={`https://images.unsplash.com/photo-${['1504384308090-c894fdcc538d', '1554118811-1e0d58224f24', '1506905925346-21bda4d32df4', '1476514525535-07fb3b4ae5f1', '1519681393784-d120267933ba', '1469476568026-46a7f7b2f9c2', '1504384308090-c894fdcc538d'][i % 7]}?w=600&q=80`}
                           alt={cottage.name}
@@ -116,6 +145,15 @@ export default function CottagesPage() {
                           <span className="flex items-center gap-1"><Bath className="w-3 h-3" /> {cottage.bathrooms} bath</span>
                           {cottage.size && <span className="flex items-center gap-1"><Maximize className="w-3 h-3" /> {cottage.size} sqft</span>}
                         </div>
+                        {availabilityChecked && (
+                          <div className="mb-3">
+                            {available ? (
+                              <span className="inline-flex items-center gap-1 text-xs text-green-600 font-medium"><CheckCircle className="w-3 h-3" /> Available</span>
+                            ) : (
+                              <span className="inline-flex items-center gap-1 text-xs text-red-500 font-medium"><XCircle className="w-3 h-3" /> Booked for these dates</span>
+                            )}
+                          </div>
+                        )}
                         <span className="text-forest-600 dark:text-forest-400 text-sm font-medium inline-flex items-center gap-1 group-hover:gap-2 transition-all">
                           View Details <ArrowRight className="w-3 h-3" />
                         </span>
@@ -123,8 +161,9 @@ export default function CottagesPage() {
                     </div>
                   </Link>
                 </ScrollReveal>
-              ))}
+              )})}
             </div>
+            </>
           )}
         </div>
       </section>
