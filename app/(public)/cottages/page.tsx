@@ -1,8 +1,9 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { ArrowRight, Users, Bed, Bath, Maximize } from 'lucide-react';
+import { ArrowRight, Users, Bed, Bath, Maximize, Loader2 } from 'lucide-react';
 import { ScrollReveal } from '@/components/animations/ScrollReveal';
 import { TextReveal } from '@/components/animations/TextReveal';
 import { BackButton } from '@/components/layout/BackButton';
@@ -13,10 +14,16 @@ import { Cottage } from '@/types';
 import { formatPrice } from '@/lib/utils';
 
 export default function CottagesPage() {
+  const router = useRouter();
   const [cottages, setCottages] = useState<Cottage[]>([]);
   const [loading, setLoading] = useState(true);
   const [checkIn, setCheckIn] = useState('');
   const [checkOut, setCheckOut] = useState('');
+
+  const handleCheckAvailability = () => {
+    if (!checkIn || !checkOut) return;
+    router.push(`/booking?checkIn=${checkIn}&checkOut=${checkOut}`);
+  };
 
   useEffect(() => {
     api.get('/cottages').then((res: any) => {
@@ -53,7 +60,7 @@ export default function CottagesPage() {
                   <Input type="date" value={checkOut} onChange={(e) => setCheckOut(e.target.value)} />
                 </div>
                 <div className="flex items-end">
-                  <Button variant="primary" size="md" className="w-full">
+                  <Button variant="primary" size="md" className="w-full" onClick={handleCheckAvailability} disabled={!checkIn || !checkOut}>
                     Check Availability
                   </Button>
                 </div>
@@ -89,8 +96,13 @@ export default function CottagesPage() {
                 <ScrollReveal key={cottage.id} delay={i * 0.1}>
                   <Link href={`/cottages/${cottage.id}`} className="group block">
                     <div className="vintage-card overflow-hidden">
-                      <div className="aspect-[4/3] overflow-hidden bg-earth-100 dark:bg-earth-800 flex items-center justify-center">
-                        <span className="font-serif text-6xl text-earth-300 dark:text-earth-600">{cottage.name[0]}</span>
+                      <div className="aspect-[4/3] overflow-hidden bg-earth-100 dark:bg-earth-800">
+                        <img
+                          src={`https://images.unsplash.com/photo-${['1504384308090-c894fdcc538d', '1554118811-1e0d58224f24', '1506905925346-21bda4d32df4', '1476514525535-07fb3b4ae5f1', '1519681393784-d120267933ba', '1469476568026-46a7f7b2f9c2', '1504384308090-c894fdcc538d'][i % 7]}?w=600&q=80`}
+                          alt={cottage.name}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                          loading="lazy"
+                        />
                       </div>
                       <div className="p-6">
                         <div className="flex justify-between items-start mb-2">

@@ -11,9 +11,9 @@ import { MagneticButton } from '@/components/animations/MagneticButton';
 import { HeroCarousel } from '@/components/home/HeroCarousel';
 
 const cottages = [
-  { name: 'Monal Haven', price: '₹12,000', desc: 'Premium duplex with jacuzzi, attic yoga balcony, and sweeping mountain views', image: '/images/hero-1.jpg' },
-  { name: 'Koklass Cove', price: '₹12,500', desc: 'Our largest duplex — two viewing balconies, private jacuzzi, and unmatched privacy', image: '/images/hero-2.jpg' },
-  { name: 'Magpie Retreat', price: '₹11,000', desc: 'Charming duplex with deep-soak bath tub and dual-balcony setup', image: '/images/hero-3.jpg' },
+  { id: 'cmpsk4f3x0004l3cfqvn89nyy', name: 'Monal Haven', price: '₹12,000', desc: 'Premium duplex with jacuzzi, attic yoga balcony, and sweeping mountain views', image: '/images/hero-1.jpg' },
+  { id: 'cmpsk4f410005l3cfrh9xk86g', name: 'Koklass Cove', price: '₹12,500', desc: 'Our largest duplex — two viewing balconies, private jacuzzi, and unmatched privacy', image: '/images/hero-2.jpg' },
+  { id: 'cmpsk4f430006l3cft2vuuxz6', name: 'Magpie Retreat', price: '₹11,000', desc: 'Charming duplex with deep-soak bath tub and dual-balcony setup', image: '/images/hero-3.jpg' },
 ];
 
 const testimonials = [
@@ -157,9 +157,7 @@ export default function HomePage() {
               <ScrollReveal key={cottage.name} delay={i * 0.15}>
                 <div className="group vintage-card overflow-hidden">
                   <div className="aspect-[4/3] overflow-hidden bg-earth-200 dark:bg-earth-700">
-                    <div className="w-full h-full bg-gradient-to-br from-forest-200 to-earth-300 dark:from-forest-900 dark:to-earth-700 group-hover:scale-105 transition-transform duration-700 flex items-center justify-center text-earth-400">
-                      <Trees className="w-12 h-12" />
-                    </div>
+                    <img src={`https://images.unsplash.com/photo-${['1504384308090-c894fdcc538d', '1554118811-1e0d58224f24', '1506905925346-21bda4d32df4'][i]}?w=600&q=80`} alt={cottage.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                   </div>
                   <div className="p-6">
                     <div className="flex justify-between items-start mb-2">
@@ -167,7 +165,7 @@ export default function HomePage() {
                       <span className="text-forest-600 dark:text-forest-400 font-semibold text-sm">{cottage.price}<span className="text-earth-400 font-normal text-xs">/night</span></span>
                     </div>
                     <p className="text-muted-foreground text-sm mb-4">{cottage.desc}</p>
-                    <Link href="/cottages" className="text-forest-600 dark:text-forest-400 text-sm font-medium inline-flex items-center gap-1 group-hover:gap-2 transition-all">
+                    <Link href={`/cottages/${cottage.id}`} className="text-forest-600 dark:text-forest-400 text-sm font-medium inline-flex items-center gap-1 group-hover:gap-2 transition-all">
                       View Details <ArrowRight className="w-3 h-3" />
                     </Link>
                   </div>
