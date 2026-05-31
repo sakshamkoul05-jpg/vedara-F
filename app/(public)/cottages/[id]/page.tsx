@@ -65,11 +65,12 @@ export default function CottageDetailPage() {
     });
   }, [id]);
 
+  const pricings = Array.isArray(cottage?.seasonalPricings) ? cottage.seasonalPricings : [];
   const nights = checkIn && checkOut ? calculateNights(new Date(checkIn), new Date(checkOut)) : 0;
-  const isPeakSeason = checkIn && cottage?.seasonalPricings?.some(
+  const isPeakSeason = checkIn && pricings.some(
     (s) => checkIn >= s.startDate && checkIn <= s.endDate && s.isActive
   );
-  const activeSeasonal = cottage?.seasonalPricings?.find(
+  const activeSeasonal = pricings.find(
     (s) => checkIn && checkIn >= s.startDate && checkIn <= s.endDate && s.isActive
   );
   const effectivePrice = activeSeasonal ? activeSeasonal.pricePerNight : (cottage?.pricePerNight || 0);
@@ -240,7 +241,7 @@ export default function CottageDetailPage() {
                 </div>
               </ScrollReveal>
 
-              {cottage.seasonalPricings && cottage.seasonalPricings.length > 0 && (
+              {Array.isArray(cottage.seasonalPricings) && cottage.seasonalPricings.length > 0 && (
                 <ScrollReveal>
                   <div>
                     <h3 className="font-serif text-xl text-foreground mb-5">Pricing Overview</h3>

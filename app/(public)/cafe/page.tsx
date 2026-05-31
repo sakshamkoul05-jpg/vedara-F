@@ -47,7 +47,7 @@ export default function CafePage() {
       if (res.data.length > 0) setActiveCategory(res.data[0].slug);
       setLoading(false);
     }).catch(() => setLoading(false));
-  }, [connect]);
+  }, []);
 
   useEffect(() => {
     if (!socket || !activeOrder) return;
@@ -67,10 +67,12 @@ export default function CafePage() {
   }, [socket, activeOrder]);
 
   const handleOrder = async () => {
+    if (!tableNumber) { alert('Please select a table number before placing your order.'); return; }
+    if (!guestName.trim()) { alert('Please enter your name before placing your order.'); return; }
     try {
       const res = await endpoints.cafe.createOrder({
         tableNumber,
-        guestName,
+        guestName: guestName.trim(),
         items: items.map((i) => ({ itemId: i.itemId, quantity: i.quantity })),
       });
       setActiveOrder(res.data || res);

@@ -63,7 +63,7 @@ export default function BookingPage() {
     if (!checkIn || !checkOut) return;
     setStepLoading(true);
     try {
-      const res = await api.get(`/bookings/available-cottages?checkIn=${checkIn}&checkOut=${checkOut}`);
+      const res = await api.get(`/bookings/available-cottages?checkIn=${encodeURIComponent(checkIn)}&checkOut=${encodeURIComponent(checkOut)}`);
       setCottages(res.data);
       setStep(2);
     } catch (err) {
@@ -130,6 +130,9 @@ export default function BookingPage() {
         },
       };
 
+      if (typeof (window as any).Razorpay === 'undefined') {
+        throw new Error('Payment gateway failed to load. Please refresh the page or try a different browser.');
+      }
       const rzp = new (window as any).Razorpay(options);
       rzp.open();
     } catch (err: any) {
