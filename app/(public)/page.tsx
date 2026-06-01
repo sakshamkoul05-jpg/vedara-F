@@ -139,10 +139,10 @@ export default function HomePage() {
               <div>
                 <p className="text-clay-400 text-sm tracking-[0.2em] uppercase mb-4 font-sans">Welcome to The Vedara</p>
                 <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-cream-50 mb-6">A Story Rooted in the Mountains</h2>
-                <p className="text-cream-200/80 text-lg leading-relaxed mb-6">
+                <p className="text-cream-200/80 text-lg leading-relaxed mb-6 text-justify hyphens-auto">
                   Nestled in the serene village of Ghiyagi, within the untouched landscapes of Jibhi, The Vedara was born from a simple belief – that the most profound luxury is found in stillness, connection, and the raw beauty of the Himalayas.
                 </p>
-                <p className="text-cream-200/60 leading-relaxed mb-8">
+                <p className="text-cream-200/60 leading-relaxed mb-8 text-justify hyphens-auto">
                   With seven handcrafted cottages and a soulful café, we offer more than a stay. We offer a chance to pause, breathe, and remember what truly matters.
                 </p>
                 <Link href="/about" className="vintage-button bg-clay-500 hover:bg-clay-600 text-cream-50 px-8 py-3.5">
@@ -237,7 +237,7 @@ export default function HomePage() {
               <div>
                 <p className="text-clay-400 text-sm tracking-[0.2em] uppercase mb-4 font-sans">Our Café</p>
                 <h2 className="font-serif text-4xl md:text-5xl text-cream-50 mb-6">Café Charade</h2>
-                <p className="text-cream-200/80 text-lg leading-relaxed mb-4">
+                <p className="text-cream-200/80 text-lg leading-relaxed mb-4 text-justify hyphens-auto">
                   Nestled beside a whispering stream, Café Charade serves handcrafted coffee, wood-fired meals, and mountain-fresh bakes.
                 </p>
                 <p className="text-cream-200/60 text-sm mb-8 space-y-1">

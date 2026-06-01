@@ -113,7 +113,7 @@ export default function CafePage() {
               <div>
                 <p className="text-clay-300 text-sm tracking-[0.2em] uppercase mb-3 font-sans">The Ambiance</p>
                 <h2 className="font-serif text-3xl md:text-4xl text-cream-50 mb-4">Where Every Meal Tells a Story</h2>
-                <p className="text-cream-200/80 leading-relaxed mb-6">
+                <p className="text-cream-200/80 leading-relaxed mb-6 text-justify hyphens-auto">
                   Nestled beside a whispering stream, our cafe is more than a place to eat - it is a space where time slows down. The aroma of freshly ground coffee mingles with the scent of pine, and every dish is crafted with ingredients sourced from the surrounding valleys.
                 </p>
                 <div className="flex flex-wrap gap-3">

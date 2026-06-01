@@ -3,7 +3,7 @@ export function FormattedText({ text, className = '' }: { text: string; classNam
   return (
     <div className={`space-y-4 ${className}`}>
       {paragraphs.map((p, i) => (
-        <p key={i} className="text-muted-foreground leading-relaxed">{p}</p>
+        <p key={i} className="text-muted-foreground leading-relaxed text-justify hyphens-auto">{p}</p>
       ))}
     </div>
   );

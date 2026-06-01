@@ -17,7 +17,7 @@ const policySections = [
     title: 'Cancellation Policy',
     content: (
       <div className="space-y-4 text-sm leading-relaxed">
-        <p className="text-muted-foreground">Because we are an exclusive boutique property with a limited number of cottages, cancellations impact us significantly. Our cancellation policies are split by travel period:</p>
+        <p className="text-muted-foreground text-justify hyphens-auto">Because we are an exclusive boutique property with a limited number of cottages, cancellations impact us significantly. Our cancellation policies are split by travel period:</p>
         <div>
           <p className="font-semibold text-foreground mb-2">A. Standard Cancellation</p>
           <div className="overflow-x-auto">
@@ -58,7 +58,7 @@ const policySections = [
           <li><strong className="text-foreground">Processing Time:</strong> Eligible refunds will be processed within 7–14 business days.</li>
           <li><strong className="text-foreground">Channel:</strong> Refunds will be credited back through the original payment method wherever possible.</li>
         </ul>
-        <p className="text-muted-foreground"><strong className="text-foreground">Force Majeure:</strong> The Vedara is located in a high-altitude Himalayan terrain. In the rare event of severe weather, landslides, or official road closures that physically prevent travel, refunds are not issued. Instead, we will issue a credit voucher for a future stay (subject to availability and seasonal tariff differences).</p>
+        <p className="text-muted-foreground text-justify hyphens-auto"><strong className="text-foreground">Force Majeure:</strong> The Vedara is located in a high-altitude Himalayan terrain. In the rare event of severe weather, landslides, or official road closures that physically prevent travel, refunds are not issued. Instead, we will issue a credit voucher for a future stay (subject to availability and seasonal tariff differences).</p>
       </div>
     ),
   },
@@ -67,7 +67,7 @@ const policySections = [
     title: 'Rescheduling & Date Change Policy',
     content: (
       <div className="space-y-3 text-sm leading-relaxed text-muted-foreground">
-        <p>We understand that travel plans can shift. We offer flexibility under the following conditions:</p>
+        <p className="text-justify hyphens-auto">We understand that travel plans can shift. We offer flexibility under the following conditions:</p>
         <ul className="list-disc pl-5 space-y-1">
           <li>One complimentary date change may be permitted if the request is made at least <strong className="text-foreground">10 days</strong> prior to the original arrival date.</li>
           <li>All rescheduling is strictly subject to availability.</li>
@@ -83,8 +83,8 @@ const policySections = [
       <div className="space-y-3 text-sm leading-relaxed text-muted-foreground">
         <p><strong className="text-foreground">Check-In Time:</strong> 1:00 PM</p>
         <p><strong className="text-foreground">Check-Out Time:</strong> 11:00 AM</p>
-        <p>Early check-in or late check-out is strictly subject to availability and may incur additional charges. Please inform us at least 24 hours in advance if you require an adjusted schedule.</p>
-        <p><strong className="text-foreground">Identification:</strong> In accordance with local government regulations, all guests must present a valid government-issued photo ID (Aadhaar, Passport, or Driving License) upon check-in. Foreign nationals must present a valid Passport and Visa/e-Visa.</p>
+        <p className="text-justify hyphens-auto">Early check-in or late check-out is strictly subject to availability and may incur additional charges. Please inform us at least 24 hours in advance if you require an adjusted schedule.</p>
+        <p className="text-justify hyphens-auto"><strong className="text-foreground">Identification:</strong> In accordance with local government regulations, all guests must present a valid government-issued photo ID (Aadhaar, Passport, or Driving License) upon check-in. Foreign nationals must present a valid Passport and Visa/e-Visa.</p>
       </div>
     ),
   },
@@ -105,10 +105,10 @@ const policySections = [
     title: 'Guest Conduct',
     content: (
       <div className="space-y-3 text-sm leading-relaxed text-muted-foreground">
-        <p><strong className="text-foreground">Quiet Hours:</strong> To honor the peaceful tranquility of the Ghiyagi valley, Quiet Hours are observed from 11:00 PM to 7:00 AM. Loud music or disruptive outdoor gatherings are prohibited during these hours.</p>
-        <p><strong className="text-foreground">Damages:</strong> Guests are liable for any physical damage caused to the cottage structures, furniture, custom linens, or decor items during their stay. Damages will be assessed by management and settled prior to check-out.</p>
-        <p><strong className="text-foreground">Visitors:</strong> Only registered guests are permitted on the property. Day visitors are not allowed without prior management approval.</p>
-        <p><strong className="text-foreground">Environment:</strong> Please help us preserve the natural beauty of our surroundings. Dispose of waste responsibly and avoid disturbing local wildlife.</p>
+        <p className="text-justify hyphens-auto"><strong className="text-foreground">Quiet Hours:</strong> To honor the peaceful tranquility of the Ghiyagi valley, Quiet Hours are observed from 11:00 PM to 7:00 AM. Loud music or disruptive outdoor gatherings are prohibited during these hours.</p>
+        <p className="text-justify hyphens-auto"><strong className="text-foreground">Damages:</strong> Guests are liable for any physical damage caused to the cottage structures, furniture, custom linens, or decor items during their stay. Damages will be assessed by management and settled prior to check-out.</p>
+        <p className="text-justify hyphens-auto"><strong className="text-foreground">Visitors:</strong> Only registered guests are permitted on the property. Day visitors are not allowed without prior management approval.</p>
+        <p className="text-justify hyphens-auto"><strong className="text-foreground">Environment:</strong> Please help us preserve the natural beauty of our surroundings. Dispose of waste responsibly and avoid disturbing local wildlife.</p>
       </div>
     ),
   },
@@ -117,10 +117,10 @@ const policySections = [
     title: 'Privacy Policy',
     content: (
       <div className="space-y-3 text-sm leading-relaxed text-muted-foreground">
-                    <p>At The Vedara Retreat, we are committed to protecting your privacy. Any personal information collected during booking – including name, contact details, and payment information – is used solely for the purpose of facilitating your stay and improving our services.</p>
-        <p><strong className="text-foreground">Data Security:</strong> We implement reasonable security measures to protect your information. Payment processing is handled securely through Razorpay.</p>
-        <p><strong className="text-foreground">Information Sharing:</strong> We do not sell, trade, or share your personal information with third parties except as required by law or with your explicit consent.</p>
-        <p><strong className="text-foreground">Photography:</strong> We may capture photographs during your stay for promotional purposes. Please inform us at check-in if you prefer not to be photographed.</p>
+                    <p className="text-justify hyphens-auto">At The Vedara Retreat, we are committed to protecting your privacy. Any personal information collected during booking – including name, contact details, and payment information – is used solely for the purpose of facilitating your stay and improving our services.</p>
+        <p className="text-justify hyphens-auto"><strong className="text-foreground">Data Security:</strong> We implement reasonable security measures to protect your information. Payment processing is handled securely through Razorpay.</p>
+        <p className="text-justify hyphens-auto"><strong className="text-foreground">Information Sharing:</strong> We do not sell, trade, or share your personal information with third parties except as required by law or with your explicit consent.</p>
+        <p className="text-justify hyphens-auto"><strong className="text-foreground">Photography:</strong> We may capture photographs during your stay for promotional purposes. Please inform us at check-in if you prefer not to be photographed.</p>
       </div>
     ),
   },
@@ -129,10 +129,10 @@ const policySections = [
     title: 'Smoking & Pets',
     content: (
       <div className="space-y-3 text-sm leading-relaxed text-muted-foreground">
-        <p><strong className="text-foreground">Strictly Non-Smoking Rooms:</strong> To maintain our pristine Himalayan indoor environment and ensure guest safety, all cottages are strictly non-smoking. This includes cigarettes, e-cigarettes, vapes, cigars, and sheesha/hookah.</p>
-        <p><strong className="text-foreground">Balconies & Cafe:</strong> While you can smoke in the balconies and cafe, we have designated smoking areas for wider safety.</p>
-        <p><strong className="text-foreground">Hazardous Items:</strong> Due to the timber and stone architecture of our cottages, the use of candles, incense sticks (agarbatti), personal room heaters, or cooking appliances inside the rooms is strictly prohibited.</p>
-        <p><strong className="text-foreground">Pet Policy:</strong> To maintain an allergen-free environment and ensure the comfort of all visitors, The Vedara is currently a pet-free property. We are unable to accommodate pets of any size.</p>
+        <p className="text-justify hyphens-auto"><strong className="text-foreground">Strictly Non-Smoking Rooms:</strong> To maintain our pristine Himalayan indoor environment and ensure guest safety, all cottages are strictly non-smoking. This includes cigarettes, e-cigarettes, vapes, cigars, and sheesha/hookah.</p>
+        <p className="text-justify hyphens-auto"><strong className="text-foreground">Balconies & Cafe:</strong> While you can smoke in the balconies and cafe, we have designated smoking areas for wider safety.</p>
+        <p className="text-justify hyphens-auto"><strong className="text-foreground">Hazardous Items:</strong> Due to the timber and stone architecture of our cottages, the use of candles, incense sticks (agarbatti), personal room heaters, or cooking appliances inside the rooms is strictly prohibited.</p>
+        <p className="text-justify hyphens-auto"><strong className="text-foreground">Pet Policy:</strong> To maintain an allergen-free environment and ensure the comfort of all visitors, The Vedara is currently a pet-free property. We are unable to accommodate pets of any size.</p>
       </div>
     ),
   },
@@ -141,10 +141,10 @@ const policySections = [
     title: 'Safety & Liability',
     content: (
       <div className="space-y-3 text-sm leading-relaxed text-muted-foreground">
-                        <p><strong className="text-foreground">Mountain Terrain:</strong> The Vedara is located in a high-altitude Himalayan terrain. Guests are advised to exercise caution while navigating uneven paths, stairs, and natural surfaces around the property.</p>
-        <p><strong className="text-foreground">Weather:</strong> Mountain weather can be unpredictable. Please carry appropriate clothing and footwear. Management reserves the right to restrict outdoor activities during severe weather.</p>
-                        <p><strong className="text-foreground">Liability:</strong> The Vedara Retreat is not liable for any loss, injury, or damage to personal property during your stay. We recommend guests obtain appropriate travel insurance.</p>
-        <p><strong className="text-foreground">Emergency:</strong> A first-aid kit is available at the reception. In case of medical emergencies, the nearest healthcare facility is approximately 20 km away.</p>
+        <p className="text-justify hyphens-auto"><strong className="text-foreground">Mountain Terrain:</strong> The Vedara is located in a high-altitude Himalayan terrain. Guests are advised to exercise caution while navigating uneven paths, stairs, and natural surfaces around the property.</p>
+        <p className="text-justify hyphens-auto"><strong className="text-foreground">Weather:</strong> Mountain weather can be unpredictable. Please carry appropriate clothing and footwear. Management reserves the right to restrict outdoor activities during severe weather.</p>
+                        <p className="text-justify hyphens-auto"><strong className="text-foreground">Liability:</strong> The Vedara Retreat is not liable for any loss, injury, or damage to personal property during your stay. We recommend guests obtain appropriate travel insurance.</p>
+        <p className="text-justify hyphens-auto"><strong className="text-foreground">Emergency:</strong> A first-aid kit is available at the reception. In case of medical emergencies, the nearest healthcare facility is approximately 20 km away.</p>
       </div>
     ),
   },
@@ -187,7 +187,7 @@ export default function PoliciesPage() {
             <TextReveal as="h1" className="section-title max-w-3xl">
               Policies & Terms of Stay
             </TextReveal>
-            <p className="text-muted-foreground text-base md:text-lg max-w-3xl mt-6 leading-relaxed">
+            <p className="text-muted-foreground text-base md:text-lg max-w-3xl mt-6 leading-relaxed text-justify hyphens-auto">
               Thank you for choosing The Vedara. To ensure a serene, safe, and exceptional experience for all our guests, please review our house policies and terms of stay below. Confirming a reservation implies full acceptance of these terms.
             </p>
           </ScrollReveal>

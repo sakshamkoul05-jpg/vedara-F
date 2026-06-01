@@ -68,22 +68,22 @@ export default function AboutPage() {
             </ScrollReveal>
             <ScrollReveal direction="right">
               <div className="prose prose-earth dark:prose-invert max-w-none">
-                <p className="text-lg text-earth-700 dark:text-cream-200 leading-relaxed mb-6">
+                <p className="text-lg text-earth-700 dark:text-cream-200 leading-relaxed mb-6 text-justify hyphens-auto">
                   Nestled in the serene village of <strong>Ghiyagi</strong>, within the untouched landscapes of Jibhi, where cedar forests whisper through the mountains and time moves with quiet grace, The Vedara was envisioned as a <strong>boutique stay in Jibhi</strong> for those who seek more than just a getaway.
                 </p>
-                <p className="text-earth-600 dark:text-cream-300 leading-relaxed mb-6">
+                <p className="text-earth-600 dark:text-cream-300 leading-relaxed mb-6 text-justify hyphens-auto">
                   Inspired by the essence of wisdom, reflection, and the soul of the forest, The Vedara is a space that invites you to slow down, breathe deeply, and reconnect with what truly matters.
                 </p>
-                <p className="text-earth-600 dark:text-cream-300 leading-relaxed mb-6">
+                <p className="text-earth-600 dark:text-cream-300 leading-relaxed mb-6 text-justify hyphens-auto">
                   Thoughtfully designed to feel intimate yet refined, every corner blends seamlessly with nature – warm wooden textures, open skies, mountain air, and soulful hospitality – creating an experience that feels both luxurious and deeply personal.
                 </p>
-                <p className="text-earth-600 dark:text-cream-300 leading-relaxed mb-6">
+                <p className="text-earth-600 dark:text-cream-300 leading-relaxed mb-6 text-justify hyphens-auto">
                   Mornings begin with golden light through the pines, bird song echoing through the mountains, and the aroma of freshly brewed coffee rising through the valley. Afternoons unfold slowly beside flowing rivers and quiet conversations, while evenings are filled with starlit skies, the gentle sound of the flowing river, and a rare sense of calm.
                 </p>
-                <p className="text-earth-600 dark:text-cream-300 leading-relaxed mb-6">
+                <p className="text-earth-600 dark:text-cream-300 leading-relaxed mb-6 text-justify hyphens-auto">
                   Intentionally intimate and away from the rush of crowded resorts, The Vedara adapts effortlessly to every guest – whether you are a traveller seeking stillness or a family longing to reconnect.
                 </p>
-              <p className="text-forest-600 dark:text-forest-400 font-medium italic">
+              <p className="text-forest-600 dark:text-forest-400 font-medium italic text-justify hyphens-auto">
                 A <strong>luxury stay in Tirthan Valley</strong> where true luxury is not excess. It is stillness, connection, warmth, and unforgettable moments.
               </p>
               </div>
@@ -122,16 +122,16 @@ export default function AboutPage() {
               <div className="prose prose-earth dark:prose-invert max-w-none">
                 <p className="text-clay-500 text-sm tracking-[0.2em] uppercase mb-4 font-sans">Your Host</p>
                 <h2 className="font-serif text-3xl text-foreground mb-6">From Boardrooms to Mountain Horizons</h2>
-                <p className="text-earth-700 dark:text-cream-200 leading-relaxed mb-6">
+                <p className="text-earth-700 dark:text-cream-200 leading-relaxed mb-6 text-justify hyphens-auto">
                   After years of navigating boardrooms, deadlines, and the fast-moving corporate world, the founder of The Vedara made an unexpected choice – to trade city skylines for mountain horizons.
                 </p>
-                <p className="text-earth-600 dark:text-cream-300 leading-relaxed mb-6">
+                <p className="text-earth-600 dark:text-cream-300 leading-relaxed mb-6 text-justify hyphens-auto">
                   Drawn to the untouched beauty and slower rhythm of Ghiyagi, what started as a search for peace soon became a deeper calling: to build a space where people could pause, reconnect, and experience the kind of calm modern life often forgets.
                 </p>
-                <p className="text-earth-600 dark:text-cream-300 leading-relaxed mb-6">
+                <p className="text-earth-600 dark:text-cream-300 leading-relaxed mb-6 text-justify hyphens-auto">
                   That vision became The Vedara – a boutique mountain retreat shaped by nature, thoughtful living, and soulful hospitality. Every detail reflects a balance between refined comfort and the raw beauty of the Himalayas, creating experiences that feel intimate, grounding, and deeply personal.
                 </p>
-                <p className="text-earth-600 dark:text-cream-300 leading-relaxed">
+                <p className="text-earth-600 dark:text-cream-300 leading-relaxed text-justify hyphens-auto">
                   More than a host, the founder is a traveler at heart – someone who believes that the most memorable stays are not just about luxury, but about how a place makes you feel long after you leave.
                 </p>
               </div>
