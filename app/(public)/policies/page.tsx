@@ -117,7 +117,7 @@ const policySections = [
     title: 'Privacy Policy',
     content: (
       <div className="space-y-3 text-sm leading-relaxed text-muted-foreground">
-                    <p>At The Vedara Retreat, we are committed to protecting your privacy. Any personal information collected during booking — including name, contact details, and payment information — is used solely for the purpose of facilitating your stay and improving our services.</p>
+                    <p>At The Vedara Retreat, we are committed to protecting your privacy. Any personal information collected during booking – including name, contact details, and payment information – is used solely for the purpose of facilitating your stay and improving our services.</p>
         <p><strong className="text-foreground">Data Security:</strong> We implement reasonable security measures to protect your information. Payment processing is handled securely through Razorpay.</p>
         <p><strong className="text-foreground">Information Sharing:</strong> We do not sell, trade, or share your personal information with third parties except as required by law or with your explicit consent.</p>
         <p><strong className="text-foreground">Photography:</strong> We may capture photographs during your stay for promotional purposes. Please inform us at check-in if you prefer not to be photographed.</p>

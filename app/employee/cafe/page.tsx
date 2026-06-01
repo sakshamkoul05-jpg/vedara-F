@@ -143,7 +143,7 @@ export default function EmployeeCafePage() {
 
         {tab === 'orders' && (
           <div className="space-y-4">
-            <h2 className="font-serif text-lg text-foreground mb-4">Kitchen Display — Pending Orders</h2>
+            <h2 className="font-serif text-lg text-foreground mb-4">Kitchen Display – Pending Orders</h2>
             {orders.length === 0 ? (
               <p className="text-muted-foreground text-center py-12">No pending orders</p>
             ) : (

@@ -118,7 +118,7 @@ export default function ContactPage() {
                     <MapPin className="w-5 h-5 text-clay-500 mt-0.5" />
                     <div>
                       <h3 className="font-medium text-foreground">Address</h3>
-                      <p className="text-muted-foreground text-sm">Ghiyagi, Jibhi, Himachal Pradesh — 175123</p>
+                      <p className="text-muted-foreground text-sm">Ghiyagi, Jibhi, Himachal Pradesh – 175123</p>
                     </div>
                   </div>
                 </div>

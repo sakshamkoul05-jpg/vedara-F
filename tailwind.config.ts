@@ -43,7 +43,7 @@ const config: Config = {
         },
       },
       fontFamily: {
-        serif: ['var(--font-zen-old-mincho)', 'serif'],
+        serif: ['var(--font-cormorant-garamond)', 'serif'],
         sans: ['var(--font-inter)', 'system-ui', 'sans-serif'],
       },
       borderRadius: {

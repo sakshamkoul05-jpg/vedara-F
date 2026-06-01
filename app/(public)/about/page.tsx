@@ -7,7 +7,7 @@ import { ImageReveal } from '@/components/animations/ImageReveal';
 import { Mountain, Heart, Shield, Leaf, Home, Coffee, MapPin, Users, Wifi, Car, Flame, TreePine, UtensilsCrossed, ExternalLink } from 'lucide-react';
 
 const values = [
-  { icon: Leaf, title: 'Slow Living', desc: 'A retreat for those who seek more than just a getaway — to slow down, breathe deeply, and reconnect with what truly matters in the Himalayas.' },
+  { icon: Leaf, title: 'Slow Living', desc: 'A retreat for those who seek more than just a getaway – to slow down, breathe deeply, and reconnect with what truly matters in the Himalayas.' },
   { icon: Heart, title: 'Soulful Hospitality', desc: 'Every detail reflects a balance between refined comfort and the raw beauty of the mountains, creating experiences that feel deeply personal.' },
   { icon: Shield, title: 'Intimate by Design', desc: 'With just seven thoughtfully designed cottages, we offer privacy, exclusivity, and a deeply personal boutique resort in Jibhi experience.' },
   { icon: Coffee, title: 'Café + Stay Experience', desc: 'Anchored by a curated in-house café that creates a social yet serene atmosphere where conversations, coffee, and calm coexist.' },
@@ -32,14 +32,14 @@ const amenities = [
 ];
 
 const attractions = [
-  { name: 'Jibhi Waterfall', distance: '4 km', image: '/images/jibhi-waterfall.avif', desc: 'A cascading gem hidden in the forest — a perfect spot for a peaceful afternoon.' },
+  { name: 'Jibhi Waterfall', distance: '4 km', image: '/images/jibhi-waterfall.avif', desc: 'A cascading gem hidden in the forest – a perfect spot for a peaceful afternoon.' },
   { name: 'Mini Thailand', distance: '1.2 km', image: '/images/mini-thailand.jpg', desc: 'Serene river bend with turquoise pools, known as a boutique stay in Jibhi highlight.' },
-  { name: 'Jalori Pass', distance: '10 km', image: '/images/jalori-pass.jpg', desc: 'High-altitude pass with sweeping views — a must for any nature retreat Himachal visit.' },
-  { name: 'Serolsar Lake', distance: '10 km + trek', image: '/images/seroslar-lake.webp', desc: 'Crystal-clear lake surrounded by ancient oaks — a luxury stay in Tirthan Valley experience.' },
+  { name: 'Jalori Pass', distance: '10 km', image: '/images/jalori-pass.jpg', desc: 'High-altitude pass with sweeping views – a must for any nature retreat Himachal visit.' },
+  { name: 'Serolsar Lake', distance: '10 km + trek', image: '/images/seroslar-lake.webp', desc: 'Crystal-clear lake surrounded by ancient oaks – a luxury stay in Tirthan Valley experience.' },
   { name: 'Chehni Kothi', distance: '10 km', image: '/images/chehni-kothi.jpg', desc: 'Centuries-old medieval tower fortress offering a glimpse into local history.' },
-  { name: 'Tirthan Valley', distance: '26 km', image: '/images/tirthan-valley.jpg', desc: 'Pristine valley famous for trout fishing — ideal for luxury cottages Jibhi explorers.' },
-  { name: 'Lambhari Top', distance: '8 km', image: '/images/hero-1.jpg', desc: 'A breathtaking trek to the summit with panoramic Himalayan views. Our guided excursions make for an unforgettable mountain adventure.' },
-  { name: 'Great Himalayan National Park', distance: '30 km', image: '/images/hero-2.jpg', desc: 'A UNESCO World Heritage site with pristine alpine meadows, dense forests, and rich wildlife. Perfect for a day trek from The Vedara.' },
+  { name: 'Tirthan Valley', distance: '26 km', image: '/images/tirthan-valley.jpg', desc: 'Pristine valley famous for trout fishing – ideal for luxury cottages Jibhi explorers.' },
+  { name: 'Lambhari Top', distance: '8 km', image: 'https://images.unsplash.com/photo-1585409677983-0f6c41ca9c3b?w=800&q=80', desc: 'A breathtaking trek to the summit with panoramic Himalayan views. Our guided excursions make for an unforgettable mountain adventure.' },
+  { name: 'Great Himalayan National Park', distance: '30 km', image: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&q=80', desc: 'A UNESCO World Heritage site with pristine alpine meadows, dense forests, and rich wildlife. Perfect for a day trek from The Vedara.' },
   { name: 'Kids Arena', distance: 'On-site', image: '/images/hero-3.jpg', desc: 'A dedicated play and activity zone for young explorers featuring nature crafts, outdoor games, and supervised adventures.' },
 ];
 
@@ -52,7 +52,7 @@ export default function AboutPage() {
           <ScrollReveal>
             <p className="text-clay-500 text-sm tracking-[0.2em] uppercase mb-4 font-sans">Our Story</p>
             <TextReveal as="h1" className="section-title max-w-4xl">
-              The Vedara — a haven of wisdom, wilderness, and quiet luxury.
+              The Vedara – a haven of wisdom, wilderness, and quiet luxury.
             </TextReveal>
           </ScrollReveal>
         </div>
@@ -75,13 +75,13 @@ export default function AboutPage() {
                   Inspired by the essence of wisdom, reflection, and the soul of the forest, The Vedara is a space that invites you to slow down, breathe deeply, and reconnect with what truly matters.
                 </p>
                 <p className="text-earth-600 dark:text-cream-300 leading-relaxed mb-6">
-                  Thoughtfully designed to feel intimate yet refined, every corner blends seamlessly with nature — warm wooden textures, open skies, mountain air, and soulful hospitality — creating an experience that feels both luxurious and deeply personal.
+                  Thoughtfully designed to feel intimate yet refined, every corner blends seamlessly with nature – warm wooden textures, open skies, mountain air, and soulful hospitality – creating an experience that feels both luxurious and deeply personal.
                 </p>
                 <p className="text-earth-600 dark:text-cream-300 leading-relaxed mb-6">
                   Mornings begin with golden light through the pines, bird song echoing through the mountains, and the aroma of freshly brewed coffee rising through the valley. Afternoons unfold slowly beside flowing rivers and quiet conversations, while evenings are filled with starlit skies, the gentle sound of the flowing river, and a rare sense of calm.
                 </p>
                 <p className="text-earth-600 dark:text-cream-300 leading-relaxed mb-6">
-                  Intentionally intimate and away from the rush of crowded resorts, The Vedara adapts effortlessly to every guest — whether you are a traveller seeking stillness or a family longing to reconnect.
+                  Intentionally intimate and away from the rush of crowded resorts, The Vedara adapts effortlessly to every guest – whether you are a traveller seeking stillness or a family longing to reconnect.
                 </p>
               <p className="text-forest-600 dark:text-forest-400 font-medium italic">
                 A <strong>luxury stay in Tirthan Valley</strong> where true luxury is not excess. It is stillness, connection, warmth, and unforgettable moments.
@@ -97,7 +97,7 @@ export default function AboutPage() {
           <ScrollReveal>
             <div className="text-center max-w-3xl mx-auto mb-12">
               <p className="text-clay-500 text-sm tracking-[0.2em] uppercase mb-4 font-sans">About the Property</p>
-              <h2 className="section-title mb-6">The Vedara — Himalayan Boutique Retreat</h2>
+              <h2 className="section-title mb-6">The Vedara – Himalayan Boutique Retreat</h2>
               <p className="section-subtitle">7 luxury cottages Jibhi | 18–22 guests | Launch 2026 | A nature retreat Himachal</p>
             </div>
           </ScrollReveal>
@@ -123,16 +123,16 @@ export default function AboutPage() {
                 <p className="text-clay-500 text-sm tracking-[0.2em] uppercase mb-4 font-sans">Your Host</p>
                 <h2 className="font-serif text-3xl text-foreground mb-6">From Boardrooms to Mountain Horizons</h2>
                 <p className="text-earth-700 dark:text-cream-200 leading-relaxed mb-6">
-                  After years of navigating boardrooms, deadlines, and the fast-moving corporate world, the founder of The Vedara made an unexpected choice — to trade city skylines for mountain horizons.
+                  After years of navigating boardrooms, deadlines, and the fast-moving corporate world, the founder of The Vedara made an unexpected choice – to trade city skylines for mountain horizons.
                 </p>
                 <p className="text-earth-600 dark:text-cream-300 leading-relaxed mb-6">
                   Drawn to the untouched beauty and slower rhythm of Ghiyagi, what started as a search for peace soon became a deeper calling: to build a space where people could pause, reconnect, and experience the kind of calm modern life often forgets.
                 </p>
                 <p className="text-earth-600 dark:text-cream-300 leading-relaxed mb-6">
-                  That vision became The Vedara — a boutique mountain retreat shaped by nature, thoughtful living, and soulful hospitality. Every detail reflects a balance between refined comfort and the raw beauty of the Himalayas, creating experiences that feel intimate, grounding, and deeply personal.
+                  That vision became The Vedara – a boutique mountain retreat shaped by nature, thoughtful living, and soulful hospitality. Every detail reflects a balance between refined comfort and the raw beauty of the Himalayas, creating experiences that feel intimate, grounding, and deeply personal.
                 </p>
                 <p className="text-earth-600 dark:text-cream-300 leading-relaxed">
-                  More than a host, the founder is a traveler at heart — someone who believes that the most memorable stays are not just about luxury, but about how a place makes you feel long after you leave.
+                  More than a host, the founder is a traveler at heart – someone who believes that the most memorable stays are not just about luxury, but about how a place makes you feel long after you leave.
                 </p>
               </div>
             </ScrollReveal>
@@ -257,7 +257,7 @@ export default function AboutPage() {
                 </div>
                 <h3 className="font-serif text-lg text-cream-50 mb-2">By Road</h3>
                 <p className="text-cream-200/60 text-sm leading-relaxed">
-                  Vedara is located in Ghiyagi, Jibhi — a 5–6 hr scenic drive from Chandigarh via NH-5. Regular HRTC buses run from Delhi and Chandigarh to Aut (30 km from Jibhi). We can arrange pickup upon request.
+                  Vedara is located in Ghiyagi, Jibhi – a 5–6 hr scenic drive from Chandigarh via NH-5. Regular HRTC buses run from Delhi and Chandigarh to Aut (30 km from Jibhi). We can arrange pickup upon request.
                 </p>
               </div>
             </ScrollReveal>

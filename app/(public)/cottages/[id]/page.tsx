@@ -317,7 +317,7 @@ export default function CottageDetailPage() {
                         >
                           <div className="bg-earth-50 dark:bg-earth-800 rounded-xl p-4 space-y-2">
                             <div className="flex justify-between text-sm">
-                              <span className="text-muted-foreground">{formatPrice(effectivePrice)} × {nights} {nights === 1 ? 'night' : 'nights'}</span>
+                              <span className="text-muted-foreground">{formatPrice(effectivePrice)} Ö {nights} {nights === 1 ? 'night' : 'nights'}</span>
                               <span className="text-foreground font-medium">{formatPrice(effectivePrice * nights)}</span>
                             </div>
                             {activeSeasonal && (

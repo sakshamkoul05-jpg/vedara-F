@@ -13,14 +13,14 @@ import { HeroCarousel } from '@/components/home/HeroCarousel';
 
 const cottages = [
   { slug: 'monal-haven', name: 'Monal Haven', price: '₹12,000', desc: 'Premium Duplex Family Suite with private jacuzzi, attic yoga balcony, and sweeping mountain views', image: '/images/hero-1.jpg' },
-  { slug: 'koklass-cove', name: 'Koklass Cove', price: '₹12,500', desc: 'Premium Duplex Family Suite — our largest with two viewing balconies, private jacuzzi, and unmatched privacy', image: '/images/hero-2.jpg' },
+  { slug: 'koklass-cove', name: 'Koklass Cove', price: '₹12,500', desc: 'Premium Duplex Family Suite – our largest with two viewing balconies, private jacuzzi, and unmatched privacy', image: '/images/hero-2.jpg' },
   { slug: 'magpie-retreat', name: 'Magpie Retreat', price: '₹11,000', desc: 'Intimate Mountain View Suite with deep-soak bathtub and dual-balcony setup', image: '/images/hero-3.jpg' },
 ];
 
 const testimonials = [
-  { name: 'Ananya & Rohit', content: 'Monal Haven was everything we dreamed of. Waking up to the mist over the mountains, the jacuzzi under the stars — pure magic.', rating: 5, location: 'Mumbai, India' },
+  { name: 'Ananya & Rohit', content: 'Monal Haven was everything we dreamed of. Waking up to the mist over the mountains, the jacuzzi under the stars – pure magic.', rating: 5, location: 'Mumbai, India' },
   { name: 'Daniel Park', content: 'I wrote half my manuscript sitting on the balcony at Whistling Thrush. The staff was incredibly thoughtful.', rating: 5, location: 'Seoul, South Korea' },
-  { name: 'Emily & James', content: 'Koklass Cove was perfection. The attic yoga balcony, the sweeping views — we felt like we were floating above the world.', rating: 5, location: 'Melbourne, Australia' },
+  { name: 'Emily & James', content: 'Koklass Cove was perfection. The attic yoga balcony, the sweeping views – we felt like we were floating above the world.', rating: 5, location: 'Melbourne, Australia' },
 ];
 
 const experiences = [
@@ -30,7 +30,7 @@ const experiences = [
   { icon: Moon, title: 'Star Gazing', desc: 'Unpolluted Himalayan skies reveal constellations you have never seen before.' },
   { icon: Coffee, title: 'Café Evenings', desc: 'Handcrafted coffee and wood-fired meals as the sun sets behind the pines.' },
   { icon: MapPin, title: 'Lambhari Top Trek', desc: 'A scenic trek to Lambhari Top with panoramic Himalayan views. Explore the trail with our guided excursions.' },
-  { icon: TreePine, title: 'Great Himalayan NP — Tirthan Hilltop Adventure', desc: 'Explore the untouched wilderness of the Great Himalayan National Park and Tirthan Valley on a guided hilltop adventure.' },
+  { icon: TreePine, title: 'Great Himalayan NP – Tirthan Hilltop Adventure', desc: 'Explore the untouched wilderness of the Great Himalayan National Park and Tirthan Valley on a guided hilltop adventure.' },
   { icon: Sparkles, title: 'Kids Arena', desc: 'A dedicated space for young explorers with supervised nature activities, crafts, and outdoor games.' },
 ];
 
@@ -77,14 +77,14 @@ export default function HomePage() {
             transition={{ delay: 1.1, duration: 0.8 }}
             className="text-cream-200 text-base md:text-lg max-w-2xl mx-auto mb-10 font-sans leading-relaxed"
           >
-            Seven handcrafted cottages, one cozy café — a slow-living mountain escape crafted for those who seek stillness.
+            Seven handcrafted cottages, one cozy café – a slow-living mountain escape crafted for those who seek stillness.
           </motion.p>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.3, duration: 0.8 }}
           >
-            <Link href="/booking" className="vintage-button bg-cream-50 text-forest-800 hover:bg-cream-100 px-10 py-4 text-base inline-block">
+            <Link href="/booking" className="vintage-button bg-cream-50 text-forest-800 hover:bg-cream-100 px-10 py-4 text-base inline-flex items-center justify-center">
               Book Your Stay <ArrowRight className="w-4 h-4 ml-2" />
             </Link>
           </motion.div>
@@ -110,7 +110,7 @@ export default function HomePage() {
               <div>
                 <label className="block text-xs font-medium text-earth-600 dark:text-cream-300 mb-1">Property</label>
                 <select className="w-full rounded-xl border border-earth-200 dark:border-earth-600 bg-white dark:bg-earth-700 px-3 py-2.5 text-sm text-earth-900 dark:text-cream-100 focus:outline-none focus:border-forest-500">
-                  <option>The Vedara — Himalayan Boutique Retreat</option>
+                  <option>The Vedara – Himalayan Boutique Retreat</option>
                 </select>
               </div>
               <div>
@@ -140,7 +140,7 @@ export default function HomePage() {
                 <p className="text-clay-400 text-sm tracking-[0.2em] uppercase mb-4 font-sans">Welcome to The Vedara</p>
                 <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-cream-50 mb-6">A Story Rooted in the Mountains</h2>
                 <p className="text-cream-200/80 text-lg leading-relaxed mb-6">
-                  Nestled in the serene village of Ghiyagi, within the untouched landscapes of Jibhi, The Vedara was born from a simple belief — that the most profound luxury is found in stillness, connection, and the raw beauty of the Himalayas.
+                  Nestled in the serene village of Ghiyagi, within the untouched landscapes of Jibhi, The Vedara was born from a simple belief – that the most profound luxury is found in stillness, connection, and the raw beauty of the Himalayas.
                 </p>
                 <p className="text-cream-200/60 leading-relaxed mb-8">
                   With seven handcrafted cottages and a soulful café, we offer more than a stay. We offer a chance to pause, breathe, and remember what truly matters.
@@ -169,7 +169,7 @@ export default function HomePage() {
               <p className="text-clay-500 text-sm tracking-[0.2em] uppercase mb-4 font-sans">Our Cottages</p>
               <h2 className="section-title mb-6">Seven Stories, Seven Retreats</h2>
               <p className="section-subtitle">
-                Each cottage is a world unto itself — named after the birds of the valley and crafted with local materials, premium furnishings, and unobstructed mountain views.
+                Each cottage is a world unto itself – named after the birds of the valley and crafted with local materials, premium furnishings, and unobstructed mountain views.
               </p>
             </div>
           </ScrollReveal>
@@ -211,7 +211,7 @@ export default function HomePage() {
             <div className="text-center max-w-3xl mx-auto mb-16">
               <p className="text-clay-300 text-sm tracking-[0.2em] uppercase mb-4 font-sans">Experiences</p>
               <h2 className="font-serif text-4xl md:text-5xl text-cream-50 mb-6">Moments That Stay With You</h2>
-              <p className="text-cream-200/70 text-lg">Beyond the cottages, a world of experiences awaits — each designed to bring you closer to the mountains and to yourself.</p>
+              <p className="text-cream-200/70 text-lg">Beyond the cottages, a world of experiences awaits – each designed to bring you closer to the mountains and to yourself.</p>
             </div>
           </ScrollReveal>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
