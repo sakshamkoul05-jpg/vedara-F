@@ -50,7 +50,7 @@ export default function GalleryPage() {
           <ScrollReveal>
             <p className="text-clay-500 text-sm tracking-[0.2em] uppercase mb-4 font-sans">Gallery</p>
             <TextReveal as="h1" className="section-title max-w-3xl">
-              A Visual Journey Through Vedara
+              A Visual Journey Through The Vedara
             </TextReveal>
           </ScrollReveal>
         </div>

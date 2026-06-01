@@ -64,7 +64,7 @@ export function Footer() {
         </div>
 
         <div className="mt-12 pt-8 border-t border-earth-800 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-cream-400">
-          <p>&copy; {new Date().getFullYear()} Vedara Retreat. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} The Vedara Retreat. All rights reserved.</p>
           <p>Ghiyagi, Jibhi, Himachal Pradesh — 175123</p>
         </div>
       </div>

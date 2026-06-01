@@ -3,16 +3,17 @@ export interface Cottage {
   name: string;
   slug: string;
   description: string;
-  shortDesc: string | null;
+  shortDesc?: string;
+  category?: string;
   pricePerNight: number;
   capacity: number;
   bedrooms: number;
   bathrooms: number;
-  size: number | null;
-  amenities: string[];
-  images: string[];
-  isActive: boolean;
-  sortOrder: number;
+  size?: number;
+  amenities: string[] | string;
+  images: string[] | string;
+  isActive?: boolean;
+  sortOrder?: number;
   seasonalPricings?: SeasonalPricing[];
 }
 

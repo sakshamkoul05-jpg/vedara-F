@@ -206,7 +206,7 @@ export default function CafeAdminPage() {
           <ClipboardList className="w-5 h-5 text-forest-600" />
           <span className="text-sm text-earth-500 font-manrope">Today&apos;s Orders</span>
         </div>
-        <p className="text-3xl font-libre-caslon font-bold text-forest-700">
+        <p className="text-3xl font-serif font-bold text-forest-700">
           {orders.filter(o => new Date(o.createdAt).toDateString() === new Date().toDateString()).length}
         </p>
       </div>
@@ -215,7 +215,7 @@ export default function CafeAdminPage() {
           <DollarSign className="w-5 h-5 text-forest-600" />
           <span className="text-sm text-earth-500 font-manrope">Today&apos;s Revenue</span>
         </div>
-        <p className="text-3xl font-libre-caslon font-bold text-forest-700">{formatPrice(todayRevenue())}</p>
+        <p className="text-3xl font-serif font-bold text-forest-700">{formatPrice(todayRevenue())}</p>
       </div>
       <div className="vintage-card p-6">
         <div className="flex items-center gap-3 mb-2">
@@ -233,7 +233,7 @@ export default function CafeAdminPage() {
           <Users className="w-5 h-5 text-forest-600" />
           <span className="text-sm text-earth-500 font-manrope">Pending Orders</span>
         </div>
-        <p className="text-3xl font-libre-caslon font-bold text-amber-600">{pendingCount()}</p>
+        <p className="text-3xl font-serif font-bold text-amber-600">{pendingCount()}</p>
       </div>
     </ScrollReveal>
   )
@@ -296,7 +296,7 @@ export default function CafeAdminPage() {
       <div className="space-y-4">
         {menuData.map(category => (
           <ScrollReveal key={category._id} className="vintage-card p-4">
-            <h3 className="text-lg font-libre-caslon font-bold text-forest-700 mb-3">{category.name}</h3>
+            <h3 className="text-lg font-serif font-bold text-forest-700 mb-3">{category.name}</h3>
             {category.description && <p className="text-sm text-earth-500 mb-3 font-manrope">{category.description}</p>}
             <div className="space-y-2">
               {(category.items || []).map(item => (
@@ -437,7 +437,7 @@ export default function CafeAdminPage() {
         <ScrollReveal className="mb-8">
           <div className="flex items-center gap-3 mb-2">
             <Coffee className="w-8 h-8 text-forest-600" />
-            <h1 className="text-3xl font-libre-caslon font-bold text-forest-800">Cafe Admin</h1>
+            <h1 className="text-3xl font-serif font-bold text-forest-800">Cafe Admin</h1>
           </div>
           <p className="text-earth-500 font-manrope">Manage your cafe operations</p>
         </ScrollReveal>

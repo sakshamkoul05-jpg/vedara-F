@@ -117,7 +117,7 @@ const policySections = [
     title: 'Privacy Policy',
     content: (
       <div className="space-y-3 text-sm leading-relaxed text-muted-foreground">
-        <p>At Vedara Retreat, we are committed to protecting your privacy. Any personal information collected during booking — including name, contact details, and payment information — is used solely for the purpose of facilitating your stay and improving our services.</p>
+                    <p>At The Vedara Retreat, we are committed to protecting your privacy. Any personal information collected during booking — including name, contact details, and payment information — is used solely for the purpose of facilitating your stay and improving our services.</p>
         <p><strong className="text-foreground">Data Security:</strong> We implement reasonable security measures to protect your information. Payment processing is handled securely through Razorpay.</p>
         <p><strong className="text-foreground">Information Sharing:</strong> We do not sell, trade, or share your personal information with third parties except as required by law or with your explicit consent.</p>
         <p><strong className="text-foreground">Photography:</strong> We may capture photographs during your stay for promotional purposes. Please inform us at check-in if you prefer not to be photographed.</p>
@@ -141,9 +141,9 @@ const policySections = [
     title: 'Safety & Liability',
     content: (
       <div className="space-y-3 text-sm leading-relaxed text-muted-foreground">
-        <p><strong className="text-foreground">Mountain Terrain:</strong> Vedara is located in a high-altitude Himalayan terrain. Guests are advised to exercise caution while navigating uneven paths, stairs, and natural surfaces around the property.</p>
+                        <p><strong className="text-foreground">Mountain Terrain:</strong> The Vedara is located in a high-altitude Himalayan terrain. Guests are advised to exercise caution while navigating uneven paths, stairs, and natural surfaces around the property.</p>
         <p><strong className="text-foreground">Weather:</strong> Mountain weather can be unpredictable. Please carry appropriate clothing and footwear. Management reserves the right to restrict outdoor activities during severe weather.</p>
-        <p><strong className="text-foreground">Liability:</strong> Vedara Retreat is not liable for any loss, injury, or damage to personal property during your stay. We recommend guests obtain appropriate travel insurance.</p>
+                        <p><strong className="text-foreground">Liability:</strong> The Vedara Retreat is not liable for any loss, injury, or damage to personal property during your stay. We recommend guests obtain appropriate travel insurance.</p>
         <p><strong className="text-foreground">Emergency:</strong> A first-aid kit is available at the reception. In case of medical emergencies, the nearest healthcare facility is approximately 20 km away.</p>
       </div>
     ),

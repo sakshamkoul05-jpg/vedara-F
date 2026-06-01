@@ -128,6 +128,11 @@ export default function CottageBySlugPage() {
               <Badge variant="default" size="sm" className="mb-3 bg-clay-500 text-cream-50 border-none">
                 {isPeakSeason ? 'Peak Season Pricing' : 'Standard Pricing'}
               </Badge>
+              {cottage.category && (
+                <Badge variant="default" size="sm" className="mb-2 bg-forest-600/80 text-cream-50 border-none">
+                  {cottage.category}
+                </Badge>
+              )}
               <h1 className="font-serif text-3xl md:text-5xl lg:text-6xl text-cream-50 mb-2">{cottage.name}</h1>
               <div className="flex items-baseline gap-2">
                 <span className="text-2xl md:text-3xl font-bold text-cream-50">{formatPrice(effectivePrice)}</span>

@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Inter, Libre_Caslon_Text } from 'next/font/google';
+import { Inter, Zen_Old_Mincho } from 'next/font/google';
 import { ClientBody } from '@/components/layout/ClientBody';
 import '@/styles/globals.css';
 
@@ -9,10 +9,10 @@ const inter = Inter({
   display: 'swap',
 });
 
-const libreCaslon = Libre_Caslon_Text({
+const zenOldMincho = Zen_Old_Mincho({
   subsets: ['latin'],
-  weight: ['400', '700'],
-  variable: '--font-libre-caslon',
+  weight: ['400', '700', '900'],
+  variable: '--font-zen-old-mincho',
   display: 'swap',
 });
 
@@ -103,7 +103,7 @@ const jsonLd = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${inter.variable} ${libreCaslon.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`${inter.variable} ${zenOldMincho.variable}`} suppressHydrationWarning>
       <head>
         <script
           type="application/ld+json"
@@ -115,7 +115,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="ICBM" content="31.4875, 77.5410" />
         <script src="https://checkout.razorpay.com/v1/checkout.js" async></script>
       </head>
-      <body className="min-h-screen bg-background text-foreground font-sans antialiased">
+      <body className={`min-h-screen bg-background text-foreground font-sans antialiased ${zenOldMincho.variable} ${inter.variable}`}>
         <ClientBody>{children}</ClientBody>
       </body>
     </html>

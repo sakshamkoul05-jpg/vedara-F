@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
-import { ArrowRight, Star, Coffee, Trees, Sparkles, Music, FireExtinguisher, Moon, MapPin } from 'lucide-react';
+import { ArrowRight, Star, Coffee, Trees, Sparkles, Music, FireExtinguisher, Moon, MapPin, Mountain, TreePine } from 'lucide-react';
 import { ScrollReveal } from '@/components/animations/ScrollReveal';
 import { TextReveal } from '@/components/animations/TextReveal';
 import { ImageReveal } from '@/components/animations/ImageReveal';
@@ -12,9 +12,9 @@ import { MagneticButton } from '@/components/animations/MagneticButton';
 import { HeroCarousel } from '@/components/home/HeroCarousel';
 
 const cottages = [
-  { slug: 'monal-haven', name: 'Monal Haven', price: '₹12,000', desc: 'Premium duplex with jacuzzi, attic yoga balcony, and sweeping mountain views', image: '/images/hero-1.jpg' },
-  { slug: 'koklass-cove', name: 'Koklass Cove', price: '₹12,500', desc: 'Our largest duplex — two viewing balconies, private jacuzzi, and unmatched privacy', image: '/images/hero-2.jpg' },
-  { slug: 'magpie-retreat', name: 'Magpie Retreat', price: '₹11,000', desc: 'Charming duplex with deep-soak bath tub and dual-balcony setup', image: '/images/hero-3.jpg' },
+  { slug: 'monal-haven', name: 'Monal Haven', price: '₹12,000', desc: 'Premium Duplex Family Suite with private jacuzzi, attic yoga balcony, and sweeping mountain views', image: '/images/hero-1.jpg' },
+  { slug: 'koklass-cove', name: 'Koklass Cove', price: '₹12,500', desc: 'Premium Duplex Family Suite — our largest with two viewing balconies, private jacuzzi, and unmatched privacy', image: '/images/hero-2.jpg' },
+  { slug: 'magpie-retreat', name: 'Magpie Retreat', price: '₹11,000', desc: 'Intimate Mountain View Suite with deep-soak bathtub and dual-balcony setup', image: '/images/hero-3.jpg' },
 ];
 
 const testimonials = [
@@ -29,6 +29,9 @@ const experiences = [
   { icon: Trees, title: 'Nature Walks', desc: 'Guided treks through cedar forests to hidden waterfalls and panoramic viewpoints.' },
   { icon: Moon, title: 'Star Gazing', desc: 'Unpolluted Himalayan skies reveal constellations you have never seen before.' },
   { icon: Coffee, title: 'Café Evenings', desc: 'Handcrafted coffee and wood-fired meals as the sun sets behind the pines.' },
+  { icon: MapPin, title: 'Lambhari Top Trek', desc: 'A scenic trek to Lambhari Top with panoramic Himalayan views. Explore the trail with our guided excursions.' },
+  { icon: TreePine, title: 'Great Himalayan NP — Tirthan Hilltop Adventure', desc: 'Explore the untouched wilderness of the Great Himalayan National Park and Tirthan Valley on a guided hilltop adventure.' },
+  { icon: Sparkles, title: 'Kids Arena', desc: 'A dedicated space for young explorers with supervised nature activities, crafts, and outdoor games.' },
 ];
 
 const nearbyAttractions = [
@@ -55,16 +58,24 @@ export default function HomePage() {
         <div className="relative z-20 text-center px-4 max-w-4xl">
           <TextReveal
             as="h1"
-            className="text-5xl md:text-7xl lg:text-8xl font-serif text-cream-50 leading-tight mb-6"
+            className="text-6xl md:text-8xl lg:text-9xl font-serif text-cream-50 leading-tight mb-4 tracking-widest"
             delay={0.5}
           >
-            The Vedara — A Himalayan Boutique Retreat
+            THE VEDARA
           </TextReveal>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1, duration: 0.8 }}
-            className="text-cream-200 text-lg md:text-xl max-w-2xl mx-auto mb-10 font-sans leading-relaxed"
+            className="text-cream-200/80 text-lg md:text-xl max-w-2xl mx-auto mb-4 font-serif tracking-wide"
+          >
+            A Himalayan Boutique Retreat
+          </motion.p>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.1, duration: 0.8 }}
+            className="text-cream-200 text-base md:text-lg max-w-2xl mx-auto mb-10 font-sans leading-relaxed"
           >
             Seven handcrafted cottages, one cozy café — a slow-living mountain escape crafted for those who seek stillness.
           </motion.p>
@@ -126,10 +137,10 @@ export default function HomePage() {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <ScrollReveal direction="left">
               <div>
-                <p className="text-clay-400 text-sm tracking-[0.2em] uppercase mb-4 font-sans">Welcome to Vedara</p>
+                <p className="text-clay-400 text-sm tracking-[0.2em] uppercase mb-4 font-sans">Welcome to The Vedara</p>
                 <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-cream-50 mb-6">A Story Rooted in the Mountains</h2>
                 <p className="text-cream-200/80 text-lg leading-relaxed mb-6">
-                  Nestled in the serene village of Ghiyagi, within the untouched landscapes of Jibhi, Vedara was born from a simple belief — that the most profound luxury is found in stillness, connection, and the raw beauty of the Himalayas.
+                  Nestled in the serene village of Ghiyagi, within the untouched landscapes of Jibhi, The Vedara was born from a simple belief — that the most profound luxury is found in stillness, connection, and the raw beauty of the Himalayas.
                 </p>
                 <p className="text-cream-200/60 leading-relaxed mb-8">
                   With seven handcrafted cottages and a soulful café, we offer more than a stay. We offer a chance to pause, breathe, and remember what truly matters.
@@ -143,7 +154,7 @@ export default function HomePage() {
               <div className="aspect-[4/5] rounded-2xl overflow-hidden shadow-2xl">
                 <ImageReveal
                   src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80"
-                  alt="Himalayan mountain landscape at Vedara"
+                  alt="Himalayan mountain landscape at The Vedara"
                 />
               </div>
             </ScrollReveal>
@@ -203,7 +214,7 @@ export default function HomePage() {
               <p className="text-cream-200/70 text-lg">Beyond the cottages, a world of experiences awaits — each designed to bring you closer to the mountains and to yourself.</p>
             </div>
           </ScrollReveal>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {experiences.map((exp, i) => (
               <ScrollReveal key={exp.title} delay={i * 0.1}>
                 <div className="group vintage-card bg-white/10 backdrop-blur-sm border-cream-200/10 p-6 text-center hover:bg-white/20 transition-all duration-500 font-sans">
@@ -308,7 +319,7 @@ export default function HomePage() {
             <div className="text-center max-w-3xl mx-auto mb-16">
               <p className="text-clay-500 text-sm tracking-[0.2em] uppercase mb-4 font-sans">Explore Nearby</p>
               <h2 className="section-title mb-6">Discover the Valley</h2>
-              <p className="section-subtitle">Vedara is your gateway to the raw beauty of Jibhi and beyond</p>
+              <p className="section-subtitle">The Vedara is your gateway to the raw beauty of Jibhi and beyond</p>
             </div>
           </ScrollReveal>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">

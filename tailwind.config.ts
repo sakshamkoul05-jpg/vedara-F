@@ -43,7 +43,7 @@ const config: Config = {
         },
       },
       fontFamily: {
-        serif: ['var(--font-libre-caslon)', 'Georgia', 'serif'],
+        serif: ['var(--font-zen-old-mincho)', 'serif'],
         sans: ['var(--font-inter)', 'system-ui', 'sans-serif'],
       },
       borderRadius: {

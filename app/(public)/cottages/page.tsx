@@ -134,10 +134,13 @@ export default function CottagesPage() {
                         />
                       </div>
                       <div className="p-6">
-                        <div className="flex justify-between items-start mb-2">
+                        <div className="flex justify-between items-start mb-1">
                           <h3 className="font-serif text-xl text-foreground group-hover:text-forest-600 dark:group-hover:text-forest-400 transition-colors">{cottage.name}</h3>
                           <span className="text-forest-600 dark:text-forest-400 font-semibold">{formatPrice(cottage.pricePerNight)}<span className="text-earth-400 font-normal text-xs">/night</span></span>
                         </div>
+                        {cottage.category && (
+                          <span className="inline-block text-xs font-medium px-2.5 py-1 rounded-full bg-clay-100 dark:bg-clay-900/30 text-clay-600 dark:text-clay-400 mb-2">{cottage.category}</span>
+                        )}
                         <p className="text-muted-foreground text-sm mb-4 line-clamp-2">{cottage.shortDesc || cottage.description}</p>
                         <div className="flex gap-4 text-xs text-muted-foreground mb-4">
                           <span className="flex items-center gap-1"><Users className="w-3 h-3" /> {cottage.capacity} guests</span>

@@ -106,7 +106,7 @@ export default function BookingPage() {
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
         amount: razorpayOrder.amount,
         currency: razorpayOrder.currency,
-        name: 'Vedara Retreat',
+        name: 'The Vedara Retreat',
         description: `Booking ${booking.bookingRef}`,
         order_id: razorpayOrder.id,
         handler: async (response: any) => {
