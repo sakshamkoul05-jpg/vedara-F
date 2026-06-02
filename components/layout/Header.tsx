@@ -14,6 +14,7 @@ const navLinks = [
   { href: '/about', label: 'About Us' },
   { href: '/cottages', label: 'Stays' },
   { href: '/cafe', label: 'Café' },
+  { href: '/menu', label: 'Menu' },
   { href: '/gallery', label: 'Gallery' },
   { href: '/contact', label: 'Contact Us' },
 ];
