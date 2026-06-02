@@ -233,7 +233,9 @@ function TiltCard({ children, className = '' }: { children: React.ReactNode; cla
       onMouseLeave={handleLeave}
       style={{ rotateX, rotateY, transformStyle: 'preserve-3d' }}
       className={className}
-    />
+    >
+      {children}
+    </motion.div>
   );
 }
 
