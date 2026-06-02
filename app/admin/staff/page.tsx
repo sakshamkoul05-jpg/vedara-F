@@ -166,8 +166,7 @@ function StaffTable({ token, showToast }: { token: string | null; showToast: (ms
                 {staff.map((member, idx) => {
                   const isFired = member.status === 'FIRED';
                   return (
-                    <ScrollReveal key={member.id} delay={idx * 0.03} asChild>
-                      <tr className={`border-b border-border transition-colors hover:bg-earth-50/50 dark:hover:bg-earth-800/30 ${
+                    <tr key={member.id} className={`border-b border-border transition-colors hover:bg-earth-50/50 dark:hover:bg-earth-800/30 ${
                         isFired ? 'opacity-50' : ''
                       }`}>
                         <td className="py-3 px-4">
@@ -220,7 +219,6 @@ function StaffTable({ token, showToast }: { token: string | null; showToast: (ms
                           </div>
                         </td>
                       </tr>
-                    </ScrollReveal>
                   );
                 })}
               </tbody>
