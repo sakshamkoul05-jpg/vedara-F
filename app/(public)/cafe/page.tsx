@@ -9,7 +9,7 @@ import { endpoints } from '@/services/api';
 
 type MenuItem = {
   name: string;
-  price: string;
+  price: string | number;
   desc: string;
   tags?: string[];
 };
@@ -249,7 +249,7 @@ export default function CafePage() {
   const [guestName, setGuestName] = useState('');
   const [ordering, setOrdering] = useState(false);
   const [orderSuccess, setOrderSuccess] = useState<string | null>(null);
-  const [itemNameMap, setItemNameMap] = useState<Record<string, { id: string; price: number }>>({});
+  const [itemIdMap, setItemIdMap] = useState<Record<string, string>>({});
 
   const pageRef = useRef<HTMLDivElement>(null);
   const mouseX = useMotionValue(0.5);
@@ -271,14 +271,14 @@ export default function CafePage() {
   useEffect(() => {
     endpoints.cafe.menu().then((res: any) => {
       const cats = res?.data || res?.categories || [];
-      const map: Record<string, { id: string; price: number }> = {};
+      const map: Record<string, string> = {};
       cats.forEach((cat: any) => {
         (cat.items || []).forEach((item: any) => {
           const key = item.name.toLowerCase().trim();
-          map[key] = { id: item.id, price: item.price };
+          if (!map[key]) map[key] = item.id;
         });
       });
-      setItemNameMap(map);
+      setItemIdMap(map);
     }).catch(() => {});
   }, []);
 
@@ -288,14 +288,14 @@ export default function CafePage() {
     item.desc.toLowerCase().includes(searchQuery.toLowerCase())
   ) || [];
 
-  const handleAddToCart = (item: MenuItem) => {
-    const key = item.name.toLowerCase().trim();
-    const mapped = itemNameMap[key];
-    if (mapped) {
-      addItem({ itemId: mapped.id, name: item.name, price: mapped.price });
-    } else {
-      addItem({ itemId: item.name, name: item.name, price: parseInt(item.price) });
-    }
+  const handleAddToCart = (item: MenuItem, localId: string) => {
+    const price = typeof item.price === 'string' ? parseInt(item.price) || 0 : item.price;
+    addItem({ itemId: localId, name: item.name, price });
+  };
+
+  const getApiItemId = (itemName: string): string => {
+    const key = itemName.toLowerCase().trim();
+    return itemIdMap[key] || itemName;
   };
 
   const handlePlaceOrder = async () => {
@@ -307,7 +307,7 @@ export default function CafePage() {
       const res = await endpoints.cafe.createOrder({
         tableNumber: orderType === 'table' ? parseInt(tableCottageInput) || 1 : 99,
         guestName: guestName.trim() ? `${guestName.trim()} (${seatLabel})` : seatLabel,
-        items: cartItems.map(i => ({ itemId: i.itemId, quantity: i.quantity })),
+        items: cartItems.map(i => ({ itemId: getApiItemId(i.name), quantity: i.quantity })),
       });
       const data = res?.data || res;
       setOrderSuccess(data.orderRef || 'Order placed');
@@ -431,17 +431,18 @@ export default function CafePage() {
 
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
                 {filteredItems.map((item, idx) => {
-                  const isFlipped = flippedId === `${activeCategory}-${idx}`;
+                  const localId = `${activeCategory}-${idx}`;
+                  const isFlipped = flippedId === localId;
                   const cartItem = cartItems.find(ci => ci.name === item.name);
                   const qty = cartItem?.quantity || 0;
                   return (
-                    <TiltCard key={`${activeCategory}-${idx}`} className="group perspective-[1000px] h-52">
+                    <TiltCard key={localId} className="group perspective-[1000px] h-52">
                       <motion.div
                         className="relative w-full h-full cursor-pointer"
                         style={{ transformStyle: 'preserve-3d' }}
                         animate={{ rotateY: isFlipped ? 180 : 0 }}
                         transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
-                        onClick={() => setFlippedId(isFlipped ? null : `${activeCategory}-${idx}`)}
+                        onClick={() => setFlippedId(isFlipped ? null : localId)}
                       >
                         <div
                           className="absolute inset-0 vintage-card p-5 flex flex-col justify-between"
@@ -479,7 +480,7 @@ export default function CafePage() {
                                 </button>
                                 <span className="text-sm font-semibold text-forest-700 dark:text-forest-300 min-w-[20px] text-center">{qty}</span>
                                 <button
-                                  onClick={() => handleAddToCart(item)}
+                                  onClick={() => handleAddToCart(item, localId)}
                                   className="w-6 h-6 rounded-full bg-forest-600 text-cream-50 flex items-center justify-center hover:bg-forest-700 transition-colors"
                                 >
                                   <Plus className="w-3 h-3" />
@@ -487,7 +488,7 @@ export default function CafePage() {
                               </div>
                             ) : (
                               <button
-                                onClick={() => handleAddToCart(item)}
+                                onClick={() => handleAddToCart(item, localId)}
                                 className="flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-forest-600 text-cream-50 text-xs font-medium hover:bg-forest-700 transition-all shadow-md"
                               >
                                 <Plus className="w-3 h-3" />
