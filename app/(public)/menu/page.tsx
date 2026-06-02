@@ -3,9 +3,10 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from 'framer-motion';
 import { ScrollReveal } from '@/components/animations/ScrollReveal';
-import { TextReveal } from '@/components/animations/TextReveal';
-import { Coffee, Soup, Fish, Salad, UtensilsCrossed, IceCream, CupSoda, Pizza, Baby, Sparkles, Mountain, Leaf, ArrowLeft, ChevronDown, Search } from 'lucide-react';
+import { Coffee, Soup, Fish, Salad, UtensilsCrossed, IceCream, CupSoda, Pizza, Baby, Sparkles, Mountain, Leaf, ArrowLeft, ChevronDown, Search, ShoppingCart, Plus, Minus, Trash2, Send, Store, Home, CheckCircle } from 'lucide-react';
 import Link from 'next/link';
+import { useCartStore } from '@/store/cart';
+import { endpoints } from '@/services/api';
 
 type MenuItem = {
   name: string;
@@ -38,10 +39,10 @@ const menuData: MenuCategory[] = [
       { name: 'Pancake Breakfast', price: '295', desc: 'Freshly made homemade fluffy pancakes. Served with fresh seasonal fruits, honey and chocolate syrup.' },
       { name: 'Vedara Breakfast Sandwich', price: '295', desc: 'A wholesome toasted sandwich. Choice of Egg & Cheese, Egg Chicken & Cheese, Paneer Corn & Cheese, or Mushroom Corn & Cheese. Served with grilled vegetables, sausages & seasonal fruits.' },
       { name: 'Himalayan Smoothie Bowl', price: '320', desc: 'Refreshing breakfast bowl. Choice of Banana Peanut Butter, Mixed Berry, or Mango Coconut (seasonal). Topped with granola, fresh fruits, nuts & seeds.' },
-      { name: 'English Breakfast Platter', price: '375', desc: 'Hearty platter with eggs cooked to preference, toast with butter/jam, sautéed vegetables, baked beans & chicken sausages.' },
+      { name: 'English Breakfast Platter', price: '375', desc: 'Hearty platter with eggs cooked to preference, toast with butter/jam, sauteed vegetables, baked beans & chicken sausages.' },
       { name: 'Puri Bhaji', price: '245', desc: 'Fluffy golden puris served with slow-cooked Himachali style aloo bhaji, traditional pickle & fresh curd.' },
     ],
-    note: 'Choose one beverage with breakfast: Milk Tea, Black Tea, Fresh Brewed Coffee, or Lemon Honey Ginger Tea. Add-ons: Fresh fruit bowl ₹130 | Extra toast ₹80 | Hash brown ₹120',
+    note: 'Choose one beverage with breakfast: Milk Tea, Black Tea, Fresh Brewed Coffee, or Lemon Honey Ginger Tea',
   },
   {
     id: 'himachali',
@@ -81,7 +82,7 @@ const menuData: MenuCategory[] = [
       { name: 'Murg Rahra', price: '480', desc: 'Chicken in creamy onion-yogurt gravy.' },
       { name: 'Mutton Rogan Josh', price: '720', desc: 'Kashmiri-style slow-cooked mutton (pre-order only).' },
     ],
-    note: 'Breads: Tawa Roti (Plain/Butter) ₹30/50 | Plain Paratha ₹90 | Steamed Rice ₹160 | Jeera Rice ₹210 | Vegetable Pulao ₹240',
+    note: 'Breads: Tawa Roti (Plain/Butter) 30/50 | Plain Paratha 90 | Steamed Rice 160 | Jeera Rice 210 | Vegetable Pulao 240',
   },
   {
     id: 'continental',
@@ -90,8 +91,8 @@ const menuData: MenuCategory[] = [
     icon: UtensilsCrossed,
     color: 'from-stone-700 to-amber-900',
     items: [
-      { name: 'Rosemary Roasted Paneer', price: '540', desc: 'Paneer with mashed potatoes and sautéed veggies.' },
-      { name: 'Rosemary Roasted Chicken', price: '620', desc: 'Roasted chicken with mashed potatoes and sautéed veggies.' },
+      { name: 'Rosemary Roasted Paneer', price: '540', desc: 'Paneer with mashed potatoes and sauteed veggies.' },
+      { name: 'Rosemary Roasted Chicken', price: '620', desc: 'Roasted chicken with mashed potatoes and sauteed veggies.' },
       { name: 'White Sauce Pasta (Veg)', price: '460', desc: 'Creamy pasta with vegetables, served with garlic bread.' },
       { name: 'White Sauce Pasta (Chicken)', price: '520', desc: 'Creamy pasta with chicken, served with garlic bread.' },
       { name: 'Red Sauce Pasta (Veg)', price: '460', desc: 'Tangy Arrabiata pasta with vegetables, served with garlic bread.' },
@@ -201,7 +202,7 @@ const menuData: MenuCategory[] = [
       { name: 'Mini Hot Chocolate with Marshmallow', price: '180', desc: 'Kid-sized hot chocolate with marshmallows.' },
       { name: 'Chocos / Cornflakes with Milk', price: '140', desc: 'Classic cereal bowl.' },
     ],
-    note: 'Add-ons: Honey ₹20 | Almond Milk ₹80 | Extra Espresso Shot ₹60 | Hazelnut ₹60',
+    note: 'Add-ons: Honey 20 | Almond Milk 80 | Extra Espresso Shot 60 | Hazelnut 60',
   },
 ];
 
@@ -233,15 +234,7 @@ function TiltCard({ children, className = '' }: { children: React.ReactNode; cla
       onMouseLeave={handleLeave}
       style={{ rotateX, rotateY, transformStyle: 'preserve-3d' }}
       className={className}
-    >
-      {children}
-      <div
-        className="absolute inset-0 rounded-xl pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-        style={{
-          background: 'radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255,255,255,0.1), transparent 60%)',
-        }}
-      />
-    </motion.div>
+    />
   );
 }
 
@@ -249,12 +242,22 @@ export default function MenuPage() {
   const [activeCategory, setActiveCategory] = useState('breakfast');
   const [searchQuery, setSearchQuery] = useState('');
   const [flippedId, setFlippedId] = useState<string | null>(null);
+  const [showCart, setShowCart] = useState(false);
+  const [showCheckout, setShowCheckout] = useState(false);
+  const [orderType, setOrderType] = useState<'table' | 'cottage'>('table');
+  const [tableCottageInput, setTableCottageInput] = useState('');
+  const [guestName, setGuestName] = useState('');
+  const [ordering, setOrdering] = useState(false);
+  const [orderSuccess, setOrderSuccess] = useState<string | null>(null);
+  const [itemNameMap, setItemNameMap] = useState<Record<string, { id: string; price: number }>>({});
+
   const pageRef = useRef<HTMLDivElement>(null);
   const mouseX = useMotionValue(0.5);
   const mouseY = useMotionValue(0.5);
-
   const bgRotateX = useSpring(useTransform(mouseY, [0, 1], [3, -3]), { stiffness: 100, damping: 30 });
   const bgRotateY = useSpring(useTransform(mouseX, [0, 1], [-3, 3]), { stiffness: 100, damping: 30 });
+
+  const { items: cartItems, addItem, removeItem, updateQuantity, clearCart, total, itemCount } = useCartStore();
 
   useEffect(() => {
     const handleMove = (e: MouseEvent) => {
@@ -265,11 +268,64 @@ export default function MenuPage() {
     return () => window.removeEventListener('mousemove', handleMove);
   }, [mouseX, mouseY]);
 
+  useEffect(() => {
+    endpoints.cafe.menu().then((res: any) => {
+      const cats = res?.data || res?.categories || [];
+      const map: Record<string, { id: string; price: number }> = {};
+      cats.forEach((cat: any) => {
+        (cat.items || []).forEach((item: any) => {
+          const key = item.name.toLowerCase().trim();
+          map[key] = { id: item.id, price: item.price };
+        });
+      });
+      setItemNameMap(map);
+    }).catch(() => {});
+  }, []);
+
   const activeCategoryData = menuData.find(c => c.id === activeCategory);
   const filteredItems = activeCategoryData?.items.filter(item =>
     item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     item.desc.toLowerCase().includes(searchQuery.toLowerCase())
   ) || [];
+
+  const handleAddToCart = (item: MenuItem) => {
+    const key = item.name.toLowerCase().trim();
+    const mapped = itemNameMap[key];
+    if (mapped) {
+      addItem({ itemId: mapped.id, name: item.name, price: mapped.price });
+    } else {
+      addItem({ itemId: item.name, name: item.name, price: parseInt(item.price) });
+    }
+  };
+
+  const handlePlaceOrder = async () => {
+    if (!tableCottageInput.trim()) return;
+    if (cartItems.length === 0) return;
+    setOrdering(true);
+    try {
+      const seatLabel = orderType === 'table' ? `Table ${tableCottageInput.trim()}` : `Cottage ${tableCottageInput.trim()}`;
+      const res = await endpoints.cafe.createOrder({
+        tableNumber: orderType === 'table' ? parseInt(tableCottageInput) || 1 : 99,
+        guestName: guestName.trim() ? `${guestName.trim()} (${seatLabel})` : seatLabel,
+        items: cartItems.map(i => ({ itemId: i.itemId, quantity: i.quantity })),
+      });
+      const data = res?.data || res;
+      setOrderSuccess(data.orderRef || 'Order placed');
+      clearCart();
+      setShowCheckout(false);
+      setTableCottageInput('');
+      setGuestName('');
+    } catch {
+      alert('Failed to place order. Please try again.');
+    } finally {
+      setOrdering(false);
+    }
+  };
+
+  const activeCategoryDataTitle = activeCategoryData?.title || '';
+  const activeCategoryDataSubtitle = activeCategoryData?.subtitle || '';
+  const activeCategoryDataNote = activeCategoryData?.note;
+  const ActiveIcon = activeCategoryData?.icon || Coffee;
 
   return (
     <div ref={pageRef} className="min-h-screen bg-cream-50 dark:bg-earth-950 overflow-hidden">
@@ -296,7 +352,7 @@ export default function MenuPage() {
             >
               <p className="text-amber-400 text-sm tracking-[0.3em] uppercase mb-4 font-sans">The Vedara Retreat</p>
               <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif text-cream-50 mb-4 tracking-wide">
-                Café Charade
+                Cafe Charade
               </h1>
               <p className="text-cream-200/80 text-lg md:text-xl max-w-2xl mx-auto font-light">
                 A Himalayan culinary journey — from mountain mornings to starlit dinners
@@ -307,8 +363,8 @@ export default function MenuPage() {
 
         <div className="sticky top-0 z-30 bg-cream-50/80 dark:bg-earth-950/80 backdrop-blur-xl border-b border-earth-200/50 dark:border-earth-800/50">
           <div className="vintage-container">
-            <div className="flex items-center gap-3 py-3 overflow-x-auto scrollbar-none">
-              <Link href="/" className="shrink-0 p-2 - ml-2 text-earth-500 hover:text-earth-700 dark:hover:text-earth-300 transition-colors">
+            <div className="flex items-center gap-3 py-3 overflow-x-auto" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+              <Link href="/" className="shrink-0 p-2 -ml-2 text-earth-500 hover:text-earth-700 dark:hover:text-earth-300 transition-colors">
                 <ArrowLeft className="w-4 h-4" />
               </Link>
               <div className="relative flex-1 max-w-xs">
@@ -322,7 +378,7 @@ export default function MenuPage() {
                 />
               </div>
             </div>
-            <div className="flex gap-1 pb-3 overflow-x-auto scrollbar-none">
+            <div className="flex gap-1 pb-3 overflow-x-auto" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
               {menuData.map(cat => (
                 <button
                   key={cat.id}
@@ -341,7 +397,7 @@ export default function MenuPage() {
           </div>
         </div>
 
-        <div className="vintage-container py-8 md:py-12">
+        <div className="vintage-container py-8 md:py-12 pb-28">
           <AnimatePresence mode="wait">
             <motion.div
               key={activeCategory}
@@ -352,11 +408,11 @@ export default function MenuPage() {
             >
               <div className="text-center mb-12">
                 <div className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gradient-to-r ${activeCategoryData?.color} text-cream-50 text-xs font-medium mb-4 shadow-lg`}>
-                  {activeCategoryData && <activeCategoryData.icon className="w-3.5 h-3.5" />}
-                  {activeCategoryData?.subtitle}
+                  <ActiveIcon className="w-3.5 h-3.5" />
+                  {activeCategoryDataSubtitle}
                 </div>
                 <h2 className="font-serif text-3xl md:text-4xl text-foreground mb-3">
-                  {activeCategoryData?.title}
+                  {activeCategoryDataTitle}
                 </h2>
                 {searchQuery && (
                   <p className="text-sm text-muted-foreground">
@@ -365,22 +421,24 @@ export default function MenuPage() {
                 )}
               </div>
 
-              {activeCategoryData?.note && (
+              {activeCategoryDataNote && (
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   className="vintage-card p-4 mb-8 text-sm text-muted-foreground bg-earth-100/50 dark:bg-earth-800/30 border border-earth-200/50 dark:border-earth-700/50"
                 >
                   <Leaf className="w-4 h-4 text-forest-500 inline-block mr-1.5 -mt-0.5" />
-                  {activeCategoryData.note}
+                  {activeCategoryDataNote}
                 </motion.div>
               )}
 
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
                 {filteredItems.map((item, idx) => {
                   const isFlipped = flippedId === `${activeCategory}-${idx}`;
+                  const cartItem = cartItems.find(ci => ci.name === item.name);
+                  const qty = cartItem?.quantity || 0;
                   return (
-                    <TiltCard key={`${activeCategory}-${idx}`} className="group perspective-[1000px] h-48">
+                    <TiltCard key={`${activeCategory}-${idx}`} className="group perspective-[1000px] h-52">
                       <motion.div
                         className="relative w-full h-full cursor-pointer"
                         style={{ transformStyle: 'preserve-3d' }}
@@ -389,7 +447,7 @@ export default function MenuPage() {
                         onClick={() => setFlippedId(isFlipped ? null : `${activeCategory}-${idx}`)}
                       >
                         <div
-                          className="absolute inset-0 vintage-card p-5 flex flex-col justify-between backface-hidden"
+                          className="absolute inset-0 vintage-card p-5 flex flex-col justify-between"
                           style={{ backfaceVisibility: 'hidden' }}
                         >
                           <div>
@@ -403,13 +461,42 @@ export default function MenuPage() {
                         </div>
 
                         <div
-                          className="absolute inset-0 vintage-card p-5 flex flex-col justify-center backface-hidden"
+                          className="absolute inset-0 vintage-card p-5 flex flex-col justify-between"
                           style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
                         >
-                          <p className="text-xs text-muted-foreground leading-relaxed mb-3">{item.desc}</p>
-                          <div className="flex items-center gap-2">
-                            <Sparkles className="w-3 h-3 text-amber-500" />
-                            <span className="text-sm font-semibold text-forest-600 dark:text-forest-400">₹{item.price}</span>
+                          <div>
+                            <p className="text-xs text-muted-foreground leading-relaxed mb-3">{item.desc}</p>
+                            <div className="flex items-center gap-2 mb-3">
+                              <Sparkles className="w-3 h-3 text-amber-500" />
+                              <span className="text-sm font-semibold text-forest-600 dark:text-forest-400">₹{item.price}</span>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-2" onClick={e => e.stopPropagation()}>
+                            {qty > 0 ? (
+                              <div className="flex items-center gap-2 bg-forest-100 dark:bg-forest-900/30 rounded-full px-2 py-1">
+                                <button
+                                  onClick={() => { if (qty === 1) removeItem(cartItem!.itemId); else updateQuantity(cartItem!.itemId, qty - 1); }}
+                                  className="w-6 h-6 rounded-full bg-forest-600 text-cream-50 flex items-center justify-center hover:bg-forest-700 transition-colors"
+                                >
+                                  <Minus className="w-3 h-3" />
+                                </button>
+                                <span className="text-sm font-semibold text-forest-700 dark:text-forest-300 min-w-[20px] text-center">{qty}</span>
+                                <button
+                                  onClick={() => handleAddToCart(item)}
+                                  className="w-6 h-6 rounded-full bg-forest-600 text-cream-50 flex items-center justify-center hover:bg-forest-700 transition-colors"
+                                >
+                                  <Plus className="w-3 h-3" />
+                                </button>
+                              </div>
+                            ) : (
+                              <button
+                                onClick={() => handleAddToCart(item)}
+                                className="flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-forest-600 text-cream-50 text-xs font-medium hover:bg-forest-700 transition-all shadow-md"
+                              >
+                                <Plus className="w-3 h-3" />
+                                Add
+                              </button>
+                            )}
                           </div>
                         </div>
                       </motion.div>
@@ -437,6 +524,161 @@ export default function MenuPage() {
             </div>
           </div>
         </div>
+      </div>
+
+      {orderSuccess && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm" onClick={() => setOrderSuccess(null)}>
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            onClick={e => e.stopPropagation()}
+            className="vintage-card p-8 text-center max-w-sm mx-4"
+          >
+            <div className="w-16 h-16 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center mx-auto mb-4">
+              <CheckCircle className="w-8 h-8 text-green-600" />
+            </div>
+            <h3 className="font-serif text-xl text-foreground mb-2">Order Placed!</h3>
+            <p className="text-sm text-muted-foreground mb-1">Reference: {orderSuccess}</p>
+            <p className="text-xs text-muted-foreground mb-6">Your order has been sent to the kitchen.</p>
+            <button
+              onClick={() => setOrderSuccess(null)}
+              className="px-6 py-2 rounded-full bg-forest-600 text-cream-50 text-sm font-medium hover:bg-forest-700 transition-colors"
+            >
+              Continue Browsing
+            </button>
+          </motion.div>
+        </div>
+      )}
+
+      {showCheckout && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm" onClick={() => setShowCheckout(false)}>
+          <motion.div
+            initial={{ y: 50, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            onClick={e => e.stopPropagation()}
+            className="vintage-card p-6 max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto"
+          >
+            <h3 className="font-serif text-xl text-foreground mb-4">Place Your Order</h3>
+
+            <div className="flex gap-2 mb-4">
+              <button
+                onClick={() => setOrderType('table')}
+                className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-medium transition-all ${
+                  orderType === 'table' ? 'bg-forest-600 text-cream-50 shadow-md' : 'bg-earth-100 dark:bg-earth-800 text-earth-600'
+                }`}
+              >
+                <Store className="w-4 h-4" />
+                Table
+              </button>
+              <button
+                onClick={() => setOrderType('cottage')}
+                className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-medium transition-all ${
+                  orderType === 'cottage' ? 'bg-forest-600 text-cream-50 shadow-md' : 'bg-earth-100 dark:bg-earth-800 text-earth-600'
+                }`}
+              >
+                <Home className="w-4 h-4" />
+                Cottage
+              </button>
+            </div>
+
+            <div className="mb-4">
+              <label className="vintage-label block text-xs text-muted-foreground mb-1.5">
+                {orderType === 'table' ? 'Table Number' : 'Cottage Name'}
+              </label>
+              <input
+                type={orderType === 'table' ? 'number' : 'text'}
+                min="1"
+                placeholder={orderType === 'table' ? 'e.g. 3' : 'e.g. Monal Haven'}
+                value={tableCottageInput}
+                onChange={e => setTableCottageInput(e.target.value)}
+                className="w-full px-4 py-2.5 rounded-xl bg-earth-100 dark:bg-earth-800 border-0 text-foreground text-sm placeholder:text-earth-400 focus:outline-none focus:ring-1 focus:ring-forest-500"
+              />
+            </div>
+
+            <div className="mb-6">
+              <label className="vintage-label block text-xs text-muted-foreground mb-1.5">Your Name (optional)</label>
+              <input
+                type="text"
+                placeholder="Your name"
+                value={guestName}
+                onChange={e => setGuestName(e.target.value)}
+                className="w-full px-4 py-2.5 rounded-xl bg-earth-100 dark:bg-earth-800 border-0 text-foreground text-sm placeholder:text-earth-400 focus:outline-none focus:ring-1 focus:ring-forest-500"
+              />
+            </div>
+
+            <div className="space-y-2 mb-4 max-h-40 overflow-y-auto">
+              {cartItems.map(ci => (
+                <div key={ci.itemId} className="flex items-center justify-between text-sm">
+                  <div className="flex-1 min-w-0">
+                    <p className="text-foreground truncate">{ci.name}</p>
+                    <p className="text-xs text-muted-foreground">×{ci.quantity} — ₹{ci.price * ci.quantity}</p>
+                  </div>
+                  <button onClick={() => removeItem(ci.itemId)} className="text-red-400 hover:text-red-600 p-1">
+                    <Trash2 className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              ))}
+            </div>
+
+            <div className="flex items-center justify-between pt-3 border-t border-border mb-6">
+              <span className="text-sm text-muted-foreground">Total</span>
+              <span className="text-lg font-bold text-forest-600 dark:text-forest-400">₹{total()}</span>
+            </div>
+
+            <div className="flex gap-3">
+              <button onClick={() => setShowCheckout(false)} className="flex-1 py-2.5 rounded-xl bg-earth-100 dark:bg-earth-800 text-foreground text-sm font-medium hover:bg-earth-200 dark:hover:bg-earth-700 transition-colors">
+                Cancel
+              </button>
+              <button
+                onClick={handlePlaceOrder}
+                disabled={ordering || !tableCottageInput.trim() || cartItems.length === 0}
+                className="flex-1 py-2.5 rounded-xl bg-forest-600 text-cream-50 text-sm font-medium hover:bg-forest-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              >
+                {ordering ? 'Placing...' : (
+                  <>
+                    <Send className="w-4 h-4" />
+                    Place Order
+                  </>
+                )}
+              </button>
+            </div>
+          </motion.div>
+        </div>
+      )}
+
+      <div className="fixed bottom-6 right-6 z-40 flex flex-col items-end gap-3">
+        <AnimatePresence>
+          {cartItems.length > 0 && !showCart && (
+            <motion.div
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0, opacity: 0 }}
+              className="vintage-card p-3 shadow-xl mb-2 max-w-[260px]"
+            >
+              <p className="text-xs font-medium text-foreground mb-2">{itemCount()} item{itemCount() !== 1 ? 's' : ''} · ₹{total()}</p>
+              <button
+                onClick={() => { setShowCheckout(true); setShowCart(false); }}
+                className="w-full py-2 rounded-full bg-forest-600 text-cream-50 text-xs font-medium hover:bg-forest-700 transition-colors flex items-center justify-center gap-1.5"
+              >
+                <Send className="w-3 h-3" /> Order Now
+              </button>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={() => setShowCheckout(true)}
+          className="relative w-14 h-14 rounded-full bg-forest-600 text-cream-50 shadow-xl shadow-forest-900/30 hover:bg-forest-700 transition-colors flex items-center justify-center"
+        >
+          <ShoppingCart className="w-6 h-6" />
+          {itemCount() > 0 && (
+            <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-amber-500 text-cream-50 text-[10px] font-bold flex items-center justify-center shadow-md">
+              {itemCount()}
+            </span>
+          )}
+        </motion.button>
       </div>
     </div>
   );
