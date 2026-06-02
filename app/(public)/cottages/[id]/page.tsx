@@ -238,6 +238,13 @@ export default function CottageDetailPage() {
                         </div>
                       </div>
                     )}
+                    <div className="vintage-card px-5 py-4 flex items-center gap-3">
+                      <Flame className="w-5 h-5 text-clay-500" />
+                      <div>
+                        <p className="text-xs text-muted-foreground">Additional Heater</p>
+                        <p className="font-medium text-foreground">₹{cottage.heaterCharge || 500}/night</p>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </ScrollReveal>

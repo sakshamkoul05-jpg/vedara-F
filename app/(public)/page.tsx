@@ -10,6 +10,7 @@ import { TextReveal } from '@/components/animations/TextReveal';
 import { ImageReveal } from '@/components/animations/ImageReveal';
 import { MagneticButton } from '@/components/animations/MagneticButton';
 import { HeroCarousel } from '@/components/home/HeroCarousel';
+import { PackageBanner } from '@/components/public/PackageBanner';
 
 const cottages = [
   { slug: 'monal-haven', name: 'Monal Haven', price: '₹12,000', desc: 'Premium Duplex Family Suite with private jacuzzi, attic yoga balcony, and sweeping mountain views', image: '/images/hero-1.jpg' },
@@ -102,6 +103,8 @@ export default function HomePage() {
           </motion.div>
         </motion.button>
       </section>
+
+      <PackageBanner />
 
       <section id="booking-bar" className="relative z-30 -mt-12 mb-12 px-4">
         <div className="vintage-container max-w-4xl">

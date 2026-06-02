@@ -4,7 +4,7 @@ import { BackButton } from '@/components/layout/BackButton';
 import { ScrollReveal } from '@/components/animations/ScrollReveal';
 import { TextReveal } from '@/components/animations/TextReveal';
 import { ImageReveal } from '@/components/animations/ImageReveal';
-import { Mountain, Heart, Shield, Leaf, Home, Coffee, MapPin, Users, Wifi, Car, Flame, TreePine, UtensilsCrossed, ExternalLink } from 'lucide-react';
+import { Mountain, Heart, Shield, Leaf, Home, Coffee, MapPin, Users, Wifi, Car, Flame, TreePine, UtensilsCrossed, ExternalLink, Music, Star, Compass, Gamepad2 } from 'lucide-react';
 
 const values = [
   { icon: Leaf, title: 'Slow Living', desc: 'A retreat for those who seek more than just a getaway – to slow down, breathe deeply, and reconnect with what truly matters in the Himalayas.' },
@@ -40,7 +40,17 @@ const attractions = [
   { name: 'Tirthan Valley', distance: '26 km', image: '/images/tirthan-valley.jpg', desc: 'Pristine valley famous for trout fishing – ideal for luxury cottages Jibhi explorers.' },
   { name: 'Lambhari Top', distance: '8 km', image: 'https://images.unsplash.com/photo-1585409677983-0f6c41ca9c3b?w=800&q=80', desc: 'A breathtaking trek to the summit with panoramic Himalayan views. Our guided excursions make for an unforgettable mountain adventure.' },
   { name: 'Great Himalayan National Park', distance: '30 km', image: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&q=80', desc: 'A UNESCO World Heritage site with pristine alpine meadows, dense forests, and rich wildlife. Perfect for a day trek from The Vedara.' },
-  { name: 'Kids Arena', distance: 'On-site', image: '/images/hero-3.jpg', desc: 'A dedicated play and activity zone for young explorers featuring nature crafts, outdoor games, and supervised adventures.' },
+];
+
+const activities = [
+  { icon: Flame, title: 'Bonfire Nights', desc: 'Evening bonfires under the starlit Himalayan sky.' },
+  { icon: Music, title: 'Music Nights', desc: 'Live acoustic sessions featuring local artists.' },
+  { icon: TreePine, title: 'Nature Walks', desc: 'Guided walks through cedar and pine forests.' },
+  { icon: Star, title: 'Star Gazing', desc: 'Unpolluted night skies perfect for astronomy.' },
+  { icon: Coffee, title: 'Café Evenings', desc: 'Warm beverages and conversations by the stream.' },
+  { icon: Mountain, title: 'Lambhari Top Trek', desc: 'Guided sunrise trek to panoramic summit views.' },
+  { icon: Compass, title: 'Great Himalayan NP', desc: 'Day trek to the UNESCO World Heritage site.' },
+  { icon: Gamepad2, title: 'Kids Arena', desc: 'Dedicated play zone with nature crafts, outdoor games, and supervised adventures for young explorers.' },
 ];
 
 export default function AboutPage() {
@@ -178,6 +188,31 @@ export default function AboutPage() {
                   </div>
                   <h3 className="font-serif text-xl text-foreground mb-3">{item.title}</h3>
                   <p className="text-muted-foreground text-sm leading-relaxed">{item.desc}</p>
+                </div>
+              </ScrollReveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="section-padding bg-cream-50 dark:bg-earth-900">
+        <div className="vintage-container">
+          <ScrollReveal>
+            <div className="text-center max-w-3xl mx-auto mb-16">
+              <p className="text-clay-500 text-sm tracking-[0.2em] uppercase mb-4 font-sans">Experiences</p>
+              <h2 className="section-title mb-6">Moments That Stay With You</h2>
+              <p className="section-subtitle">Beyond the cottages, a world of experiences awaits</p>
+            </div>
+          </ScrollReveal>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {activities.map((act, i) => (
+              <ScrollReveal key={act.title} delay={i * 0.1}>
+                <div className="group vintage-card p-6 text-center hover:bg-earth-100 dark:hover:bg-earth-800 transition-all duration-500">
+                  <div className="w-14 h-14 rounded-full bg-forest-100 dark:bg-forest-900/50 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-500">
+                    <act.icon className="w-7 h-7 text-forest-600 dark:text-forest-400" />
+                  </div>
+                  <h3 className="font-serif text-lg text-foreground mb-2">{act.title}</h3>
+                  <p className="text-muted-foreground text-sm leading-relaxed">{act.desc}</p>
                 </div>
               </ScrollReveal>
             ))}

@@ -7,13 +7,15 @@ import { cn } from '@/lib/utils';
 import { useAuthStore } from '@/store/auth';
 import {
   LayoutDashboard, Calendar, Coffee, Settings, BarChart3, LogOut, Mountain, ChevronLeft,
-  Users, HelpCircle
+  Users, HelpCircle, UserPlus, Package
 } from 'lucide-react';
 
 const adminNav = [
   { href: '/admin/dashboard', label: 'Overview', icon: LayoutDashboard },
   { href: '/admin/dashboard?tab=bookings', label: 'Bookings', icon: Calendar },
   { href: '/admin/dashboard?tab=cafe', label: 'Cafe Orders', icon: Coffee },
+  { href: '/admin/staff', label: 'Staff', icon: UserPlus },
+  { href: '/admin/packages', label: 'Packages', icon: Package },
   { href: '/admin/analytics', label: 'Analytics', icon: BarChart3 },
   { href: '/admin/cms', label: 'CMS', icon: Settings },
 ];

@@ -6,6 +6,7 @@ export interface Cottage {
   shortDesc?: string;
   category?: string;
   pricePerNight: number;
+  heaterCharge: number;
   capacity: number;
   bedrooms: number;
   bathrooms: number;
@@ -280,4 +281,32 @@ export interface StaffAttendance {
   checkOut: string | null
   status: 'PRESENT' | 'ABSENT' | 'HALF_DAY' | 'LEAVE' | 'HOLIDAY'
   notes: string | null
+}
+
+export interface Staff {
+  id: string;
+  name: string;
+  phone: string;
+  employeeId: string;
+  role: string;
+  salary?: number;
+  address?: string;
+  photo?: string;
+  status: 'ACTIVE' | 'FIRED';
+  hiredAt: string;
+  firedAt?: string;
+  createdAt: string;
+}
+
+export interface Package {
+  id: string;
+  title: string;
+  description?: string;
+  image?: string;
+  link?: string;
+  startDate?: string;
+  endDate?: string;
+  isActive: boolean;
+  sortOrder: number;
+  createdAt: string;
 }
