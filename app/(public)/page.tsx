@@ -141,10 +141,10 @@ export default function HomePage() {
 
       <PackageBanner />
 
-      <section id="booking-bar" className="relative z-30 mt-0 md:-mt-12 py-6 md:py-0 mb-12 px-4">
+      <section id="booking-bar" className="relative z-30 -mt-12 mb-12 px-4">
         <div className="vintage-container max-w-4xl">
           <div className="bg-white/80 dark:bg-earth-800/80 backdrop-blur-md rounded-2xl shadow-xl border border-earth-200 dark:border-earth-700 p-4 md:p-6 font-sans">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-3 items-end">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 items-end mb-3">
               <div>
                 <label className="block text-xs font-medium text-earth-600 dark:text-cream-300 mb-1">Check In</label>
                 <input type="date" value={homeCheckIn} onChange={handleCheckInChange} min={today} className="w-full rounded-xl border border-earth-200 dark:border-earth-600 bg-white dark:bg-earth-700 px-3 py-2.5 text-sm text-earth-900 dark:text-cream-100 focus:outline-none focus:border-forest-500" />
@@ -165,14 +165,16 @@ export default function HomePage() {
                   {[0,1,2,3].map(n => <option key={n} value={n}>{n}</option>)}
                 </select>
               </div>
-              <div className="md:col-span-2">
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 items-end">
+              <div>
                 <label className="block text-xs font-medium text-earth-600 dark:text-cream-300 mb-1">Nationality</label>
                 <select value={homeNationality} onChange={(e) => setHomeNationality(e.target.value)} className="w-full rounded-xl border border-earth-200 dark:border-earth-600 bg-white dark:bg-earth-700 px-3 py-2.5 text-sm text-earth-900 dark:text-cream-100 focus:outline-none focus:border-forest-500">
                   <option value="Indian">Indian</option>
                   <option value="Foreign">Foreign National</option>
                 </select>
               </div>
-              <div className="md:col-span-2">
+              <div>
                 <a onClick={handleHomeBooking} className="vintage-button-primary text-sm px-6 py-2.5 w-full text-center block cursor-pointer">
                   {homeCheckIn && homeCheckOut ? 'Check Availability' : 'Book Your Stay'}
                 </a>

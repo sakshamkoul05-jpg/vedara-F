@@ -56,6 +56,7 @@ export default function BookingPage() {
   const [stepLoading, setStepLoading] = useState(false);
   const [bookingData, setBookingData] = useState<any>(null);
   const [paymentLoading, setPaymentLoading] = useState(false);
+  const [dateError, setDateError] = useState('');
   const [couponInput, setCouponInput] = useState('');
 
   const { code, discount, discountType, isValid, error, loading: couponLoading, setCode, validateCoupon, removeCoupon } = useCouponStore();
@@ -87,8 +88,9 @@ export default function BookingPage() {
 
   const handleCheckOutChange = (value: string) => {
     setCheckOut(value);
+    setDateError('');
     if (checkIn && value && new Date(value) <= new Date(checkIn)) {
-      alert('Check-out date must be after check-in date');
+      setDateError('Check-out date must be after check-in date');
       setCheckOut('');
     }
   };
@@ -260,6 +262,7 @@ export default function BookingPage() {
                             <div className="relative">
                               <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-earth-400" />
                               <Input type="date" value={checkOut} onChange={(e) => handleCheckOutChange(e.target.value)} min={checkIn || new Date().toISOString().split('T')[0]} className="pl-10" />
+                          {dateError && <p className="text-red-500 text-xs mt-1">{dateError}</p>}
                             </div>
                           </div>
                           <Button variant="primary" size="lg" onClick={handleAvailabilityCheck} disabled={!checkIn || !checkOut || stepLoading} className="w-full mt-4">
