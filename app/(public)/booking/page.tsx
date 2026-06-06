@@ -97,6 +97,10 @@ export default function BookingPage() {
 
   const handleAvailabilityCheck = async () => {
     if (!checkIn || !checkOut) return;
+    if (new Date(checkOut) <= new Date(checkIn)) {
+      setDateError('Check-out date must be after check-in date');
+      return;
+    }
     setStepLoading(true);
     try {
       const res = await api.get(`/bookings/available-cottages?checkIn=${encodeURIComponent(checkIn)}&checkOut=${encodeURIComponent(checkOut)}`);
@@ -254,7 +258,7 @@ export default function BookingPage() {
                             <label className="vintage-label">Check-in Date *</label>
                             <div className="relative">
                               <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-earth-400" />
-                              <Input type="date" value={checkIn} onChange={(e) => setCheckIn(e.target.value)} min={new Date().toISOString().split('T')[0]} className="pl-10" />
+                              <Input type="date" value={checkIn} onChange={(e) => { setCheckIn(e.target.value); setDateError(''); if (checkOut && new Date(checkOut) <= new Date(e.target.value)) { setCheckOut(''); setDateError('Check-out must be after check-in'); } }} min={new Date().toISOString().split('T')[0]} className="pl-10" />
                             </div>
                           </div>
                           <div>
