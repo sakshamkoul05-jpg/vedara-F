@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from 'framer-motion';
-import { Coffee, Soup, Fish, Salad, UtensilsCrossed, IceCream, CupSoda, Pizza, Baby, Sparkles, Mountain, Leaf, ArrowLeft, ChevronDown, Search, ShoppingCart, Plus, Minus, Trash2, Send, Store, Home, CheckCircle } from 'lucide-react';
+import { Coffee, Soup, Fish, Salad, UtensilsCrossed, IceCream, CupSoda, Cookie, Baby, Sparkles, Mountain, Leaf, ArrowLeft, ChevronDown, Search, ShoppingCart, Plus, Minus, Trash2, Send, Store, Home, CheckCircle } from 'lucide-react';
 import Link from 'next/link';
 import { useCartStore } from '@/store/cart';
 import { endpoints } from '@/services/api';
@@ -28,7 +28,7 @@ const menuData: MenuCategory[] = [
   {
     id: 'breakfast',
     title: 'Breakfast',
-    subtitle: '7AM - 11AM',
+    subtitle: '7:30 AM - 10:00 AM',
     icon: Coffee,
     color: 'from-amber-600 to-yellow-700',
     items: [
@@ -242,14 +242,33 @@ function TiltCard({ children, className = '' }: { children: React.ReactNode; cla
 export default function CafePage() {
   const [activeCategory, setActiveCategory] = useState('breakfast');
   const [searchQuery, setSearchQuery] = useState('');
-  const [flippedId, setFlippedId] = useState<string | null>(null);
+  const [globalSearch, setGlobalSearch] = useState(false);
+  const [flippedIds, setFlippedIds] = useState<Set<string>>(new Set());
   const [showCheckout, setShowCheckout] = useState(false);
+  const [cartNotification, setCartNotification] = useState<string | null>(null);
   const [orderType, setOrderType] = useState<'table' | 'cottage'>('table');
   const [tableCottageInput, setTableCottageInput] = useState('');
   const [guestName, setGuestName] = useState('');
   const [ordering, setOrdering] = useState(false);
   const [orderSuccess, setOrderSuccess] = useState<string | null>(null);
   const [itemIdMap, setItemIdMap] = useState<Record<string, string>>({});
+
+  const toggleFlip = (localId: string) => {
+    setFlippedIds(prev => {
+      const next = new Set(prev);
+      if (next.has(localId)) {
+        next.delete(localId);
+      } else {
+        next.add(localId);
+      }
+      return next;
+    });
+  };
+
+  const showNotification = (itemName: string) => {
+    setCartNotification(itemName);
+    setTimeout(() => setCartNotification(null), 2000);
+  };
 
   const pageRef = useRef<HTMLDivElement>(null);
   const mouseX = useMotionValue(0.5);
@@ -283,14 +302,37 @@ export default function CafePage() {
   }, []);
 
   const activeCategoryData = menuData.find(c => c.id === activeCategory);
-  const filteredItems = activeCategoryData?.items.filter(item =>
-    item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    item.desc.toLowerCase().includes(searchQuery.toLowerCase())
-  ) || [];
+
+  const getFilteredItems = () => {
+    if (!searchQuery) {
+      return globalSearch ? [] : (activeCategoryData?.items || []);
+    }
+
+    const query = searchQuery.toLowerCase();
+
+    if (globalSearch) {
+      const results: Array<{ item: MenuItem; categoryId: string; categoryTitle: string; idx: number }> = [];
+      menuData.forEach(cat => {
+        cat.items.forEach((item, idx) => {
+          if (item.name.toLowerCase().includes(query) || item.desc.toLowerCase().includes(query)) {
+            results.push({ item, categoryId: cat.id, categoryTitle: cat.title, idx });
+          }
+        });
+      });
+      return results;
+    } else {
+      return activeCategoryData?.items.filter(item =>
+        item.name.toLowerCase().includes(query) || item.desc.toLowerCase().includes(query)
+      ) || [];
+    }
+  };
+
+  const filteredItems = getFilteredItems();
 
   const handleAddToCart = (item: MenuItem, localId: string) => {
     const price = typeof item.price === 'string' ? parseInt(item.price) || 0 : item.price;
     addItem({ itemId: localId, name: item.name, price });
+    showNotification(item.name);
   };
 
   const getApiItemId = (itemName: string): string => {
@@ -374,6 +416,16 @@ export default function CafePage() {
                   className="w-full pl-9 pr-3 py-1.5 text-xs rounded-full bg-earth-100 dark:bg-earth-800 border-0 text-foreground placeholder:text-earth-400 focus:outline-none focus:ring-1 focus:ring-forest-500"
                 />
               </div>
+              <button
+                onClick={() => setGlobalSearch(!globalSearch)}
+                className={`shrink-0 px-3 py-1.5 text-xs font-medium rounded-full transition-all duration-300 ${
+                  globalSearch
+                    ? 'bg-forest-600 text-cream-50 shadow-md'
+                    : 'bg-earth-100 dark:bg-earth-800 text-earth-600 dark:text-earth-300 hover:bg-earth-200 dark:hover:bg-earth-700'
+                }`}
+              >
+                {globalSearch ? 'All Categories' : 'This Category'}
+              </button>
             </div>
             <div className="flex gap-1 pb-3 overflow-x-auto" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
               {menuData.map(cat => (
@@ -397,117 +449,231 @@ export default function CafePage() {
         <div className="vintage-container py-8 md:py-12 pb-28">
           <AnimatePresence mode="wait">
             <motion.div
-              key={activeCategory}
+              key={globalSearch ? `global-${searchQuery}` : activeCategory}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.3 }}
             >
-              <div className="text-center mb-12">
-                <div className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gradient-to-r ${activeCategoryData?.color} text-cream-50 text-xs font-medium mb-4 shadow-lg`}>
-                  <ActiveIcon className="w-3.5 h-3.5" />
-                  {activeCategoryData?.subtitle}
-                </div>
-                <h2 className="font-serif text-3xl md:text-4xl text-foreground mb-3">
-                  {activeCategoryData?.title}
-                </h2>
-                {searchQuery && (
-                  <p className="text-sm text-muted-foreground">
-                    {filteredItems.length} result{filteredItems.length !== 1 ? 's' : ''} for &ldquo;{searchQuery}&rdquo;
-                  </p>
-                )}
-              </div>
+              {globalSearch && searchQuery ? (
+                // Global search results grouped by category
+                <div>
+                  <div className="text-center mb-12">
+                    <h2 className="font-serif text-3xl md:text-4xl text-foreground mb-3">
+                      Search Results
+                    </h2>
+                    <p className="text-sm text-muted-foreground">
+                      {filteredItems.length} result{filteredItems.length !== 1 ? 's' : ''} for &ldquo;{searchQuery}&rdquo; across all categories
+                    </p>
+                  </div>
 
-              {activeCategoryData?.note && (
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="vintage-card p-4 mb-8 text-sm text-muted-foreground bg-earth-100/50 dark:bg-earth-800/30 border border-earth-200/50 dark:border-earth-700/50"
-                >
-                  <Leaf className="w-4 h-4 text-forest-500 inline-block mr-1.5 -mt-0.5" />
-                  {activeCategoryData.note}
-                </motion.div>
-              )}
-
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-                {filteredItems.map((item, idx) => {
-                  const localId = `${activeCategory}-${idx}`;
-                  const isFlipped = flippedId === localId;
-                  const cartItem = cartItems.find(ci => ci.name === item.name);
-                  const qty = cartItem?.quantity || 0;
-                  return (
-                    <TiltCard key={localId} className="group perspective-[1000px] h-52">
-                      <motion.div
-                        className="relative w-full h-full cursor-pointer"
-                        style={{ transformStyle: 'preserve-3d' }}
-                        animate={{ rotateY: isFlipped ? 180 : 0 }}
-                        transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
-                        onClick={() => setFlippedId(isFlipped ? null : localId)}
-                      >
-                        <div
-                          className="absolute inset-0 vintage-card p-5 flex flex-col justify-between"
-                          style={{ backfaceVisibility: 'hidden' }}
-                        >
-                          <div>
-                            <h3 className="font-serif text-base text-foreground leading-snug mb-1.5">{item.name}</h3>
-                            <p className="text-xs text-muted-foreground line-clamp-2">{item.desc}</p>
-                          </div>
-                          <div className="flex items-center justify-between">
-                            <span className="text-lg font-bold text-forest-600 dark:text-forest-400">₹{item.price}</span>
-                            <span className="text-[10px] text-earth-400">Tap to flip</span>
-                          </div>
-                        </div>
-
-                        <div
-                          className="absolute inset-0 vintage-card p-5 flex flex-col justify-between"
-                          style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
-                        >
-                          <div>
-                            <p className="text-xs text-muted-foreground leading-relaxed mb-3">{item.desc}</p>
-                            <div className="flex items-center gap-2 mb-3">
-                              <Sparkles className="w-3 h-3 text-amber-500" />
-                              <span className="text-sm font-semibold text-forest-600 dark:text-forest-400">₹{item.price}</span>
-                            </div>
-                          </div>
-                          <div className="flex items-center gap-2" onClick={e => e.stopPropagation()}>
-                            {qty > 0 ? (
-                              <div className="flex items-center gap-2 bg-forest-100 dark:bg-forest-900/30 rounded-full px-2 py-1">
-                                <button
-                                  onClick={() => { if (qty === 1) removeItem(cartItem!.itemId); else updateQuantity(cartItem!.itemId, qty - 1); }}
-                                  className="w-6 h-6 rounded-full bg-forest-600 text-cream-50 flex items-center justify-center hover:bg-forest-700 transition-colors"
-                                >
-                                  <Minus className="w-3 h-3" />
-                                </button>
-                                <span className="text-sm font-semibold text-forest-700 dark:text-forest-300 min-w-[20px] text-center">{qty}</span>
-                                <button
-                                  onClick={() => handleAddToCart(item, localId)}
-                                  className="w-6 h-6 rounded-full bg-forest-600 text-cream-50 flex items-center justify-center hover:bg-forest-700 transition-colors"
-                                >
-                                  <Plus className="w-3 h-3" />
-                                </button>
-                              </div>
-                            ) : (
-                              <button
-                                onClick={() => handleAddToCart(item, localId)}
-                                className="flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-forest-600 text-cream-50 text-xs font-medium hover:bg-forest-700 transition-all shadow-md"
+                  {Object.entries(
+                    filteredItems.reduce((acc, item) => {
+                      const key = item.categoryId;
+                      if (!acc[key]) {
+                        acc[key] = { title: item.categoryTitle, items: [] };
+                      }
+                      acc[key].items.push(item);
+                      return acc;
+                    }, {} as Record<string, { title: string; items: typeof filteredItems }>)
+                  ).map(([categoryId, { title, items }]) => (
+                    <div key={categoryId} className="mb-12">
+                      <h3 className="font-serif text-2xl text-foreground mb-6 pb-2 border-b border-earth-200 dark:border-earth-700">
+                        {title}
+                      </h3>
+                      <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+                        {items.map(({ item, idx }) => {
+                          const localId = `${categoryId}-${idx}`;
+                          const isFlipped = flippedIds.has(localId);
+                          const cartItem = cartItems.find(ci => ci.name === item.name);
+                          const qty = cartItem?.quantity || 0;
+                          return (
+                            <TiltCard key={localId} className="group perspective-[1000px] h-52">
+                              <motion.div
+                                className="relative w-full h-full cursor-pointer"
+                                style={{ transformStyle: 'preserve-3d' }}
+                                animate={{ rotateY: isFlipped ? 180 : 0 }}
+                                transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
+                                onClick={() => toggleFlip(localId)}
                               >
-                                <Plus className="w-3 h-3" />
-                                Add
-                              </button>
-                            )}
-                          </div>
-                        </div>
-                      </motion.div>
-                    </TiltCard>
-                  );
-                })}
-              </div>
+                                <div
+                                  className="absolute inset-0 vintage-card p-5 flex flex-col justify-between"
+                                  style={{ backfaceVisibility: 'hidden' }}
+                                >
+                                  <div>
+                                    <h3 className="font-serif text-base text-foreground leading-snug mb-1.5">{item.name}</h3>
+                                    <p className="text-xs text-muted-foreground line-clamp-2">{item.desc}</p>
+                                  </div>
+                                  <div className="flex items-center justify-between">
+                                    <span className="text-lg font-bold text-forest-600 dark:text-forest-400">₹{item.price}</span>
+                                    <span className="text-[10px] text-earth-400">Tap to flip</span>
+                                  </div>
+                                </div>
 
-              {filteredItems.length === 0 && (
-                <div className="text-center py-20">
-                  <Search className="w-12 h-12 text-earth-300 mx-auto mb-4" />
-                  <p className="text-muted-foreground">No items found for &ldquo;{searchQuery}&rdquo;</p>
+                                <div
+                                  className="absolute inset-0 vintage-card p-5 flex flex-col justify-between"
+                                  style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
+                                >
+                                  <div>
+                                    <p className="text-xs text-muted-foreground leading-relaxed mb-3">{item.desc}</p>
+                                    <div className="flex items-center gap-2 mb-3">
+                                      <Sparkles className="w-3 h-3 text-amber-500" />
+                                      <span className="text-sm font-semibold text-forest-600 dark:text-forest-400">₹{item.price}</span>
+                                    </div>
+                                  </div>
+                                  <div className="flex items-center gap-2" onClick={e => e.stopPropagation()}>
+                                    {qty > 0 ? (
+                                      <div className="flex items-center gap-2 bg-forest-100 dark:bg-forest-900/30 rounded-full px-2 py-1">
+                                        <button
+                                          onClick={() => { if (qty === 1) removeItem(cartItem!.itemId); else updateQuantity(cartItem!.itemId, qty - 1); }}
+                                          className="w-6 h-6 rounded-full bg-forest-600 text-cream-50 flex items-center justify-center hover:bg-forest-700 transition-colors"
+                                        >
+                                          <Minus className="w-3 h-3" />
+                                        </button>
+                                        <span className="text-sm font-semibold text-forest-700 dark:text-forest-300 min-w-[20px] text-center">{qty}</span>
+                                        <button
+                                          onClick={() => handleAddToCart(item, localId)}
+                                          className="w-6 h-6 rounded-full bg-forest-600 text-cream-50 flex items-center justify-center hover:bg-forest-700 transition-colors"
+                                        >
+                                          <Plus className="w-3 h-3" />
+                                        </button>
+                                      </div>
+                                    ) : (
+                                      <button
+                                        onClick={() => handleAddToCart(item, localId)}
+                                        className="flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-forest-600 text-cream-50 text-xs font-medium hover:bg-forest-700 transition-all shadow-md"
+                                      >
+                                        <Plus className="w-3 h-3" />
+                                        Add
+                                      </button>
+                                    )}
+                                  </div>
+                                </div>
+                              </motion.div>
+                            </TiltCard>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ))}
+
+                  {filteredItems.length === 0 && (
+                    <div className="text-center py-20">
+                      <Search className="w-12 h-12 text-earth-300 mx-auto mb-4" />
+                      <p className="text-muted-foreground">No items found for &ldquo;{searchQuery}&rdquo;</p>
+                    </div>
+                  )}
                 </div>
+              ) : (
+                // Category-specific view
+                <>
+                  <div className="text-center mb-12">
+                    <div className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gradient-to-r ${activeCategoryData?.color} text-cream-50 text-xs font-medium mb-4 shadow-lg`}>
+                      <ActiveIcon className="w-3.5 h-3.5" />
+                      {activeCategoryData?.subtitle}
+                    </div>
+                    <h2 className="font-serif text-3xl md:text-4xl text-foreground mb-3">
+                      {activeCategoryData?.title}
+                    </h2>
+                    {searchQuery && (
+                      <p className="text-sm text-muted-foreground">
+                        {filteredItems.length} result{filteredItems.length !== 1 ? 's' : ''} for &ldquo;{searchQuery}&rdquo;
+                      </p>
+                    )}
+                  </div>
+
+                  {activeCategoryData?.note && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="vintage-card p-4 mb-8 text-sm text-muted-foreground bg-earth-100/50 dark:bg-earth-800/30 border border-earth-200/50 dark:border-earth-700/50"
+                    >
+                      <Leaf className="w-4 h-4 text-forest-500 inline-block mr-1.5 -mt-0.5" />
+                      {activeCategoryData.note}
+                    </motion.div>
+                  )}
+
+                  <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+                    {filteredItems.map((item, idx) => {
+                      const localId = `${activeCategory}-${idx}`;
+                      const isFlipped = flippedIds.has(localId);
+                      const cartItem = cartItems.find(ci => ci.name === item.name);
+                      const qty = cartItem?.quantity || 0;
+                      return (
+                        <TiltCard key={localId} className="group perspective-[1000px] h-52">
+                          <motion.div
+                            className="relative w-full h-full cursor-pointer"
+                            style={{ transformStyle: 'preserve-3d' }}
+                            animate={{ rotateY: isFlipped ? 180 : 0 }}
+                            transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
+                            onClick={() => toggleFlip(localId)}
+                          >
+                            <div
+                              className="absolute inset-0 vintage-card p-5 flex flex-col justify-between"
+                              style={{ backfaceVisibility: 'hidden' }}
+                            >
+                              <div>
+                                <h3 className="font-serif text-base text-foreground leading-snug mb-1.5">{item.name}</h3>
+                                <p className="text-xs text-muted-foreground line-clamp-2">{item.desc}</p>
+                              </div>
+                              <div className="flex items-center justify-between">
+                                <span className="text-lg font-bold text-forest-600 dark:text-forest-400">₹{item.price}</span>
+                                <span className="text-[10px] text-earth-400">Tap to flip</span>
+                              </div>
+                            </div>
+
+                            <div
+                              className="absolute inset-0 vintage-card p-5 flex flex-col justify-between"
+                              style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
+                            >
+                              <div>
+                                <p className="text-xs text-muted-foreground leading-relaxed mb-3">{item.desc}</p>
+                                <div className="flex items-center gap-2 mb-3">
+                                  <Sparkles className="w-3 h-3 text-amber-500" />
+                                  <span className="text-sm font-semibold text-forest-600 dark:text-forest-400">₹{item.price}</span>
+                                </div>
+                              </div>
+                              <div className="flex items-center gap-2" onClick={e => e.stopPropagation()}>
+                                {qty > 0 ? (
+                                  <div className="flex items-center gap-2 bg-forest-100 dark:bg-forest-900/30 rounded-full px-2 py-1">
+                                    <button
+                                      onClick={() => { if (qty === 1) removeItem(cartItem!.itemId); else updateQuantity(cartItem!.itemId, qty - 1); }}
+                                      className="w-6 h-6 rounded-full bg-forest-600 text-cream-50 flex items-center justify-center hover:bg-forest-700 transition-colors"
+                                    >
+                                      <Minus className="w-3 h-3" />
+                                    </button>
+                                    <span className="text-sm font-semibold text-forest-700 dark:text-forest-300 min-w-[20px] text-center">{qty}</span>
+                                    <button
+                                      onClick={() => handleAddToCart(item, localId)}
+                                      className="w-6 h-6 rounded-full bg-forest-600 text-cream-50 flex items-center justify-center hover:bg-forest-700 transition-colors"
+                                    >
+                                      <Plus className="w-3 h-3" />
+                                    </button>
+                                  </div>
+                                ) : (
+                                  <button
+                                    onClick={() => handleAddToCart(item, localId)}
+                                    className="flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-forest-600 text-cream-50 text-xs font-medium hover:bg-forest-700 transition-all shadow-md"
+                                  >
+                                    <Plus className="w-3 h-3" />
+                                    Add
+                                  </button>
+                                )}
+                              </div>
+                            </div>
+                          </motion.div>
+                        </TiltCard>
+                      );
+                    })}
+                  </div>
+
+                  {filteredItems.length === 0 && (
+                    <div className="text-center py-20">
+                      <Search className="w-12 h-12 text-earth-300 mx-auto mb-4" />
+                      <p className="text-muted-foreground">No items found{searchQuery ? ` for &ldquo;${searchQuery}&rdquo;` : ''}</p>
+                    </div>
+                  )}
+                </>
               )}
             </motion.div>
           </AnimatePresence>
@@ -546,6 +712,18 @@ export default function CafePage() {
             </button>
           </motion.div>
         </div>
+      )}
+
+      {cartNotification && (
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 50 }}
+          className="fixed bottom-24 right-6 z-40 bg-forest-600 text-cream-50 px-4 py-3 rounded-lg shadow-lg flex items-center gap-2"
+        >
+          <CheckCircle className="w-5 h-5" />
+          <span className="text-sm font-medium">Added: {cartNotification}</span>
+        </motion.div>
       )}
 
       {showCheckout && (
@@ -658,6 +836,29 @@ export default function CafePage() {
             </span>
           )}
         </motion.button>
+      </div>
+    </div>
+  );
+}
+    </motion.button>
+      </div>
+    </div>
+  );
+}
+    className="relative w-14 h-14 rounded-full bg-forest-600 text-cream-50 shadow-xl shadow-forest-900/30 hover:bg-forest-700 transition-colors flex items-center justify-center"
+        >
+          <ShoppingCart className="w-6 h-6" />
+          {itemCount() > 0 && (
+            <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-amber-500 text-cream-50 text-[10px] font-bold flex items-center justify-center shadow-md">
+              {itemCount()}
+            </span>
+          )}
+        </motion.button>
+      </div>
+    </div>
+  );
+}
+    </motion.button>
       </div>
     </div>
   );

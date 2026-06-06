@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useState } from 'react';
 import { BackButton } from '@/components/layout/BackButton';
@@ -127,8 +127,8 @@ export default function ContactPage() {
                     <Clock className="w-5 h-5 text-clay-500 mt-0.5" />
                     <div>
                       <h3 className="font-medium text-foreground">Reception Hours</h3>
-                      <p className="text-muted-foreground text-sm">Daily: 8:00 AM – 10:30 PM</p>
-                      <p className="text-muted-foreground text-sm">Cafe: 8:00 AM – 10:30 PM</p>
+                      <p className="text-muted-foreground text-sm">Daily: 8:00 AM – 11:00 PM</p>
+                      <h3 className="font-medium text-foreground mt-2">Café Charade</h3>\n                      <p className="text-muted-foreground text-sm">Breakfast: 7:30 AM – 10:00 AM</p>\n                      <p className="text-muted-foreground text-sm">Lunch: 12:00 PM – 3:30 PM</p>\n                      <p className="text-muted-foreground text-sm">Dinner: 7:00 PM – 10:00 PM</p>
                     </div>
                   </div>
                 </div>

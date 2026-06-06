@@ -90,7 +90,7 @@ export default function BookingPage() {
     try {
       const fullAddress = `${address}, ${city}, ${state} - ${pincode}`;
       const res = await api.post('/bookings', {
-        guestName, guestEmail, guestPhone,
+        guestName, guestEmail, guestPhone, nationality,
         cottageId: selectedCottage,
         checkIn, checkOut,
         adults, children,
@@ -307,7 +307,29 @@ export default function BookingPage() {
                             </div>
                             <div>
                               <label className="vintage-label">Phone *</label>
-                              <Input value={guestPhone} onChange={(e) => setGuestPhone(e.target.value)} placeholder="+91-99999-99999" />
+                              <Input 
+                                type="tel" 
+                                value={guestPhone} 
+                                onChange={(e) => {
+                                  const value = e.target.value.replace(/[^\d+\-\s]/g, '');
+                                  setGuestPhone(value);
+                                }} 
+                                placeholder="+91-99999-99999" 
+                              />
+                            </div>
+                          </div>
+                          <div>
+                            <label className="vintage-label">Nationality *</label>
+                            <div className="relative">
+                              <select
+                                value={nationality}
+                                onChange={(e) => setNationality(e.target.value)}
+                                className="vintage-input appearance-none pr-10"
+                              >
+                                <option value="Indian">Indian</option>
+                                <option value="Foreign">Foreign National</option>
+                              </select>
+                              <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-earth-400 pointer-events-none" />
                             </div>
                           </div>
 
@@ -536,6 +558,24 @@ export default function BookingPage() {
                               <span className="font-bold text-lg text-forest-600 dark:text-forest-400">{formatPrice(totalAmount)}</span>
                             </div>
                           </div>
+                        )}
+
+                        {!checkIn && (
+                          <p className="text-xs text-muted-foreground text-center py-4">Select dates to see summary</p>
+                        )}
+                      </div>
+                    </div>
+                  </ScrollReveal>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+    </>
+  );
+}
+                       </div>
                         )}
 
                         {!checkIn && (

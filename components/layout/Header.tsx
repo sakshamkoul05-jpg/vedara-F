@@ -51,14 +51,14 @@ export function Header() {
         <div className="flex items-center justify-between h-16 md:h-20">
           <Link href="/" className="flex items-center gap-3 flex-shrink-0">
             <div className={cn(
-              'w-11 h-11 md:w-14 md:h-14 rounded-full overflow-hidden flex-shrink-0 transition-all',
+              'w-14 h-14 md:w-20 md:h-20 rounded-full overflow-hidden flex-shrink-0 transition-all',
               isTransparent ? 'ring-2 ring-white/20' : 'ring-1 ring-earth-200 dark:ring-earth-700'
             )}>
               <Image
                 src="/images/vedara-logo.jpeg"
                 alt="The Vedara"
-                width={56}
-                height={56}
+                width={80}
+                height={80}
                 className="w-full h-full object-cover"
                 priority
               />
@@ -222,12 +222,18 @@ export function Header() {
               <Link href="/booking" className="vintage-button-primary w-full text-center">
                 Book Your Stay
               </Link>
-              <div className="flex items-center justify-center gap-4 pt-4 border-t border-earth-200 dark:border-earth-700">
-                <a href="mailto:vedararetreat@gmail.com" className="text-earth-500 dark:text-cream-400 hover:text-forest-600 dark:hover:text-cream-50 text-xs flex items-center gap-1">
-                  <Mail className="w-3 h-3" /> Email
+              <div className="flex items-center justify-center gap-6 pt-4 border-t border-earth-200 dark:border-earth-700">
+                <a href="mailto:vedararetreat@gmail.com" className="text-earth-500 dark:text-cream-400 hover:text-forest-600 dark:hover:text-cream-50 transition-colors" aria-label="Email">
+                  <Mail className="w-5 h-5" />
                 </a>
-                <a href="tel:+919118882242" className="text-earth-500 dark:text-cream-400 hover:text-forest-600 dark:hover:text-cream-50 text-xs flex items-center gap-1">
-                  <Phone className="w-3 h-3" /> Call
+                <a href="tel:+919118882242" className="text-earth-500 dark:text-cream-400 hover:text-forest-600 dark:hover:text-cream-50 transition-colors" aria-label="Phone">
+                  <Phone className="w-5 h-5" />
+                </a>
+                <a href="https://facebook.com/vedararetreat" target="_blank" rel="noopener noreferrer" className="text-earth-500 dark:text-cream-400 hover:text-forest-600 dark:hover:text-cream-50 transition-colors" aria-label="Facebook">
+                  <Facebook className="w-5 h-5" />
+                </a>
+                <a href="https://instagram.com/vedararetreat" target="_blank" rel="noopener noreferrer" className="text-earth-500 dark:text-cream-400 hover:text-forest-600 dark:hover:text-cream-50 transition-colors" aria-label="Instagram">
+                  <Instagram className="w-5 h-5" />
                 </a>
               </div>
             </nav>

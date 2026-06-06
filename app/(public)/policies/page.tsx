@@ -173,7 +173,7 @@ export default function PoliciesPage() {
     { id: '2', question: 'Is breakfast included?', answer: 'A complimentary farm-style breakfast is served daily from 7:30 AM to 10:00 AM at our cafe.', category: null, sortOrder: 2 },
     { id: '3', question: 'Is there WiFi available?', answer: 'Yes, all cottages and common areas have complimentary high-speed WiFi.', category: null, sortOrder: 3 },
     { id: '4', question: 'What payment methods do you accept?', answer: 'We accept all major credit/debit cards, UPI, and net banking via Razorpay.', category: null, sortOrder: 4 },
-    { id: '5', question: 'Is the cafe open to outside visitors?', answer: 'Absolutely! Our cafe is open to all from 7:00 AM to 9:00 PM. Non-guests are welcome.', category: null, sortOrder: 5 },
+    { id: '5', question: 'Is the cafe open to outside visitors?', answer: 'Absolutely! Our cafe is open to all from 7:00 AM to 11:00 PM. Non-guests are welcome.', category: null, sortOrder: 5 },
     { id: '6', question: 'Can I modify or cancel my booking?', answer: 'Yes, subject to our cancellation policy. Please refer to the <a href="/policies#cancellation" class="text-forest-600 dark:text-forest-400 underline hover:no-underline">Cancellation Policy section</a> for detailed terms.', category: null, sortOrder: 6 },
   ];
 

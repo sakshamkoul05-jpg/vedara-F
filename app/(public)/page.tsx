@@ -45,11 +45,38 @@ const nearbyAttractions = [
 export default function HomePage() {
   const [homeCheckIn, setHomeCheckIn] = useState('');
   const [homeCheckOut, setHomeCheckOut] = useState('');
+  const [dateError, setDateError] = useState('');
+
+  const today = new Date().toISOString().split('T')[0];
 
   const handleHomeBooking = (e: React.MouseEvent) => {
     if (!homeCheckIn || !homeCheckOut) return;
+    
+    const checkInDate = new Date(homeCheckIn);
+    const checkOutDate = new Date(homeCheckOut);
+    
+    if (checkOutDate <= checkInDate) {
+      setDateError('Check-out date must be after check-in date');
+      return;
+    }
+    
+    setDateError('');
     const params = new URLSearchParams({ checkIn: homeCheckIn, checkOut: homeCheckOut });
     window.location.href = `/booking?${params}`;
+  };
+
+  const handleCheckInChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setHomeCheckIn(e.target.value);
+    setDateError('');
+    // Clear checkout if it's before the new checkin
+    if (homeCheckOut && new Date(homeCheckOut) <= new Date(e.target.value)) {
+      setHomeCheckOut('');
+    }
+  };
+
+  const handleCheckOutChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setHomeCheckOut(e.target.value);
+    setDateError('');
   };
 
   return (
@@ -68,17 +95,9 @@ export default function HomePage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1, duration: 0.8 }}
-            className="text-cream-200/80 text-lg md:text-xl max-w-2xl mx-auto mb-4 font-serif tracking-wide"
+            className="text-cream-200/80 text-lg md:text-xl max-w-2xl mx-auto mb-10 font-serif tracking-wide"
           >
-            A Himalayan Boutique Retreat
-          </motion.p>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.1, duration: 0.8 }}
-            className="text-cream-200 text-base md:text-lg max-w-2xl mx-auto mb-10 font-sans leading-relaxed"
-          >
-            Seven handcrafted cottages, one cozy café – a slow-living mountain escape crafted for those who seek stillness.
+            A Himalayan Boutique Retreat – Seven handcrafted cottages, one cozy café, and a slow-living mountain escape crafted for those who seek stillness.
           </motion.p>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -118,11 +137,11 @@ export default function HomePage() {
               </div>
               <div>
                 <label className="block text-xs font-medium text-earth-600 dark:text-cream-300 mb-1">Check In</label>
-                <input type="date" value={homeCheckIn} onChange={(e) => setHomeCheckIn(e.target.value)} className="w-full rounded-xl border border-earth-200 dark:border-earth-600 bg-white dark:bg-earth-700 px-3 py-2.5 text-sm text-earth-900 dark:text-cream-100 focus:outline-none focus:border-forest-500" />
+                <input type="date" value={homeCheckIn} onChange={handleCheckInChange} min={today} className="w-full rounded-xl border border-earth-200 dark:border-earth-600 bg-white dark:bg-earth-700 px-3 py-2.5 text-sm text-earth-900 dark:text-cream-100 focus:outline-none focus:border-forest-500" />
               </div>
               <div>
                 <label className="block text-xs font-medium text-earth-600 dark:text-cream-300 mb-1">Check Out</label>
-                <input type="date" value={homeCheckOut} onChange={(e) => setHomeCheckOut(e.target.value)} className="w-full rounded-xl border border-earth-200 dark:border-earth-600 bg-white dark:bg-earth-700 px-3 py-2.5 text-sm text-earth-900 dark:text-cream-100 focus:outline-none focus:border-forest-500" />
+                <input type="date" value={homeCheckOut} onChange={handleCheckOutChange} min={homeCheckIn || today} className="w-full rounded-xl border border-earth-200 dark:border-earth-600 bg-white dark:bg-earth-700 px-3 py-2.5 text-sm text-earth-900 dark:text-cream-100 focus:outline-none focus:border-forest-500" />
               </div>
               <div>
                 <a onClick={handleHomeBooking} className="vintage-button-primary text-sm px-6 py-2.5 w-full text-center block cursor-pointer">
@@ -130,6 +149,9 @@ export default function HomePage() {
                 </a>
               </div>
             </div>
+            {dateError && (
+              <p className="text-red-500 text-xs mt-2 text-center">{dateError}</p>
+            )}
           </div>
         </div>
       </section>
@@ -249,7 +271,7 @@ export default function HomePage() {
                   <span className="block">Dinner 7:00 PM – 10:00 PM</span>
                 </p>
                 <div className="grid grid-cols-2 gap-4 mb-8">
-                  {['Artisan Coffee', 'Wood-Fired', 'Fresh Bakes', 'Evening Sips'].map((item) => (
+                  {['Artisan Coffee', 'Home-Style Meals', 'Fresh Treats', 'Evening Sips'].map((item) => (
                     <div key={item} className="flex items-center gap-2 text-cream-200">
                       <Coffee className="w-4 h-4 text-clay-400" />
                       <span className="text-sm">{item}</span>
