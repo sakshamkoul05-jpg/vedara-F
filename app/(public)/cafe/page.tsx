@@ -169,7 +169,7 @@ const menuData: MenuCategory[] = [
     id: 'bites',
     title: 'Anytime Bites',
     subtitle: 'All Day',
-    icon: Pizza,
+    icon: Cookie,
     color: 'from-orange-600 to-red-700',
     items: [
       { name: 'Pahado Wali Maggi (Veg)', price: '120', desc: 'Classic mountain-style Maggi noodles.' },
@@ -242,8 +242,7 @@ function TiltCard({ children, className = '' }: { children: React.ReactNode; cla
 export default function CafePage() {
   const [activeCategory, setActiveCategory] = useState('breakfast');
   const [searchQuery, setSearchQuery] = useState('');
-  const [globalSearch, setGlobalSearch] = useState(false);
-  const [flippedIds, setFlippedIds] = useState<Set<string>>(new Set());
+  const [flippedIds, setFlippedIds] = useState<Record<string, boolean>>({});
   const [showCheckout, setShowCheckout] = useState(false);
   const [cartNotification, setCartNotification] = useState<string | null>(null);
   const [orderType, setOrderType] = useState<'table' | 'cottage'>('table');
@@ -254,20 +253,12 @@ export default function CafePage() {
   const [itemIdMap, setItemIdMap] = useState<Record<string, string>>({});
 
   const toggleFlip = (localId: string) => {
-    setFlippedIds(prev => {
-      const next = new Set(prev);
-      if (next.has(localId)) {
-        next.delete(localId);
-      } else {
-        next.add(localId);
-      }
-      return next;
-    });
+    setFlippedIds(prev => ({ ...prev, [localId]: !prev[localId] }));
   };
 
   const showNotification = (itemName: string) => {
     setCartNotification(itemName);
-    setTimeout(() => setCartNotification(null), 2000);
+    setTimeout(() => setCartNotification(null), 3000);
   };
 
   const pageRef = useRef<HTMLDivElement>(null);
@@ -305,26 +296,19 @@ export default function CafePage() {
 
   const getFilteredItems = () => {
     if (!searchQuery) {
-      return globalSearch ? [] : (activeCategoryData?.items || []);
+      return { type: 'category' as const, items: activeCategoryData?.items || [] };
     }
 
     const query = searchQuery.toLowerCase();
-
-    if (globalSearch) {
-      const results: Array<{ item: MenuItem; categoryId: string; categoryTitle: string; idx: number }> = [];
-      menuData.forEach(cat => {
-        cat.items.forEach((item, idx) => {
-          if (item.name.toLowerCase().includes(query) || item.desc.toLowerCase().includes(query)) {
-            results.push({ item, categoryId: cat.id, categoryTitle: cat.title, idx });
-          }
-        });
+    const results: Array<{ item: MenuItem; categoryId: string; categoryTitle: string; idx: number }> = [];
+    menuData.forEach(cat => {
+      cat.items.forEach((item, idx) => {
+        if (item.name.toLowerCase().includes(query) || item.desc.toLowerCase().includes(query)) {
+          results.push({ item, categoryId: cat.id, categoryTitle: cat.title, idx });
+        }
       });
-      return results;
-    } else {
-      return activeCategoryData?.items.filter(item =>
-        item.name.toLowerCase().includes(query) || item.desc.toLowerCase().includes(query)
-      ) || [];
-    }
+    });
+    return { type: 'search' as const, items: results };
   };
 
   const filteredItems = getFilteredItems();
@@ -416,16 +400,7 @@ export default function CafePage() {
                   className="w-full pl-9 pr-3 py-1.5 text-xs rounded-full bg-earth-100 dark:bg-earth-800 border-0 text-foreground placeholder:text-earth-400 focus:outline-none focus:ring-1 focus:ring-forest-500"
                 />
               </div>
-              <button
-                onClick={() => setGlobalSearch(!globalSearch)}
-                className={`shrink-0 px-3 py-1.5 text-xs font-medium rounded-full transition-all duration-300 ${
-                  globalSearch
-                    ? 'bg-forest-600 text-cream-50 shadow-md'
-                    : 'bg-earth-100 dark:bg-earth-800 text-earth-600 dark:text-earth-300 hover:bg-earth-200 dark:hover:bg-earth-700'
-                }`}
-              >
-                {globalSearch ? 'All Categories' : 'This Category'}
-              </button>
+
             </div>
             <div className="flex gap-1 pb-3 overflow-x-auto" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
               {menuData.map(cat => (
@@ -449,33 +424,32 @@ export default function CafePage() {
         <div className="vintage-container py-8 md:py-12 pb-28">
           <AnimatePresence mode="wait">
             <motion.div
-              key={globalSearch ? `global-${searchQuery}` : activeCategory}
+              key={searchQuery ? `search-${searchQuery}` : activeCategory}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.3 }}
             >
-              {globalSearch && searchQuery ? (
-                // Global search results grouped by category
+              {filteredItems.type === 'search' && searchQuery ? (
                 <div>
                   <div className="text-center mb-12">
                     <h2 className="font-serif text-3xl md:text-4xl text-foreground mb-3">
                       Search Results
                     </h2>
                     <p className="text-sm text-muted-foreground">
-                      {filteredItems.length} result{filteredItems.length !== 1 ? 's' : ''} for &ldquo;{searchQuery}&rdquo; across all categories
+                      {filteredItems.items.length} result{filteredItems.items.length !== 1 ? 's' : ''} for &ldquo;{searchQuery}&rdquo; across all categories
                     </p>
                   </div>
 
                   {Object.entries(
-                    filteredItems.reduce((acc, item) => {
+                    filteredItems.items.reduce((acc, item) => {
                       const key = item.categoryId;
                       if (!acc[key]) {
-                        acc[key] = { title: item.categoryTitle, items: [] };
+                        acc[key] = { title: item.categoryTitle, items: [] as Array<{ item: MenuItem; categoryId: string; categoryTitle: string; idx: number }> };
                       }
                       acc[key].items.push(item);
                       return acc;
-                    }, {} as Record<string, { title: string; items: typeof filteredItems }>)
+                    }, {} as Record<string, { title: string; items: Array<{ item: MenuItem; categoryId: string; categoryTitle: string; idx: number }> }>)
                   ).map(([categoryId, { title, items }]) => (
                     <div key={categoryId} className="mb-12">
                       <h3 className="font-serif text-2xl text-foreground mb-6 pb-2 border-b border-earth-200 dark:border-earth-700">
@@ -484,7 +458,7 @@ export default function CafePage() {
                       <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
                         {items.map(({ item, idx }) => {
                           const localId = `${categoryId}-${idx}`;
-                          const isFlipped = flippedIds.has(localId);
+                          const isFlipped = flippedIds[localId];
                           const cartItem = cartItems.find(ci => ci.name === item.name);
                           const qty = cartItem?.quantity || 0;
                           return (
@@ -557,7 +531,7 @@ export default function CafePage() {
                     </div>
                   ))}
 
-                  {filteredItems.length === 0 && (
+                  {filteredItems.items.length === 0 && (
                     <div className="text-center py-20">
                       <Search className="w-12 h-12 text-earth-300 mx-auto mb-4" />
                       <p className="text-muted-foreground">No items found for &ldquo;{searchQuery}&rdquo;</p>
@@ -565,7 +539,6 @@ export default function CafePage() {
                   )}
                 </div>
               ) : (
-                // Category-specific view
                 <>
                   <div className="text-center mb-12">
                     <div className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gradient-to-r ${activeCategoryData?.color} text-cream-50 text-xs font-medium mb-4 shadow-lg`}>
@@ -575,11 +548,6 @@ export default function CafePage() {
                     <h2 className="font-serif text-3xl md:text-4xl text-foreground mb-3">
                       {activeCategoryData?.title}
                     </h2>
-                    {searchQuery && (
-                      <p className="text-sm text-muted-foreground">
-                        {filteredItems.length} result{filteredItems.length !== 1 ? 's' : ''} for &ldquo;{searchQuery}&rdquo;
-                      </p>
-                    )}
                   </div>
 
                   {activeCategoryData?.note && (
@@ -594,9 +562,9 @@ export default function CafePage() {
                   )}
 
                   <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-                    {filteredItems.map((item, idx) => {
+                    {(filteredItems.type === 'category' ? filteredItems.items : []).map((item, idx) => {
                       const localId = `${activeCategory}-${idx}`;
-                      const isFlipped = flippedIds.has(localId);
+                      const isFlipped = flippedIds[localId];
                       const cartItem = cartItems.find(ci => ci.name === item.name);
                       const qty = cartItem?.quantity || 0;
                       return (
@@ -667,10 +635,10 @@ export default function CafePage() {
                     })}
                   </div>
 
-                  {filteredItems.length === 0 && (
+                  {filteredItems.type === 'category' && filteredItems.items.length === 0 && (
                     <div className="text-center py-20">
                       <Search className="w-12 h-12 text-earth-300 mx-auto mb-4" />
-                      <p className="text-muted-foreground">No items found{searchQuery ? ` for &ldquo;${searchQuery}&rdquo;` : ''}</p>
+                      <p className="text-muted-foreground">No items found</p>
                     </div>
                   )}
                 </>
@@ -719,10 +687,16 @@ export default function CafePage() {
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 50 }}
-          className="fixed bottom-24 right-6 z-40 bg-forest-600 text-cream-50 px-4 py-3 rounded-lg shadow-lg flex items-center gap-2"
+          className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 bg-forest-600 text-cream-50 px-5 py-3 rounded-xl shadow-xl shadow-forest-900/30 flex items-center gap-3"
         >
-          <CheckCircle className="w-5 h-5" />
-          <span className="text-sm font-medium">Added: {cartNotification}</span>
+          <CheckCircle className="w-5 h-5 shrink-0" />
+          <span className="text-sm font-medium">&ldquo;{cartNotification}&rdquo; added to cart!</span>
+          <button
+            onClick={() => { setShowCheckout(true); setCartNotification(null); }}
+            className="text-xs font-semibold bg-cream-50 text-forest-700 px-3 py-1.5 rounded-lg hover:bg-cream-100 transition-colors"
+          >
+            View Cart
+          </button>
         </motion.div>
       )}
 
@@ -836,29 +810,6 @@ export default function CafePage() {
             </span>
           )}
         </motion.button>
-      </div>
-    </div>
-  );
-}
-    </motion.button>
-      </div>
-    </div>
-  );
-}
-    className="relative w-14 h-14 rounded-full bg-forest-600 text-cream-50 shadow-xl shadow-forest-900/30 hover:bg-forest-700 transition-colors flex items-center justify-center"
-        >
-          <ShoppingCart className="w-6 h-6" />
-          {itemCount() > 0 && (
-            <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-amber-500 text-cream-50 text-[10px] font-bold flex items-center justify-center shadow-md">
-              {itemCount()}
-            </span>
-          )}
-        </motion.button>
-      </div>
-    </div>
-  );
-}
-    </motion.button>
       </div>
     </div>
   );

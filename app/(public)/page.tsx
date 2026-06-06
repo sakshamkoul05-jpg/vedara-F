@@ -45,6 +45,10 @@ const nearbyAttractions = [
 export default function HomePage() {
   const [homeCheckIn, setHomeCheckIn] = useState('');
   const [homeCheckOut, setHomeCheckOut] = useState('');
+  const [homeRooms, setHomeRooms] = useState('1');
+  const [homeAdults, setHomeAdults] = useState('2');
+  const [homeChildren, setHomeChildren] = useState('0');
+  const [homeNationality, setHomeNationality] = useState('Indian');
   const [dateError, setDateError] = useState('');
 
   const today = new Date().toISOString().split('T')[0];
@@ -61,14 +65,20 @@ export default function HomePage() {
     }
     
     setDateError('');
-    const params = new URLSearchParams({ checkIn: homeCheckIn, checkOut: homeCheckOut });
+    const params = new URLSearchParams({
+      checkIn: homeCheckIn,
+      checkOut: homeCheckOut,
+      rooms: homeRooms,
+      adults: homeAdults,
+      children: homeChildren,
+      nationality: homeNationality,
+    });
     window.location.href = `/booking?${params}`;
   };
 
   const handleCheckInChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setHomeCheckIn(e.target.value);
     setDateError('');
-    // Clear checkout if it's before the new checkin
     if (homeCheckOut && new Date(homeCheckOut) <= new Date(e.target.value)) {
       setHomeCheckOut('');
     }
@@ -113,7 +123,13 @@ export default function HomePage() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 2, duration: 1 }}
-          onClick={() => document.getElementById('booking-bar')?.scrollIntoView({ behavior: 'smooth' })}
+          onClick={() => {
+            if (window.innerWidth >= 768) {
+              document.getElementById('welcome')?.scrollIntoView({ behavior: 'smooth' });
+            } else {
+              document.getElementById('booking-bar')?.scrollIntoView({ behavior: 'smooth' });
+            }
+          }}
           className="absolute bottom-16 left-1/2 -translate-x-1/2 z-20 cursor-pointer"
           aria-label="Scroll to booking section"
         >
@@ -125,16 +141,10 @@ export default function HomePage() {
 
       <PackageBanner />
 
-      <section id="booking-bar" className="relative z-30 -mt-12 mb-12 px-4">
+      <section id="booking-bar" className="relative z-30 mt-0 md:-mt-12 py-6 md:py-0 mb-12 px-4">
         <div className="vintage-container max-w-4xl">
           <div className="bg-white/80 dark:bg-earth-800/80 backdrop-blur-md rounded-2xl shadow-xl border border-earth-200 dark:border-earth-700 p-4 md:p-6 font-sans">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-3 items-end">
-              <div>
-                <label className="block text-xs font-medium text-earth-600 dark:text-cream-300 mb-1">Property</label>
-                <select className="w-full rounded-xl border border-earth-200 dark:border-earth-600 bg-white dark:bg-earth-700 px-3 py-2.5 text-sm text-earth-900 dark:text-cream-100 focus:outline-none focus:border-forest-500">
-                  <option>The Vedara – Himalayan Boutique Retreat</option>
-                </select>
-              </div>
               <div>
                 <label className="block text-xs font-medium text-earth-600 dark:text-cream-300 mb-1">Check In</label>
                 <input type="date" value={homeCheckIn} onChange={handleCheckInChange} min={today} className="w-full rounded-xl border border-earth-200 dark:border-earth-600 bg-white dark:bg-earth-700 px-3 py-2.5 text-sm text-earth-900 dark:text-cream-100 focus:outline-none focus:border-forest-500" />
@@ -144,6 +154,25 @@ export default function HomePage() {
                 <input type="date" value={homeCheckOut} onChange={handleCheckOutChange} min={homeCheckIn || today} className="w-full rounded-xl border border-earth-200 dark:border-earth-600 bg-white dark:bg-earth-700 px-3 py-2.5 text-sm text-earth-900 dark:text-cream-100 focus:outline-none focus:border-forest-500" />
               </div>
               <div>
+                <label className="block text-xs font-medium text-earth-600 dark:text-cream-300 mb-1">Adults</label>
+                <select value={homeAdults} onChange={(e) => setHomeAdults(e.target.value)} className="w-full rounded-xl border border-earth-200 dark:border-earth-600 bg-white dark:bg-earth-700 px-3 py-2.5 text-sm text-earth-900 dark:text-cream-100 focus:outline-none focus:border-forest-500">
+                  {[1,2,3,4].map(n => <option key={n} value={n}>{n}</option>)}
+                </select>
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-earth-600 dark:text-cream-300 mb-1">Children</label>
+                <select value={homeChildren} onChange={(e) => setHomeChildren(e.target.value)} className="w-full rounded-xl border border-earth-200 dark:border-earth-600 bg-white dark:bg-earth-700 px-3 py-2.5 text-sm text-earth-900 dark:text-cream-100 focus:outline-none focus:border-forest-500">
+                  {[0,1,2,3].map(n => <option key={n} value={n}>{n}</option>)}
+                </select>
+              </div>
+              <div className="md:col-span-2">
+                <label className="block text-xs font-medium text-earth-600 dark:text-cream-300 mb-1">Nationality</label>
+                <select value={homeNationality} onChange={(e) => setHomeNationality(e.target.value)} className="w-full rounded-xl border border-earth-200 dark:border-earth-600 bg-white dark:bg-earth-700 px-3 py-2.5 text-sm text-earth-900 dark:text-cream-100 focus:outline-none focus:border-forest-500">
+                  <option value="Indian">Indian</option>
+                  <option value="Foreign">Foreign National</option>
+                </select>
+              </div>
+              <div className="md:col-span-2">
                 <a onClick={handleHomeBooking} className="vintage-button-primary text-sm px-6 py-2.5 w-full text-center block cursor-pointer">
                   {homeCheckIn && homeCheckOut ? 'Check Availability' : 'Book Your Stay'}
                 </a>
@@ -156,7 +185,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="relative py-28 md:py-36 overflow-hidden bg-earth-900">
+      <section id="welcome" className="relative py-28 md:py-36 overflow-hidden bg-earth-900">
         <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1585409677983-0f6c41ca9c3b?w=1920&q=80)', backgroundSize: 'cover' }} />
         <div className="relative z-10 vintage-container">
           <div className="grid md:grid-cols-2 gap-12 items-center">

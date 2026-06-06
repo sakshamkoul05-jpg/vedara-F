@@ -169,11 +169,11 @@ export default function PoliciesPage() {
   }, []);
 
   const displayFaqs = faqs.length > 0 ? faqs : [
-    { id: '1', question: 'What is the check-in and check-out time?', answer: 'Check-in is at 2:00 PM and check-out is at 11:00 AM.', category: null, sortOrder: 1 },
+    { id: '1', question: 'What is the check-in and check-out time?', answer: 'Check-in is at 1:00 PM and check-out is at 11:00 AM.', category: null, sortOrder: 1 },
     { id: '2', question: 'Is breakfast included?', answer: 'A complimentary farm-style breakfast is served daily from 7:30 AM to 10:00 AM at our cafe.', category: null, sortOrder: 2 },
     { id: '3', question: 'Is there WiFi available?', answer: 'Yes, all cottages and common areas have complimentary high-speed WiFi.', category: null, sortOrder: 3 },
     { id: '4', question: 'What payment methods do you accept?', answer: 'We accept all major credit/debit cards, UPI, and net banking via Razorpay.', category: null, sortOrder: 4 },
-    { id: '5', question: 'Is the cafe open to outside visitors?', answer: 'Absolutely! Our cafe is open to all from 7:00 AM to 11:00 PM. Non-guests are welcome.', category: null, sortOrder: 5 },
+    { id: '5', question: 'Is the cafe open to outside visitors?', answer: 'Absolutely! Our cafe is open to all from 7:30 AM to 10:00 PM. Non-guests are welcome.', category: null, sortOrder: 5 },
     { id: '6', question: 'Can I modify or cancel my booking?', answer: 'Yes, subject to our cancellation policy. Please refer to the <a href="/policies#cancellation" class="text-forest-600 dark:text-forest-400 underline hover:no-underline">Cancellation Policy section</a> for detailed terms.', category: null, sortOrder: 6 },
   ];
 
@@ -187,7 +187,7 @@ export default function PoliciesPage() {
             <TextReveal as="h1" className="section-title max-w-3xl">
               Policies & Terms of Stay
             </TextReveal>
-            <p className="text-muted-foreground text-base md:text-lg max-w-3xl mt-6 leading-relaxed text-justify hyphens-auto">
+            <p className="text-muted-foreground text-base md:text-lg max-w-3xl mt-6 leading-relaxed">
               Thank you for choosing The Vedara. To ensure a serene, safe, and exceptional experience for all our guests, please review our house policies and terms of stay below. Confirming a reservation implies full acceptance of these terms.
             </p>
           </ScrollReveal>

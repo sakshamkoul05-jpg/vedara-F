@@ -51,7 +51,7 @@ export function Header() {
         <div className="flex items-center justify-between h-16 md:h-20">
           <Link href="/" className="flex items-center gap-3 flex-shrink-0">
             <div className={cn(
-              'w-14 h-14 md:w-20 md:h-20 rounded-full overflow-hidden flex-shrink-0 transition-all',
+              'w-16 h-16 md:w-24 md:h-24 rounded-full overflow-hidden flex-shrink-0 transition-all',
               isTransparent ? 'ring-2 ring-white/20' : 'ring-1 ring-earth-200 dark:ring-earth-700'
             )}>
               <Image
@@ -166,7 +166,16 @@ export function Header() {
             </Link>
           </div>
 
-          <div className="flex md:hidden items-center gap-2">
+          <div className="flex md:hidden items-center gap-1">
+            <a href="mailto:vedararetreat@gmail.com" className={cn('p-1.5', isTransparent ? 'text-cream-100/80' : 'text-earth-500 dark:text-cream-400')} aria-label="Email">
+              <Mail className="w-4 h-4" />
+            </a>
+            <a href="https://facebook.com/vedararetreat" target="_blank" rel="noopener noreferrer" className={cn('p-1.5', isTransparent ? 'text-cream-100/80' : 'text-earth-500 dark:text-cream-400')} aria-label="Facebook">
+              <Facebook className="w-4 h-4" />
+            </a>
+            <a href="https://instagram.com/vedararetreat" target="_blank" rel="noopener noreferrer" className={cn('p-1.5', isTransparent ? 'text-cream-100/80' : 'text-earth-500 dark:text-cream-400')} aria-label="Instagram">
+              <Instagram className="w-4 h-4" />
+            </a>
             <Link
               href="/admin/login"
               className={cn(

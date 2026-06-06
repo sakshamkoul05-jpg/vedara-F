@@ -15,10 +15,20 @@ import { formatPrice, calculateNights } from '@/lib/utils';
 import { useCouponStore } from '@/store/coupon';
 import {
   Calendar, Home, User, Check, ArrowRight, ArrowLeft,
-  Percent, Tag, Loader2, CreditCard, Sparkles, Gift, ChevronDown
+  Percent, Tag, Loader2, CreditCard, Sparkles, Gift, ChevronDown, Users
 } from 'lucide-react';
 
 const idProofTypes = ['Aadhaar Card', 'PAN Card', 'Passport', 'Driving License'];
+
+const indianStates = [
+  'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh', 'Goa', 'Gujarat',
+  'Haryana', 'Himachal Pradesh', 'Jharkhand', 'Karnataka', 'Kerala', 'Madhya Pradesh',
+  'Maharashtra', 'Manipur', 'Meghalaya', 'Mizoram', 'Nagaland', 'Odisha', 'Punjab',
+  'Rajasthan', 'Sikkim', 'Tamil Nadu', 'Telangana', 'Tripura', 'Uttar Pradesh',
+  'Uttarakhand', 'West Bengal', 'Andaman and Nicobar Islands', 'Chandigarh',
+  'Dadra and Nagar Haveli and Daman and Diu', 'Delhi', 'Jammu and Kashmir',
+  'Ladakh', 'Lakshadweep', 'Puducherry',
+];
 
 export default function BookingPage() {
   const searchParams = useSearchParams();
@@ -28,8 +38,9 @@ export default function BookingPage() {
   const [checkIn, setCheckIn] = useState(searchParams.get('checkIn') || '');
   const [checkOut, setCheckOut] = useState(searchParams.get('checkOut') || '');
   const [selectedCottage, setSelectedCottage] = useState<string>(searchParams.get('cottageId') || '');
-  const [adults, setAdults] = useState(2);
-  const [children, setChildren] = useState(0);
+  const [adults, setAdults] = useState(parseInt(searchParams.get('adults') || '2'));
+  const [children, setChildren] = useState(parseInt(searchParams.get('children') || '0'));
+  const [nationality, setNationality] = useState(searchParams.get('nationality') || 'Indian');
   const [guestName, setGuestName] = useState('');
   const [guestEmail, setGuestEmail] = useState('');
   const [guestPhone, setGuestPhone] = useState('');
@@ -58,6 +69,29 @@ export default function BookingPage() {
       setStep(3);
     }
   }, [searchParams]);
+
+  useEffect(() => {
+    if (pincode.length === 6 && /^\d{6}$/.test(pincode)) {
+      fetch(`https://api.postalpincode.in/pincode/${pincode}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data[0]?.Status === 'Success' && data[0].PostOffice?.length > 0) {
+            const po = data[0].PostOffice[0];
+            setCity(po.District || po.Name || '');
+            setState(po.State || '');
+          }
+        })
+        .catch(() => {});
+    }
+  }, [pincode]);
+
+  const handleCheckOutChange = (value: string) => {
+    setCheckOut(value);
+    if (checkIn && value && new Date(value) <= new Date(checkIn)) {
+      alert('Check-out date must be after check-in date');
+      setCheckOut('');
+    }
+  };
 
   const handleAvailabilityCheck = async () => {
     if (!checkIn || !checkOut) return;
@@ -145,9 +179,11 @@ export default function BookingPage() {
   const selectedCottageData = cottages.find((c) => c.id === selectedCottage);
   const nights = checkIn && checkOut ? calculateNights(new Date(checkIn), new Date(checkOut)) : 0;
   const subtotal = selectedCottageData ? selectedCottageData.pricePerNight * nights : 0;
+  const extraGuests = Math.max(0, adults + children - 2);
+  const extraGuestCharges = extraGuests * 1500 * nights;
   const discountAmount = isValid ? (discountType === 'PERCENTAGE' ? Math.round(subtotal * discount / 100) : discount) : 0;
-  const taxes = Math.round((subtotal - discountAmount) * 0.12);
-  const totalAmount = subtotal - discountAmount + taxes;
+  const taxes = Math.round((subtotal + extraGuestCharges - discountAmount) * 0.12);
+  const totalAmount = subtotal + extraGuestCharges - discountAmount + taxes;
 
   const stepLabels = ['Dates', 'Cottage', 'Details', 'Confirmation'];
 
@@ -223,7 +259,7 @@ export default function BookingPage() {
                             <label className="vintage-label">Check-out Date *</label>
                             <div className="relative">
                               <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-earth-400" />
-                              <Input type="date" value={checkOut} onChange={(e) => setCheckOut(e.target.value)} min={checkIn || new Date().toISOString().split('T')[0]} className="pl-10" />
+                              <Input type="date" value={checkOut} onChange={(e) => handleCheckOutChange(e.target.value)} min={checkIn || new Date().toISOString().split('T')[0]} className="pl-10" />
                             </div>
                           </div>
                           <Button variant="primary" size="lg" onClick={handleAvailabilityCheck} disabled={!checkIn || !checkOut || stepLoading} className="w-full mt-4">
@@ -373,11 +409,21 @@ export default function BookingPage() {
                                 </div>
                                 <div>
                                   <label className="vintage-label">State</label>
-                                  <Input value={state} onChange={(e) => setState(e.target.value)} placeholder="State" />
+                                  <div className="relative">
+                                    <select
+                                      value={state}
+                                      onChange={(e) => setState(e.target.value)}
+                                      className="vintage-input appearance-none pr-10"
+                                    >
+                                      <option value="">Select State</option>
+                                      {indianStates.map(s => <option key={s} value={s}>{s}</option>)}
+                                    </select>
+                                    <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-earth-400 pointer-events-none" />
+                                  </div>
                                 </div>
                                 <div>
                                   <label className="vintage-label">Pincode</label>
-                                  <Input value={pincode} onChange={(e) => setPincode(e.target.value)} placeholder="000000" />
+                                  <Input value={pincode} onChange={(e) => { const v = e.target.value.replace(/\D/g, '').slice(0, 6); setPincode(v); }} placeholder="000000" maxLength={6} />
                                 </div>
                               </div>
                             </div>
@@ -385,8 +431,8 @@ export default function BookingPage() {
 
                           <div className="grid grid-cols-2 gap-4">
                             <div>
-                              <label className="vintage-label">Adults</label>
-                              <Input type="number" min={1} max={10} value={adults} onChange={(e) => setAdults(parseInt(e.target.value) || 1)} />
+                              <label className="vintage-label">Adults (max {selectedCottageData?.capacity || 4})</label>
+                              <Input type="number" min={1} max={selectedCottageData?.capacity || 4} value={adults} onChange={(e) => { const v = parseInt(e.target.value) || 1; setAdults(Math.min(v, selectedCottageData?.capacity || 4)); }} />
                             </div>
                             <div>
                               <label className="vintage-label">Children</label>
@@ -538,9 +584,17 @@ export default function BookingPage() {
                         {nights > 0 && selectedCottageData && (
                           <div className="space-y-2 pt-1">
                             <div className="flex justify-between">
-                              <span className="text-muted-foreground">Subtotal</span>
+                              <span className="text-muted-foreground">Room Subtotal</span>
                               <span className="text-foreground">{formatPrice(subtotal)}</span>
                             </div>
+                            {extraGuests > 0 && (
+                              <div className="flex justify-between text-amber-600">
+                                <span className="flex items-center gap-1">
+                                  <Users className="w-3 h-3" /> Extra Guest ({extraGuests} × ₹1,500 × {nights} {nights === 1 ? 'night' : 'nights'})
+                                </span>
+                                <span>+{formatPrice(extraGuestCharges)}</span>
+                              </div>
+                            )}
                             {isValid && (
                               <div className="flex justify-between text-forest-600">
                                 <span className="flex items-center gap-1">
@@ -558,24 +612,6 @@ export default function BookingPage() {
                               <span className="font-bold text-lg text-forest-600 dark:text-forest-400">{formatPrice(totalAmount)}</span>
                             </div>
                           </div>
-                        )}
-
-                        {!checkIn && (
-                          <p className="text-xs text-muted-foreground text-center py-4">Select dates to see summary</p>
-                        )}
-                      </div>
-                    </div>
-                  </ScrollReveal>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      </section>
-    </>
-  );
-}
-                       </div>
                         )}
 
                         {!checkIn && (
