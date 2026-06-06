@@ -141,7 +141,7 @@ export default function HomePage() {
 
       <PackageBanner />
 
-      <section id="booking-bar" className="relative z-30 -mt-12 mb-12 px-4">
+      <section id="booking-bar" className="relative z-30 mt-12 mb-12 px-4">
         <div className="vintage-container max-w-4xl">
           <div className="bg-white/80 dark:bg-earth-800/80 backdrop-blur-md rounded-2xl shadow-xl border border-earth-200 dark:border-earth-700 p-4 md:p-6 font-sans">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3 items-end mb-3">

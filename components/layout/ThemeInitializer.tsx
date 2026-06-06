@@ -12,8 +12,8 @@ export function ThemeInitializer() {
     const stored = localStorage.getItem('vd_theme') as 'light' | 'dark' | null;
     if (stored) {
       setTheme(stored);
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      setTheme('dark');
+    } else {
+      setTheme('light');
     }
     hydrate();
   }, [setTheme, hydrate]);
