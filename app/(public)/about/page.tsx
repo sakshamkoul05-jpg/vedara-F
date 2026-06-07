@@ -77,6 +77,21 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* Quotation under Hero */}
+      <section className="py-20 md:py-28 bg-alabaster">
+        <div className="vintage-container">
+          <ScrollReveal>
+            <div className="max-w-3xl mx-auto text-center">
+              <Quote className="w-10 h-10 text-gold-500 mx-auto mb-6" />
+              <p className="font-serif text-2xl md:text-3xl lg:text-4xl text-vedara-900 leading-relaxed italic">
+                "Where the peaks meet peace of mind. Welcome to slow living in the heart of the Himalayas."
+              </p>
+              <div className="mt-8 w-16 h-px bg-gold-500 mx-auto" />
+            </div>
+          </ScrollReveal>
+        </div>
+      </section>
+
       <div className="bg-alabaster">
         {/* Origin Story */}
         <section className="section-padding">
@@ -95,14 +110,6 @@ export default function AboutPage() {
                   </p>
                   <p>
                     Here, luxury isn't loud. It is found in the scent of local cedarwood, the touch of native hand-hewn stone, the sound of the wind through the pines, and the unfiltered panoramic vistas that greet you at every sunrise. We intentionally chose to remain an intimate boutique retreat, swapping the crowds of commercial hospitality for personalized care, quiet corners, and deep, restorative stillness.
-                  </p>
-                </div>
-              </ScrollReveal>
-              <ScrollReveal delay={0.3}>
-                <div className="mt-10 p-8 md:p-10 border-l-2 border-gold-500 bg-gold-50/30 rounded-r-2xl">
-                  <Quote className="w-8 h-8 text-gold-500 mb-4" />
-                  <p className="text-vedara-900/80 text-lg md:text-xl italic font-serif leading-relaxed">
-                    "Luxury isn't loud. It is found in the scent of local cedarwood, the touch of native hand-hewn stone, the sound of the wind through the pines."
                   </p>
                 </div>
               </ScrollReveal>
