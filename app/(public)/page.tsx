@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { ArrowRight, Star, Coffee, Trees, Sparkles, Music, FireExtinguisher, Moon, MapPin, Mountain, TreePine } from 'lucide-react';
 import { ScrollReveal } from '@/components/animations/ScrollReveal';
 import { TextReveal } from '@/components/animations/TextReveal';
@@ -43,14 +44,22 @@ const nearbyAttractions = [
 ];
 
 export default function HomePage() {
+  const router = useRouter();
   const [homeCheckIn, setHomeCheckIn] = useState('');
   const [homeCheckOut, setHomeCheckOut] = useState('');
+  const [homeRooms, setHomeRooms] = useState(1);
+  const [homeAdults, setHomeAdults] = useState(2);
+  const [homeChildren, setHomeChildren] = useState(0);
+  const [homeNationality, setHomeNationality] = useState('Indian');
   const [dateError, setDateError] = useState('');
 
   const today = new Date().toISOString().split('T')[0];
 
   const handleHomeBooking = (e: React.MouseEvent) => {
-    if (!homeCheckIn || !homeCheckOut) return;
+    if (!homeCheckIn || !homeCheckOut) {
+      setDateError('Please select both check-in and check-out dates');
+      return;
+    }
     
     const checkInDate = new Date(homeCheckIn);
     const checkOutDate = new Date(homeCheckOut);
@@ -61,8 +70,14 @@ export default function HomePage() {
     }
     
     setDateError('');
-    const params = new URLSearchParams({ checkIn: homeCheckIn, checkOut: homeCheckOut });
-    window.location.href = `/booking?${params}`;
+    const params = new URLSearchParams({
+      checkIn: homeCheckIn,
+      checkOut: homeCheckOut,
+      adults: homeAdults.toString(),
+      children: homeChildren.toString(),
+      nationality: homeNationality,
+    });
+    router.push(`/booking?${params}`);
   };
 
   const handleCheckInChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -77,6 +92,11 @@ export default function HomePage() {
   const handleCheckOutChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setHomeCheckOut(e.target.value);
     setDateError('');
+  };
+
+  const handleScrollArrow = () => {
+    const targetId = window.innerWidth < 768 ? 'booking-bar' : 'welcome';
+    document.getElementById(targetId)?.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
@@ -113,7 +133,7 @@ export default function HomePage() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 2, duration: 1 }}
-          onClick={() => document.getElementById('booking-bar')?.scrollIntoView({ behavior: 'smooth' })}
+          onClick={handleScrollArrow}
           className="absolute bottom-16 left-1/2 -translate-x-1/2 z-20 cursor-pointer"
           aria-label="Scroll to booking section"
         >
@@ -125,25 +145,50 @@ export default function HomePage() {
 
       <PackageBanner />
 
-      <section id="booking-bar" className="relative z-30 -mt-12 mb-12 px-4">
-        <div className="vintage-container max-w-4xl">
+      <section id="booking-bar" className="relative z-30 mt-0 md:-mt-12 mb-12 px-4">
+        <div className="vintage-container max-w-5xl">
           <div className="bg-white/80 dark:bg-earth-800/80 backdrop-blur-md rounded-2xl shadow-xl border border-earth-200 dark:border-earth-700 p-4 md:p-6 font-sans">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-3 items-end">
-              <div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3 items-end">
+              <div className="col-span-1 sm:col-span-2 lg:col-span-2">
                 <label className="block text-xs font-medium text-earth-600 dark:text-cream-300 mb-1">Property</label>
                 <select className="w-full rounded-xl border border-earth-200 dark:border-earth-600 bg-white dark:bg-earth-700 px-3 py-2.5 text-sm text-earth-900 dark:text-cream-100 focus:outline-none focus:border-forest-500">
                   <option>The Vedara – Himalayan Boutique Retreat</option>
                 </select>
               </div>
-              <div>
+              <div className="col-span-1 lg:col-span-2">
                 <label className="block text-xs font-medium text-earth-600 dark:text-cream-300 mb-1">Check In</label>
                 <input type="date" value={homeCheckIn} onChange={handleCheckInChange} min={today} className="w-full rounded-xl border border-earth-200 dark:border-earth-600 bg-white dark:bg-earth-700 px-3 py-2.5 text-sm text-earth-900 dark:text-cream-100 focus:outline-none focus:border-forest-500" />
               </div>
-              <div>
+              <div className="col-span-1 lg:col-span-2">
                 <label className="block text-xs font-medium text-earth-600 dark:text-cream-300 mb-1">Check Out</label>
                 <input type="date" value={homeCheckOut} onChange={handleCheckOutChange} min={homeCheckIn || today} className="w-full rounded-xl border border-earth-200 dark:border-earth-600 bg-white dark:bg-earth-700 px-3 py-2.5 text-sm text-earth-900 dark:text-cream-100 focus:outline-none focus:border-forest-500" />
               </div>
-              <div>
+              <div className="col-span-1 lg:col-span-1">
+                <label className="block text-xs font-medium text-earth-600 dark:text-cream-300 mb-1">Rooms</label>
+                <select value={homeRooms} onChange={(e) => setHomeRooms(parseInt(e.target.value))} className="w-full rounded-xl border border-earth-200 dark:border-earth-600 bg-white dark:bg-earth-700 px-3 py-2.5 text-sm text-earth-900 dark:text-cream-100 focus:outline-none focus:border-forest-500">
+                  {[1, 2, 3, 4].map(n => <option key={n} value={n}>{n}</option>)}
+                </select>
+              </div>
+              <div className="col-span-1 lg:col-span-1">
+                <label className="block text-xs font-medium text-earth-600 dark:text-cream-300 mb-1">Adults</label>
+                <select value={homeAdults} onChange={(e) => setHomeAdults(parseInt(e.target.value))} className="w-full rounded-xl border border-earth-200 dark:border-earth-600 bg-white dark:bg-earth-700 px-3 py-2.5 text-sm text-earth-900 dark:text-cream-100 focus:outline-none focus:border-forest-500">
+                  {[1, 2, 3, 4].map(n => <option key={n} value={n}>{n}</option>)}
+                </select>
+              </div>
+              <div className="col-span-1 lg:col-span-1">
+                <label className="block text-xs font-medium text-earth-600 dark:text-cream-300 mb-1">Children</label>
+                <select value={homeChildren} onChange={(e) => setHomeChildren(parseInt(e.target.value))} className="w-full rounded-xl border border-earth-200 dark:border-earth-600 bg-white dark:bg-earth-700 px-3 py-2.5 text-sm text-earth-900 dark:text-cream-100 focus:outline-none focus:border-forest-500">
+                  {[0, 1, 2, 3].map(n => <option key={n} value={n}>{n}</option>)}
+                </select>
+              </div>
+              <div className="col-span-1 lg:col-span-1">
+                <label className="block text-xs font-medium text-earth-600 dark:text-cream-300 mb-1">Nationality</label>
+                <select value={homeNationality} onChange={(e) => setHomeNationality(e.target.value)} className="w-full rounded-xl border border-earth-200 dark:border-earth-600 bg-white dark:bg-earth-700 px-3 py-2.5 text-sm text-earth-900 dark:text-cream-100 focus:outline-none focus:border-forest-500">
+                  <option value="Indian">Indian</option>
+                  <option value="Foreign">Foreign National</option>
+                </select>
+              </div>
+              <div className="col-span-1 sm:col-span-2 lg:col-span-2">
                 <a onClick={handleHomeBooking} className="vintage-button-primary text-sm px-6 py-2.5 w-full text-center block cursor-pointer">
                   {homeCheckIn && homeCheckOut ? 'Check Availability' : 'Book Your Stay'}
                 </a>
@@ -156,7 +201,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="relative py-28 md:py-36 overflow-hidden bg-earth-900">
+      <section id="welcome" className="relative py-28 md:py-36 overflow-hidden bg-earth-900">
         <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1585409677983-0f6c41ca9c3b?w=1920&q=80)', backgroundSize: 'cover' }} />
         <div className="relative z-10 vintage-container">
           <div className="grid md:grid-cols-2 gap-12 items-center">

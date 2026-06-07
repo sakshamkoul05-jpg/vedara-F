@@ -51,14 +51,14 @@ export function Header() {
         <div className="flex items-center justify-between h-16 md:h-20">
           <Link href="/" className="flex items-center gap-3 flex-shrink-0">
             <div className={cn(
-              'w-14 h-14 md:w-20 md:h-20 rounded-full overflow-hidden flex-shrink-0 transition-all',
+              'w-16 h-16 md:w-24 md:h-24 rounded-full overflow-hidden flex-shrink-0 transition-all',
               isTransparent ? 'ring-2 ring-white/20' : 'ring-1 ring-earth-200 dark:ring-earth-700'
             )}>
               <Image
                 src="/images/vedara-logo.jpeg"
                 alt="The Vedara"
-                width={80}
-                height={80}
+                width={96}
+                height={96}
                 className="w-full h-full object-cover"
                 priority
               />
@@ -166,7 +166,49 @@ export function Header() {
             </Link>
           </div>
 
-          <div className="flex md:hidden items-center gap-2">
+          <div className="flex md:hidden items-center gap-1.5">
+            <a
+              href="mailto:vedararetreat@gmail.com"
+              className={cn(
+                'p-1 rounded-full transition-colors',
+                isTransparent
+                  ? 'text-cream-100/60 hover:text-cream-50'
+                  : 'text-earth-500 dark:text-cream-400 hover:text-forest-600 dark:hover:text-cream-50'
+              )}
+              aria-label="Email"
+            >
+              <Mail className="w-4 h-4" />
+            </a>
+            <a
+              href="https://facebook.com/vedararetreat"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={cn(
+                'p-1 rounded-full transition-colors',
+                isTransparent
+                  ? 'text-cream-100/60 hover:text-cream-50'
+                  : 'text-earth-500 dark:text-cream-400 hover:text-forest-600 dark:hover:text-cream-50'
+              )}
+              aria-label="Facebook"
+            >
+              <Facebook className="w-4 h-4" />
+            </a>
+            <a
+              href="https://instagram.com/vedararetreat"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={cn(
+                'p-1 rounded-full transition-colors',
+                isTransparent
+                  ? 'text-cream-100/60 hover:text-cream-50'
+                  : 'text-earth-500 dark:text-cream-400 hover:text-forest-600 dark:hover:text-cream-50'
+              )}
+              aria-label="Instagram"
+            >
+              <Instagram className="w-4 h-4" />
+            </a>
+            <div className={cn('h-4 w-px mx-0.5', isTransparent ? 'bg-white/20' : 'bg-earth-300 dark:bg-earth-600')} />
+
             <Link
               href="/admin/login"
               className={cn(

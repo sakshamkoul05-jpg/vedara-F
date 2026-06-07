@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from 'framer-motion';
-import { Coffee, Soup, Fish, Salad, UtensilsCrossed, IceCream, CupSoda, Cookie, Baby, Sparkles, Mountain, Leaf, ArrowLeft, ChevronDown, Search, ShoppingCart, Plus, Minus, Trash2, Send, Store, Home, CheckCircle } from 'lucide-react';
+import { Coffee, Soup, Fish, Salad, UtensilsCrossed, IceCream, CupSoda, Cookie, Baby, Sparkles, Mountain, Leaf, ArrowLeft, ChevronDown, Search, ShoppingCart, Plus, Minus, Trash2, Send, Store, Home, CheckCircle, Pizza } from 'lucide-react';
 import Link from 'next/link';
 import { useCartStore } from '@/store/cart';
 import { endpoints } from '@/services/api';
@@ -836,29 +836,6 @@ export default function CafePage() {
             </span>
           )}
         </motion.button>
-      </div>
-    </div>
-  );
-}
-    </motion.button>
-      </div>
-    </div>
-  );
-}
-    className="relative w-14 h-14 rounded-full bg-forest-600 text-cream-50 shadow-xl shadow-forest-900/30 hover:bg-forest-700 transition-colors flex items-center justify-center"
-        >
-          <ShoppingCart className="w-6 h-6" />
-          {itemCount() > 0 && (
-            <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-amber-500 text-cream-50 text-[10px] font-bold flex items-center justify-center shadow-md">
-              {itemCount()}
-            </span>
-          )}
-        </motion.button>
-      </div>
-    </div>
-  );
-}
-    </motion.button>
       </div>
     </div>
   );

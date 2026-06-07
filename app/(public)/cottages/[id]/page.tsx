@@ -16,7 +16,7 @@ import { Badge } from '@/components/ui/badge';
 import { FormattedText } from '@/components/ui/formatted-text';
 import { api } from '@/lib/api';
 import { Cottage, SeasonalPricing } from '@/types';
-import { formatPrice, calculateNights } from '@/lib/utils';
+import { formatPrice, calculateNights, getToday } from '@/lib/utils';
 
 const amenityIcons: Record<string, React.ElementType> = {
   wifi: Wifi, fireplace: Flame, 'room heater': Snowflake,
@@ -121,7 +121,9 @@ export default function CottageDetailPage() {
     );
   }
 
-  const amenitiesList: string[] = typeof cottage.amenities === 'string' ? JSON.parse(cottage.amenities as string) : cottage.amenities;
+  const amenitiesList: string[] = (() => { try { return typeof cottage.amenities === 'string' ? JSON.parse(cottage.amenities as string) : cottage.amenities; } catch { return []; } })();
+
+  const today = getToday();
 
   return (
     <>
@@ -297,7 +299,7 @@ export default function CottageDetailPage() {
                             type="date"
                             value={checkIn}
                             onChange={(e) => setCheckIn(e.target.value)}
-                            min={new Date().toISOString().split('T')[0]}
+                            min={today}
                             className="vintage-input pl-10"
                           />
                         </div>

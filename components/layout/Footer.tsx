@@ -13,10 +13,6 @@ export function Footer() {
               <Mountain className="w-6 h-6 text-cream-100" />
               <span className="font-serif text-xl font-bold text-cream-50">The Vedara – Himalayan Boutique Retreat</span>
             </Link>
-            <p className="text-cream-300 text-sm leading-relaxed max-w-sm mb-6 text-justify hyphens-auto">
-              A handcrafted escape nestled in the heart of the Himalayas,
-              offering seven boutique cottages and a soulful mountain café.
-            </p>
             <div className="space-y-3 text-sm">
               <a href="mailto:vedararetreat@gmail.com" className="flex items-center gap-2 text-cream-300 hover:text-cream-50 transition-colors">
                 <Mail className="w-4 h-4" /> vedararetreat@gmail.com

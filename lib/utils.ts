@@ -34,7 +34,7 @@ export function calculateNights(checkIn: Date, checkOut: Date): number {
 }
 
 export function slugify(text: string): string {
-  return text.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]+/g, '');
+  return text.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]+/g, '').replace(/^-+|-+$/g, '');
 }
 
 export function truncate(text: string, length: number): string {
@@ -42,7 +42,16 @@ export function truncate(text: string, length: number): string {
   return text.slice(0, length) + '...';
 }
 
+export function getToday(): string {
+  const d = new Date();
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
 export function getImageUrl(path: string): string {
   if (path.startsWith('http')) return path;
-  return path;
+  const base = process.env.NEXT_PUBLIC_API_URL?.replace('/api', '') || 'http://localhost:5000';
+  return `${base}${path}`;
 }

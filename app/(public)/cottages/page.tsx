@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
-import { ArrowRight, Users, Bed, Bath, Maximize, Loader2, XCircle, CheckCircle } from 'lucide-react';
+import { ArrowRight, Users, Bed, Bath, Maximize, Loader2, XCircle, CheckCircle, Mountain } from 'lucide-react';
 import { ScrollReveal } from '@/components/animations/ScrollReveal';
 import { TextReveal } from '@/components/animations/TextReveal';
 import { BackButton } from '@/components/layout/BackButton';
@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { api } from '@/lib/api';
 import { Cottage } from '@/types';
-import { formatPrice } from '@/lib/utils';
+import { formatPrice, getToday } from '@/lib/utils';
 
 export default function CottagesPage() {
   const [cottages, setCottages] = useState<Cottage[]>([]);
@@ -42,6 +42,15 @@ export default function CottagesPage() {
     }).catch(() => setLoading(false));
   }, []);
 
+  const today = getToday();
+
+  const handleCheckInChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCheckIn(e.target.value);
+    if (checkOut && new Date(checkOut) <= new Date(e.target.value)) {
+      setCheckOut('');
+    }
+  };
+
   return (
     <>
       <section className="pt-32 pb-20 bg-cream-50 dark:bg-earth-900">
@@ -63,11 +72,11 @@ export default function CottagesPage() {
               <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div>
                   <label className="vintage-label">Check-in</label>
-                  <Input type="date" value={checkIn} onChange={(e) => setCheckIn(e.target.value)} />
+                  <Input type="date" value={checkIn} onChange={handleCheckInChange} min={today} />
                 </div>
                 <div>
                   <label className="vintage-label">Check-out</label>
-                  <Input type="date" value={checkOut} onChange={(e) => setCheckOut(e.target.value)} />
+                  <Input type="date" value={checkOut} onChange={(e) => setCheckOut(e.target.value)} min={checkIn || today} />
                 </div>
                 <div className="flex items-end">
                   <Button variant="primary" size="md" className="w-full" onClick={handleCheckAvailability} disabled={!checkIn || !checkOut || checking}>
@@ -75,7 +84,7 @@ export default function CottagesPage() {
                   </Button>
                 </div>
                 <div className="flex items-end">
-                  <Link href="/booking" className="vintage-button-secondary w-full text-center">
+                  <Link href={checkIn && checkOut ? `/booking?checkIn=${checkIn}&checkOut=${checkOut}` : '/booking'} className="vintage-button-secondary w-full text-center">
                     Quick Book
                   </Link>
                 </div>
@@ -99,6 +108,16 @@ export default function CottagesPage() {
                   </div>
                 </div>
               ))}
+            </div>
+          ) : cottages.length === 0 ? (
+            <div className="text-center py-20">
+              <Mountain className="w-16 h-16 text-earth-300 mx-auto mb-6" />
+              <h3 className="font-serif text-2xl text-foreground mb-3">No Cottages Found</h3>
+              <p className="text-muted-foreground max-w-md mx-auto">
+                {availabilityChecked
+                  ? 'No cottages are available for the selected dates. Try different dates.'
+                  : 'We couldn\'t load our cottages. Please try again later.'}
+              </p>
             </div>
           ) : (
             <>
