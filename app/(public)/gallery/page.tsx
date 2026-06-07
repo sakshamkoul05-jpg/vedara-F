@@ -8,18 +8,18 @@ import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/compone
 import { X, Mountain, ChevronLeft, ChevronRight, ImageIcon } from 'lucide-react';
 
 const galleryItems = [
-  { id: 1, category: 'cottages', caption: 'Morning mist over The Pine Perch', color: 'bg-earth-200', span: 'row-span-1' },
-  { id: 2, category: 'cafe', caption: 'The Forest Pantry at golden hour', color: 'bg-forest-200', span: 'row-span-2' },
-  { id: 3, category: 'views', caption: 'Valley panorama from Ridge View', color: 'bg-clay-200', span: 'row-span-1' },
-  { id: 4, category: 'cottages', caption: 'Cedar Nook garden in bloom', color: 'bg-forest-300', span: 'row-span-1' },
-  { id: 5, category: 'cafe', caption: 'Hand-poured coffee ceremony', color: 'bg-earth-300', span: 'row-span-1' },
+  { id: 1, category: 'cottages', caption: 'Morning mist over The Pine Perch', color: 'bg-gold-100', span: 'row-span-1' },
+  { id: 2, category: 'cafe', caption: 'The Forest Pantry at golden hour', color: 'bg-gold-200', span: 'row-span-2' },
+  { id: 3, category: 'views', caption: 'Valley panorama from Ridge View', color: 'bg-gold-200', span: 'row-span-1' },
+  { id: 4, category: 'cottages', caption: 'Cedar Nook garden in bloom', color: 'bg-gold-300', span: 'row-span-1' },
+  { id: 5, category: 'cafe', caption: 'Hand-poured coffee ceremony', color: 'bg-gold-200', span: 'row-span-1' },
   { id: 6, category: 'views', caption: 'Starry night over the mountains', color: 'bg-earth-400', span: 'row-span-1' },
-  { id: 7, category: 'cottages', caption: 'Maple Suite wraparound veranda', color: 'bg-clay-300', span: 'row-span-2' },
+  { id: 7, category: 'cottages', caption: 'Maple Suite wraparound veranda', color: 'bg-gold-300', span: 'row-span-2' },
   { id: 8, category: 'cafe', caption: 'Wood-fired hearth kitchen', color: 'bg-forest-400', span: 'row-span-1' },
   { id: 9, category: 'views', caption: 'Autumn colors along the trail', color: 'bg-clay-400', span: 'row-span-1' },
   { id: 10, category: 'cottages', caption: 'Ridge View infinity tub under stars', color: 'bg-earth-500', span: 'row-span-1' },
   { id: 11, category: 'cafe', caption: 'Fresh mountain bakes display', color: 'bg-forest-500', span: 'row-span-1' },
-  { id: 12, category: 'views', caption: 'Sunrise over the Himalayan range', color: 'bg-clay-500', span: 'row-span-1' },
+  { id: 12, category: 'views', caption: 'Sunrise over the Himalayan range', color: 'bg-gold-500', span: 'row-span-1' },
 ];
 
 const categories = ['all', 'cottages', 'cafe', 'views'];
@@ -45,10 +45,10 @@ export default function GalleryPage() {
 
   return (
     <>
-      <section className="pt-32 pb-20 bg-cream-50 dark:bg-earth-900">
+      <section className="pt-32 pb-20 bg-alabaster">
         <div className="vintage-container">
           <ScrollReveal>
-            <p className="text-clay-500 text-sm tracking-[0.2em] uppercase mb-4 font-sans">Gallery</p>
+            <p className="text-gold-500 text-sm tracking-[0.2em] uppercase mb-4 font-sans">Gallery</p>
             <TextReveal as="h1" className="section-title max-w-3xl">
               A Visual Journey Through The Vedara
             </TextReveal>
@@ -66,8 +66,8 @@ export default function GalleryPage() {
                   onClick={() => setFilter(cat)}
                   className={`px-5 py-2.5 rounded-full text-sm font-medium capitalize transition-all whitespace-nowrap ${
                     filter === cat
-                      ? 'bg-forest-600 text-cream-50 shadow-md'
-                      : 'bg-earth-100 dark:bg-earth-800 text-earth-600 dark:text-cream-300 hover:bg-earth-200'
+                      ? 'bg-gold-600 text-alabaster shadow-md'
+                      : 'bg-gold-50 text-charcoal/70 hover:bg-earth-200'
                   }`}
                   whileTap={{ scale: 0.95 }}
                   layout
@@ -110,8 +110,8 @@ export default function GalleryPage() {
                     </div>
                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                     <div className="absolute bottom-0 left-0 right-0 p-4 translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-500">
-                      <p className="text-cream-50 text-sm text-left font-medium">{item.caption}</p>
-                      <span className="text-cream-200/70 text-xs capitalize">{item.category}</span>
+                      <p className="text-alabaster text-sm text-left font-medium">{item.caption}</p>
+                      <span className="text-alabaster/70 text-xs capitalize">{item.category}</span>
                     </div>
                   </motion.button>
                 </ScrollReveal>
@@ -122,34 +122,34 @@ export default function GalleryPage() {
       </section>
 
       <Dialog open={selectedImage !== null} onOpenChange={(open) => { if (!open) setSelectedImage(null); }}>
-        <DialogContent className="max-w-5xl w-[95vw] p-0 overflow-hidden bg-black/95 border-earth-700">
+        <DialogContent className="max-w-5xl w-[95vw] p-0 overflow-hidden bg-black/95 border-vedara-900">
           <div className="relative">
-            <div className="aspect-[16/10] max-h-[75vh] flex items-center justify-center bg-earth-900">
+            <div className="aspect-[16/10] max-h-[75vh] flex items-center justify-center bg-vedara-900">
               <div className="w-full h-full flex items-center justify-center">
-                <Mountain className="w-24 h-24 text-earth-600" />
+                <Mountain className="w-24 h-24 text-charcoal/70" />
               </div>
             </div>
             <button
               onClick={() => navigateImage('prev')}
-              className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/50 text-cream-50 flex items-center justify-center hover:bg-black/70 transition-colors"
+              className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/50 text-alabaster flex items-center justify-center hover:bg-black/70 transition-colors"
             >
               <ChevronLeft className="w-5 h-5" />
             </button>
             <button
               onClick={() => navigateImage('next')}
-              className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/50 text-cream-50 flex items-center justify-center hover:bg-black/70 transition-colors"
+              className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/50 text-alabaster flex items-center justify-center hover:bg-black/70 transition-colors"
             >
               <ChevronRight className="w-5 h-5" />
             </button>
           </div>
           <div className="p-4 md:p-6">
-            <p className="text-cream-50 text-base font-medium">
+            <p className="text-alabaster text-base font-medium">
               {filtered.find((g) => g.id === selectedImage)?.caption}
             </p>
-            <p className="text-cream-200/60 text-sm capitalize mt-1">
+            <p className="text-alabaster/60 text-sm capitalize mt-1">
               {filtered.find((g) => g.id === selectedImage)?.category}
             </p>
-            <p className="text-cream-200/40 text-xs mt-2">
+            <p className="text-alabaster/40 text-xs mt-2">
               {currentIndex + 1} / {filtered.length}
             </p>
           </div>

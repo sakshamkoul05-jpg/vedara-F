@@ -9,11 +9,11 @@ import { Search, Filter, ChevronLeft, ChevronRight, Check, X, Loader2 } from 'lu
 import { formatDateShort, formatPrice } from '@/lib/utils';
 
 const statusColors: Record<string, string> = {
-  CONFIRMED: 'bg-forest-100 text-forest-700',
-  PENDING: 'bg-clay-100 text-clay-700',
+  CONFIRMED: 'bg-gold-100 text-forest-700',
+  PENDING: 'bg-gold-100 text-clay-700',
   RESERVED: 'bg-blue-100 text-blue-700',
   CANCELLED: 'bg-red-100 text-red-700',
-  EXPIRED: 'bg-earth-100 text-earth-600',
+  EXPIRED: 'bg-gold-50 text-charcoal/70',
 };
 
 export function BookingsPage() {
@@ -85,7 +85,7 @@ export function BookingsPage() {
               key={s}
               onClick={() => { setStatusFilter(s); setPage(1); }}
               className={`px-3 py-2 rounded-lg text-xs font-medium transition-all whitespace-nowrap ${
-                statusFilter === s ? 'bg-forest-600 text-cream-50' : 'bg-earth-100 dark:bg-earth-800 text-earth-600'
+                statusFilter === s ? 'bg-gold-600 text-alabaster' : 'bg-gold-50 text-charcoal/70'
               }`}
             >
               {s || 'All'}
@@ -98,8 +98,8 @@ export function BookingsPage() {
         <div className="space-y-3">
           {[1, 2, 3, 4, 5].map((i) => (
             <div key={i} className="vintage-card animate-pulse p-5">
-              <div className="h-4 bg-earth-200 rounded w-1/3 mb-2" />
-              <div className="h-3 bg-earth-200 rounded w-2/3" />
+              <div className="h-4 bg-gold-100 rounded w-1/3 mb-2" />
+              <div className="h-3 bg-gold-100 rounded w-2/3" />
             </div>
           ))}
         </div>
@@ -113,7 +113,7 @@ export function BookingsPage() {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1">
                     <span className="font-medium text-foreground text-sm">{booking.guest?.name}</span>
-                    <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${statusColors[booking.status] || 'bg-earth-100 text-earth-600'}`}>
+                    <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${statusColors[booking.status] || 'bg-gold-50 text-charcoal/70'}`}>
                       {booking.status}
                     </span>
                   </div>
@@ -123,9 +123,9 @@ export function BookingsPage() {
                   <p className="text-xs text-muted-foreground font-mono">{booking.bookingRef}</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-forest-600 dark:text-forest-400 font-semibold">{formatPrice(booking.finalAmount)}</p>
+                  <p className="text-gold-600 font-semibold">{formatPrice(booking.finalAmount)}</p>
                   {booking.payment && (
-                    <span className={`text-xs ${booking.payment.status === 'PAID' ? 'text-forest-600' : 'text-clay-500'}`}>
+                    <span className={`text-xs ${booking.payment.status === 'PAID' ? 'text-gold-600' : 'text-gold-500'}`}>
                       {booking.payment.status}
                     </span>
                   )}
@@ -136,7 +136,7 @@ export function BookingsPage() {
                   <button
                     onClick={() => handleApprove(booking.id)}
                     disabled={actionLoading === booking.id}
-                    className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-forest-600 text-white text-xs font-medium hover:bg-forest-700 transition-colors disabled:opacity-50"
+                    className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-gold-600 text-white text-xs font-medium hover:bg-gold-700 transition-colors disabled:opacity-50"
                   >
                     {actionLoading === booking.id ? <Loader2 className="w-3 h-3 animate-spin" /> : <Check className="w-3 h-3" />}
                     Approve

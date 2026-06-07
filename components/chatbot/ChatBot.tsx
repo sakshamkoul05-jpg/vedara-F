@@ -125,7 +125,7 @@ export function ChatBot() {
     <>
       <button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 left-6 z-40 w-14 h-14 rounded-full bg-forest-600 text-cream-50 shadow-lg hover:bg-forest-700 transition-all hover:scale-105 flex items-center justify-center"
+        className="fixed bottom-6 left-6 z-40 w-14 h-14 rounded-full bg-gold-600 text-alabaster shadow-lg hover:bg-gold-700 transition-all hover:scale-105 flex items-center justify-center"
         aria-label="Open chatbot"
       >
         <MessageCircle className="w-6 h-6" />
@@ -149,16 +149,16 @@ export function ChatBot() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className="fixed bottom-24 left-6 z-50 w-80 sm:w-96 h-[500px] bg-cream-50 dark:bg-earth-800 rounded-2xl shadow-2xl border border-earth-200 dark:border-earth-700 flex flex-col overflow-hidden"
+            className="fixed bottom-24 left-6 z-50 w-80 sm:w-96 h-[500px] bg-alabaster rounded-2xl shadow-2xl border border-gold-200 flex flex-col overflow-hidden"
           >
-            <div className="bg-forest-600 p-4 flex items-center justify-between">
+            <div className="bg-gold-600 p-4 flex items-center justify-between">
               <div className="flex items-center gap-2">
                 {mode === 'live' ? (
-                  <MessageCircleMore className="w-5 h-5 text-cream-100" />
+                  <MessageCircleMore className="w-5 h-5 text-alabaster" />
                 ) : (
-                  <Bot className="w-5 h-5 text-cream-100" />
+                  <Bot className="w-5 h-5 text-alabaster" />
                 )}
-                <span className="font-serif text-cream-50 font-semibold">
+                <span className="font-serif text-alabaster font-semibold">
                   {mode === 'live' ? 'Live Support' : 'Mountain Concierge'}
                 </span>
               </div>
@@ -166,7 +166,7 @@ export function ChatBot() {
                 {mode === 'live' && (
                   <button
                     onClick={handleCloseLiveChat}
-                    className="text-cream-100 hover:text-cream-50 p-1 text-xs"
+                    className="text-alabaster hover:text-alabaster p-1 text-xs"
                     title="End live chat"
                   >
                     <Phone className="w-4 h-4" />
@@ -174,7 +174,7 @@ export function ChatBot() {
                 )}
                 <button
                   onClick={() => { setIsOpen(false); if (socket) { socket.close(); setSocket(null); } setMode('ai'); setConversationId(null); }}
-                  className="text-cream-100 hover:text-cream-50 transition-transform hover:rotate-90 p-1"
+                  className="text-alabaster hover:text-alabaster transition-transform hover:rotate-90 p-1"
                   aria-label="Close chatbot"
                 >
                   <X className="w-5 h-5" />
@@ -183,17 +183,17 @@ export function ChatBot() {
             </div>
 
             {mode !== 'live' && mode !== 'name-prompt' && (
-              <div className="bg-forest-700/10 px-4 py-2 flex gap-2 overflow-x-auto">
-                <button onClick={() => handleQuickAction('Show me cottages')} className="text-xs bg-white dark:bg-earth-700 px-3 py-1.5 rounded-full whitespace-nowrap border border-earth-200 dark:border-earth-600 text-earth-700 dark:text-cream-200 hover:bg-forest-600 hover:text-cream-50 hover:border-forest-600 transition-colors">
+              <div className="bg-gold-700/10 px-4 py-2 flex gap-2 overflow-x-auto">
+                <button onClick={() => handleQuickAction('Show me cottages')} className="text-xs bg-white px-3 py-1.5 rounded-full whitespace-nowrap border border-gold-200 text-vedara-900 hover:bg-gold-600 hover:text-alabaster hover:border-gold-600 transition-colors">
                   Cottages
                 </button>
-                <button onClick={() => handleQuickAction('Café menu')} className="text-xs bg-white dark:bg-earth-700 px-3 py-1.5 rounded-full whitespace-nowrap border border-earth-200 dark:border-earth-600 text-earth-700 dark:text-cream-200 hover:bg-forest-600 hover:text-cream-50 hover:border-forest-600 transition-colors">
+                <button onClick={() => handleQuickAction('Café menu')} className="text-xs bg-white px-3 py-1.5 rounded-full whitespace-nowrap border border-gold-200 text-vedara-900 hover:bg-gold-600 hover:text-alabaster hover:border-gold-600 transition-colors">
                   Café Menu
                 </button>
-                <button onClick={() => handleQuickAction('Booking info')} className="text-xs bg-white dark:bg-earth-700 px-3 py-1.5 rounded-full whitespace-nowrap border border-earth-200 dark:border-earth-600 text-earth-700 dark:text-cream-200 hover:bg-forest-600 hover:text-cream-50 hover:border-forest-600 transition-colors">
+                <button onClick={() => handleQuickAction('Booking info')} className="text-xs bg-white px-3 py-1.5 rounded-full whitespace-nowrap border border-gold-200 text-vedara-900 hover:bg-gold-600 hover:text-alabaster hover:border-gold-600 transition-colors">
                   Booking
                 </button>
-                <button onClick={() => handleQuickAction('Live Support')} className="text-xs bg-white dark:bg-earth-700 px-3 py-1.5 rounded-full whitespace-nowrap border border-earth-200 dark:border-earth-600 text-earth-700 dark:text-cream-200 hover:bg-emerald-500 hover:text-white hover:border-emerald-500 transition-colors">
+                <button onClick={() => handleQuickAction('Live Support')} className="text-xs bg-white px-3 py-1.5 rounded-full whitespace-nowrap border border-gold-200 text-vedara-900 hover:bg-emerald-500 hover:text-white hover:border-emerald-500 transition-colors">
                   Live Support
                 </button>
               </div>
@@ -203,7 +203,7 @@ export function ChatBot() {
               <div className="flex-1 flex items-center justify-center p-6">
                 <div className="w-full space-y-4">
                   <div className="text-center">
-                    <MessageCircleMore className="w-10 h-10 text-forest-600 mx-auto mb-2" />
+                    <MessageCircleMore className="w-10 h-10 text-gold-600 mx-auto mb-2" />
                     <h3 className="font-serif text-lg text-foreground">Live Support</h3>
                     <p className="text-sm text-muted-foreground mt-1">Please tell us your name to connect with our team.</p>
                   </div>
@@ -212,7 +212,7 @@ export function ChatBot() {
                     onChange={(e) => setGuestName(e.target.value)}
                     onKeyDown={(e) => e.key === 'Enter' && submitName()}
                     placeholder="Your name"
-                    className="w-full rounded-xl border border-border bg-white dark:bg-earth-700 px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-forest-500"
+                    className="w-full rounded-xl border border-border bg-white px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-gold-500"
                     autoFocus
                   />
                   <div className="flex gap-2">
@@ -227,10 +227,10 @@ export function ChatBot() {
                   <div key={i} className={`flex ${msg.role === 'user' || msg.role === 'live-user' ? 'justify-end' : 'justify-start'}`}>
                     <div className={`max-w-[80%] rounded-2xl px-4 py-2.5 text-sm ${
                       msg.role === 'user' || msg.role === 'live-user'
-                        ? 'bg-forest-600 text-cream-50 rounded-br-sm'
+                        ? 'bg-gold-600 text-alabaster rounded-br-sm'
                         : msg.role === 'live-admin'
-                        ? 'bg-emerald-100 dark:bg-emerald-900/30 text-earth-800 dark:text-cream-200 rounded-bl-sm'
-                        : 'bg-earth-100 dark:bg-earth-700 text-earth-800 dark:text-cream-200 rounded-bl-sm'
+                        ? 'bg-emerald-100 text-earth-800 rounded-bl-sm'
+                        : 'bg-earth-100 text-earth-800 rounded-bl-sm'
                     }`}>
                       {msg.senderName && (msg.role === 'live-admin' || msg.role === 'live-user') && (
                         <div className="text-xs opacity-70 mb-0.5">{msg.senderName}</div>
@@ -241,7 +241,7 @@ export function ChatBot() {
                 ))}
                 {isLoading && (
                   <div className="flex justify-start">
-                    <div className="bg-earth-100 dark:bg-earth-700 rounded-2xl rounded-bl-sm px-4 py-2.5">
+                    <div className="bg-earth-100 rounded-2xl rounded-bl-sm px-4 py-2.5">
                       <div className="flex gap-1">
                         <span className="w-2 h-2 bg-earth-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
                         <span className="w-2 h-2 bg-earth-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
@@ -255,19 +255,19 @@ export function ChatBot() {
             )}
 
             {mode !== 'name-prompt' && (
-              <div className="p-3 border-t border-earth-200 dark:border-earth-700">
+              <div className="p-3 border-t border-gold-200">
                 <div className="flex gap-2">
                   <input
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     onKeyDown={(e) => e.key === 'Enter' && handleSend()}
                     placeholder={mode === 'live' ? 'Type your message...' : 'Ask me anything...'}
-                    className="flex-1 rounded-xl border border-earth-200 dark:border-earth-600 bg-white dark:bg-earth-700 px-3 py-2 text-sm text-earth-900 dark:text-cream-100 placeholder:text-earth-400 focus:outline-none focus:border-forest-500"
+                    className="flex-1 rounded-xl border border-gold-200 bg-white px-3 py-2 text-sm text-vedara-900 placeholder:text-charcoal/50 focus:outline-none focus:border-gold-500"
                   />
                   <button
                     onClick={handleSend}
                     disabled={!input.trim() || isLoading}
-                    className="p-2 rounded-xl bg-forest-600 text-cream-50 hover:bg-forest-700 disabled:opacity-50 transition-colors"
+                    className="p-2 rounded-xl bg-gold-600 text-alabaster hover:bg-gold-700 disabled:opacity-50 transition-colors"
                     aria-label="Send message"
                   >
                     <Send className="w-4 h-4" />
@@ -284,8 +284,8 @@ export function ChatBot() {
 
 function Button({ variant, size, className, onClick, disabled, children }: any) {
   const base = variant === 'primary'
-    ? 'bg-forest-600 text-cream-50 hover:bg-forest-700'
-    : 'bg-earth-200 dark:bg-earth-700 text-foreground hover:bg-earth-300 dark:hover:bg-earth-600';
+    ? 'bg-gold-600 text-alabaster hover:bg-gold-700'
+    : 'bg-gold-100 text-foreground hover:bg-earth-300';
   return (
     <button
       onClick={onClick}

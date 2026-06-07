@@ -40,8 +40,8 @@ export function AdminSidebar() {
   };
 
   return (
-    <aside className="fixed left-0 top-0 bottom-0 z-40 flex w-60 flex-col bg-white dark:bg-earth-900 border-r border-earth-200 dark:border-earth-800">
-      <div className="flex items-center gap-3 px-5 py-5 border-b border-earth-100 dark:border-earth-800">
+    <aside className="fixed left-0 top-0 bottom-0 z-40 flex w-60 flex-col bg-white border-r border-gold-200">
+      <div className="flex items-center gap-3 px-5 py-5 border-b border-earth-100">
         <div className="w-9 h-9 rounded-full overflow-hidden flex-shrink-0">
           <Image
             src="/images/vedara-logo.jpeg"
@@ -68,8 +68,8 @@ export function AdminSidebar() {
               className={cn(
                 'flex items-center gap-3 rounded-lg px-3 py-2 text-[13px] font-medium transition-all duration-150',
                 active
-                  ? 'bg-forest-600 text-white'
-                  : 'text-earth-600 dark:text-earth-400 hover:bg-earth-50 dark:hover:bg-earth-800 hover:text-foreground'
+                  ? 'bg-gold-600 text-white'
+                  : 'text-charcoal/70 hover:bg-earth-50 hover:text-foreground'
               )}
             >
               <Icon className="w-4 h-4 shrink-0" />
@@ -79,9 +79,9 @@ export function AdminSidebar() {
         })}
       </nav>
 
-      <div className="border-t border-earth-100 dark:border-earth-800 px-3 py-3">
+      <div className="border-t border-earth-100 px-3 py-3">
         <div className="flex items-center gap-3 px-3 py-2.5 mb-2">
-          <div className="w-8 h-8 rounded-full bg-forest-100 dark:bg-forest-900/30 flex items-center justify-center text-forest-700 dark:text-forest-300 text-xs font-bold flex-shrink-0">
+          <div className="w-8 h-8 rounded-full bg-gold-100 flex items-center justify-center text-forest-700 text-xs font-bold flex-shrink-0">
             {user?.name?.charAt(0) || 'A'}
           </div>
           <div className="min-w-0 flex-1">
@@ -91,7 +91,7 @@ export function AdminSidebar() {
         </div>
         <button
           onClick={handleLogout}
-          className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-[13px] font-medium text-earth-500 dark:text-earth-400 hover:bg-red-50 dark:hover:bg-red-900/10 hover:text-red-600 dark:hover:text-red-400 transition-all"
+          className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-[13px] font-medium text-earth-500 hover:bg-red-50 dark:hover:bg-red-900/10 hover:text-red-600 dark:hover:text-red-400 transition-all"
         >
           <LogOut className="w-4 h-4" />
           Sign Out

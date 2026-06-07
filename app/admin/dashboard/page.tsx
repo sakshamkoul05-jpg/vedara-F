@@ -33,14 +33,14 @@ export default function AdminDashboardPage() {
   }, [router]);
 
   const statCards = stats ? [
-    { label: 'Total Bookings', value: stats.totalBookings, icon: Calendar, color: 'text-forest-600 bg-forest-100 dark:bg-forest-900/30' },
-    { label: 'Monthly Bookings', value: stats.monthlyBookings, icon: TrendingUp, color: 'text-clay-500 bg-clay-100 dark:bg-clay-900/30' },
-    { label: 'Revenue (Year)', value: `₹${(stats.yearlyRevenue / 100000).toFixed(1)}L`, icon: Activity, color: 'text-earth-600 bg-earth-100 dark:bg-earth-800' },
+    { label: 'Total Bookings', value: stats.totalBookings, icon: Calendar, color: 'text-gold-600 bg-gold-100' },
+    { label: 'Monthly Bookings', value: stats.monthlyBookings, icon: TrendingUp, color: 'text-gold-500 bg-gold-100 dark:bg-vedara-900/30' },
+    { label: 'Revenue (Year)', value: `₹${(stats.yearlyRevenue / 100000).toFixed(1)}L`, icon: Activity, color: 'text-charcoal/70 bg-gold-50' },
     { label: 'Pending Bookings', value: stats.pendingBookings, icon: Calendar, color: 'text-orange-500 bg-orange-100 dark:bg-orange-900/30' },
-    { label: 'Cafe Orders', value: stats.totalCafeOrders, icon: Coffee, color: 'text-forest-600 bg-forest-100' },
-    { label: 'Unread Messages', value: stats.unreadMessages, icon: MessageCircle, color: 'text-clay-500 bg-clay-100' },
-    { label: 'Total Cottages', value: stats.totalCottages, icon: Building2, color: 'text-earth-600 bg-earth-100' },
-    { label: 'Total Guests', value: stats.totalGuests, icon: Users, color: 'text-forest-600 bg-forest-100' },
+    { label: 'Cafe Orders', value: stats.totalCafeOrders, icon: Coffee, color: 'text-gold-600 bg-gold-100' },
+    { label: 'Unread Messages', value: stats.unreadMessages, icon: MessageCircle, color: 'text-gold-500 bg-gold-100' },
+    { label: 'Total Cottages', value: stats.totalCottages, icon: Building2, color: 'text-charcoal/70 bg-gold-50' },
+    { label: 'Total Guests', value: stats.totalGuests, icon: Users, color: 'text-gold-600 bg-gold-100' },
   ] : [];
 
   const tabs = [
@@ -51,7 +51,7 @@ export default function AdminDashboardPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-cream-50 dark:bg-earth-900 pt-20">
+    <div className="min-h-screen bg-alabaster pt-20">
       <div className="vintage-container py-8">
         <div className="flex justify-between items-center mb-6">
           <div>
@@ -62,10 +62,10 @@ export default function AdminDashboardPage() {
             <Link href="/admin/chat" className="px-3 py-1.5 rounded-lg bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 text-xs text-emerald-700 dark:text-emerald-300 hover:border-emerald-400 transition-colors">
               <MessageCircleMore className="w-3.5 h-3.5 inline mr-1" /> Live Chat
             </Link>
-            <Link href="/admin/cms" className="px-3 py-1.5 rounded-lg bg-white dark:bg-earth-800 border border-border text-xs text-foreground hover:border-forest-400 transition-colors">
+            <Link href="/admin/cms" className="px-3 py-1.5 rounded-lg bg-white border border-border text-xs text-foreground hover:border-forest-400 transition-colors">
               <Settings className="w-3.5 h-3.5 inline mr-1" /> Settings
             </Link>
-            <span className="px-3 py-1 rounded-full bg-forest-100 dark:bg-forest-900/30 text-forest-700 dark:text-forest-300 text-xs font-medium">{user?.role}</span>
+            <span className="px-3 py-1 rounded-full bg-gold-100 text-forest-700 text-xs font-medium">{user?.role}</span>
             <Button variant="ghost" size="icon" onClick={logout}><LogOut className="w-4 h-4" /></Button>
           </div>
         </div>
@@ -79,7 +79,7 @@ export default function AdminDashboardPage() {
                 onClick={() => setTab(tab.id)}
                 className={`flex items-center gap-2 px-4 py-2.5 text-sm font-sans font-medium border-b-2 transition-all ${
                   currentTab === tab.id
-                    ? 'border-forest-600 text-forest-600 dark:text-forest-400'
+                    ? 'border-forest-600 text-gold-600'
                     : 'border-transparent text-muted-foreground hover:text-foreground'
                 }`}
               >
@@ -95,8 +95,8 @@ export default function AdminDashboardPage() {
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
                   <div key={i} className="vintage-card animate-pulse p-6">
-                    <div className="h-4 bg-earth-200 dark:bg-earth-700 rounded w-1/2 mb-3" />
-                    <div className="h-8 bg-earth-200 dark:bg-earth-700 rounded w-1/3" />
+                    <div className="h-4 bg-gold-100 rounded w-1/2 mb-3" />
+                    <div className="h-8 bg-gold-100 rounded w-1/3" />
                   </div>
                 ))}
               </div>
@@ -130,7 +130,7 @@ export default function AdminDashboardPage() {
                       <Link
                         key={item.label}
                         href={item.href}
-                        className="block p-3 rounded-xl bg-earth-50 dark:bg-earth-800 hover:bg-earth-100 dark:hover:bg-earth-700 transition-colors"
+                        className="block p-3 rounded-xl bg-earth-50 hover:bg-gold-50 transition-colors"
                       >
                         <p className="text-sm font-medium text-foreground">{item.label}</p>
                         <p className="text-xs text-muted-foreground">{item.desc}</p>
@@ -159,7 +159,7 @@ export default function AdminDashboardPage() {
                       </div>
                     </div>
                   )}
-                  <Link href="/admin/cms" className="text-forest-600 text-sm font-medium mt-4 inline-block">View Details →</Link>
+                  <Link href="/admin/cms" className="text-gold-600 text-sm font-medium mt-4 inline-block">View Details →</Link>
                 </div>
               </ScrollReveal>
             </div>

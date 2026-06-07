@@ -23,7 +23,7 @@ export default function PackagesPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-cream-50 dark:bg-earth-900 pt-20">
+    <div className="min-h-screen bg-alabaster pt-20">
       <div className="vintage-container py-8">
         <div className="mb-6">
           <h1 className="font-serif text-3xl text-foreground">Packages</h1>
@@ -148,7 +148,7 @@ function PackagesTable({ token, showToast }: { token: string | null; showToast: 
               </thead>
               <tbody>
                 {items.map((item, idx) => (
-                  <tr key={item.id} className="border-b border-border/50 hover:bg-earth-50/50 dark:hover:bg-earth-800/30 transition-colors">
+                  <tr key={item.id} className="border-b border-border/50 hover:bg-earth-50/50 transition-colors">
                     <td className="px-4 py-3">
                       <span className="font-medium text-foreground">{item.title}</span>
                     </td>

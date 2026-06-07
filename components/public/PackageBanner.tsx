@@ -26,7 +26,7 @@ export function PackageBanner() {
     <motion.div
       initial={{ opacity: 0, y: -10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-gradient-to-r from-amber-800 via-amber-700 to-earth-700 overflow-hidden"
+      className="bg-gradient-to-r from-amber-800 via-amber-700 to-amber-600 overflow-hidden"
     >
       <div className="relative flex items-center">
         <div className="flex items-center gap-2 px-4 py-2 bg-amber-900/50 shrink-0 relative z-10">

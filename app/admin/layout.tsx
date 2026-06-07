@@ -25,7 +25,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   if (!token) return null;
 
   return (
-    <div className="flex min-h-screen bg-earth-50 dark:bg-earth-950">
+    <div className="flex min-h-screen bg-earth-50">
       <AdminSidebar />
       <main className="flex-1 ml-60">
         {children}

@@ -195,11 +195,11 @@ export default function BookingPage() {
 
   return (
     <>
-      <section className="pt-32 pb-12 bg-cream-50 dark:bg-earth-900">
+      <section className="pt-32 pb-12 bg-alabaster">
         <div className="vintage-container">
           <BackButton />
           <ScrollReveal>
-            <p className="text-clay-500 text-sm tracking-[0.2em] uppercase mb-4 font-sans">Reservations</p>
+            <p className="text-gold-500 text-sm tracking-[0.2em] uppercase mb-4 font-sans">Reservations</p>
             <TextReveal as="h1" className="section-title max-w-3xl">
               Book Your Mountain Escape
             </TextReveal>
@@ -211,14 +211,14 @@ export default function BookingPage() {
                 <div key={s} className="flex-1 flex flex-col items-center">
                   <motion.div
                     className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium transition-all ${
-                      step >= s ? 'bg-forest-600 text-cream-50' : 'bg-earth-200 dark:bg-earth-700 text-earth-400'
+                      step >= s ? 'bg-gold-600 text-alabaster' : 'bg-gold-100 text-earth-400'
                     }`}
                     animate={step === s ? { scale: [1, 1.15, 1] } : {}}
                     transition={{ duration: 0.4 }}
                   >
                     {step > s ? <Check className="w-4 h-4" /> : s}
                   </motion.div>
-                  <span className={`text-xs mt-1.5 hidden sm:block ${step >= s ? 'text-forest-600 font-medium' : 'text-muted-foreground'}`}>
+                  <span className={`text-xs mt-1.5 hidden sm:block ${step >= s ? 'text-gold-600 font-medium' : 'text-muted-foreground'}`}>
                     {stepLabels[s - 1]}
                   </span>
                 </div>
@@ -229,7 +229,7 @@ export default function BookingPage() {
                 <div
                   key={s}
                   className={`flex-1 h-1 rounded-full transition-all duration-500 ${
-                    step > s ? 'bg-forest-600' : step === s ? 'bg-forest-400' : 'bg-earth-200 dark:bg-earth-700'
+                    step > s ? 'bg-gold-600' : step === s ? 'bg-gold-400' : 'bg-gold-100'
                   }`}
                 />
               ))}
@@ -295,13 +295,13 @@ export default function BookingPage() {
                             onClick={() => { setSelectedCottage(cottage.id); setStep(3); }}
                             disabled={!isAvailable}
                             className={`vintage-card p-6 text-left transition-all ${
-                              !isAvailable ? 'opacity-40 cursor-not-allowed' : 'hover:border-forest-400 cursor-pointer'
-                            } ${selectedCottage === cottage.id ? 'border-forest-500 ring-2 ring-forest-500/20' : ''}`}
+                              !isAvailable ? 'opacity-40 cursor-not-allowed' : 'hover:border-gold-400 cursor-pointer'
+                            } ${selectedCottage === cottage.id ? 'border-gold-500 ring-2 ring-gold-500/20' : ''}`}
                             whileHover={isAvailable ? { y: -2 } : {}}
                           >
                             <h3 className="font-serif text-lg text-foreground mb-1">{cottage.name}</h3>
                             <p className="text-sm text-muted-foreground mb-3 line-clamp-2">{cottage.shortDesc || cottage.description}</p>
-                            <span className="text-forest-600 dark:text-forest-400 font-semibold">{formatPrice(cottage.pricePerNight)}<span className="text-earth-400 font-normal text-xs">/night</span></span>
+                            <span className="text-gold-600 font-semibold">{formatPrice(cottage.pricePerNight)}<span className="text-earth-400 font-normal text-xs">/night</span></span>
                             {!isAvailable && <span className="block text-red-500 text-xs mt-2">Not available for selected dates</span>}
                           </motion.button>
                         );
@@ -328,10 +328,10 @@ export default function BookingPage() {
                           <motion.div
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
-                            className="bg-earth-50 dark:bg-earth-800 rounded-xl p-4 mb-6"
+                            className="bg-earth-50 rounded-xl p-4 mb-6"
                           >
                             <div className="flex items-center gap-3 mb-2">
-                              <Home className="w-4 h-4 text-clay-500" />
+                              <Home className="w-4 h-4 text-gold-500" />
                               <p className="font-medium text-foreground">{selectedCottageData.name}</p>
                             </div>
                             <p className="text-sm text-muted-foreground">{new Date(checkIn).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} → {new Date(checkOut).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} ({nights} {nights === 1 ? 'night' : 'nights'})</p>
@@ -487,7 +487,7 @@ export default function BookingPage() {
                                 <motion.div
                                   initial={{ opacity: 0, y: -5 }}
                                   animate={{ opacity: 1, y: 0 }}
-                                  className="flex items-center gap-2 mt-2 text-forest-600 dark:text-forest-400"
+                                  className="flex items-center gap-2 mt-2 text-gold-600"
                                 >
                                   <Gift className="w-4 h-4" />
                                   <span className="text-sm font-medium">
@@ -525,15 +525,15 @@ export default function BookingPage() {
                           initial={{ scale: 0 }}
                           animate={{ scale: 1 }}
                           transition={{ type: 'spring', stiffness: 200, damping: 15 }}
-                          className="w-16 h-16 rounded-full bg-forest-100 dark:bg-forest-900/50 flex items-center justify-center mx-auto mb-6"
+                          className="w-16 h-16 rounded-full bg-gold-100 flex items-center justify-center mx-auto mb-6"
                         >
-                          <Check className="w-8 h-8 text-forest-600" />
+                          <Check className="w-8 h-8 text-gold-600" />
                         </motion.div>
                         <h2 className="font-serif text-3xl text-foreground mb-4">Booking Confirmed!</h2>
                         <p className="text-muted-foreground mb-6">
                           Thank you! Your booking has been confirmed. A confirmation email has been sent to {guestEmail || 'your email'}.
                         </p>
-                        <div className="bg-earth-50 dark:bg-earth-800 rounded-xl p-6 mb-8 text-left">
+                        <div className="bg-earth-50 rounded-xl p-6 mb-8 text-left">
                           <p className="text-sm text-muted-foreground mb-1">Booking Reference</p>
                           <p className="font-mono font-bold text-foreground text-lg">{bookingData?.bookingRef}</p>
                           <div className="border-t border-border mt-4 pt-4 space-y-1 text-sm">
@@ -567,8 +567,8 @@ export default function BookingPage() {
                       <div className="space-y-3 text-sm">
                         {selectedCottageData && (
                           <div className="flex items-center gap-3 pb-3 border-b border-border">
-                            <div className="w-10 h-10 rounded-lg bg-earth-100 dark:bg-earth-700 flex items-center justify-center">
-                              <Home className="w-4 h-4 text-clay-500" />
+                            <div className="w-10 h-10 rounded-lg bg-gold-50 flex items-center justify-center">
+                              <Home className="w-4 h-4 text-gold-500" />
                             </div>
                             <div>
                               <p className="font-medium text-foreground">{selectedCottageData.name}</p>
@@ -578,8 +578,8 @@ export default function BookingPage() {
                         )}
                         {checkIn && checkOut && (
                           <div className="flex items-center gap-3 pb-3 border-b border-border">
-                            <div className="w-10 h-10 rounded-lg bg-earth-100 dark:bg-earth-700 flex items-center justify-center">
-                              <Calendar className="w-4 h-4 text-clay-500" />
+                            <div className="w-10 h-10 rounded-lg bg-gold-50 flex items-center justify-center">
+                              <Calendar className="w-4 h-4 text-gold-500" />
                             </div>
                             <div>
                               <p className="text-foreground">{new Date(checkIn).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} → {new Date(checkOut).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</p>
@@ -603,7 +603,7 @@ export default function BookingPage() {
                               </div>
                             )}
                             {isValid && (
-                              <div className="flex justify-between text-forest-600">
+                              <div className="flex justify-between text-gold-600">
                                 <span className="flex items-center gap-1">
                                   <Percent className="w-3 h-3" /> Discount ({discountType === 'PERCENTAGE' ? `${discount}%` : 'Fixed'})
                                 </span>
@@ -616,7 +616,7 @@ export default function BookingPage() {
                             </div>
                             <div className="border-t border-border pt-2 flex justify-between">
                               <span className="font-serif text-lg text-foreground">Total</span>
-                              <span className="font-bold text-lg text-forest-600 dark:text-forest-400">{formatPrice(totalAmount)}</span>
+                              <span className="font-bold text-lg text-gold-600">{formatPrice(totalAmount)}</span>
                             </div>
                           </div>
                         )}

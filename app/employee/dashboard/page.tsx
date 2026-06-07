@@ -93,13 +93,13 @@ export default function EmployeeDashboardPage() {
   };
 
   return (
-    <div className="min-h-screen bg-cream-50 dark:bg-earth-900 pt-24">
+    <div className="min-h-screen bg-alabaster pt-24">
       <div className="vintage-container py-6">
         {/* Top Bar */}
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-4">
-            <div className="w-10 h-10 rounded-full bg-forest-600 flex items-center justify-center">
-              <User className="w-5 h-5 text-cream-50" />
+            <div className="w-10 h-10 rounded-full bg-gold-600 flex items-center justify-center">
+              <User className="w-5 h-5 text-alabaster" />
             </div>
             <div>
               <h1 className="font-serif text-xl text-foreground leading-tight">{user?.name}</h1>
@@ -110,11 +110,11 @@ export default function EmployeeDashboardPage() {
           </div>
           <div className="flex items-center gap-2">
             <Button variant="ghost" size="icon" className="relative">
-              <Bell className="w-4 h-4 text-earth-600 dark:text-earth-300" />
+              <Bell className="w-4 h-4 text-charcoal/70" />
               <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-red-500" />
             </Button>
             <Button variant="ghost" size="icon" onClick={handleLogout}>
-              <LogOut className="w-4 h-4 text-earth-600 dark:text-earth-300" />
+              <LogOut className="w-4 h-4 text-charcoal/70" />
             </Button>
           </div>
         </div>
@@ -125,8 +125,8 @@ export default function EmployeeDashboardPage() {
             onClick={() => setTab('bookings')}
 className={`px-5 py-2 rounded-full text-sm font-sans font-medium transition-all duration-300 ${
                tab === 'bookings'
-                 ? 'bg-forest-600 text-cream-50 shadow-md'
-                 : 'bg-earth-100 dark:bg-earth-800 text-earth-600 dark:text-earth-300 hover:bg-earth-200'
+                 ? 'bg-gold-600 text-alabaster shadow-md'
+                 : 'bg-gold-50 text-charcoal/70 hover:bg-gold-100'
              }`}
            >
              <Calendar className="w-4 h-4 inline mr-1.5 -mt-0.5" />
@@ -136,8 +136,8 @@ className={`px-5 py-2 rounded-full text-sm font-sans font-medium transition-all 
              onClick={() => setTab('orders')}
              className={`px-5 py-2 rounded-full text-sm font-sans font-medium transition-all duration-300 ${
                tab === 'orders'
-                 ? 'bg-forest-600 text-cream-50 shadow-md'
-                 : 'bg-earth-100 dark:bg-earth-800 text-earth-600 dark:text-earth-300 hover:bg-earth-200'
+                 ? 'bg-gold-600 text-alabaster shadow-md'
+                 : 'bg-gold-50 text-charcoal/70 hover:bg-gold-100'
              }`}
           >
             <Coffee className="w-4 h-4 inline mr-1.5 -mt-0.5" />
@@ -149,12 +149,12 @@ className={`px-5 py-2 rounded-full text-sm font-sans font-medium transition-all 
         {tab === 'bookings' && (
           <div>
             <div className="flex items-center gap-2 mb-5">
-              <ClipboardList className="w-5 h-5 text-forest-600" />
+              <ClipboardList className="w-5 h-5 text-gold-600" />
               <h2 className="font-serif text-lg text-foreground">Today&apos;s Bookings</h2>
             </div>
             {loading ? (
               <div className="flex justify-center py-12">
-                <Loader2 className="w-6 h-6 text-forest-600 animate-spin" />
+                <Loader2 className="w-6 h-6 text-gold-600 animate-spin" />
               </div>
             ) : bookings.length === 0 ? (
               <div className="text-center py-12">
@@ -165,7 +165,7 @@ className={`px-5 py-2 rounded-full text-sm font-sans font-medium transition-all 
               <div className="space-y-4">
                 {bookings.map((booking: any, i: number) => (
                   <ScrollReveal key={booking.id} delay={i * 0.05}>
-                    <div className="backdrop-blur bg-white/60 dark:bg-earth-800/60 border border-white/20 dark:border-earth-700/30 rounded-xl p-5 shadow-sm hover:shadow-md transition-all duration-300 font-sans">
+                    <div className="backdrop-blur bg-white/60/60 border border-white/20 rounded-xl p-5 shadow-sm hover:shadow-md transition-all duration-300 font-sans">
                       <div className="flex items-start justify-between">
                         <div className="space-y-1.5 flex-1 min-w-0">
                           <div className="flex items-center gap-2">
@@ -189,7 +189,7 @@ className={`px-5 py-2 rounded-full text-sm font-sans font-medium transition-all 
                           </p>
                         </div>
                         <div className="flex flex-col items-end gap-2 ml-4">
-                          <p className="text-sm font-semibold text-forest-600">
+                          <p className="text-sm font-semibold text-gold-600">
                             {formatPrice(booking.finalAmount || booking.totalAmount)}
                           </p>
                           {bookingStatusActions[booking.status] && (
@@ -220,12 +220,12 @@ className={`px-5 py-2 rounded-full text-sm font-sans font-medium transition-all 
         {tab === 'orders' && (
           <div>
             <div className="flex items-center gap-2 mb-5">
-              <UtensilsCrossed className="w-5 h-5 text-forest-600" />
+              <UtensilsCrossed className="w-5 h-5 text-gold-600" />
               <h2 className="font-serif text-lg text-foreground">Order Queue</h2>
             </div>
             {loading ? (
               <div className="flex justify-center py-12">
-                <Loader2 className="w-6 h-6 text-forest-600 animate-spin" />
+                <Loader2 className="w-6 h-6 text-gold-600 animate-spin" />
               </div>
             ) : orders.length === 0 ? (
               <div className="text-center py-12">
@@ -236,7 +236,7 @@ className={`px-5 py-2 rounded-full text-sm font-sans font-medium transition-all 
               <div className="space-y-4">
                 {orders.map((order: any, i: number) => (
                   <ScrollReveal key={order.id} delay={i * 0.05} direction="left">
-                    <div className="backdrop-blur bg-white/60 dark:bg-earth-800/60 border border-white/20 dark:border-earth-700/30 rounded-xl p-5 shadow-sm hover:shadow-md transition-all duration-300 font-sans">
+                    <div className="backdrop-blur bg-white/60/60 border border-white/20 rounded-xl p-5 shadow-sm hover:shadow-md transition-all duration-300 font-sans">
                       <div className="flex items-start justify-between mb-4">
                         <div>
                           <div className="flex items-center gap-2 mb-1">
@@ -257,11 +257,11 @@ className={`px-5 py-2 rounded-full text-sm font-sans font-medium transition-all 
                             <p className="text-xs text-muted-foreground mt-0.5">{order.guestName}</p>
                           )}
                         </div>
-                        <p className="text-sm font-semibold text-forest-600">{formatPrice(order.totalAmount)}</p>
+                        <p className="text-sm font-semibold text-gold-600">{formatPrice(order.totalAmount)}</p>
                       </div>
 
                       {/* Order Items */}
-                      <div className="space-y-1.5 mb-4 pb-4 border-b border-earth-100 dark:border-earth-700/30">
+                      <div className="space-y-1.5 mb-4 pb-4 border-b border-earth-100">
                         {order.items?.map((item: any) => (
                           <div key={item.id} className="flex justify-between text-xs text-muted-foreground">
                             <span>{item.quantity}x {item.item?.name}</span>

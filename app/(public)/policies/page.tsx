@@ -23,7 +23,7 @@ const policySections = [
           <div className="overflow-x-auto">
             <table className="w-full text-sm border-collapse">
               <thead>
-                <tr className="bg-earth-100 dark:bg-earth-800">
+                <tr className="bg-gold-50">
                   <th className="p-2.5 text-left border border-border text-muted-foreground font-medium">Cancellation Timeline</th>
                   <th className="p-2.5 text-left border border-border text-muted-foreground font-medium">Refund Applicable</th>
                 </tr>
@@ -41,7 +41,7 @@ const policySections = [
           <div className="overflow-x-auto">
             <table className="w-full text-sm border-collapse">
               <thead>
-                <tr className="bg-earth-100 dark:bg-earth-800">
+                <tr className="bg-gold-50">
                   <th className="p-2.5 text-left border border-border text-muted-foreground font-medium">Cancellation Timeline</th>
                   <th className="p-2.5 text-left border border-border text-muted-foreground font-medium">Refund Applicable</th>
                 </tr>
@@ -174,16 +174,16 @@ export default function PoliciesPage() {
     { id: '3', question: 'Is there WiFi available?', answer: 'Yes, all cottages and common areas have complimentary high-speed WiFi.', category: null, sortOrder: 3 },
     { id: '4', question: 'What payment methods do you accept?', answer: 'We accept all major credit/debit cards, UPI, and net banking via Razorpay.', category: null, sortOrder: 4 },
     { id: '5', question: 'Is the cafe open to outside visitors?', answer: 'Absolutely! Our cafe is open to all from 7:30 AM to 10:00 PM. Non-guests are welcome.', category: null, sortOrder: 5 },
-    { id: '6', question: 'Can I modify or cancel my booking?', answer: 'Yes, subject to our cancellation policy. Please refer to the <a href="/policies#cancellation" class="text-forest-600 dark:text-forest-400 underline hover:no-underline">Cancellation Policy section</a> for detailed terms.', category: null, sortOrder: 6 },
+    { id: '6', question: 'Can I modify or cancel my booking?', answer: 'Yes, subject to our cancellation policy. Please refer to the <a href="/policies#cancellation" class="text-gold-600 underline hover:no-underline">Cancellation Policy section</a> for detailed terms.', category: null, sortOrder: 6 },
   ];
 
   return (
     <>
-      <section className="pt-32 pb-20 bg-cream-50 dark:bg-earth-900">
+      <section className="pt-32 pb-20 bg-alabaster">
         <div className="vintage-container">
           <BackButton />
           <ScrollReveal>
-            <p className="text-clay-500 text-sm tracking-[0.2em] uppercase mb-4 font-sans">Information</p>
+            <p className="text-gold-500 text-sm tracking-[0.2em] uppercase mb-4 font-sans">Information</p>
             <TextReveal as="h1" className="section-title max-w-3xl">
               Policies & Terms of Stay
             </TextReveal>
@@ -229,7 +229,7 @@ export default function PoliciesPage() {
                       <Accordion.Header className="flex">
                         <Accordion.Trigger className="w-full p-5 flex items-center justify-between text-left group">
                           <span className="flex items-center gap-3 font-medium text-foreground text-sm pr-4">
-                            <HelpCircle className="w-4 h-4 text-clay-400 flex-shrink-0" />
+                            <HelpCircle className="w-4 h-4 text-gold-400 flex-shrink-0" />
                             {faq.question}
                           </span>
                           <ChevronDown className="w-4 h-4 text-muted-foreground flex-shrink-0 transition-transform duration-300 group-data-[state=open]:rotate-180" />

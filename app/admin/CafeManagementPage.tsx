@@ -44,7 +44,7 @@ export function CafeManagementPage() {
             key={t}
             onClick={() => setTab(t)}
             className={`px-4 py-2 rounded-full text-sm font-medium capitalize transition-all ${
-              tab === t ? 'bg-forest-600 text-cream-50' : 'bg-earth-100 dark:bg-earth-800 text-earth-600'
+              tab === t ? 'bg-gold-600 text-alabaster' : 'bg-gold-50 text-charcoal/70'
             }`}
           >
             {t}
@@ -55,17 +55,17 @@ export function CafeManagementPage() {
       {tab === 'overview' && (
         <div className="grid md:grid-cols-3 gap-4">
           <div className="vintage-card p-6">
-            <ClipboardList className="w-8 h-8 text-clay-500 mb-3" />
+            <ClipboardList className="w-8 h-8 text-gold-500 mb-3" />
             <p className="text-3xl font-bold text-foreground">{orders.length}</p>
             <p className="text-sm text-muted-foreground">Total Orders</p>
           </div>
           <div className="vintage-card p-6">
-            <Coffee className="w-8 h-8 text-forest-500 mb-3" />
+            <Coffee className="w-8 h-8 text-gold-500 mb-3" />
             <p className="text-3xl font-bold text-foreground">{pendingOrders}</p>
             <p className="text-sm text-muted-foreground">Pending</p>
           </div>
           <div className="vintage-card p-6">
-            <DollarSign className="w-8 h-8 text-forest-500 mb-3" />
+            <DollarSign className="w-8 h-8 text-gold-500 mb-3" />
             <p className="text-3xl font-bold text-foreground">{formatPrice(totalRevenue)}</p>
             <p className="text-sm text-muted-foreground">Total Revenue</p>
           </div>
@@ -78,14 +78,14 @@ export function CafeManagementPage() {
             <h3 className="font-serif text-lg text-foreground mb-4">Menu Categories & Items</h3>
             {menu.map((cat: any) => (
               <div key={cat.id} className="mb-6">
-                <h4 className="font-medium text-forest-600 text-sm uppercase tracking-wide mb-2">{cat.name}</h4>
+                <h4 className="font-medium text-gold-600 text-sm uppercase tracking-wide mb-2">{cat.name}</h4>
                 {cat.items.map((item: any) => (
                   <div key={item.id} className="flex justify-between items-center py-2 border-b border-border/50">
                     <div>
                       <p className="text-sm text-foreground">{item.name}</p>
                       <p className="text-xs text-muted-foreground">{formatPrice(item.price)}</p>
                     </div>
-                    <span className={`px-2 py-0.5 rounded text-xs ${item.isAvailable ? 'bg-forest-100 text-forest-700' : 'bg-red-100 text-red-600'}`}>
+                    <span className={`px-2 py-0.5 rounded text-xs ${item.isAvailable ? 'bg-gold-100 text-forest-700' : 'bg-red-100 text-red-600'}`}>
                       {item.isAvailable ? 'In Stock' : 'Out'}
                     </span>
                   </div>
@@ -143,9 +143,9 @@ export function CafeManagementPage() {
 }
 
 const statusColors: Record<string, string> = {
-  PENDING: 'bg-clay-100 text-clay-700',
+  PENDING: 'bg-gold-100 text-clay-700',
   PREPARING: 'bg-blue-100 text-blue-700',
-  READY: 'bg-forest-100 text-forest-700',
-  DELIVERED: 'bg-earth-100 text-earth-600',
+  READY: 'bg-gold-100 text-forest-700',
+  DELIVERED: 'bg-gold-50 text-charcoal/70',
   CANCELLED: 'bg-red-100 text-red-700',
 };

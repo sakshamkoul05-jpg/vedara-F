@@ -16,7 +16,7 @@ export default function AnalyticsPage() {
   }, [token]);
 
   return (
-    <div className="min-h-screen bg-cream-50 dark:bg-earth-900 pt-20">
+    <div className="min-h-screen bg-alabaster pt-20">
       <div className="vintage-container py-8">
         <h1 className="font-serif text-3xl text-foreground mb-8">Analytics</h1>
 
@@ -25,28 +25,28 @@ export default function AnalyticsPage() {
             <div className="grid md:grid-cols-4 gap-4">
               <ScrollReveal>
                 <div className="vintage-card p-6">
-                  <Calendar className="w-8 h-8 text-forest-500 mb-3" />
+                  <Calendar className="w-8 h-8 text-gold-500 mb-3" />
                   <p className="text-3xl font-bold text-foreground">{stats.totalBookings}</p>
                   <p className="text-sm text-muted-foreground">Total Bookings</p>
                 </div>
               </ScrollReveal>
               <ScrollReveal delay={0.05}>
                 <div className="vintage-card p-6">
-                  <TrendingUp className="w-8 h-8 text-clay-500 mb-3" />
+                  <TrendingUp className="w-8 h-8 text-gold-500 mb-3" />
                   <p className="text-3xl font-bold text-foreground">{stats.monthlyBookings}</p>
                   <p className="text-sm text-muted-foreground">This Month</p>
                 </div>
               </ScrollReveal>
               <ScrollReveal delay={0.1}>
                 <div className="vintage-card p-6">
-                  <DollarSign className="w-8 h-8 text-forest-500 mb-3" />
+                  <DollarSign className="w-8 h-8 text-gold-500 mb-3" />
                   <p className="text-3xl font-bold text-foreground">₹{(stats.yearlyRevenue / 100000).toFixed(1)}L</p>
                   <p className="text-sm text-muted-foreground">Yearly Revenue</p>
                 </div>
               </ScrollReveal>
               <ScrollReveal delay={0.15}>
                 <div className="vintage-card p-6">
-                  <ShoppingBag className="w-8 h-8 text-clay-500 mb-3" />
+                  <ShoppingBag className="w-8 h-8 text-gold-500 mb-3" />
                   <p className="text-3xl font-bold text-foreground">{stats.totalCafeOrders}</p>
                   <p className="text-sm text-muted-foreground">Cafe Orders</p>
                 </div>

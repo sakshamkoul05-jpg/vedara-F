@@ -68,7 +68,7 @@
   }
 
   ::selection {
-    @apply bg-forest-500/20 text-forest-900;
+    @apply bg-gold-500/20 text-vedara-900;
   }
 }
 

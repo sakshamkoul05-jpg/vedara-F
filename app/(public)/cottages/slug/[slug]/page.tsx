@@ -24,7 +24,7 @@ const amenityIcons: Record<string, React.ElementType> = {
   balcony: Warehouse, garden: TreePine, 'mountain view': Mountain,
 };
 
-const galleryColors = ['bg-earth-200', 'bg-forest-200', 'bg-clay-200', 'bg-earth-300', 'bg-clay-300', 'bg-forest-300'];
+const galleryColors = ['bg-gold-100', 'bg-gold-200', 'bg-gold-200', 'bg-gold-200', 'bg-gold-300', 'bg-gold-300'];
 
 export default function CottageBySlugPage() {
   const { slug } = useParams();
@@ -114,7 +114,7 @@ export default function CottageBySlugPage() {
 
       <section className="pb-8">
         <div className="vintage-container">
-          <div className="relative overflow-hidden rounded-2xl bg-earth-900 aspect-[2/1] md:aspect-[3/1] flex items-end justify-start">
+          <div className="relative overflow-hidden rounded-2xl bg-vedara-900 aspect-[2/1] md:aspect-[3/1] flex items-end justify-start">
             <motion.img
               src={images[selectedImage]}
               alt={cottage.name}
@@ -125,18 +125,18 @@ export default function CottageBySlugPage() {
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
             <div className="relative z-10 p-6 md:p-10">
-              <Badge variant="default" size="sm" className="mb-3 bg-clay-500 text-cream-50 border-none">
+              <Badge variant="default" size="sm" className="mb-3 bg-gold-500 text-alabaster border-none">
                 {isPeakSeason ? 'Peak Season Pricing' : 'Standard Pricing'}
               </Badge>
               {cottage.category && (
-                <Badge variant="default" size="sm" className="mb-2 bg-forest-600/80 text-cream-50 border-none">
+                <Badge variant="default" size="sm" className="mb-2 bg-gold-600/80 text-alabaster border-none">
                   {cottage.category}
                 </Badge>
               )}
-              <h1 className="font-serif text-3xl md:text-5xl lg:text-6xl text-cream-50 mb-2">{cottage.name}</h1>
+              <h1 className="font-serif text-3xl md:text-5xl lg:text-6xl text-alabaster mb-2">{cottage.name}</h1>
               <div className="flex items-baseline gap-2">
-                <span className="text-2xl md:text-3xl font-bold text-cream-50">{formatPrice(effectivePrice)}</span>
-                <span className="text-cream-200/70 text-sm">/ night</span>
+                <span className="text-2xl md:text-3xl font-bold text-alabaster">{formatPrice(effectivePrice)}</span>
+                <span className="text-alabaster/70 text-sm">/ night</span>
               </div>
             </div>
           </div>
@@ -147,7 +147,7 @@ export default function CottageBySlugPage() {
                 key={i}
                 onClick={() => setSelectedImage(i)}
                 className={`flex-shrink-0 w-20 h-16 rounded-lg overflow-hidden border-2 transition-all ${
-                  selectedImage === i ? 'border-forest-500 ring-2 ring-forest-500/30' : 'border-transparent opacity-70 hover:opacity-100'
+                  selectedImage === i ? 'border-gold-500 ring-2 ring-gold-500/30' : 'border-transparent opacity-70 hover:opacity-100'
                 }`}
               >
                 <img src={img} alt={`${cottage.name} view ${i + 1}`} className="w-full h-full object-cover" />
@@ -163,7 +163,7 @@ export default function CottageBySlugPage() {
             <div className="lg:col-span-3 space-y-10">
               <ScrollReveal>
                 <div>
-                  <p className="text-clay-500 text-sm tracking-[0.2em] uppercase mb-3 font-sans">The Cottage</p>
+                  <p className="text-gold-500 text-sm tracking-[0.2em] uppercase mb-3 font-sans">The Cottage</p>
                   <h2 className="font-serif text-3xl text-foreground mb-4">About This Sanctuary</h2>
                   <FormattedText text={cottage.description} />
                 </div>
@@ -177,8 +177,8 @@ export default function CottageBySlugPage() {
                       const Icon = amenityIcons[amenity.toLowerCase()] || Check;
                       return (
                         <div key={amenity} className="vintage-card p-3.5 flex items-center gap-3">
-                          <div className="w-9 h-9 rounded-lg bg-forest-100 dark:bg-forest-900/30 flex items-center justify-center flex-shrink-0">
-                            <Icon className="w-4 h-4 text-forest-600 dark:text-forest-400" />
+                          <div className="w-9 h-9 rounded-lg bg-gold-100 flex items-center justify-center flex-shrink-0">
+                            <Icon className="w-4 h-4 text-gold-600 dark:text-gold-400" />
                           </div>
                           <span className="text-sm text-foreground capitalize">{amenity}</span>
                         </div>
@@ -193,21 +193,21 @@ export default function CottageBySlugPage() {
                   <h3 className="font-serif text-xl text-foreground mb-5">Capacity & Configuration</h3>
                   <div className="flex flex-wrap gap-3">
                     <div className="vintage-card px-5 py-4 flex items-center gap-3">
-                      <Users className="w-5 h-5 text-clay-500" />
+                      <Users className="w-5 h-5 text-gold-500" />
                       <div>
                         <p className="text-xs text-muted-foreground">Guests</p>
                         <p className="font-medium text-foreground">{cottage.capacity} Guests</p>
                       </div>
                     </div>
                     <div className="vintage-card px-5 py-4 flex items-center gap-3">
-                      <Bed className="w-5 h-5 text-clay-500" />
+                      <Bed className="w-5 h-5 text-gold-500" />
                       <div>
                         <p className="text-xs text-muted-foreground">Bedrooms</p>
                         <p className="font-medium text-foreground">{cottage.bedrooms} {cottage.bedrooms > 1 ? 'Bedrooms' : 'Bedroom'}</p>
                       </div>
                     </div>
                     <div className="vintage-card px-5 py-4 flex items-center gap-3">
-                      <Bath className="w-5 h-5 text-clay-500" />
+                      <Bath className="w-5 h-5 text-gold-500" />
                       <div>
                         <p className="text-xs text-muted-foreground">Bathrooms</p>
                         <p className="font-medium text-foreground">{cottage.bathrooms} {cottage.bathrooms > 1 ? 'Bathrooms' : 'Bathroom'}</p>
@@ -215,7 +215,7 @@ export default function CottageBySlugPage() {
                     </div>
                     {cottage.size && (
                       <div className="vintage-card px-5 py-4 flex items-center gap-3">
-                        <Maximize className="w-5 h-5 text-clay-500" />
+                        <Maximize className="w-5 h-5 text-gold-500" />
                         <div>
                           <p className="text-xs text-muted-foreground">Size</p>
                           <p className="font-medium text-foreground">{cottage.size} sqft</p>
@@ -223,7 +223,7 @@ export default function CottageBySlugPage() {
                       </div>
                     )}
                     <div className="vintage-card px-5 py-4 flex items-center gap-3">
-                      <Flame className="w-5 h-5 text-clay-500" />
+                      <Flame className="w-5 h-5 text-gold-500" />
                       <div>
                         <p className="text-xs text-muted-foreground">Additional Heater</p>
                         <p className="font-medium text-foreground">₹{cottage.heaterCharge || 500}/night</p>
@@ -240,22 +240,22 @@ export default function CottageBySlugPage() {
                     <div className="overflow-x-auto">
                       <table className="w-full text-sm border-collapse">
                         <thead>
-                          <tr className="bg-earth-100 dark:bg-earth-800">
+                          <tr className="bg-gold-50 dark:bg-earth-800">
                             <th className="p-3 text-left border border-border text-muted-foreground font-medium">Season</th>
                             <th className="p-3 text-left border border-border text-muted-foreground font-medium">Price / Night</th>
                             <th className="p-3 text-left border border-border text-muted-foreground font-medium">Min Stay</th>
                           </tr>
                         </thead>
                         <tbody>
-                          <tr className="bg-forest-50/50 dark:bg-forest-900/10">
+                          <tr className="bg-gold-50/50">
                             <td className="p-3 border border-border text-foreground font-medium">Base Rate</td>
-                            <td className="p-3 border border-border text-forest-600 font-semibold">{formatPrice(cottage.pricePerNight)}</td>
+                            <td className="p-3 border border-border text-gold-600 font-semibold">{formatPrice(cottage.pricePerNight)}</td>
                             <td className="p-3 border border-border text-muted-foreground">1 night</td>
                           </tr>
                           {cottage.seasonalPricings.filter((s: any) => s.isActive).map((s: any) => (
                             <tr key={s.id}>
                               <td className="p-3 border border-border text-foreground">{s.name}</td>
-                              <td className="p-3 border border-border text-forest-600 font-semibold">{formatPrice(s.pricePerNight)}</td>
+                              <td className="p-3 border border-border text-gold-600 font-semibold">{formatPrice(s.pricePerNight)}</td>
                               <td className="p-3 border border-border text-muted-foreground">{s.minStay} nights</td>
                             </tr>
                           ))}
@@ -313,13 +313,13 @@ export default function CottageBySlugPage() {
                             </div>
                             {activeSeasonal && (
                               <div className="flex justify-between text-sm">
-                                <span className="text-clay-500 font-medium">{activeSeasonal.name} premium</span>
+                                <span className="text-gold-500 font-medium">{activeSeasonal.name} premium</span>
                                 <span className="text-foreground">+{formatPrice(activeSeasonal.pricePerNight - cottage.pricePerNight)}/night</span>
                               </div>
                             )}
                             <div className="border-t border-border pt-2 flex justify-between">
                               <span className="font-serif text-lg text-foreground">Total</span>
-                              <span className="font-bold text-lg text-forest-600 dark:text-forest-400">{formatPrice(totalAmount)}</span>
+                              <span className="font-bold text-lg text-gold-600 dark:text-gold-400">{formatPrice(totalAmount)}</span>
                             </div>
                           </div>
 

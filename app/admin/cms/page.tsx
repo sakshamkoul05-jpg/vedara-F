@@ -30,7 +30,7 @@ export default function CMSPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-cream-50 dark:bg-earth-900 pt-20">
+    <div className="min-h-screen bg-alabaster pt-20">
       <div className="vintage-container py-8">
         <div className="mb-6">
           <h1 className="font-serif text-3xl text-foreground">Content Management</h1>
@@ -141,8 +141,8 @@ function SettingsTab({ token, showToast }: { token: string | null; showToast: (m
   if (loading) {
     return (
       <div className="animate-pulse space-y-4">
-        <div className="h-8 bg-earth-200 dark:bg-earth-700 rounded w-1/3" />
-        <div className="h-48 bg-earth-200 dark:bg-earth-700 rounded-2xl" />
+        <div className="h-8 bg-gold-100 rounded w-1/3" />
+        <div className="h-48 bg-gold-100 rounded-2xl" />
       </div>
     );
   }
@@ -186,7 +186,7 @@ function SettingsTab({ token, showToast }: { token: string | null; showToast: (m
           <h2 className="font-serif text-xl text-foreground mb-6">Social Links</h2>
           <div className="space-y-3 mb-4">
             {(settings.socialLinks || []).map((link: any, idx: number) => (
-              <div key={idx} className="flex items-center justify-between bg-earth-50 dark:bg-earth-800 rounded-xl px-4 py-2.5">
+              <div key={idx} className="flex items-center justify-between bg-earth-50 rounded-xl px-4 py-2.5">
                 <div className="flex items-center gap-3">
                   <LinkIcon className="w-4 h-4 text-muted-foreground" />
                   <span className="text-sm font-medium text-foreground capitalize">{link.platform}</span>
@@ -497,7 +497,7 @@ function GalleryTab({ token, showToast }: { token: string | null; showToast: (ms
           {items.map((item, idx) => (
             <ScrollReveal key={item.id} delay={idx * 0.03}>
               <div className="vintage-card overflow-hidden group">
-                <div className="aspect-square relative bg-earth-100 dark:bg-earth-800">
+                <div className="aspect-square relative bg-gold-50">
                   {item.image ? (
                     <img src={item.image} alt={item.caption || ''} className="w-full h-full object-cover" />
                   ) : (
@@ -604,7 +604,7 @@ function TestimonialsTab({ token, showToast }: { token: string | null; showToast
               <div className="vintage-card p-5">
                 <div className="flex justify-between items-start mb-3">
                   <div className="flex items-center gap-3">
-                    <div className="h-10 w-10 rounded-full bg-forest-100 dark:bg-forest-900/30 flex items-center justify-center text-forest-600 font-bold text-sm">
+                    <div className="h-10 w-10 rounded-full bg-gold-100 flex items-center justify-center text-gold-600 font-bold text-sm">
                       {item.name?.charAt(0) || 'T'}
                     </div>
                     <div>
@@ -757,8 +757,8 @@ function CouponsTab({ token, showToast }: { token: string | null; showToast: (ms
               <div className="vintage-card p-4">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
-                    <div className="rounded-xl bg-forest-100 dark:bg-forest-900/30 px-3 py-1.5">
-                      <code className="text-sm font-mono font-bold text-forest-700 dark:text-forest-300">{item.code}</code>
+                    <div className="rounded-xl bg-gold-100 px-3 py-1.5">
+                      <code className="text-sm font-mono font-bold text-forest-700">{item.code}</code>
                     </div>
                     <div>
                       <span className="text-sm font-semibold text-foreground">
@@ -950,7 +950,7 @@ function FaqsTab({ token, showToast }: { token: string | null; showToast: (msg: 
                 <div className="flex justify-between items-start gap-4">
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
-                      <HelpCircle className="w-4 h-4 text-forest-600 shrink-0" />
+                      <HelpCircle className="w-4 h-4 text-gold-600 shrink-0" />
                       <h3 className="font-medium text-foreground text-sm">{item.question}</h3>
                     </div>
                     <p className="text-sm text-muted-foreground ml-6">{item.answer}</p>
@@ -1074,13 +1074,13 @@ function MessagesTab({ token, showToast }: { token: string | null; showToast: (m
               <button
                 onClick={() => { setViewing(msg); if (!msg.isRead) handleMarkRead(msg.id); }}
                 className={`w-full text-left vintage-card p-4 transition-all hover:shadow-md ${
-                  !msg.isRead ? 'border-l-4 border-l-forest-500 bg-forest-50/30 dark:bg-forest-900/10' : ''
+                  !msg.isRead ? 'border-l-4 border-l-forest-500 bg-gold-50/30' : ''
                 } ${viewing?.id === msg.id ? 'ring-2 ring-forest-500' : ''}`}
               >
                 <div className="flex justify-between items-start mb-1">
                   <p className="font-medium text-foreground text-sm">{msg.name}</p>
                   <div className="flex items-center gap-2">
-                    {!msg.isRead && <span className="w-2 h-2 rounded-full bg-forest-500" />}
+                    {!msg.isRead && <span className="w-2 h-2 rounded-full bg-gold-500" />}
                     <span className="text-xs text-muted-foreground">{msg.createdAt ? formatDateShort(msg.createdAt) : ''}</span>
                   </div>
                 </div>
@@ -1114,7 +1114,7 @@ function MessagesTab({ token, showToast }: { token: string | null; showToast: (m
               )}
               <div className="mb-6">
                 <p className="text-xs text-muted-foreground uppercase tracking-wide mb-1">Message</p>
-                <div className="rounded-xl bg-earth-50 dark:bg-earth-800 p-4">
+                <div className="rounded-xl bg-earth-50 p-4">
                   <p className="text-sm text-foreground whitespace-pre-wrap">{viewing.message}</p>
                 </div>
               </div>

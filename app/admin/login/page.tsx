@@ -47,17 +47,17 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex bg-cream-50 dark:bg-earth-950">
+    <div className="min-h-screen flex bg-alabaster">
       <div className="hidden lg:flex lg:w-1/2 bg-forest-700 relative overflow-hidden items-center justify-center">
         <div className="absolute inset-0 bg-gradient-to-br from-forest-800 to-forest-600" />
         <div className="absolute inset-0 opacity-5" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=60)', backgroundSize: 'cover' }} />
         <div className="relative z-10 px-16 text-center">
-          <Mountain className="w-16 h-16 text-cream-200/30 mx-auto mb-8" />
-          <h1 className="font-serif text-4xl text-cream-50 mb-4 leading-tight">The Vedara</h1>
-          <p className="text-cream-200/60 text-lg font-light">Himalayan Boutique Retreat</p>
-          <div className="mt-12 flex items-center justify-center gap-8 text-cream-200/40 text-xs tracking-widest uppercase">
+          <Mountain className="w-16 h-16 text-alabaster/30 mx-auto mb-8" />
+          <h1 className="font-serif text-4xl text-alabaster mb-4 leading-tight">The Vedara</h1>
+          <p className="text-alabaster/60 text-lg font-light">Himalayan Boutique Retreat</p>
+          <div className="mt-12 flex items-center justify-center gap-8 text-alabaster/40 text-xs tracking-widest uppercase">
             <span>Ghiyagi, Jibhi</span>
-            <span className="w-1 h-1 rounded-full bg-cream-200/30" />
+            <span className="w-1 h-1 rounded-full bg-alabaster/30" />
             <span>Himachal Pradesh</span>
           </div>
         </div>
@@ -71,8 +71,8 @@ export default function AdminLoginPage() {
           className="w-full max-w-sm"
         >
           <div className="lg:hidden flex items-center gap-3 mb-10">
-            <div className="w-10 h-10 rounded-full bg-forest-600 flex items-center justify-center">
-              <Mountain className="w-5 h-5 text-cream-50" />
+            <div className="w-10 h-10 rounded-full bg-gold-600 flex items-center justify-center">
+              <Mountain className="w-5 h-5 text-alabaster" />
             </div>
             <div>
               <h1 className="font-serif text-lg font-semibold text-foreground">The Vedara</h1>
@@ -85,7 +85,7 @@ export default function AdminLoginPage() {
             <p className="text-sm text-muted-foreground">Sign in to manage your property</p>
           </div>
 
-          <div className="flex gap-1.5 mb-8 bg-earth-100 dark:bg-earth-800 rounded-xl p-1">
+          <div className="flex gap-1.5 mb-8 bg-gold-50 rounded-xl p-1">
             {portalTabs.map((t) => {
               const Icon = t.icon;
               return (
@@ -94,7 +94,7 @@ export default function AdminLoginPage() {
                   onClick={() => setPortal(t.id)}
                   className={`flex-1 flex flex-col items-center gap-1 py-2.5 px-2 rounded-lg text-xs transition-all ${
                     portal === t.id
-                      ? 'bg-white dark:bg-earth-700 text-forest-700 dark:text-forest-300 shadow-sm font-medium'
+                      ? 'bg-white text-forest-700 shadow-sm font-medium'
                       : 'text-muted-foreground hover:text-foreground'
                   }`}
                 >
@@ -126,7 +126,7 @@ export default function AdminLoginPage() {
                   onChange={(e) => setEmail(e.target.value)}
                   required
                   placeholder={portal === 'admin' ? 'admin@vedara.com' : portal === 'cafe' ? 'cafe@vedara.com' : 'staff@vedara.com'}
-                  className="w-full pl-10 pr-4 py-2.5 bg-white dark:bg-earth-800 border border-border rounded-lg text-foreground placeholder-muted-foreground text-sm focus:outline-none focus:border-forest-500 focus:ring-2 focus:ring-forest-500/20 transition-all"
+                  className="w-full pl-10 pr-4 py-2.5 bg-white border border-border rounded-lg text-foreground placeholder-muted-foreground text-sm focus:outline-none focus:border-forest-500 focus:ring-2 focus:ring-forest-500/20 transition-all"
                 />
               </div>
             </div>
@@ -143,7 +143,7 @@ export default function AdminLoginPage() {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                   placeholder="Enter password"
-                  className="w-full pl-10 pr-10 py-2.5 bg-white dark:bg-earth-800 border border-border rounded-lg text-foreground placeholder-muted-foreground text-sm focus:outline-none focus:border-forest-500 focus:ring-2 focus:ring-forest-500/20 transition-all"
+                  className="w-full pl-10 pr-10 py-2.5 bg-white border border-border rounded-lg text-foreground placeholder-muted-foreground text-sm focus:outline-none focus:border-forest-500 focus:ring-2 focus:ring-forest-500/20 transition-all"
                 />
                 <button
                   type="button"
@@ -158,7 +158,7 @@ export default function AdminLoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-2.5 rounded-lg bg-forest-600 hover:bg-forest-700 text-white font-medium text-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 mt-6"
+              className="w-full py-2.5 rounded-lg bg-gold-600 hover:bg-gold-700 text-white font-medium text-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 mt-6"
             >
               {loading ? (
                 <span className="flex items-center gap-2">

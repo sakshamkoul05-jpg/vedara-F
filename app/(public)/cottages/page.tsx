@@ -44,11 +44,11 @@ export default function CottagesPage() {
 
   return (
     <>
-      <section className="pt-32 pb-20 bg-cream-50 dark:bg-earth-900">
+      <section className="pt-32 pb-20 bg-alabaster">
         <div className="vintage-container">
           <ScrollReveal>
             <BackButton />
-            <p className="text-clay-500 text-sm tracking-[0.2em] uppercase mb-4 font-sans">Accommodations</p>
+            <p className="text-gold-500 text-sm tracking-[0.2em] uppercase mb-4 font-sans">Accommodations</p>
             <TextReveal as="h1" className="section-title max-w-3xl">
               Find Your Mountain Retreat
             </TextReveal>
@@ -91,11 +91,11 @@ export default function CottagesPage() {
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {[1, 2, 3, 4, 5, 6].map((i) => (
                 <div key={i} className="vintage-card animate-pulse">
-                  <div className="aspect-[4/3] bg-earth-200 dark:bg-earth-700 rounded-t-2xl" />
+                  <div className="aspect-[4/3] bg-gold-100 dark:bg-earth-700 rounded-t-2xl" />
                   <div className="p-6 space-y-3">
-                    <div className="h-5 bg-earth-200 dark:bg-earth-700 rounded w-2/3" />
-                    <div className="h-4 bg-earth-200 dark:bg-earth-700 rounded w-full" />
-                    <div className="h-4 bg-earth-200 dark:bg-earth-700 rounded w-3/4" />
+                    <div className="h-5 bg-gold-100 dark:bg-earth-700 rounded w-2/3" />
+                    <div className="h-4 bg-gold-100 dark:bg-earth-700 rounded w-full" />
+                    <div className="h-4 bg-gold-100 dark:bg-earth-700 rounded w-3/4" />
                   </div>
                 </div>
               ))}
@@ -107,7 +107,7 @@ export default function CottagesPage() {
                   <p className="text-sm text-muted-foreground">
                     {cottages.filter((c: any) => c.isAvailable).length} of {cottages.length} cottages available for these dates
                   </p>
-                  <button onClick={() => { setAvailabilityChecked(false); api.get('/cottages').then((res: any) => setCottages(res.data)); }} className="text-sm text-forest-600 dark:text-forest-400 hover:underline">
+                  <button onClick={() => { setAvailabilityChecked(false); api.get('/cottages').then((res: any) => setCottages(res.data)); }} className="text-sm text-gold-600 dark:text-gold-400 hover:underline">
                     Show all cottages
                   </button>
                 </div>
@@ -120,10 +120,10 @@ export default function CottagesPage() {
                 <ScrollReveal key={cottage.id} delay={i * 0.1}>
                   <Link href={`/cottages/slug/${slug}`} className="group block">
                     <div className={`vintage-card overflow-hidden ${availabilityChecked && !available ? 'opacity-50' : ''}`}>
-                      <div className="aspect-[4/3] overflow-hidden bg-earth-100 dark:bg-earth-800 relative">
+                      <div className="aspect-[4/3] overflow-hidden bg-gold-50 dark:bg-earth-800 relative">
                         {availabilityChecked && !available && (
                           <div className="absolute inset-0 bg-black/40 z-10 flex items-center justify-center">
-                            <span className="bg-earth-900/80 text-cream-50 px-4 py-2 rounded-full text-sm font-medium">Not available</span>
+                            <span className="bg-vedara-900/80 text-alabaster px-4 py-2 rounded-full text-sm font-medium">Not available</span>
                           </div>
                         )}
                         <img
@@ -135,11 +135,11 @@ export default function CottagesPage() {
                       </div>
                       <div className="p-6">
                         <div className="flex justify-between items-start mb-1">
-                          <h3 className="font-serif text-xl text-foreground group-hover:text-forest-600 dark:group-hover:text-forest-400 transition-colors">{cottage.name}</h3>
-                          <span className="text-forest-600 dark:text-forest-400 font-semibold">{formatPrice(cottage.pricePerNight)}<span className="text-earth-400 font-normal text-xs">/night</span></span>
+                          <h3 className="font-serif text-xl text-foreground group-hover:text-gold-600 dark:group-hover:text-gold-400 transition-colors">{cottage.name}</h3>
+                          <span className="text-gold-600 dark:text-gold-400 font-semibold">{formatPrice(cottage.pricePerNight)}<span className="text-earth-400 font-normal text-xs">/night</span></span>
                         </div>
                         {cottage.category && (
-                          <span className="inline-block text-xs font-medium px-2.5 py-1 rounded-full bg-clay-100 dark:bg-clay-900/30 text-clay-600 dark:text-clay-400 mb-2">{cottage.category}</span>
+                          <span className="inline-block text-xs font-medium px-2.5 py-1 rounded-full bg-gold-100 text-gold-600 mb-2">{cottage.category}</span>
                         )}
                         <p className="text-muted-foreground text-sm mb-4 line-clamp-2">{cottage.shortDesc || cottage.description}</p>
                         <div className="flex gap-4 text-xs text-muted-foreground mb-4">
@@ -157,7 +157,7 @@ export default function CottagesPage() {
                             )}
                           </div>
                         )}
-                        <span className="text-forest-600 dark:text-forest-400 text-sm font-medium inline-flex items-center gap-1 group-hover:gap-2 transition-all">
+                        <span className="text-gold-600 dark:text-gold-400 text-sm font-medium inline-flex items-center gap-1 group-hover:gap-2 transition-all">
                           View Details <ArrowRight className="w-3 h-3" />
                         </span>
                       </div>

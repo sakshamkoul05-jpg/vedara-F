@@ -26,7 +26,7 @@ export default function StaffPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-cream-50 dark:bg-earth-900 pt-20">
+    <div className="min-h-screen bg-alabaster pt-20">
       <div className="vintage-container py-8">
         <div className="mb-6">
           <h1 className="font-serif text-3xl text-foreground">Staff Management</h1>
@@ -152,7 +152,7 @@ function StaffTable({ token, showToast }: { token: string | null; showToast: (ms
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-border bg-earth-50 dark:bg-earth-800/50">
+                <tr className="border-b border-border bg-earth-50">
                   <th className="text-left py-3 px-4 font-medium text-foreground">Name</th>
                   <th className="text-left py-3 px-4 font-medium text-foreground">Phone</th>
                   <th className="text-left py-3 px-4 font-medium text-foreground">Employee ID</th>
@@ -166,12 +166,12 @@ function StaffTable({ token, showToast }: { token: string | null; showToast: (ms
                 {staff.map((member, idx) => {
                   const isFired = member.status === 'FIRED';
                   return (
-                    <tr key={member.id} className={`border-b border-border transition-colors hover:bg-earth-50/50 dark:hover:bg-earth-800/30 ${
+                    <tr key={member.id} className={`border-b border-border transition-colors hover:bg-earth-50/50 ${
                         isFired ? 'opacity-50' : ''
                       }`}>
                         <td className="py-3 px-4">
                           <div className="flex items-center gap-3">
-                            <div className="h-8 w-8 rounded-full bg-forest-100 dark:bg-forest-900/30 flex items-center justify-center text-forest-600 font-bold text-xs">
+                            <div className="h-8 w-8 rounded-full bg-gold-100 flex items-center justify-center text-gold-600 font-bold text-xs">
                               {member.name?.charAt(0) || '?'}
                             </div>
                             <div>
@@ -184,7 +184,7 @@ function StaffTable({ token, showToast }: { token: string | null; showToast: (ms
                         </td>
                         <td className="py-3 px-4 text-muted-foreground">{member.phone || '-'}</td>
                         <td className="py-3 px-4">
-                          <code className="text-xs font-mono bg-earth-100 dark:bg-earth-800 px-2 py-0.5 rounded">
+                          <code className="text-xs font-mono bg-gold-50 px-2 py-0.5 rounded">
                             {member.employeeId}
                           </code>
                         </td>

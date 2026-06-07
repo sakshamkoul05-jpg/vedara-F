@@ -110,7 +110,7 @@ export default function EmployeeCafePage() {
   };
 
   return (
-    <div className="min-h-screen bg-cream-50 dark:bg-earth-900 pt-20">
+    <div className="min-h-screen bg-alabaster pt-20">
       <div className="vintage-container py-8">
         <div className="flex justify-between items-center mb-8">
           <div>
@@ -133,7 +133,7 @@ export default function EmployeeCafePage() {
               key={t.id}
               onClick={() => setTab(t.id)}
               className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all ${
-                tab === t.id ? 'bg-forest-600 text-cream-50' : 'bg-earth-100 dark:bg-earth-800 text-earth-600'
+                tab === t.id ? 'bg-gold-600 text-alabaster' : 'bg-gold-50 text-charcoal/70'
               }`}
             >
               <t.icon className="w-4 h-4 inline mr-1.5" /> {t.label}
@@ -158,10 +158,10 @@ export default function EmployeeCafePage() {
                           {order.guestName && <p className="text-xs text-muted-foreground">{order.guestName}</p>}
                         </div>
                         <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                          order.status === 'PENDING' ? 'bg-clay-100 text-clay-700 animate-pulse' : 'bg-forest-100 text-forest-700'
+                          order.status === 'PENDING' ? 'bg-gold-100 text-clay-700 animate-pulse' : 'bg-gold-100 text-forest-700'
                         }`}>{order.status}</span>
                       </div>
-                      <div className="space-y-1 mb-4 bg-earth-50 dark:bg-earth-800 rounded-xl p-3">
+                      <div className="space-y-1 mb-4 bg-earth-50 rounded-xl p-3">
                         {order.items?.map((item: any) => (
                           <div key={item.id} className="flex justify-between text-sm">
                             <span className="text-foreground">{item.quantity}x {item.item?.name}</span>
@@ -215,7 +215,7 @@ export default function EmployeeCafePage() {
                 <h3 className="font-serif text-lg text-foreground mb-4">Menu Inventory</h3>
                 {menu.map((cat: any) => (
                   <div key={cat.id} className="mb-6">
-                    <h4 className="font-medium text-forest-600 dark:text-forest-400 text-sm uppercase tracking-wide mb-2">{cat.name}</h4>
+                    <h4 className="font-medium text-gold-600 text-sm uppercase tracking-wide mb-2">{cat.name}</h4>
                     {cat.items
                       .filter((i: any) => !search || i.name.toLowerCase().includes(search.toLowerCase()))
                       .map((item: any) => (
@@ -224,7 +224,7 @@ export default function EmployeeCafePage() {
                             onClick={() => handleToggleAvailability(item.id, item.isAvailable)}
                             disabled={togglingId === item.id}
                             className={`flex-shrink-0 p-1 rounded transition-colors ${
-                              item.isAvailable ? 'text-forest-600 hover:text-forest-500' : 'text-red-400 hover:text-red-500'
+                              item.isAvailable ? 'text-gold-600 hover:text-gold-500' : 'text-red-400 hover:text-red-500'
                             }`}
                             title={item.isAvailable ? 'Mark out of stock' : 'Mark in stock'}
                           >
@@ -252,7 +252,7 @@ export default function EmployeeCafePage() {
                                   autoFocus
                                   onKeyDown={(e) => { if (e.key === 'Enter') handleSavePrice(item.id); if (e.key === 'Escape') setEditingPrice(null); }}
                                 />
-                                <button onClick={() => handleSavePrice(item.id)} className="p-1 text-forest-600 hover:text-forest-500">
+                                <button onClick={() => handleSavePrice(item.id)} className="p-1 text-gold-600 hover:text-gold-500">
                                   <Check className="w-3.5 h-3.5" />
                                 </button>
                                 <button onClick={() => setEditingPrice(null)} className="p-1 text-muted-foreground hover:text-foreground">
@@ -264,7 +264,7 @@ export default function EmployeeCafePage() {
                                 <span className={`text-xs font-medium ${item.isAvailable ? 'text-foreground' : 'text-muted-foreground'}`}>
                                   {formatPrice(item.price)}
                                 </span>
-                                <button onClick={() => { setEditingPrice(item.id); setPriceInput(String(item.price)); }} className="p-1 text-muted-foreground hover:text-forest-600">
+                                <button onClick={() => { setEditingPrice(item.id); setPriceInput(String(item.price)); }} className="p-1 text-muted-foreground hover:text-gold-600">
                                   <Edit3 className="w-3 h-3" />
                                 </button>
                               </>
@@ -323,7 +323,7 @@ export default function EmployeeCafePage() {
           <div>
             {analyticsLoading ? (
               <div className="flex justify-center py-20">
-                <Loader2 className="w-8 h-8 text-forest-600 animate-spin" />
+                <Loader2 className="w-8 h-8 text-gold-600 animate-spin" />
               </div>
             ) : (
               <div className="space-y-8">
@@ -357,7 +357,7 @@ export default function EmployeeCafePage() {
                           <div key={day.date} className="flex-1 flex flex-col items-center gap-1">
                             <span className="text-[10px] text-muted-foreground">{formatPrice(day.total)}</span>
                             <div
-                              className="w-full rounded-t bg-forest-500/70 hover:bg-forest-500 transition-all"
+                              className="w-full rounded-t bg-gold-500/70 hover:bg-gold-500 transition-all"
                               style={{ height: `${Math.max(height, 4)}%` }}
                             />
                             <span className="text-[10px] text-muted-foreground">
@@ -380,13 +380,13 @@ export default function EmployeeCafePage() {
                       {topItems.map((item: any, i: number) => (
                         <div key={item.itemId} className="flex items-center gap-4">
                           <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
-                            i < 3 ? 'bg-amber-100 text-amber-700' : 'bg-earth-100 text-earth-600'
+                            i < 3 ? 'bg-amber-100 text-amber-700' : 'bg-gold-50 text-charcoal/70'
                           }`}>{i + 1}</span>
                           <div className="flex-1">
                             <p className="text-sm text-foreground">{item.name}</p>
                             <p className="text-xs text-muted-foreground">{formatPrice(item.price)} each</p>
                           </div>
-                          <span className="text-sm font-semibold text-forest-600">{item.totalSold} sold</span>
+                          <span className="text-sm font-semibold text-gold-600">{item.totalSold} sold</span>
                         </div>
                       ))}
                     </div>

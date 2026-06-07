@@ -12,7 +12,7 @@ export function BackButton({ className }: { className?: string }) {
       onClick={() => router.back()}
       className={cn(
         'flex items-center gap-1.5 text-xs font-medium transition-colors mb-6',
-        'text-earth-500 dark:text-cream-400 hover:text-forest-600 dark:hover:text-cream-50',
+        'text-charcoal/50 hover:text-gold-600',
         className
       )}
     >

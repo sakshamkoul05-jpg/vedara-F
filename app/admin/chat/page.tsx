@@ -157,12 +157,12 @@ export default function AdminChatPage() {
   const selectedConv = conversations.find(c => c.id === selectedId);
 
   return (
-    <div className="flex h-screen pt-16 bg-cream-50 dark:bg-earth-900">
-      <div className="w-80 border-r border-border bg-white dark:bg-earth-800 flex flex-col">
+    <div className="flex h-screen pt-16 bg-alabaster">
+      <div className="w-80 border-r border-border bg-white flex flex-col">
         <div className="p-4 border-b border-border">
           <div className="flex items-center justify-between">
             <h2 className="font-serif text-lg text-foreground flex items-center gap-2">
-              <MessageCircle className="w-5 h-5 text-forest-600" />
+              <MessageCircle className="w-5 h-5 text-gold-600" />
               Live Chats
             </h2>
             {unreadCount > 0 && (
@@ -181,8 +181,8 @@ export default function AdminChatPage() {
               <button
                 key={conv.id}
                 onClick={() => { setSelectedId(conv.id); }}
-                className={`w-full text-left p-4 border-b border-border hover:bg-earth-50 dark:hover:bg-earth-700/50 transition-colors ${
-                  selectedId === conv.id ? 'bg-forest-50 dark:bg-forest-900/20 border-l-4 border-l-forest-600' : ''
+                className={`w-full text-left p-4 border-b border-border hover:bg-earth-50 transition-colors ${
+                  selectedId === conv.id ? 'bg-gold-50 border-l-4 border-l-gold-600' : ''
                 }`}
               >
                 <div className="flex items-center justify-between mb-1">
@@ -202,9 +202,9 @@ export default function AdminChatPage() {
       <div className="flex-1 flex flex-col">
         {selectedConv ? (
           <>
-            <div className="p-4 border-b border-border bg-white dark:bg-earth-800 flex items-center justify-between">
+            <div className="p-4 border-b border-border bg-white flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-full bg-forest-100 dark:bg-forest-900/30 flex items-center justify-center text-forest-700 font-bold text-sm">
+                <div className="w-9 h-9 rounded-full bg-gold-100 flex items-center justify-center text-forest-700 font-bold text-sm">
                   {selectedConv.guestName.charAt(0)}
                 </div>
                 <div>
@@ -225,8 +225,8 @@ export default function AdminChatPage() {
                 <div key={msg.id} className={`flex ${msg.senderType === 'ADMIN' ? 'justify-end' : 'justify-start'}`}>
                   <div className={`max-w-[70%] rounded-2xl px-4 py-2.5 text-sm ${
                     msg.senderType === 'ADMIN'
-                      ? 'bg-forest-600 text-cream-50 rounded-br-sm'
-                      : 'bg-earth-200 dark:bg-earth-700 text-earth-800 dark:text-cream-200 rounded-bl-sm'
+                      ? 'bg-gold-600 text-alabaster rounded-br-sm'
+                      : 'bg-gold-100 text-earth-800 rounded-bl-sm'
                   }`}>
                     <div className="text-xs opacity-70 mb-0.5">{msg.senderName || (msg.senderType === 'ADMIN' ? 'You' : 'Guest')}</div>
                     <p className="leading-relaxed whitespace-pre-line">{msg.content}</p>
@@ -236,14 +236,14 @@ export default function AdminChatPage() {
               <div ref={messagesEndRef} />
             </div>
 
-            <div className="p-4 border-t border-border bg-white dark:bg-earth-800">
+            <div className="p-4 border-t border-border bg-white">
               <div className="flex gap-2">
                 <input
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && handleSend()}
                   placeholder="Type your reply..."
-                  className="flex-1 rounded-xl border border-border bg-earth-50 dark:bg-earth-700 px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-forest-500"
+                  className="flex-1 rounded-xl border border-border bg-earth-50 px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-forest-500"
                 />
                 <Button variant="primary" onClick={handleSend} disabled={!input.trim()}>
                   <Send className="w-4 h-4" />

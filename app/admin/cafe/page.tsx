@@ -193,8 +193,8 @@ export default function CafeAdminPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-cream-50 dark:bg-earth-900">
-        <Coffee className="w-8 h-8 text-forest-600 animate-pulse" />
+      <div className="flex items-center justify-center min-h-screen bg-alabaster">
+        <Coffee className="w-8 h-8 text-gold-600 animate-pulse" />
       </div>
     )
   }
@@ -203,7 +203,7 @@ export default function CafeAdminPage() {
     <ScrollReveal className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
       <div className="vintage-card p-6">
         <div className="flex items-center gap-3 mb-2">
-          <ClipboardList className="w-5 h-5 text-forest-600" />
+          <ClipboardList className="w-5 h-5 text-gold-600" />
           <span className="text-sm text-earth-500 font-manrope">Today&apos;s Orders</span>
         </div>
         <p className="text-3xl font-serif font-bold text-forest-700">
@@ -212,17 +212,17 @@ export default function CafeAdminPage() {
       </div>
       <div className="vintage-card p-6">
         <div className="flex items-center gap-3 mb-2">
-          <DollarSign className="w-5 h-5 text-forest-600" />
+          <DollarSign className="w-5 h-5 text-gold-600" />
           <span className="text-sm text-earth-500 font-manrope">Today&apos;s Revenue</span>
         </div>
         <p className="text-3xl font-serif font-bold text-forest-700">{formatPrice(todayRevenue())}</p>
       </div>
       <div className="vintage-card p-6">
         <div className="flex items-center gap-3 mb-2">
-          <TrendingUp className="w-5 h-5 text-forest-600" />
+          <TrendingUp className="w-5 h-5 text-gold-600" />
           <span className="text-sm text-earth-500 font-manrope">Popular Items</span>
         </div>
-        <ul className="text-sm text-earth-600 font-manrope">
+        <ul className="text-sm text-charcoal/70 font-manrope">
           {popularItems().slice(0, 3).map(([name, count]) => (
             <li key={name} className="truncate">{name} ({count})</li>
           ))}
@@ -230,7 +230,7 @@ export default function CafeAdminPage() {
       </div>
       <div className="vintage-card p-6">
         <div className="flex items-center gap-3 mb-2">
-          <Users className="w-5 h-5 text-forest-600" />
+          <Users className="w-5 h-5 text-gold-600" />
           <span className="text-sm text-earth-500 font-manrope">Pending Orders</span>
         </div>
         <p className="text-3xl font-serif font-bold text-amber-600">{pendingCount()}</p>
@@ -241,10 +241,10 @@ export default function CafeAdminPage() {
   const renderMenuManagement = () => (
     <div className="space-y-6">
       <div className="flex gap-2">
-        <Button onClick={() => setShowAddCategory(!showAddCategory)} className="bg-forest-600 text-cream-50">
+        <Button onClick={() => setShowAddCategory(!showAddCategory)} className="bg-gold-600 text-alabaster">
           <Plus className="w-4 h-4 mr-1" /> Category
         </Button>
-        <Button onClick={() => setShowAddItem(!showAddItem)} className="bg-forest-600 text-cream-50">
+        <Button onClick={() => setShowAddItem(!showAddItem)} className="bg-gold-600 text-alabaster">
           <Plus className="w-4 h-4 mr-1" /> Item
         </Button>
       </div>
@@ -259,8 +259,8 @@ export default function CafeAdminPage() {
             <label className="block text-xs text-earth-500 mb-1 font-manrope">Description</label>
             <input className="vintage-input" value={newCategory.description} onChange={e => setNewCategory(p => ({ ...p, description: e.target.value }))} />
           </div>
-          <Button onClick={handleAddCategory} className="bg-forest-600 text-cream-50"><Check className="w-4 h-4" /></Button>
-          <Button onClick={() => setShowAddCategory(false)} className="bg-earth-200 text-earth-600"><X className="w-4 h-4" /></Button>
+          <Button onClick={handleAddCategory} className="bg-gold-600 text-alabaster"><Check className="w-4 h-4" /></Button>
+          <Button onClick={() => setShowAddCategory(false)} className="bg-gold-100 text-charcoal/70"><X className="w-4 h-4" /></Button>
         </div>
       )}
 
@@ -282,14 +282,14 @@ export default function CafeAdminPage() {
             </select>
           </div>
           <div className="flex gap-3">
-            <label className="flex items-center gap-1 text-xs text-earth-600">
+            <label className="flex items-center gap-1 text-xs text-charcoal/70">
               <input type="checkbox" checked={newItem.available} onChange={e => setNewItem(p => ({ ...p, available: e.target.checked }))} /> Available
             </label>
-            <label className="flex items-center gap-1 text-xs text-earth-600">
+            <label className="flex items-center gap-1 text-xs text-charcoal/70">
               <input type="checkbox" checked={newItem.vegetarian} onChange={e => setNewItem(p => ({ ...p, vegetarian: e.target.checked }))} /> Veg
             </label>
           </div>
-          <Button onClick={handleAddItem} className="bg-forest-600 text-cream-50 col-span-full md:col-span-1"><Check className="w-4 h-4 mr-1" /> Add</Button>
+          <Button onClick={handleAddItem} className="bg-gold-600 text-alabaster col-span-full md:col-span-1"><Check className="w-4 h-4 mr-1" /> Add</Button>
         </div>
       )}
 
@@ -307,8 +307,8 @@ export default function CafeAdminPage() {
                       <input type="number" step="0.01" className="vintage-input w-20" value={editingItem.price} onChange={e => setEditingItem(p => ({ ...p!, price: parseFloat(e.target.value) || 0 }))} />
                       <label className="flex items-center gap-1 text-xs"><input type="checkbox" checked={editingItem.available ?? true} onChange={e => setEditingItem(p => ({ ...p!, available: e.target.checked }))} /> Avail</label>
                       <label className="flex items-center gap-1 text-xs"><input type="checkbox" checked={editingItem.vegetarian ?? false} onChange={e => setEditingItem(p => ({ ...p!, vegetarian: e.target.checked }))} /> Veg</label>
-                      <Button onClick={() => handleUpdateItem(editingItem)} className="bg-forest-600 text-cream-50 p-1"><Check className="w-4 h-4" /></Button>
-                      <Button onClick={() => setEditingItem(null)} className="bg-earth-200 text-earth-600 p-1"><X className="w-4 h-4" /></Button>
+                      <Button onClick={() => handleUpdateItem(editingItem)} className="bg-gold-600 text-alabaster p-1"><Check className="w-4 h-4" /></Button>
+                      <Button onClick={() => setEditingItem(null)} className="bg-gold-100 text-charcoal/70 p-1"><X className="w-4 h-4" /></Button>
                     </div>
                   ) : (
                     <>
@@ -325,9 +325,9 @@ export default function CafeAdminPage() {
                         </div>
                       </div>
                       <div className="flex items-center gap-3">
-                        <span className="font-manrope font-semibold text-forest-600">{formatPrice(item.price)}</span>
-                        <button onClick={() => setEditingItem({ ...item })} className="text-earth-400 hover:text-forest-600"><Edit className="w-4 h-4" /></button>
-                        <button className="text-earth-400 hover:text-red-500"><Trash2 className="w-4 h-4" /></button>
+                        <span className="font-manrope font-semibold text-gold-600">{formatPrice(item.price)}</span>
+                        <button onClick={() => setEditingItem({ ...item })} className="text-charcoal/50 hover:text-gold-600"><Edit className="w-4 h-4" /></button>
+                        <button className="text-charcoal/50 hover:text-red-500"><Trash2 className="w-4 h-4" /></button>
                       </div>
                     </>
                   )}
@@ -349,16 +349,16 @@ export default function CafeAdminPage() {
             <div className="flex-1">
               <div className="flex items-center gap-2 mb-1">
                 <span className={`px-2 py-0.5 rounded-full text-xs font-manrope font-semibold ${STATUS_COLORS[order.status] || ''}`}>{order.status}</span>
-                <span className="text-xs text-earth-400 font-manrope">{new Date(order.createdAt).toLocaleString()}</span>
+                <span className="text-xs text-charcoal/50 font-manrope">{new Date(order.createdAt).toLocaleString()}</span>
               </div>
               <p className="font-manrope text-earth-700 text-sm">
                 {order.items?.map(i => `${i.name} x${i.quantity}`).join(', ')}
               </p>
-              <p className="font-manrope font-semibold text-forest-600 mt-1">{formatPrice(order.total)}</p>
+              <p className="font-manrope font-semibold text-gold-600 mt-1">{formatPrice(order.total)}</p>
             </div>
             <div className="flex gap-2">
               {STATUS_FLOW[order.status] && (
-                <Button onClick={() => updateOrderStatus(order._id, order.status)} className="bg-forest-600 text-cream-50 text-sm">
+                <Button onClick={() => updateOrderStatus(order._id, order.status)} className="bg-gold-600 text-alabaster text-sm">
                   <Check className="w-4 h-4 mr-1" /> {STATUS_FLOW[order.status]}
                 </Button>
               )}
@@ -388,13 +388,13 @@ export default function CafeAdminPage() {
             <div key={item._id} className="vintage-card p-4">
               <div className="flex items-center justify-between mb-2">
                 <span className="font-manrope font-medium text-earth-800">{item.name}</span>
-                <Package className={`w-4 h-4 ${isLow ? 'text-amber-500' : 'text-forest-500'}`} />
+                <Package className={`w-4 h-4 ${isLow ? 'text-amber-500' : 'text-gold-500'}`} />
               </div>
               <div className="flex items-center gap-2">
-                <div className="flex-1 h-2 bg-earth-100 rounded-full overflow-hidden">
-                  <div className={`h-full rounded-full transition-all ${isLow ? 'bg-amber-500' : 'bg-forest-500'}`} style={{ width: `${Math.min((item.stock / (item.threshold * 3)) * 100, 100)}%` }} />
+                <div className="flex-1 h-2 bg-gold-50 rounded-full overflow-hidden">
+                  <div className={`h-full rounded-full transition-all ${isLow ? 'bg-amber-500' : 'bg-gold-500'}`} style={{ width: `${Math.min((item.stock / (item.threshold * 3)) * 100, 100)}%` }} />
                 </div>
-                <span className={`text-sm font-manrope font-semibold ${isLow ? 'text-amber-600' : 'text-earth-600'}`}>{item.stock} {item.unit}</span>
+                <span className={`text-sm font-manrope font-semibold ${isLow ? 'text-amber-600' : 'text-charcoal/70'}`}>{item.stock} {item.unit}</span>
               </div>
             </div>
           )
@@ -417,11 +417,11 @@ export default function CafeAdminPage() {
             </div>
             {member.task && (
               <div className="bg-earth-50 rounded p-2 mt-2">
-                <p className="text-xs text-earth-600 font-manrope">Task: {member.task}</p>
+                <p className="text-xs text-charcoal/70 font-manrope">Task: {member.task}</p>
               </div>
             )}
             <div className="flex gap-2 mt-3">
-              <Button className="text-xs bg-forest-600 text-cream-50 py-1 px-3">
+              <Button className="text-xs bg-gold-600 text-alabaster py-1 px-3">
                 <ClipboardList className="w-3 h-3 mr-1" /> Assign Task
               </Button>
             </div>
@@ -432,11 +432,11 @@ export default function CafeAdminPage() {
   )
 
   return (
-    <div className="min-h-screen bg-cream-50 dark:bg-earth-900">
+    <div className="min-h-screen bg-alabaster">
       <div className="vintage-container py-8">
         <ScrollReveal className="mb-8">
           <div className="flex items-center gap-3 mb-2">
-            <Coffee className="w-8 h-8 text-forest-600" />
+            <Coffee className="w-8 h-8 text-gold-600" />
             <h1 className="text-3xl font-serif font-bold text-forest-800">Cafe Admin</h1>
           </div>
           <p className="text-earth-500 font-manrope">Manage your cafe operations</p>
@@ -449,8 +449,8 @@ export default function CafeAdminPage() {
               onClick={() => setActiveTab(tab)}
               className={`px-4 py-2 rounded-full text-sm font-manrope font-medium transition-colors ${
                 activeTab === tab
-                  ? 'bg-forest-600 text-cream-50'
-                  : 'bg-earth-100 text-earth-600 hover:bg-earth-200'
+                  ? 'bg-gold-600 text-alabaster'
+                  : 'bg-gold-50 text-charcoal/70 hover:bg-gold-100'
               }`}
             >
               {tab}
