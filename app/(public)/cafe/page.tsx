@@ -303,7 +303,9 @@ export default function CafePage() {
 
   const activeCategoryData = menuData.find(c => c.id === activeCategory);
 
-  const getFilteredItems = () => {
+  type SearchItem = { item: MenuItem; categoryId: string; categoryTitle: string; idx: number };
+
+  const getFilteredItems = (): MenuItem[] | SearchItem[] => {
     if (!searchQuery) {
       return globalSearch ? [] : (activeCategoryData?.items || []);
     }
@@ -311,7 +313,7 @@ export default function CafePage() {
     const query = searchQuery.toLowerCase();
 
     if (globalSearch) {
-      const results: Array<{ item: MenuItem; categoryId: string; categoryTitle: string; idx: number }> = [];
+      const results: SearchItem[] = [];
       menuData.forEach(cat => {
         cat.items.forEach((item, idx) => {
           if (item.name.toLowerCase().includes(query) || item.desc.toLowerCase().includes(query)) {
@@ -328,6 +330,7 @@ export default function CafePage() {
   };
 
   const filteredItems = getFilteredItems();
+  const isGlobalResults = globalSearch && searchQuery && filteredItems.length > 0 && 'categoryId' in filteredItems[0];
 
   const handleAddToCart = (item: MenuItem, localId: string) => {
     const price = typeof item.price === 'string' ? parseInt(item.price) || 0 : item.price;
@@ -467,15 +470,15 @@ export default function CafePage() {
                     </p>
                   </div>
 
-                  {Object.entries(
-                    filteredItems.reduce((acc, item) => {
-                      const key = item.categoryId;
+                  {isGlobalResults && Object.entries(
+                    (filteredItems as SearchItem[]).reduce((acc, entry) => {
+                      const key = entry.categoryId;
                       if (!acc[key]) {
-                        acc[key] = { title: item.categoryTitle, items: [] };
+                        acc[key] = { title: entry.categoryTitle, items: [] };
                       }
-                      acc[key].items.push(item);
+                      acc[key].items.push(entry);
                       return acc;
-                    }, {} as Record<string, { title: string; items: typeof filteredItems }>)
+                    }, {} as Record<string, { title: string; items: SearchItem[] }>)
                   ).map(([categoryId, { title, items }]) => (
                     <div key={categoryId} className="mb-12">
                       <h3 className="font-serif text-2xl text-foreground mb-6 pb-2 border-b border-earth-200 dark:border-earth-700">
@@ -594,7 +597,7 @@ export default function CafePage() {
                   )}
 
                   <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-                    {filteredItems.map((item, idx) => {
+                    {(filteredItems as MenuItem[]).map((item, idx) => {
                       const localId = `${activeCategory}-${idx}`;
                       const isFlipped = flippedIds.has(localId);
                       const cartItem = cartItems.find(ci => ci.name === item.name);
