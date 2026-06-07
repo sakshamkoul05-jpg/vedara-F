@@ -22,14 +22,14 @@ const config: Config = {
         popover: { DEFAULT: 'hsl(var(--popover))', foreground: 'hsl(var(--popover-foreground))' },
         card: { DEFAULT: 'hsl(var(--card))', foreground: 'hsl(var(--card-foreground))' },
         cream: {
-          50: '#fdfaf5', 100: '#faf3e6', 200: '#f4e5c8', 300: '#edd2a3',
-          400: '#e5ba7a', 500: '#d9a154', 600: '#c48a3b', 700: '#a36e31',
-          800: '#845b2d', 900: '#6c4b27',
+          50: '#faf6ee', 100: '#f4ead4', 200: '#edd8b2', 300: '#e4c28a',
+          400: '#d9a860', 500: '#cf9240', 600: '#b87a32', 700: '#97602a',
+          800: '#7a4e26', 900: '#644022',
         },
         earth: {
-          50: '#f5f5f6', 100: '#e6e6e9', 200: '#cdced2', 300: '#aaacb3',
-          400: '#868990', 500: '#6b6e75', 600: '#55585d', 700: '#46484c',
-          800: '#3a3c40', 900: '#2d2e31',
+          50: '#faf6f0', 100: '#f0e8da', 200: '#e0d0b8', 300: '#ccb18e',
+          400: '#b89268', 500: '#a07a50', 600: '#866240', 700: '#6b4e35',
+          800: '#563f2e', 900: '#3d2c20',
         },
         forest: {
           50: '#f2f6f3', 100: '#e0ece3', 200: '#c1d8c6', 300: '#98bb9f',

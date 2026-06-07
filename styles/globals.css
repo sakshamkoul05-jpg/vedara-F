@@ -4,48 +4,48 @@
 
 @layer base {
   :root {
-    --background: 36 25% 94%;
-    --foreground: 220 12% 18%;
-    --card: 38 30% 95%;
-    --card-foreground: 220 12% 18%;
-    --popover: 38 30% 95%;
-    --popover-foreground: 220 12% 18%;
-    --primary: 150 18% 30%;
-    --primary-foreground: 36 25% 94%;
-    --secondary: 36 20% 88%;
-    --secondary-foreground: 220 12% 18%;
-    --muted: 34 15% 90%;
-    --muted-foreground: 220 8% 48%;
-    --accent: 30 45% 50%;
-    --accent-foreground: 36 25% 94%;
+    --background: 38 40% 92%;
+    --foreground: 30 20% 12%;
+    --card: 36 35% 93%;
+    --card-foreground: 30 20% 12%;
+    --popover: 36 35% 93%;
+    --popover-foreground: 30 20% 12%;
+    --primary: 150 22% 26%;
+    --primary-foreground: 38 40% 92%;
+    --secondary: 34 25% 85%;
+    --secondary-foreground: 30 20% 12%;
+    --muted: 36 25% 86%;
+    --muted-foreground: 30 15% 35%;
+    --accent: 32 50% 42%;
+    --accent-foreground: 38 40% 92%;
     --destructive: 0 84% 60%;
-    --destructive-foreground: 36 25% 94%;
-    --border: 34 12% 82%;
-    --input: 34 12% 82%;
-    --ring: 150 18% 30%;
+    --destructive-foreground: 38 40% 92%;
+    --border: 34 20% 78%;
+    --input: 34 20% 78%;
+    --ring: 150 22% 26%;
     --radius: 0.75rem;
   }
 
   .dark {
-    --background: 220 10% 14%;
-    --foreground: 38 20% 88%;
-    --card: 220 8% 17%;
-    --card-foreground: 38 20% 88%;
-    --popover: 220 8% 17%;
-    --popover-foreground: 38 20% 88%;
-    --primary: 150 16% 35%;
-    --primary-foreground: 36 25% 94%;
-    --secondary: 34 12% 22%;
-    --secondary-foreground: 38 20% 88%;
-    --muted: 220 6% 20%;
-    --muted-foreground: 220 8% 60%;
-    --accent: 30 40% 45%;
-    --accent-foreground: 36 25% 94%;
+    --background: 25 15% 12%;
+    --foreground: 36 30% 90%;
+    --card: 25 12% 15%;
+    --card-foreground: 36 30% 90%;
+    --popover: 25 12% 15%;
+    --popover-foreground: 36 30% 90%;
+    --primary: 150 20% 45%;
+    --primary-foreground: 25 15% 12%;
+    --secondary: 28 15% 20%;
+    --secondary-foreground: 36 30% 88%;
+    --muted: 25 10% 18%;
+    --muted-foreground: 30 15% 62%;
+    --accent: 30 45% 48%;
+    --accent-foreground: 38 30% 92%;
     --destructive: 0 62% 50%;
-    --destructive-foreground: 36 25% 94%;
-    --border: 220 6% 26%;
-    --input: 220 6% 26%;
-    --ring: 150 16% 35%;
+    --destructive-foreground: 38 30% 92%;
+    --border: 25 12% 24%;
+    --input: 25 12% 24%;
+    --ring: 150 20% 45%;
   }
 }
 
@@ -115,6 +115,11 @@
 
   .section-title {
     @apply font-serif text-3xl md:text-4xl lg:text-5xl text-foreground tracking-tight;
+    color: hsl(30 20% 12%);
+  }
+
+  .dark .section-title {
+    color: hsl(36 30% 92%);
   }
 
   .section-subtitle {
