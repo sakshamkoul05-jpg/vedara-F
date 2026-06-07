@@ -152,10 +152,10 @@ export default function AboutPage() {
               <h2 className="section-title mb-6">Our Pillars</h2>
             </div>
           </ScrollReveal>
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-3 gap-8 items-stretch">
             {pillars.map((pillar, i) => (
               <ScrollReveal key={pillar.title} delay={i * 0.15}>
-                <div className="group">
+                <div className="group flex flex-col h-full">
                   <div className="aspect-[4/3] rounded-2xl overflow-hidden mb-6">
                     <img
                       src={pillar.image}
@@ -174,7 +174,7 @@ export default function AboutPage() {
                       )}
                     </div>
                   </div>
-                  <p className="text-earth-600 dark:text-cream-300 leading-relaxed text-sm">{pillar.desc}</p>
+                  <p className="text-earth-600 dark:text-cream-300 leading-relaxed text-sm flex-1">{pillar.desc}</p>
                 </div>
               </ScrollReveal>
             ))}
@@ -192,13 +192,13 @@ export default function AboutPage() {
               <p className="section-subtitle">7 luxury cottages Jibhi | 18–22 guests | Launch 2026 | A nature retreat Himachal</p>
             </div>
           </ScrollReveal>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
             {highlights.map((h, i) => (
               <ScrollReveal key={h.label} delay={i * 0.1}>
-                <div className="vintage-card p-6 text-center">
+                <div className="vintage-card p-6 text-center flex flex-col h-full">
                   <h.icon className="w-8 h-8 text-forest-500 mx-auto mb-3" />
                   <h3 className="font-serif text-lg text-foreground mb-1">{h.label}</h3>
-                  <p className="text-earth-500 dark:text-cream-400 text-sm">{h.desc}</p>
+                  <p className="text-earth-500 dark:text-cream-400 text-sm flex-1">{h.desc}</p>
                 </div>
               </ScrollReveal>
             ))}
@@ -246,7 +246,7 @@ export default function AboutPage() {
               <h2 className="section-title mb-6">Intentionally Different</h2>
             </div>
           </ScrollReveal>
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-3 gap-8 items-stretch">
             {[
               {
                 title: 'Boutique by Design',
@@ -265,12 +265,12 @@ export default function AboutPage() {
               },
             ].map((item, i) => (
               <ScrollReveal key={item.title} delay={i * 0.1}>
-                <div className="vintage-card p-8 text-center">
+                <div className="vintage-card p-8 text-center flex flex-col h-full">
                   <div className="w-14 h-14 rounded-full bg-forest-100 dark:bg-forest-900/50 flex items-center justify-center mx-auto mb-5">
                     <item.icon className="w-7 h-7 text-forest-600 dark:text-forest-400" />
                   </div>
                   <h3 className="font-serif text-xl text-foreground mb-3">{item.title}</h3>
-                  <p className="text-earth-500 dark:text-cream-400 text-sm leading-relaxed">{item.desc}</p>
+                  <p className="text-earth-500 dark:text-cream-400 text-sm leading-relaxed flex-1">{item.desc}</p>
                 </div>
               </ScrollReveal>
             ))}
@@ -288,15 +288,15 @@ export default function AboutPage() {
               <p className="section-subtitle">Beyond the cottages, a world of experiences awaits</p>
             </div>
           </ScrollReveal>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 items-stretch">
             {activities.map((act, i) => (
               <ScrollReveal key={act.title} delay={i * 0.1}>
-                <div className="group vintage-card p-6 text-center hover:bg-earth-100 dark:hover:bg-earth-800 transition-all duration-500">
+                <div className="group vintage-card p-6 text-center hover:bg-earth-100 dark:hover:bg-earth-800 transition-all duration-500 flex flex-col h-full">
                   <div className="w-14 h-14 rounded-full bg-forest-100 dark:bg-forest-900/50 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-500">
                     <act.icon className="w-7 h-7 text-forest-600 dark:text-forest-400" />
                   </div>
                   <h3 className="font-serif text-lg text-foreground mb-2">{act.title}</h3>
-                  <p className="text-earth-500 dark:text-cream-400 text-sm leading-relaxed">{act.desc}</p>
+                  <p className="text-earth-500 dark:text-cream-400 text-sm leading-relaxed flex-1">{act.desc}</p>
                 </div>
               </ScrollReveal>
             ))}
@@ -314,10 +314,10 @@ export default function AboutPage() {
               <p className="section-subtitle">Every comfort thoughtfully curated for your mountain stay</p>
             </div>
           </ScrollReveal>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
             {amenities.map((a, i) => (
               <ScrollReveal key={a.label} delay={i * 0.08}>
-                <div className="vintage-card p-6 flex items-start gap-4">
+                <div className="vintage-card p-6 flex items-start gap-4 h-full">
                   <div className="w-11 h-11 rounded-xl bg-forest-100 dark:bg-forest-900/30 flex items-center justify-center flex-shrink-0">
                     <a.icon className="w-5 h-5 text-forest-600 dark:text-forest-400" />
                   </div>
@@ -348,36 +348,36 @@ export default function AboutPage() {
               <p className="text-cream-200/70 text-lg">Your journey to the mountains, simplified.</p>
             </div>
           </ScrollReveal>
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-3 gap-8 items-stretch">
             <ScrollReveal delay={0.1}>
-              <div className="vintage-card bg-cream-50/10 backdrop-blur-sm border-cream-200/10 p-6 text-center font-sans">
+              <div className="vintage-card bg-cream-50/10 backdrop-blur-sm border-cream-200/10 p-6 text-center font-sans flex flex-col h-full">
                 <div className="w-14 h-14 rounded-full bg-clay-500/20 flex items-center justify-center mx-auto mb-4">
                   <svg className="w-7 h-7 text-clay-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 21a9 9 0 100-18 9 9 0 000 18z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 7v4l2 2" /></svg>
                 </div>
                 <h3 className="font-serif text-lg text-cream-50 mb-2">By Air</h3>
-                <p className="text-cream-200/60 text-sm leading-relaxed">
+                <p className="text-cream-200/60 text-sm leading-relaxed flex-1">
                   Nearest airport: <strong className="text-cream-200">Kullu-Bhuntar Airport</strong> (70 km, ~2.5 hr drive). Taxis and private cabs available from the airport. Delhi to Kullu flights operate daily.
                 </p>
               </div>
             </ScrollReveal>
             <ScrollReveal delay={0.2}>
-              <div className="vintage-card bg-cream-50/10 backdrop-blur-sm border-cream-200/10 p-6 text-center font-sans">
+              <div className="vintage-card bg-cream-50/10 backdrop-blur-sm border-cream-200/10 p-6 text-center font-sans flex flex-col h-full">
                 <div className="w-14 h-14 rounded-full bg-clay-500/20 flex items-center justify-center mx-auto mb-4">
                   <svg className="w-7 h-7 text-clay-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
                 </div>
                 <h3 className="font-serif text-lg text-cream-50 mb-2">By Train</h3>
-                <p className="text-cream-200/60 text-sm leading-relaxed">
+                <p className="text-cream-200/60 text-sm leading-relaxed flex-1">
                   Nearest railway station: <strong className="text-cream-200">Joginder Nagar Railway Station</strong> (80 km). For broader connectivity, <strong className="text-cream-200">Chandigarh</strong> (280 km) and <strong className="text-cream-200">Pathankot</strong> (200 km) are major railheads with taxi services to Jibhi.
                 </p>
               </div>
             </ScrollReveal>
             <ScrollReveal delay={0.3}>
-              <div className="vintage-card bg-cream-50/10 backdrop-blur-sm border-cream-200/10 p-6 text-center font-sans">
+              <div className="vintage-card bg-cream-50/10 backdrop-blur-sm border-cream-200/10 p-6 text-center font-sans flex flex-col h-full">
                 <div className="w-14 h-14 rounded-full bg-clay-500/20 flex items-center justify-center mx-auto mb-4">
                   <svg className="w-7 h-7 text-clay-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
                 </div>
                 <h3 className="font-serif text-lg text-cream-50 mb-2">By Road</h3>
-                <p className="text-cream-200/60 text-sm leading-relaxed">
+                <p className="text-cream-200/60 text-sm leading-relaxed flex-1">
                   Vedara is located in Ghiyagi, Jibhi – a 5–6 hr scenic drive from Chandigarh via NH-5. Regular HRTC buses run from Delhi and Chandigarh to Aut (30 km from Jibhi). We can arrange pickup upon request.
                 </p>
               </div>
@@ -408,10 +408,10 @@ export default function AboutPage() {
               <p className="section-subtitle">Discover the raw beauty of Jibhi and beyond</p>
             </div>
           </ScrollReveal>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
             {attractions.map((place, i) => (
               <ScrollReveal key={place.name} delay={i * 0.1}>
-                <div className="group vintage-card overflow-hidden">
+                <div className="group vintage-card overflow-hidden flex flex-col h-full">
                   <div className="aspect-[16/10] overflow-hidden">
                     <ImageReveal
                       src={place.image}
@@ -419,12 +419,12 @@ export default function AboutPage() {
                       className="w-full h-full"
                     />
                   </div>
-                  <div className="p-5">
+                  <div className="p-5 flex flex-col flex-1">
                     <div className="flex items-start justify-between mb-2">
                       <h3 className="font-serif text-lg text-foreground group-hover:text-forest-600 transition-colors">{place.name}</h3>
-                      <span className="text-xs font-medium px-2.5 py-1 rounded-full bg-clay-100 dark:bg-clay-900/30 text-clay-600 dark:text-clay-400 whitespace-nowrap">{place.distance}</span>
+                      <span className="text-xs font-medium px-2.5 py-1 rounded-full bg-clay-100 dark:bg-clay-900/30 text-clay-600 dark:text-clay-400 whitespace-nowrap ml-2">{place.distance}</span>
                     </div>
-                    <p className="text-earth-500 dark:text-cream-400 text-sm">{place.desc}</p>
+                    <p className="text-earth-500 dark:text-cream-400 text-sm flex-1">{place.desc}</p>
                     <a
                       href={'https://www.google.com/maps/search/' + place.name.replace(/ /g, '+') + '+Himachal+Pradesh'}
                       target="_blank"
@@ -450,15 +450,15 @@ export default function AboutPage() {
               <h2 className="section-title mb-6">What We Stand For</h2>
             </div>
           </ScrollReveal>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 items-stretch">
             {values.map((v, i) => (
               <ScrollReveal key={v.title} delay={i * 0.1}>
-                <div className="vintage-card p-6 text-center">
+                <div className="vintage-card p-6 text-center flex flex-col h-full">
                   <div className="w-12 h-12 rounded-full bg-forest-100 dark:bg-forest-900/50 flex items-center justify-center mx-auto mb-4">
                     <v.icon className="w-6 h-6 text-forest-600 dark:text-forest-400" />
                   </div>
                   <h3 className="font-serif text-lg text-foreground mb-2">{v.title}</h3>
-                  <p className="text-earth-500 dark:text-cream-400 text-sm">{v.desc}</p>
+                  <p className="text-earth-500 dark:text-cream-400 text-sm flex-1">{v.desc}</p>
                 </div>
               </ScrollReveal>
             ))}

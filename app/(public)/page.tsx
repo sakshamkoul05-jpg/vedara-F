@@ -243,19 +243,19 @@ export default function HomePage() {
               </p>
             </div>
           </ScrollReveal>
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-3 gap-8 items-stretch">
             {cottages.map((cottage, i) => (
               <ScrollReveal key={cottage.name} delay={i * 0.15}>
-                <div className="group vintage-card overflow-hidden">
+                <div className="group vintage-card overflow-hidden flex flex-col h-full">
                   <div className="aspect-[4/3] overflow-hidden bg-earth-200 dark:bg-earth-700">
                     <img src={`https://images.unsplash.com/photo-${['1504384308090-c894fdcc538d', '1554118811-1e0d58224f24', '1506905925346-21bda4d32df4'][i]}?w=600&q=80`} alt={cottage.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                   </div>
-                  <div className="p-6">
+                  <div className="p-6 flex flex-col flex-1">
                     <div className="flex justify-between items-start mb-2">
                       <h3 className="font-serif text-xl text-foreground">{cottage.name}</h3>
                       <span className="text-forest-600 dark:text-forest-400 font-semibold text-sm">{cottage.price}<span className="text-earth-400 font-normal text-xs">/night</span></span>
                     </div>
-                    <p className="text-muted-foreground text-sm mb-4">{cottage.desc}</p>
+                    <p className="text-muted-foreground text-sm mb-4 flex-1">{cottage.desc}</p>
                     <Link href={`/cottages/slug/${cottage.slug}`} className="text-forest-600 dark:text-forest-400 text-sm font-medium inline-flex items-center gap-1 group-hover:gap-2 transition-all">
                       View Details <ArrowRight className="w-3 h-3" />
                     </Link>
@@ -284,15 +284,15 @@ export default function HomePage() {
               <p className="text-cream-200/70 text-lg">Beyond the cottages, a world of experiences awaits – each designed to bring you closer to the mountains and to yourself.</p>
             </div>
           </ScrollReveal>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 items-stretch">
             {experiences.map((exp, i) => (
               <ScrollReveal key={exp.title} delay={i * 0.1}>
-                <div className="group vintage-card bg-cream-50/10 backdrop-blur-sm border-cream-200/10 p-6 text-center hover:bg-cream-50/20 transition-all duration-500 font-sans">
+                <div className="group vintage-card bg-cream-50/10 backdrop-blur-sm border-cream-200/10 p-6 text-center hover:bg-cream-50/20 transition-all duration-500 font-sans flex flex-col h-full">
                   <div className="w-14 h-14 rounded-full bg-clay-500/20 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-500">
                     <exp.icon className="w-7 h-7 text-clay-300" />
                   </div>
                   <h3 className="font-serif text-lg text-cream-50 mb-2">{exp.title}</h3>
-                  <p className="text-cream-200/60 text-sm leading-relaxed">{exp.desc}</p>
+                  <p className="text-cream-200/60 text-sm leading-relaxed flex-1">{exp.desc}</p>
                 </div>
               </ScrollReveal>
             ))}
@@ -350,11 +350,11 @@ export default function HomePage() {
               <h2 className="section-title mb-6">Voices from the Mountains</h2>
             </div>
           </ScrollReveal>
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-3 gap-8 items-stretch">
             {testimonials.map((t, i) => (
               <ScrollReveal key={t.name} delay={i * 0.15}>
                 <motion.div
-                  className="vintage-card p-8 relative overflow-hidden"
+                  className="vintage-card p-8 relative overflow-hidden flex flex-col h-full"
                   whileHover={{ y: -4, boxShadow: '0 20px 40px rgba(0,0,0,0.08)' }}
                   transition={{ duration: 0.3 }}
                 >
@@ -371,7 +371,7 @@ export default function HomePage() {
                       </motion.div>
                     ))}
                   </div>
-                  <p className="text-earth-700 dark:text-cream-300 text-sm leading-relaxed mb-6 italic">&ldquo;{t.content}&rdquo;</p>
+                  <p className="text-earth-700 dark:text-cream-300 text-sm leading-relaxed mb-6 italic flex-1">&ldquo;{t.content}&rdquo;</p>
                   <div className="border-t border-border/50 pt-4">
                     <p className="font-serif text-foreground font-medium">{t.name}</p>
                     <p className="text-xs text-muted-foreground">{t.location}</p>
@@ -429,32 +429,32 @@ export default function HomePage() {
               <p className="section-subtitle">Your journey to Ghiyagi, Jibhi begins here</p>
             </div>
           </ScrollReveal>
-          <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+          <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto items-stretch">
             <ScrollReveal delay={0.1}>
-              <div className="vintage-card p-8 text-center">
+              <div className="vintage-card p-8 text-center flex flex-col h-full">
                 <div className="w-14 h-14 rounded-full bg-forest-100 dark:bg-forest-900/30 flex items-center justify-center mx-auto mb-4">
                   <MapPin className="w-7 h-7 text-forest-600 dark:text-forest-400" />
                 </div>
                 <h3 className="font-serif text-lg mb-3">By Road</h3>
-                <p className="text-muted-foreground text-sm leading-relaxed">Delhi to Jibhi via Mandi-Aut-Larji. ~480 km, approximately 10–11 hours. Buses available from Delhi ISBT to Aut, then taxi to Jibhi.</p>
+                <p className="text-muted-foreground text-sm leading-relaxed flex-1">Delhi to Jibhi via Mandi-Aut-Larji. ~480 km, approximately 10–11 hours. Buses available from Delhi ISBT to Aut, then taxi to Jibhi.</p>
               </div>
             </ScrollReveal>
             <ScrollReveal delay={0.2}>
-              <div className="vintage-card p-8 text-center">
+              <div className="vintage-card p-8 text-center flex flex-col h-full">
                 <div className="w-14 h-14 rounded-full bg-clay-100 dark:bg-clay-900/30 flex items-center justify-center mx-auto mb-4">
                   <MapPin className="w-7 h-7 text-clay-500" />
                 </div>
                 <h3 className="font-serif text-lg mb-3">By Rail</h3>
-                <p className="text-muted-foreground text-sm leading-relaxed">Nearest broad-gauge station: Amb Andaura (~120 km). Nearest narrow-gauge: Shimla or Joginder Nagar. Taxis available from all stations.</p>
+                <p className="text-muted-foreground text-sm leading-relaxed flex-1">Nearest broad-gauge station: Amb Andaura (~120 km). Nearest narrow-gauge: Shimla or Joginder Nagar. Taxis available from all stations.</p>
               </div>
             </ScrollReveal>
             <ScrollReveal delay={0.3}>
-              <div className="vintage-card p-8 text-center">
+              <div className="vintage-card p-8 text-center flex flex-col h-full">
                 <div className="w-14 h-14 rounded-full bg-cream-200 dark:bg-cream-800/30 flex items-center justify-center mx-auto mb-4">
                   <MapPin className="w-7 h-7 text-clay-600 dark:text-clay-400" />
                 </div>
                 <h3 className="font-serif text-lg mb-3">By Air</h3>
-                <p className="text-muted-foreground text-sm leading-relaxed">Bhuntar Airport (Kullu) is the nearest, ~50 km from Jibhi. Flights from Delhi and Chandigarh. Taxi from Bhuntar to Ghiyagi takes ~1.5 hours.</p>
+                <p className="text-muted-foreground text-sm leading-relaxed flex-1">Bhuntar Airport (Kullu) is the nearest, ~50 km from Jibhi. Flights from Delhi and Chandigarh. Taxi from Bhuntar to Ghiyagi takes ~1.5 hours.</p>
               </div>
             </ScrollReveal>
           </div>
