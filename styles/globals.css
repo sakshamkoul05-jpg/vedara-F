@@ -4,25 +4,25 @@
 
 @layer base {
   :root {
-    --background: 36 25% 94%;
-    --foreground: 220 12% 18%;
+    --background: 40 25% 97%;
+    --foreground: 0 0% 16%;
     --card: 0 0% 100%;
-    --card-foreground: 220 12% 18%;
+    --card-foreground: 0 0% 16%;
     --popover: 0 0% 100%;
-    --popover-foreground: 220 12% 18%;
-    --primary: 150 18% 30%;
-    --primary-foreground: 36 25% 94%;
-    --secondary: 36 20% 88%;
-    --secondary-foreground: 220 12% 18%;
-    --muted: 34 15% 90%;
-    --muted-foreground: 220 8% 48%;
-    --accent: 30 45% 50%;
-    --accent-foreground: 36 25% 94%;
+    --popover-foreground: 0 0% 16%;
+    --primary: 153 30% 15%;
+    --primary-foreground: 40 25% 97%;
+    --secondary: 39 35% 90%;
+    --secondary-foreground: 153 30% 15%;
+    --muted: 40 15% 92%;
+    --muted-foreground: 0 0% 45%;
+    --accent: 39 48% 56%;
+    --accent-foreground: 0 0% 100%;
     --destructive: 0 84% 60%;
-    --destructive-foreground: 36 25% 94%;
-    --border: 34 12% 82%;
-    --input: 34 12% 82%;
-    --ring: 150 18% 30%;
+    --destructive-foreground: 40 25% 97%;
+    --border: 39 20% 85%;
+    --input: 39 20% 85%;
+    --ring: 153 30% 15%;
     --radius: 0.75rem;
   }
 
@@ -86,27 +86,27 @@
   }
 
   .vintage-button {
-    @apply inline-flex items-center justify-center rounded-full px-6 py-3 font-sans text-sm font-medium transition-all duration-300;
+    @apply inline-flex items-center justify-center rounded-full px-6 py-3 font-sans text-sm font-medium transition-all duration-500;
   }
 
   .vintage-button-primary {
-    @apply vintage-button bg-forest-600 text-cream-50 hover:bg-forest-700 shadow-md hover:shadow-lg;
+    @apply vintage-button bg-vedara-900 text-alabaster hover:bg-vedara-900/90 shadow-md hover:shadow-lg;
   }
 
   .vintage-button-secondary {
-    @apply vintage-button bg-earth-100 text-earth-800 hover:bg-earth-200 border border-earth-200;
+    @apply vintage-button bg-gold-500 text-alabaster hover:bg-gold-600 shadow-md;
   }
 
   .vintage-button-outline {
-    @apply vintage-button border-2 border-forest-600 text-forest-700 hover:bg-forest-50;
+    @apply vintage-button border-2 border-vedara-900 text-vedara-900 hover:bg-vedara-900/5;
   }
 
   .vintage-input {
-    @apply w-full rounded-xl border border-earth-200 bg-white px-4 py-3 font-sans text-sm text-earth-900 placeholder:text-earth-400 focus:border-forest-500 focus:outline-none focus:ring-2 focus:ring-forest-500/20 transition-all;
+    @apply w-full rounded-xl border border-border bg-white px-4 py-3 font-sans text-sm text-foreground placeholder:text-muted-foreground focus:border-vedara-900 focus:outline-none focus:ring-2 focus:ring-vedara-900/20 transition-all;
   }
 
   .vintage-label {
-    @apply block text-sm font-medium text-earth-700 mb-1.5;
+    @apply block text-sm font-medium text-vedara-900 mb-1.5;
   }
 
   .section-padding {
@@ -119,6 +119,10 @@
 
   .section-subtitle {
     @apply text-muted-foreground text-base md:text-lg max-w-2xl mx-auto;
+  }
+
+  .transition-smooth {
+    @apply transition-all duration-500 ease-out;
   }
 }
 

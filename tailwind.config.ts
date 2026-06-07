@@ -41,6 +41,17 @@ const config: Config = {
           400: '#e2a65a', 500: '#d98e3a', 600: '#c5752e', 700: '#a35d27',
           800: '#834c23', 900: '#6b3f1f',
         },
+        alabaster: '#FDFBF7',
+        vedara: {
+          900: '#1A3026',
+        },
+        gold: {
+          DEFAULT: '#C5A059',
+          50: '#FAF5EB', 100: '#F2E8CC', 200: '#E5D1A0', 300: '#D8BA75',
+          400: '#CEAA58', 500: '#C5A059', 600: '#A17E3E', 700: '#7D5F2F',
+          800: '#5C4322', 900: '#3D2B16',
+        },
+        charcoal: '#2A2A2A',
       },
       fontFamily: {
         serif: ['var(--font-cormorant-garamond)', 'serif'],
