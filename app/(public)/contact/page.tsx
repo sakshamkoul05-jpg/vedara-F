@@ -118,7 +118,7 @@ export default function ContactPage() {
                     <MapPin className="w-5 h-5 text-gold-500 mt-0.5" />
                     <div>
                       <h3 className="font-medium text-vedara-900">Address</h3>
-                      <p className="text-charcoal/60 text-sm">Ghiyagi, Jibhi, Himachal Pradesh \u2013 175123</p>
+                      <p className="text-charcoal/60 text-sm">Ghiyagi, Jibhi, Himachal Pradesh – 175123</p>
                     </div>
                   </div>
                 </div>
@@ -127,11 +127,11 @@ export default function ContactPage() {
                     <Clock className="w-5 h-5 text-gold-500 mt-0.5" />
                     <div>
                       <h3 className="font-medium text-vedara-900">Reception Hours</h3>
-                      <p className="text-charcoal/60 text-sm">Daily: 8:00 AM \u2013 11:00 PM</p>
-                      <h3 className="font-medium text-vedara-900 mt-2">Caf\u00e9 Charade</h3>
-                      <p className="text-charcoal/60 text-sm">Breakfast: 7:30 AM \u2013 10:00 AM</p>
-                      <p className="text-charcoal/60 text-sm">Lunch: 12:00 PM \u2013 3:30 PM</p>
-                      <p className="text-charcoal/60 text-sm">Dinner: 7:00 PM \u2013 10:00 PM</p>
+                      <p className="text-charcoal/60 text-sm">Daily: 8:00 AM – 11:00 PM</p>
+                      <h3 className="font-medium text-vedara-900 mt-2">Café Charade</h3>
+                      <p className="text-charcoal/60 text-sm">Breakfast: 7:30 AM – 10:00 AM</p>
+                      <p className="text-charcoal/60 text-sm">Lunch: 12:00 PM – 3:30 PM</p>
+                      <p className="text-charcoal/60 text-sm">Dinner: 7:00 PM – 10:00 PM</p>
                     </div>
                   </div>
                 </div>

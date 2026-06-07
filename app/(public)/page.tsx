@@ -12,15 +12,15 @@ import { HeroCarousel } from '@/components/home/HeroCarousel';
 import { PackageBanner } from '@/components/public/PackageBanner';
 
 const cottages = [
-  { slug: 'monal-haven', name: 'Monal Haven', price: '\u20B912,000', desc: 'Premium Duplex Family Suite with private jacuzzi, attic yoga balcony, and sweeping mountain views', image: '/images/hero-1.jpg' },
-  { slug: 'koklass-cove', name: 'Koklass Cove', price: '\u20B912,500', desc: 'Premium Duplex Family Suite \u2013 our largest with two viewing balconies, private jacuzzi, and unmatched privacy', image: '/images/hero-2.jpg' },
-  { slug: 'magpie-retreat', name: 'Magpie Retreat', price: '\u20B911,000', desc: 'Intimate Mountain View Suite with deep-soak bathtub and dual-balcony setup', image: '/images/hero-3.jpg' },
+  { slug: 'monal-haven', name: 'Monal Haven', price: '₹12,000', desc: 'Premium Duplex Family Suite with private jacuzzi, attic yoga balcony, and sweeping mountain views', image: '/images/hero-1.jpg' },
+  { slug: 'koklass-cove', name: 'Koklass Cove', price: '₹12,500', desc: 'Premium Duplex Family Suite – our largest with two viewing balconies, private jacuzzi, and unmatched privacy', image: '/images/hero-2.jpg' },
+  { slug: 'magpie-retreat', name: 'Magpie Retreat', price: '₹11,000', desc: 'Intimate Mountain View Suite with deep-soak bathtub and dual-balcony setup', image: '/images/hero-3.jpg' },
 ];
 
 const testimonials = [
-  { name: 'Ananya & Rohit', content: 'Monal Haven was everything we dreamed of. Waking up to the mist over the mountains, the jacuzzi under the stars \u2013 pure magic.', rating: 5, location: 'Mumbai, India' },
+  { name: 'Ananya & Rohit', content: 'Monal Haven was everything we dreamed of. Waking up to the mist over the mountains, the jacuzzi under the stars – pure magic.', rating: 5, location: 'Mumbai, India' },
   { name: 'Daniel Park', content: 'I wrote half my manuscript sitting on the balcony at Whistling Thrush. The staff was incredibly thoughtful.', rating: 5, location: 'Seoul, South Korea' },
-  { name: 'Emily & James', content: 'Koklass Cove was perfection. The attic yoga balcony, the sweeping views \u2013 we felt like we were floating above the world.', rating: 5, location: 'Melbourne, Australia' },
+  { name: 'Emily & James', content: 'Koklass Cove was perfection. The attic yoga balcony, the sweeping views – we felt like we were floating above the world.', rating: 5, location: 'Melbourne, Australia' },
 ];
 
 const experiences = [
@@ -28,7 +28,7 @@ const experiences = [
   { icon: Music, title: 'Music Nights', desc: 'Live acoustic sessions with local artists echoing through the valley.' },
   { icon: Trees, title: 'Nature Walks', desc: 'Guided treks through cedar forests to hidden waterfalls and panoramic viewpoints.' },
   { icon: Moon, title: 'Star Gazing', desc: 'Unpolluted Himalayan skies reveal constellations you have never seen before.' },
-  { icon: Coffee, title: 'Caf\u00e9 Evenings', desc: 'Handcrafted coffee and wood-fired meals as the sun sets behind the pines.' },
+  { icon: Coffee, title: 'Café Evenings', desc: 'Handcrafted coffee and wood-fired meals as the sun sets behind the pines.' },
   { icon: MapPin, title: 'Lambhari Top Trek', desc: 'A scenic trek to Lambhari Top with panoramic Himalayan views. Explore the trail with our guided excursions.' },
   { icon: TreePine, title: 'Great Himalayan NP', desc: 'Explore the untouched wilderness of the Great Himalayan National Park and Tirthan Valley on a guided hilltop adventure.' },
   { icon: Sparkles, title: 'Kids Arena', desc: 'A dedicated space for young explorers with supervised nature activities, crafts, and outdoor games.' },
@@ -103,7 +103,7 @@ export default function HomePage() {
             transition={{ delay: 1, duration: 0.8 }}
             className="text-alabaster/80 text-lg md:text-xl max-w-2xl mx-auto mb-10 font-serif tracking-wide"
           >
-            A Himalayan Boutique Retreat \u2013 Seven handcrafted cottages, one cozy caf\u00e9, and a slow-living mountain escape crafted for those who seek stillness.
+            A Himalayan Boutique Retreat – Seven handcrafted cottages, one cozy café, and a slow-living mountain escape crafted for those who seek stillness.
           </motion.p>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -194,10 +194,10 @@ export default function HomePage() {
                 <p className="text-gold-400 text-sm tracking-[0.2em] uppercase mb-4 font-sans">Welcome to The Vedara</p>
                 <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-alabaster mb-6">A Story Rooted in the Mountains</h2>
                 <p className="text-alabaster/80 text-lg leading-relaxed mb-6">
-                  Nestled in the serene village of Ghiyagi, within the untouched landscapes of Jibhi, The Vedara was born from a simple belief \u2013 that the most profound luxury is found in stillness, connection, and the raw beauty of the Himalayas.
+                  Nestled in the serene village of Ghiyagi, within the untouched landscapes of Jibhi, The Vedara was born from a simple belief – that the most profound luxury is found in stillness, connection, and the raw beauty of the Himalayas.
                 </p>
                 <p className="text-alabaster/60 leading-relaxed mb-8">
-                  With seven handcrafted cottages and a soulful caf\u00e9, we offer more than a stay. We offer a chance to pause, breathe, and remember what truly matters.
+                  With seven handcrafted cottages and a soulful café, we offer more than a stay. We offer a chance to pause, breathe, and remember what truly matters.
                 </p>
                 <Link href="/about" className="vintage-button bg-gold-500 hover:bg-gold-600 text-alabaster px-8 py-3.5">
                   Read Our Story <ArrowRight className="w-4 h-4 ml-2" />
@@ -224,7 +224,7 @@ export default function HomePage() {
               <p className="text-gold-500 text-sm tracking-[0.2em] uppercase mb-4 font-sans">Our Cottages</p>
               <h2 className="section-title mb-6">Seven Stories, Seven Retreats</h2>
               <p className="section-subtitle">
-                Each cottage is a world unto itself \u2013 named after the birds of the valley and crafted with local materials, premium furnishings, and unobstructed mountain views.
+                Each cottage is a world unto itself – named after the birds of the valley and crafted with local materials, premium furnishings, and unobstructed mountain views.
               </p>
             </div>
           </ScrollReveal>
@@ -267,7 +267,7 @@ export default function HomePage() {
             <div className="text-center max-w-3xl mx-auto mb-16">
               <p className="text-gold-400 text-sm tracking-[0.2em] uppercase mb-4 font-sans">Experiences</p>
               <h2 className="font-serif text-4xl md:text-5xl text-alabaster mb-6">Moments That Stay With You</h2>
-              <p className="text-alabaster/70 text-lg">Beyond the cottages, a world of experiences awaits \u2013 each designed to bring you closer to the mountains and to yourself.</p>
+              <p className="text-alabaster/70 text-lg">Beyond the cottages, a world of experiences awaits – each designed to bring you closer to the mountains and to yourself.</p>
             </div>
           </ScrollReveal>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -292,15 +292,15 @@ export default function HomePage() {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <ScrollReveal direction="left">
               <div>
-                <p className="text-gold-400 text-sm tracking-[0.2em] uppercase mb-4 font-sans">Our Caf\u00e9</p>
-                <h2 className="font-serif text-4xl md:text-5xl text-alabaster mb-6">Caf\u00e9 Charade</h2>
+                <p className="text-gold-400 text-sm tracking-[0.2em] uppercase mb-4 font-sans">Our Café</p>
+                <h2 className="font-serif text-4xl md:text-5xl text-alabaster mb-6">Café Charade</h2>
                 <p className="text-alabaster/80 text-lg leading-relaxed mb-4">
-                  Nestled beside a whispering stream, Caf\u00e9 Charade serves handcrafted coffee, wood-fired meals, and mountain-fresh bakes.
+                  Nestled beside a whispering stream, Café Charade serves handcrafted coffee, wood-fired meals, and mountain-fresh bakes.
                 </p>
                 <p className="text-alabaster/60 text-sm mb-8 space-y-1">
-                  <span className="block">Breakfast 7:30 AM \u2013 10:00 AM</span>
-                  <span className="block">Lunch 12:00 PM \u2013 3:30 PM</span>
-                  <span className="block">Dinner 7:00 PM \u2013 10:00 PM</span>
+                  <span className="block">Breakfast 7:30 AM – 10:00 AM</span>
+                  <span className="block">Lunch 12:00 PM – 3:30 PM</span>
+                  <span className="block">Dinner 7:00 PM – 10:00 PM</span>
                 </p>
                 <div className="grid grid-cols-2 gap-4 mb-8">
                   {['Artisan Coffee', 'Home-Style Meals', 'Fresh Treats', 'Evening Sips'].map((item) => (
@@ -321,7 +321,7 @@ export default function HomePage() {
               <div className="aspect-[4/5] rounded-2xl overflow-hidden shadow-2xl">
                 <ImageReveal
                   src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=600&q=80"
-                  alt="Caf\u00e9 Charade at The Vedara"
+                  alt="Café Charade at The Vedara"
                 />
               </div>
             </ScrollReveal>
@@ -426,7 +426,7 @@ export default function HomePage() {
                   <MapPin className="w-7 h-7 text-vedara-900" />
                 </div>
                 <h3 className="font-serif text-lg mb-3 text-vedara-900">By Road</h3>
-                <p className="text-charcoal/60 text-sm leading-relaxed">Delhi to Jibhi via Mandi-Aut-Larji. ~480 km, approximately 10\u201311 hours. Buses available from Delhi ISBT to Aut, then taxi to Jibhi.</p>
+                <p className="text-charcoal/60 text-sm leading-relaxed">Delhi to Jibhi via Mandi-Aut-Larji. ~480 km, approximately 10–11 hours. Buses available from Delhi ISBT to Aut, then taxi to Jibhi.</p>
               </div>
             </ScrollReveal>
             <ScrollReveal delay={0.2}>
