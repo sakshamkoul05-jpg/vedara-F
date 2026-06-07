@@ -147,43 +147,43 @@ export default function HomePage() {
 
       <section id="booking-bar" className="relative z-30 mt-4 md:mt-8 mb-12 px-4">
         <div className="vintage-container max-w-5xl">
-          <div className="bg-white/80 dark:bg-earth-800/80 backdrop-blur-md rounded-2xl shadow-xl border border-earth-200 dark:border-earth-700 p-4 md:p-6 font-sans">
+          <div className="bg-cream-50/80 dark:bg-earth-800/80 backdrop-blur-md rounded-2xl shadow-xl border border-earth-200 dark:border-earth-700 p-4 md:p-6 font-sans">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3 items-end">
               <div className="col-span-1 sm:col-span-2 lg:col-span-2">
                 <label className="block text-xs font-medium text-earth-600 dark:text-cream-300 mb-1">Property</label>
-                <select className="w-full rounded-xl border border-earth-200 dark:border-earth-600 bg-white dark:bg-earth-700 px-3 py-2.5 text-sm text-earth-900 dark:text-cream-100 focus:outline-none focus:border-forest-500">
+                <select className="w-full rounded-xl border border-earth-200 dark:border-earth-600 bg-cream-50 dark:bg-earth-700 px-3 py-2.5 text-sm text-earth-900 dark:text-cream-100 focus:outline-none focus:border-forest-500">
                   <option>The Vedara – Himalayan Boutique Retreat</option>
                 </select>
               </div>
               <div className="col-span-1 lg:col-span-2">
                 <label className="block text-xs font-medium text-earth-600 dark:text-cream-300 mb-1">Check In</label>
-                <input type="date" value={homeCheckIn} onChange={handleCheckInChange} min={today} className="w-full rounded-xl border border-earth-200 dark:border-earth-600 bg-white dark:bg-earth-700 px-3 py-2.5 text-sm text-earth-900 dark:text-cream-100 focus:outline-none focus:border-forest-500" />
+                <input type="date" value={homeCheckIn} onChange={handleCheckInChange} min={today} className="w-full rounded-xl border border-earth-200 dark:border-earth-600 bg-cream-50 dark:bg-earth-700 px-3 py-2.5 text-sm text-earth-900 dark:text-cream-100 focus:outline-none focus:border-forest-500" />
               </div>
               <div className="col-span-1 lg:col-span-2">
                 <label className="block text-xs font-medium text-earth-600 dark:text-cream-300 mb-1">Check Out</label>
-                <input type="date" value={homeCheckOut} onChange={handleCheckOutChange} min={homeCheckIn || today} className="w-full rounded-xl border border-earth-200 dark:border-earth-600 bg-white dark:bg-earth-700 px-3 py-2.5 text-sm text-earth-900 dark:text-cream-100 focus:outline-none focus:border-forest-500" />
+                <input type="date" value={homeCheckOut} onChange={handleCheckOutChange} min={homeCheckIn || today} className="w-full rounded-xl border border-earth-200 dark:border-earth-600 bg-cream-50 dark:bg-earth-700 px-3 py-2.5 text-sm text-earth-900 dark:text-cream-100 focus:outline-none focus:border-forest-500" />
               </div>
               <div className="col-span-1 lg:col-span-1">
                 <label className="block text-xs font-medium text-earth-600 dark:text-cream-300 mb-1">Rooms</label>
-                <select value={homeRooms} onChange={(e) => setHomeRooms(parseInt(e.target.value))} className="w-full rounded-xl border border-earth-200 dark:border-earth-600 bg-white dark:bg-earth-700 px-3 py-2.5 text-sm text-earth-900 dark:text-cream-100 focus:outline-none focus:border-forest-500">
+                <select value={homeRooms} onChange={(e) => setHomeRooms(parseInt(e.target.value))} className="w-full rounded-xl border border-earth-200 dark:border-earth-600 bg-cream-50 dark:bg-earth-700 px-3 py-2.5 text-sm text-earth-900 dark:text-cream-100 focus:outline-none focus:border-forest-500">
                   {[1, 2, 3, 4].map(n => <option key={n} value={n}>{n}</option>)}
                 </select>
               </div>
               <div className="col-span-1 lg:col-span-1">
                 <label className="block text-xs font-medium text-earth-600 dark:text-cream-300 mb-1">Adults</label>
-                <select value={homeAdults} onChange={(e) => setHomeAdults(parseInt(e.target.value))} className="w-full rounded-xl border border-earth-200 dark:border-earth-600 bg-white dark:bg-earth-700 px-3 py-2.5 text-sm text-earth-900 dark:text-cream-100 focus:outline-none focus:border-forest-500">
+                <select value={homeAdults} onChange={(e) => setHomeAdults(parseInt(e.target.value))} className="w-full rounded-xl border border-earth-200 dark:border-earth-600 bg-cream-50 dark:bg-earth-700 px-3 py-2.5 text-sm text-earth-900 dark:text-cream-100 focus:outline-none focus:border-forest-500">
                   {[1, 2, 3, 4].map(n => <option key={n} value={n}>{n}</option>)}
                 </select>
               </div>
               <div className="col-span-1 lg:col-span-1">
                 <label className="block text-xs font-medium text-earth-600 dark:text-cream-300 mb-1">Children</label>
-                <select value={homeChildren} onChange={(e) => setHomeChildren(parseInt(e.target.value))} className="w-full rounded-xl border border-earth-200 dark:border-earth-600 bg-white dark:bg-earth-700 px-3 py-2.5 text-sm text-earth-900 dark:text-cream-100 focus:outline-none focus:border-forest-500">
+                <select value={homeChildren} onChange={(e) => setHomeChildren(parseInt(e.target.value))} className="w-full rounded-xl border border-earth-200 dark:border-earth-600 bg-cream-50 dark:bg-earth-700 px-3 py-2.5 text-sm text-earth-900 dark:text-cream-100 focus:outline-none focus:border-forest-500">
                   {[0, 1, 2, 3].map(n => <option key={n} value={n}>{n}</option>)}
                 </select>
               </div>
               <div className="col-span-1 lg:col-span-1">
                 <label className="block text-xs font-medium text-earth-600 dark:text-cream-300 mb-1">Nationality</label>
-                <select value={homeNationality} onChange={(e) => setHomeNationality(e.target.value)} className="w-full rounded-xl border border-earth-200 dark:border-earth-600 bg-white dark:bg-earth-700 px-3 py-2.5 text-sm text-earth-900 dark:text-cream-100 focus:outline-none focus:border-forest-500">
+                <select value={homeNationality} onChange={(e) => setHomeNationality(e.target.value)} className="w-full rounded-xl border border-earth-200 dark:border-earth-600 bg-cream-50 dark:bg-earth-700 px-3 py-2.5 text-sm text-earth-900 dark:text-cream-100 focus:outline-none focus:border-forest-500">
                   <option value="Indian">Indian</option>
                   <option value="Foreign">Foreign National</option>
                 </select>
@@ -287,7 +287,7 @@ export default function HomePage() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {experiences.map((exp, i) => (
               <ScrollReveal key={exp.title} delay={i * 0.1}>
-                <div className="group vintage-card bg-white/10 backdrop-blur-sm border-cream-200/10 p-6 text-center hover:bg-white/20 transition-all duration-500 font-sans">
+                <div className="group vintage-card bg-cream-50/10 backdrop-blur-sm border-cream-200/10 p-6 text-center hover:bg-cream-50/20 transition-all duration-500 font-sans">
                   <div className="w-14 h-14 rounded-full bg-clay-500/20 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-500">
                     <exp.icon className="w-7 h-7 text-clay-300" />
                   </div>

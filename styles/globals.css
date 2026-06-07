@@ -6,9 +6,9 @@
   :root {
     --background: 36 25% 94%;
     --foreground: 220 12% 18%;
-    --card: 0 0% 100%;
+    --card: 38 30% 95%;
     --card-foreground: 220 12% 18%;
-    --popover: 0 0% 100%;
+    --popover: 38 30% 95%;
     --popover-foreground: 220 12% 18%;
     --primary: 150 18% 30%;
     --primary-foreground: 36 25% 94%;
@@ -82,7 +82,7 @@
   }
 
   .vintage-card {
-    @apply bg-card border border-border/50 rounded-2xl shadow-sm hover:shadow-md transition-all duration-500;
+    @apply bg-cream-50 border border-earth-200/60 rounded-2xl shadow-sm hover:shadow-md transition-all duration-500;
   }
 
   .vintage-button {
@@ -102,7 +102,7 @@
   }
 
   .vintage-input {
-    @apply w-full rounded-xl border border-earth-200 bg-white px-4 py-3 font-sans text-sm text-earth-900 placeholder:text-earth-400 focus:border-forest-500 focus:outline-none focus:ring-2 focus:ring-forest-500/20 transition-all;
+    @apply w-full rounded-xl border border-earth-200 bg-cream-50 px-4 py-3 font-sans text-sm text-earth-900 placeholder:text-earth-400 focus:border-forest-500 focus:outline-none focus:ring-2 focus:ring-forest-500/20 transition-all;
   }
 
   .vintage-label {

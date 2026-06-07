@@ -51,7 +51,7 @@ export function Header() {
         <div className="flex items-center justify-between h-16 md:h-20">
           <Link href="/" className="flex items-center gap-3 flex-shrink-0">
             <div className={cn(
-              'w-16 h-16 md:w-24 md:h-24 rounded-full overflow-hidden flex-shrink-0 transition-all',
+              'w-12 h-12 md:w-16 md:h-16 rounded-full overflow-hidden flex-shrink-0 transition-all',
               isTransparent ? 'ring-2 ring-white/20' : 'ring-1 ring-earth-200 dark:ring-earth-700'
             )}>
               <Image
