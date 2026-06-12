@@ -82,8 +82,9 @@ export function ChatBot() {
     setIsLoading(true);
     try {
       const history = messages.slice(-6).map(m => ({ role: m.role === 'live-user' ? 'user' : m.role === 'live-admin' ? 'assistant' : m.role, content: m.content }));
-      const res = await endpoints.chatbot.chat(userMessage, history);
-      setMessages(prev => [...prev, { role: 'assistant', content: res.data.reply }]);
+      const res: any = await endpoints.chatbot.chat(userMessage, history);
+      const reply = res?.reply || res?.data?.reply || res?.message || 'I received your message. How can I help?';
+      setMessages(prev => [...prev, { role: 'assistant', content: reply }]);
     } catch {
       setMessages(prev => [...prev, { role: 'assistant', content: 'I\'m having trouble connecting. You can call us at +91-91188-82242 or message us on WhatsApp.' }]);
     } finally {
@@ -106,14 +107,27 @@ export function ChatBot() {
     setMessages(prev => [...prev, { role: 'assistant', content: 'Connecting you to live support...' }]);
   };
 
-  const handleQuickAction = (text: string) => {
+  const handleQuickAction = useCallback((text: string) => {
     if (text === 'Live Support') {
       if (mode === 'live') return;
       startLiveChat();
       return;
     }
     setInput(text);
-  };
+    setTimeout(() => {
+      setMessages(prev => [...prev, { role: 'user', content: text }]);
+      setIsLoading(true);
+      endpoints.chatbot.chat(text, messages.slice(-6).map(m => ({ role: m.role === 'live-user' ? 'user' : m.role === 'live-admin' ? 'assistant' : m.role, content: m.content })))
+        .then((res: any) => {
+          const reply = res?.reply || res?.data?.reply || res?.message || 'I received your message. How can I help?';
+          setMessages(prev => [...prev, { role: 'assistant', content: reply }]);
+        })
+        .catch(() => {
+          setMessages(prev => [...prev, { role: 'assistant', content: 'I\'m having trouble connecting. You can call us at +91-91188-82242 or message us on WhatsApp.' }]);
+        })
+        .finally(() => setIsLoading(false));
+    }, 50);
+  }, [mode, messages]);
 
   const handleCloseLiveChat = () => {
     if (socket && conversationId) {
@@ -169,7 +183,7 @@ export function ChatBot() {
                     className="text-alabaster hover:text-alabaster p-1 text-xs"
                     title="End live chat"
                   >
-                    <Phone className="w-4 h-4" />
+                    <X className="w-4 h-4" />
                   </button>
                 )}
                 <button

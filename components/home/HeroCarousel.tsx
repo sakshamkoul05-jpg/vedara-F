@@ -12,15 +12,26 @@ const images = [
 
 export function HeroCarousel() {
   const [current, setCurrent] = useState(0);
+  const timerRef = useState(() => ({ current: null as ReturnType<typeof setInterval> | null }))[0];
 
   const next = useCallback(() => {
     setCurrent((prev) => (prev + 1) % images.length);
   }, []);
 
+  const resetTimer = useCallback(() => {
+    if (timerRef.current) clearInterval(timerRef.current);
+    timerRef.current = setInterval(next, 5000);
+  }, [next, timerRef]);
+
   useEffect(() => {
-    const timer = setInterval(next, 5000);
-    return () => clearInterval(timer);
-  }, [next]);
+    timerRef.current = setInterval(next, 5000);
+    return () => { if (timerRef.current) clearInterval(timerRef.current); };
+  }, [next, timerRef]);
+
+  const goToSlide = useCallback((i: number) => {
+    setCurrent(i);
+    resetTimer();
+  }, [resetTimer]);
 
   return (
     <div className="absolute inset-0">
@@ -42,7 +53,7 @@ export function HeroCarousel() {
         {images.map((_, i) => (
           <button
             key={i}
-            onClick={() => setCurrent(i)}
+            onClick={() => goToSlide(i)}
             className={`w-2 h-2 rounded-full transition-all duration-300 ${
               i === current ? 'bg-alabaster w-6' : 'bg-alabaster/40 hover:bg-alabaster/60'
             }`}
