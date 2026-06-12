@@ -28,7 +28,7 @@ export function CouponBanner() {
     <motion.div
       initial={{ opacity: 0, y: -10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-gradient-to-r from-vedara-900 via-gold-600 to-gold-700"
+      className="bg-gradient-to-r from-vedara-900 via-vedara-900/80 to-vedara-900"
     >
       <div className="vintage-container py-2.5">
         <div className="flex items-center justify-between gap-4">
@@ -43,7 +43,7 @@ export function CouponBanner() {
                     const input = document.querySelector<HTMLInputElement>('[placeholder="Enter coupon code"]');
                     if (input) { input.value = c.code; input.dispatchEvent(new Event('input', { bubbles: true })); input.focus(); }
                   }}
-                  className="inline-flex items-center gap-1 px-2 py-0.5 text-xs font-medium rounded-full bg-white/15 text-alabaster border border-alabaster/20 hover:bg-white/25 transition-colors"
+                  className="inline-flex items-center gap-1 px-2 py-0.5 text-xs font-medium rounded-full bg-gold-50/20 text-alabaster border border-alabaster/20 hover:bg-gold-50/30 transition-colors"
                 >
                   <Tag className="w-2.5 h-2.5" />
                   {c.code}

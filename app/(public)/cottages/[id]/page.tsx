@@ -1,22 +1,21 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   ArrowLeft, Users, Bed, Bath, Maximize, Check, Wifi, Flame,
   Snowflake, Coffee, Tv, Wind, Warehouse, TreePine, Mountain,
-  Calendar, Sun, Moon, Star
+  Calendar
 } from 'lucide-react';
 import { ScrollReveal } from '@/components/animations/ScrollReveal';
-import { TextReveal } from '@/components/animations/TextReveal';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { FormattedText } from '@/components/ui/formatted-text';
 import { api } from '@/lib/api';
-import { Cottage, SeasonalPricing } from '@/types';
-import { formatPrice, calculateNights } from '@/lib/utils';
+import { Cottage } from '@/types';
+import { formatPrice, calculateNights, getToday } from '@/lib/utils';
 
 const amenityIcons: Record<string, React.ElementType> = {
   wifi: Wifi, fireplace: Flame, 'room heater': Snowflake,
@@ -43,16 +42,14 @@ const allMockCottages: Record<string, Cottage> = {
   '3': { ...mockCottage, id: '3', slug: 'maple-suite', name: 'The Maple Suite', pricePerNight: 14000, capacity: 6, bedrooms: 3, bathrooms: 2, size: 900, description: 'Spacious family cottage with wraparound veranda. Ideal for families or groups wanting ample space without compromising on the mountain experience.', shortDesc: 'Spacious family cottage with wraparound veranda', seasonalPricings: mockCottage.seasonalPricings },
 };
 
-const galleryColors = ['bg-gold-100', 'bg-gold-200', 'bg-gold-200', 'bg-gold-200', 'bg-gold-300', 'bg-gold-300'];
-
 export default function CottageDetailPage() {
   const { id } = useParams();
-  const router = useRouter();
   const [cottage, setCottage] = useState<Cottage | null>(null);
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(0);
   const [checkIn, setCheckIn] = useState('');
   const [checkOut, setCheckOut] = useState('');
+  const today = getToday();
 
   useEffect(() => {
     api.get(`/cottages/${id}`).then((res: any) => {
@@ -67,37 +64,40 @@ export default function CottageDetailPage() {
 
   const pricings = Array.isArray(cottage?.seasonalPricings) ? cottage.seasonalPricings : [];
   const nights = checkIn && checkOut ? calculateNights(new Date(checkIn), new Date(checkOut)) : 0;
-  const isPeakSeason = checkIn && pricings.some(
-    (s) => checkIn >= s.startDate && checkIn <= s.endDate && s.isActive
-  );
-  const activeSeasonal = pricings.find(
+  const activeSeasonal = checkIn && checkOut ? pricings.find(
+    (s) => s.isActive && new Date(checkIn) < new Date(s.endDate) && new Date(checkOut) > new Date(s.startDate)
+  ) : pricings.find(
     (s) => checkIn && checkIn >= s.startDate && checkIn <= s.endDate && s.isActive
   );
+  const isPeakSeason = !!activeSeasonal;
   const effectivePrice = activeSeasonal ? activeSeasonal.pricePerNight : (cottage?.pricePerNight || 0);
   const totalAmount = nights * effectivePrice;
 
-  const parsedImages = typeof cottage?.images === 'string' ? JSON.parse(cottage.images as string) : (cottage?.images || []);
+  let parsedImages: string[] = [];
+  try {
+    parsedImages = typeof cottage?.images === 'string' ? JSON.parse(cottage.images as string) : (cottage?.images as string[] || []);
+  } catch { parsedImages = []; }
   const images = Array.isArray(parsedImages) && parsedImages.length ? parsedImages : Array.from({ length: 6 }, (_, i) => `https://images.unsplash.com/photo-${['1504384308090-c894fdcc538d', '1554118811-1e0d58224f24', '1506905925346-21bda4d32df4', '1476514525535-07fb3b4ae5f1', '1519681393784-d120267933ba', '1469476568026-46a7f7b2f9c2'][i]}?w=800&q=80`);
 
   if (loading) {
     return (
       <div className="pt-32 vintage-container pb-20">
         <div className="animate-pulse space-y-8">
-          <div className="h-6 bg-earth-200 dark:bg-earth-700 rounded w-1/4" />
-          <div className="aspect-[2/1] bg-earth-200 dark:bg-earth-700 rounded-2xl" />
+          <div className="h-6 bg-gold-100 dark:bg-vedara-900/50 rounded w-1/4" />
+          <div className="aspect-[2/1] bg-gold-100 dark:bg-vedara-900/50 rounded-2xl" />
           <div className="flex gap-2">
-            {[1,2,3,4].map((i) => <div key={i} className="w-20 h-16 bg-earth-200 dark:bg-earth-700 rounded-lg" />)}
+            {[1,2,3,4].map((i) => <div key={i} className="w-20 h-16 bg-gold-100 dark:bg-vedara-900/50 rounded-lg" />)}
           </div>
           <div className="grid lg:grid-cols-2 gap-10">
             <div className="space-y-4">
-              <div className="h-8 bg-earth-200 dark:bg-earth-700 rounded w-2/3" />
-              <div className="h-4 bg-earth-200 dark:bg-earth-700 rounded w-1/4" />
-              <div className="h-20 bg-earth-200 dark:bg-earth-700 rounded w-full" />
+              <div className="h-8 bg-gold-100 dark:bg-vedara-900/50 rounded w-2/3" />
+              <div className="h-4 bg-gold-100 dark:bg-vedara-900/50 rounded w-1/4" />
+              <div className="h-20 bg-gold-100 dark:bg-vedara-900/50 rounded w-full" />
             </div>
             <div className="space-y-4">
-              <div className="h-6 bg-earth-200 dark:bg-earth-700 rounded w-1/3" />
+              <div className="h-6 bg-gold-100 dark:bg-vedara-900/50 rounded w-1/3" />
               <div className="grid grid-cols-2 gap-3">
-                {[1,2,3,4].map((i) => <div key={i} className="h-12 bg-earth-200 dark:bg-earth-700 rounded-xl" />)}
+                {[1,2,3,4].map((i) => <div key={i} className="h-12 bg-gold-100 dark:bg-vedara-900/50 rounded-xl" />)}
               </div>
             </div>
           </div>
@@ -110,7 +110,7 @@ export default function CottageDetailPage() {
     return (
       <div className="pt-32 vintage-container pb-20 text-center">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-          <Mountain className="w-16 h-16 text-earth-300 mx-auto mb-6" />
+          <Mountain className="w-16 h-16 text-gold-300 mx-auto mb-6" />
           <h1 className="section-title mb-4">Cottage Not Found</h1>
           <p className="text-muted-foreground mb-8">The cottage you are looking for does not exist or has been removed.</p>
           <Link href="/cottages" className="vintage-button-primary text-base px-8 py-4">
@@ -256,7 +256,7 @@ export default function CottageDetailPage() {
                     <div className="overflow-x-auto">
                       <table className="w-full text-sm border-collapse">
                         <thead>
-                          <tr className="bg-gold-50 dark:bg-earth-800">
+                          <tr className="bg-gold-50 dark:bg-vedara-900/30">
                             <th className="p-3 text-left border border-border text-muted-foreground font-medium">Season</th>
                             <th className="p-3 text-left border border-border text-muted-foreground font-medium">Price / Night</th>
                             <th className="p-3 text-left border border-border text-muted-foreground font-medium">Min Stay</th>
@@ -292,12 +292,17 @@ export default function CottageDetailPage() {
                       <div>
                         <label className="vintage-label">Check-in</label>
                         <div className="relative">
-                          <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-earth-400" />
+                          <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gold-400" />
                           <input
                             type="date"
                             value={checkIn}
-                            onChange={(e) => setCheckIn(e.target.value)}
-                            min={new Date().toISOString().split('T')[0]}
+                            onChange={(e) => {
+                              setCheckIn(e.target.value);
+                              if (checkOut && new Date(checkOut) <= new Date(e.target.value)) {
+                                setCheckOut('');
+                              }
+                            }}
+                            min={today}
                             className="vintage-input pl-10"
                           />
                         </div>
@@ -305,12 +310,17 @@ export default function CottageDetailPage() {
                       <div>
                         <label className="vintage-label">Check-out</label>
                         <div className="relative">
-                          <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-earth-400" />
+                          <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gold-400" />
                           <input
                             type="date"
                             value={checkOut}
-                            onChange={(e) => setCheckOut(e.target.value)}
-                            min={checkIn || new Date().toISOString().split('T')[0]}
+                            onChange={(e) => {
+                              setCheckOut(e.target.value);
+                              if (checkIn && new Date(e.target.value) <= new Date(checkIn)) {
+                                setCheckOut('');
+                              }
+                            }}
+                            min={checkIn || today}
                             className="vintage-input pl-10"
                           />
                         </div>
@@ -322,9 +332,9 @@ export default function CottageDetailPage() {
                           animate={{ opacity: 1, height: 'auto' }}
                           className="space-y-3 pt-2"
                         >
-                          <div className="bg-earth-50 dark:bg-earth-800 rounded-xl p-4 space-y-2">
+                          <div className="bg-gold-50 dark:bg-vedara-900/30 rounded-xl p-4 space-y-2">
                             <div className="flex justify-between text-sm">
-                              <span className="text-muted-foreground">{formatPrice(effectivePrice)} Ö {nights} {nights === 1 ? 'night' : 'nights'}</span>
+                              <span className="text-muted-foreground">{formatPrice(effectivePrice)} × {nights} {nights === 1 ? 'night' : 'nights'}</span>
                               <span className="text-foreground font-medium">{formatPrice(effectivePrice * nights)}</span>
                             </div>
                             {activeSeasonal && (

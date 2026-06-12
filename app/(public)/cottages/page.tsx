@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { api } from '@/lib/api';
 import { Cottage } from '@/types';
-import { formatPrice } from '@/lib/utils';
+import { formatPrice, getToday } from '@/lib/utils';
 
 export default function CottagesPage() {
   const [cottages, setCottages] = useState<Cottage[]>([]);
@@ -19,6 +19,20 @@ export default function CottagesPage() {
   const [checkOut, setCheckOut] = useState('');
   const [availabilityChecked, setAvailabilityChecked] = useState(false);
   const [checking, setChecking] = useState(false);
+  const today = getToday();
+
+  const handleCheckInChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCheckIn(e.target.value);
+    setAvailabilityChecked(false);
+    if (checkOut && new Date(checkOut) <= new Date(e.target.value)) {
+      setCheckOut('');
+    }
+  };
+
+  const handleCheckOutChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCheckOut(e.target.value);
+    setAvailabilityChecked(false);
+  };
 
   const handleCheckAvailability = useCallback(async () => {
     if (!checkIn || !checkOut) return;
@@ -63,11 +77,11 @@ export default function CottagesPage() {
               <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div>
                   <label className="vintage-label">Check-in</label>
-                  <Input type="date" value={checkIn} onChange={(e) => setCheckIn(e.target.value)} />
+                  <Input type="date" value={checkIn} onChange={handleCheckInChange} min={today} />
                 </div>
                 <div>
                   <label className="vintage-label">Check-out</label>
-                  <Input type="date" value={checkOut} onChange={(e) => setCheckOut(e.target.value)} />
+                  <Input type="date" value={checkOut} onChange={handleCheckOutChange} min={checkIn || today} />
                 </div>
                 <div className="flex items-end">
                   <Button variant="primary" size="md" className="w-full" onClick={handleCheckAvailability} disabled={!checkIn || !checkOut || checking}>
@@ -91,11 +105,11 @@ export default function CottagesPage() {
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {[1, 2, 3, 4, 5, 6].map((i) => (
                 <div key={i} className="vintage-card animate-pulse">
-                  <div className="aspect-[4/3] bg-gold-100 dark:bg-earth-700 rounded-t-2xl" />
+                  <div className="aspect-[4/3] bg-gold-100 dark:bg-vedara-900/50 rounded-t-2xl" />
                   <div className="p-6 space-y-3">
-                    <div className="h-5 bg-gold-100 dark:bg-earth-700 rounded w-2/3" />
-                    <div className="h-4 bg-gold-100 dark:bg-earth-700 rounded w-full" />
-                    <div className="h-4 bg-gold-100 dark:bg-earth-700 rounded w-3/4" />
+                    <div className="h-5 bg-gold-100 dark:bg-vedara-900/50 rounded w-2/3" />
+                    <div className="h-4 bg-gold-100 dark:bg-vedara-900/50 rounded w-full" />
+                    <div className="h-4 bg-gold-100 dark:bg-vedara-900/50 rounded w-3/4" />
                   </div>
                 </div>
               ))}
@@ -120,7 +134,7 @@ export default function CottagesPage() {
                 <ScrollReveal key={cottage.id} delay={i * 0.1}>
                   <Link href={`/cottages/slug/${slug}`} className="group block">
                     <div className={`vintage-card overflow-hidden ${availabilityChecked && !available ? 'opacity-50' : ''}`}>
-                      <div className="aspect-[4/3] overflow-hidden bg-gold-50 dark:bg-earth-800 relative">
+                      <div className="aspect-[4/3] overflow-hidden bg-gold-50 dark:bg-vedara-900/30 relative">
                         {availabilityChecked && !available && (
                           <div className="absolute inset-0 bg-black/40 z-10 flex items-center justify-center">
                             <span className="bg-vedara-900/80 text-alabaster px-4 py-2 rounded-full text-sm font-medium">Not available</span>
@@ -136,7 +150,7 @@ export default function CottagesPage() {
                       <div className="p-6">
                         <div className="flex justify-between items-start mb-1">
                           <h3 className="font-serif text-xl text-foreground group-hover:text-gold-600 dark:group-hover:text-gold-400 transition-colors">{cottage.name}</h3>
-                          <span className="text-gold-600 dark:text-gold-400 font-semibold">{formatPrice(cottage.pricePerNight)}<span className="text-earth-400 font-normal text-xs">/night</span></span>
+                          <span className="text-gold-600 dark:text-gold-400 font-semibold">{formatPrice(cottage.pricePerNight)}<span className="text-gold-400 font-normal text-xs">/night</span></span>
                         </div>
                         {cottage.category && (
                           <span className="inline-block text-xs font-medium px-2.5 py-1 rounded-full bg-gold-100 text-gold-600 mb-2">{cottage.category}</span>

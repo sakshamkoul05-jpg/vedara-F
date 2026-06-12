@@ -1,6 +1,5 @@
 'use client';
 
-import { BackButton } from '@/components/layout/BackButton';
 import { ScrollReveal } from '@/components/animations/ScrollReveal';
 import { TextReveal } from '@/components/animations/TextReveal';
 import { ImageReveal } from '@/components/animations/ImageReveal';
@@ -78,33 +77,33 @@ export default function AboutPage() {
       </section>
 
       {/* Quotation under Hero */}
-      <section className="py-20 md:py-28 bg-alabaster">
+      <section className="py-20 md:py-28 bg-sand-50">
         <div className="vintage-container">
           <ScrollReveal>
             <div className="max-w-3xl mx-auto text-center">
-              <Quote className="w-10 h-10 text-gold-500 mx-auto mb-6" />
-              <p className="font-serif text-2xl md:text-3xl lg:text-4xl text-vedara-900 leading-relaxed italic">
+              <Quote className="w-10 h-10 text-primary mx-auto mb-6" />
+              <p className="font-serif text-2xl md:text-3xl lg:text-4xl text-foreground leading-relaxed italic">
                 "Where the peaks meet peace of mind. Welcome to slow living in the heart of the Himalayas."
               </p>
-              <div className="mt-8 w-16 h-px bg-gold-500 mx-auto" />
+              <div className="mt-8 w-16 h-px bg-primary mx-auto" />
             </div>
           </ScrollReveal>
         </div>
       </section>
 
-      <div className="bg-alabaster">
+      <div className="bg-background">
         {/* Origin Story */}
         <section className="section-padding">
           <div className="vintage-container">
             <div className="max-w-3xl mx-auto text-center">
               <ScrollReveal>
-                <p className="text-gold-500 text-sm tracking-[0.2em] uppercase mb-4 font-sans">Our Story</p>
-                <TextReveal as="h2" className="font-serif text-3xl md:text-4xl lg:text-5xl text-vedara-900 mb-8">
+                <p className="text-primary text-sm tracking-[0.2em] uppercase mb-4 font-sans">Our Story</p>
+                <TextReveal as="h2" className="font-serif text-3xl md:text-4xl lg:text-5xl text-foreground mb-8">
                   A Sanctuary in the Himalayas
                 </TextReveal>
               </ScrollReveal>
               <ScrollReveal delay={0.2}>
-                <div className="space-y-6 text-charcoal/80 leading-relaxed text-base md:text-lg">
+                <div className="space-y-6 text-muted-foreground leading-relaxed text-base md:text-lg">
                   <p>
                     Vedara was born out of a simple, intentional desire: to create a sanctuary where time slows down. In a world that demands constant momentum, we invite you to pause. Tucked away in the pristine embrace of the Himalayas, Vedara is not just a place to stay—it is a conscious return to nature, architecture, and quiet luxury.
                   </p>
@@ -118,7 +117,7 @@ export default function AboutPage() {
         </section>
 
         {/* The Three Pillars */}
-        <section className="section-padding bg-white">
+        <section className="section-padding bg-sand-50">
           <div className="vintage-container">
             <ScrollReveal>
               <div className="text-center max-w-3xl mx-auto mb-16">
@@ -131,36 +130,36 @@ export default function AboutPage() {
 
             <div className="grid md:grid-cols-3 gap-8 lg:gap-12">
               <ScrollReveal delay={0.1} direction="up">
-                <div className="group p-8 md:p-10 rounded-2xl bg-alabaster border border-gold-200/50 hover:border-gold-400/50 transition-smooth">
-                  <div className="w-14 h-14 rounded-xl bg-vedara-900/5 flex items-center justify-center mb-6 group-hover:bg-vedara-900/10 transition-smooth">
-                    <Home className="w-7 h-7 text-vedara-900" />
+                <div className="group p-8 md:p-10 rounded-lg bg-card border border-border/60 hover:border-primary/30 transition-smooth h-full flex flex-col">
+                  <div className="w-14 h-14 rounded-lg bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-smooth">
+                    <Home className="w-7 h-7 text-primary" />
                   </div>
-                  <h3 className="font-serif text-2xl text-vedara-900 mb-4">The Sanctuary</h3>
-                  <p className="text-charcoal/70 leading-relaxed text-sm md:text-base">
+                  <h3 className="font-serif text-2xl text-foreground mb-4">The Sanctuary</h3>
+                  <p className="text-muted-foreground leading-relaxed text-sm md:text-base">
                     Our spaces are designed in harmony with the terrain. Utilizing locally sourced materials and traditional mountain craftsmanship, our architecture honors the land it rests upon. Every room acts as a private viewing deck to the grand Himalayan canvas, offering sophisticated comfort without distracting from the natural majesty outside.
                   </p>
                 </div>
               </ScrollReveal>
 
               <ScrollReveal delay={0.2} direction="up">
-                <div className="group p-8 md:p-10 rounded-2xl bg-alabaster border border-gold-200/50 hover:border-gold-400/50 transition-smooth">
-                  <div className="w-14 h-14 rounded-xl bg-vedara-900/5 flex items-center justify-center mb-6 group-hover:bg-vedara-900/10 transition-smooth">
-                    <UtensilsCrossed className="w-7 h-7 text-vedara-900" />
+                <div className="group p-8 md:p-10 rounded-lg bg-card border border-border/60 hover:border-primary/30 transition-smooth h-full flex flex-col">
+                  <div className="w-14 h-14 rounded-lg bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-smooth">
+                    <UtensilsCrossed className="w-7 h-7 text-primary" />
                   </div>
-                  <h3 className="font-serif text-2xl text-vedara-900 mb-4">The Gastronomy</h3>
+                  <h3 className="font-serif text-2xl text-foreground mb-4">The Gastronomy</h3>
                   <p className="text-charcoal/70 leading-relaxed text-sm md:text-base">
-                    Food at Caf&eacute; Charade is a celebration of time and tradition. We lean into the philosophy of slow food—where meals are crafted from scratch using farm-to-table ingredients and local mountain produce. From slow-simmered regional Himachali heritage delicacies like Dham and Pahadi specialties to comforting artisan barista brews and wild herbal infusions, every plate tells the story of the valley.
+                    Food at Caf&eacute; Charade is a celebration of time and tradition. We lean into the philosophy of slow food—where meals are crafted from scratch using farm-to-table ingredients and local mountain produce. From slow-simmered regional Himachali heritage delicacies to comforting artisan barista brews and wild herbal infusions, every plate tells the story of the valley.
                   </p>
                 </div>
               </ScrollReveal>
 
               <ScrollReveal delay={0.3} direction="up">
-                <div className="group p-8 md:p-10 rounded-2xl bg-alabaster border border-gold-200/50 hover:border-gold-400/50 transition-smooth">
-                  <div className="w-14 h-14 rounded-xl bg-vedara-900/5 flex items-center justify-center mb-6 group-hover:bg-vedara-900/10 transition-smooth">
-                    <Compass className="w-7 h-7 text-vedara-900" />
+                <div className="group p-8 md:p-10 rounded-lg bg-card border border-border/60 hover:border-primary/30 transition-smooth h-full flex flex-col">
+                  <div className="w-14 h-14 rounded-lg bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-smooth">
+                    <Compass className="w-7 h-7 text-primary" />
                   </div>
-                  <h3 className="font-serif text-2xl text-vedara-900 mb-4">The Mindfulness</h3>
-                  <p className="text-charcoal/70 leading-relaxed text-sm md:text-base">
+                  <h3 className="font-serif text-2xl text-foreground mb-4">The Mindfulness</h3>
+                  <p className="text-muted-foreground leading-relaxed text-sm md:text-base">
                     Mindfulness is woven into the fabric of your day. Whether you spend your morning breathing in the crisp, high-altitude air with a hot cup of saffron milk, reading by a crackling fire, or wandering through nearby village trails, Vedara is a space designed to help you reconnect with yourself.
                   </p>
                 </div>
@@ -171,22 +170,22 @@ export default function AboutPage() {
       </div>
 
       {/* Highlights */}
-      <section className="section-padding bg-white">
+      <section className="section-padding bg-background">
         <div className="vintage-container">
           <ScrollReveal>
             <div className="text-center max-w-3xl mx-auto mb-12">
-              <p className="text-gold-500 text-sm tracking-[0.2em] uppercase mb-4 font-sans">About the Property</p>
-              <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-vedara-900 mb-6">The Vedara – Himalayan Boutique Retreat</h2>
-              <p className="text-charcoal/60 text-base md:text-lg max-w-2xl mx-auto">7 luxury cottages Jibhi | 18–22 guests | Launch 2026 | A nature retreat Himachal</p>
+              <p className="text-primary text-sm tracking-[0.2em] uppercase mb-4 font-sans">About the Property</p>
+              <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-foreground mb-6">The Vedara – Himalayan Boutique Retreat</h2>
+              <p className="text-muted-foreground text-base md:text-lg max-w-2xl mx-auto">7 luxury cottages Jibhi | 18–22 guests | Launch 2026 | A nature retreat Himachal</p>
             </div>
           </ScrollReveal>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {highlights.map((h, i) => (
               <ScrollReveal key={h.label} delay={i * 0.1}>
-                <div className="vintage-card p-6 text-center hover:border-gold-300/50 transition-smooth">
-                  <h.icon className="w-8 h-8 text-vedara-900 mx-auto mb-3" />
-                  <h3 className="font-serif text-lg text-vedara-900 mb-1">{h.label}</h3>
-                  <p className="text-charcoal/60 text-sm">{h.desc}</p>
+                <div className="vintage-card p-6 text-center transition-smooth">
+                  <h.icon className="w-8 h-8 text-primary mx-auto mb-3" />
+                  <h3 className="font-serif text-lg text-foreground mb-1">{h.label}</h3>
+                  <p className="text-muted-foreground text-sm">{h.desc}</p>
                 </div>
               </ScrollReveal>
             ))}
@@ -195,24 +194,24 @@ export default function AboutPage() {
       </section>
 
       {/* Experiences */}
-      <section className="section-padding bg-alabaster">
+      <section className="section-padding bg-sand-50">
         <div className="vintage-container">
           <ScrollReveal>
             <div className="text-center max-w-3xl mx-auto mb-16">
-              <p className="text-gold-500 text-sm tracking-[0.2em] uppercase mb-4 font-sans">Experiences</p>
-              <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-vedara-900 mb-6">Moments That Stay With You</h2>
-              <p className="text-charcoal/60 text-base md:text-lg">Beyond the cottages, a world of experiences awaits</p>
+              <p className="text-primary text-sm tracking-[0.2em] uppercase mb-4 font-sans">Experiences</p>
+              <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-foreground mb-6">Moments That Stay With You</h2>
+              <p className="text-muted-foreground text-base md:text-lg">Beyond the cottages, a world of experiences awaits</p>
             </div>
           </ScrollReveal>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {activities.map((act, i) => (
               <ScrollReveal key={act.title} delay={i * 0.1}>
-                <div className="group vintage-card p-6 text-center hover:border-gold-300/50 transition-smooth">
-                  <div className="w-14 h-14 rounded-full bg-vedara-900/5 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-smooth">
-                    <act.icon className="w-7 h-7 text-vedara-900" />
+                <div className="group vintage-card p-6 text-center transition-smooth">
+                  <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-smooth">
+                    <act.icon className="w-7 h-7 text-primary" />
                   </div>
-                  <h3 className="font-serif text-lg text-vedara-900 mb-2">{act.title}</h3>
-                  <p className="text-charcoal/60 text-sm leading-relaxed">{act.desc}</p>
+                  <h3 className="font-serif text-lg text-foreground mb-2">{act.title}</h3>
+                  <p className="text-muted-foreground text-sm leading-relaxed">{act.desc}</p>
                 </div>
               </ScrollReveal>
             ))}
@@ -221,34 +220,34 @@ export default function AboutPage() {
       </section>
 
       {/* Amenities */}
-      <section className="section-padding bg-white">
+      <section className="section-padding bg-background">
         <div className="vintage-container">
           <ScrollReveal>
             <div className="text-center max-w-3xl mx-auto mb-16">
-              <p className="text-gold-500 text-sm tracking-[0.2em] uppercase mb-4 font-sans">Amenities</p>
-              <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-vedara-900 mb-6">Facilities &amp; Experiences</h2>
-              <p className="text-charcoal/60 text-base md:text-lg">Every comfort thoughtfully curated for your mountain stay</p>
+              <p className="text-primary text-sm tracking-[0.2em] uppercase mb-4 font-sans">Amenities</p>
+              <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-foreground mb-6">Facilities &amp; Experiences</h2>
+              <p className="text-muted-foreground text-base md:text-lg">Every comfort thoughtfully curated for your mountain stay</p>
             </div>
           </ScrollReveal>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {amenities.map((a, i) => (
               <ScrollReveal key={a.label} delay={i * 0.08}>
-                <div className="vintage-card p-6 flex items-start gap-4 hover:border-gold-300/50 transition-smooth">
-                  <div className="w-11 h-11 rounded-xl bg-vedara-900/5 flex items-center justify-center flex-shrink-0">
-                    <a.icon className="w-5 h-5 text-vedara-900" />
+                <div className="vintage-card p-6 flex items-start gap-4 transition-smooth">
+                  <div className="w-11 h-11 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                    <a.icon className="w-5 h-5 text-primary" />
                   </div>
                   <div>
-                    <h3 className="font-medium text-vedara-900 text-sm">{a.label}</h3>
-                    <p className="text-charcoal/60 text-xs mt-0.5">{a.desc}</p>
+                    <h3 className="font-medium text-foreground text-sm">{a.label}</h3>
+                    <p className="text-muted-foreground text-xs mt-0.5">{a.desc}</p>
                   </div>
                 </div>
               </ScrollReveal>
             ))}
           </div>
           <ScrollReveal delay={0.2}>
-            <div className="mt-8 vintage-card p-5 inline-flex items-center gap-3 mx-auto hover:border-gold-300/50 transition-smooth">
-              <Wifi className="w-5 h-5 text-vedara-900" />
-              <span className="text-sm text-vedara-900"><strong>High-speed WiFi</strong> available throughout the property</span>
+            <div className="mt-8 vintage-card p-5 inline-flex items-center gap-3 mx-auto transition-smooth">
+              <Wifi className="w-5 h-5 text-primary" />
+              <span className="text-sm text-foreground"><strong>High-speed WiFi</strong> available throughout the property</span>
             </div>
           </ScrollReveal>
         </div>
@@ -305,7 +304,7 @@ export default function AboutPage() {
                 href="https://maps.google.com/maps?q=Ghiyagi+Jibhi+Himachal+Pradesh"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="vintage-button bg-gold-500 hover:bg-gold-600 text-alabaster px-8 py-3.5 inline-flex items-center gap-2"
+                className="vintage-button bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3.5 inline-flex items-center gap-2 shadow-lg"
               >
                 <MapPin className="w-4 h-4" /> Open in Google Maps
               </a>
@@ -315,19 +314,19 @@ export default function AboutPage() {
       </section>
 
       {/* Attractions */}
-      <section className="section-padding bg-alabaster">
+      <section className="section-padding bg-sand-50">
         <div className="vintage-container">
           <ScrollReveal>
             <div className="text-center max-w-3xl mx-auto mb-16">
-              <p className="text-gold-500 text-sm tracking-[0.2em] uppercase mb-4 font-sans">Explore Nearby</p>
-              <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-vedara-900 mb-6">Attractions Around The Vedara</h2>
-              <p className="text-charcoal/60 text-base md:text-lg">Discover the raw beauty of Jibhi and beyond</p>
+              <p className="text-primary text-sm tracking-[0.2em] uppercase mb-4 font-sans">Explore Nearby</p>
+              <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-foreground mb-6">Attractions Around The Vedara</h2>
+              <p className="text-muted-foreground text-base md:text-lg">Discover the raw beauty of Jibhi and beyond</p>
             </div>
           </ScrollReveal>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {attractions.map((place, i) => (
               <ScrollReveal key={place.name} delay={i * 0.1}>
-                <div className="group vintage-card overflow-hidden hover:border-gold-300/50 transition-smooth">
+                <div className="group vintage-card overflow-hidden transition-smooth">
                   <div className="aspect-[16/10] overflow-hidden">
                     <ImageReveal
                       src={place.image}
@@ -337,15 +336,15 @@ export default function AboutPage() {
                   </div>
                   <div className="p-5">
                     <div className="flex items-start justify-between mb-2">
-                      <h3 className="font-serif text-lg text-vedara-900 group-hover:text-gold-600 transition-smooth">{place.name}</h3>
-                      <span className="text-xs font-medium px-2.5 py-1 rounded-full bg-gold-100 text-gold-700 whitespace-nowrap">{place.distance}</span>
+                      <h3 className="font-serif text-lg text-foreground group-hover:text-primary transition-smooth">{place.name}</h3>
+                      <span className="text-xs font-medium px-2.5 py-1 rounded-full bg-primary/10 text-primary whitespace-nowrap">{place.distance}</span>
                     </div>
-                    <p className="text-charcoal/60 text-sm">{place.desc}</p>
+                    <p className="text-muted-foreground text-sm">{place.desc}</p>
                     <a
                       href={'https://www.google.com/maps/search/' + place.name.replace(/ /g, '+') + '+Himachal+Pradesh'}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 text-xs text-vedara-900 mt-3 font-medium hover:text-gold-600 transition-smooth"
+                      className="inline-flex items-center gap-1 text-xs text-foreground mt-3 font-medium hover:text-primary transition-smooth"
                     >
                       <ExternalLink className="w-3 h-3" /> Explore
                     </a>
@@ -358,23 +357,23 @@ export default function AboutPage() {
       </section>
 
       {/* Philosophy */}
-      <section className="section-padding bg-white">
+      <section className="section-padding bg-vedara-900">
         <div className="vintage-container">
           <ScrollReveal>
             <div className="text-center max-w-3xl mx-auto mb-16">
-              <p className="text-gold-500 text-sm tracking-[0.2em] uppercase mb-4 font-sans">Philosophy</p>
-              <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-vedara-900 mb-6">What We Stand For</h2>
+              <p className="text-gold-400 text-sm tracking-[0.2em] uppercase mb-4 font-sans">Philosophy</p>
+              <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-alabaster mb-6">What We Stand For</h2>
             </div>
           </ScrollReveal>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {values.map((v, i) => (
               <ScrollReveal key={v.title} delay={i * 0.1}>
-                <div className="vintage-card p-6 text-center hover:border-gold-300/50 transition-smooth">
-                  <div className="w-12 h-12 rounded-full bg-vedara-900/5 flex items-center justify-center mx-auto mb-4">
-                    <v.icon className="w-6 h-6 text-vedara-900" />
+                <div className="vintage-card bg-alabaster/[0.08] backdrop-blur-sm border-alabaster/[0.06] p-6 text-center hover:bg-alabaster/[0.15] transition-smooth">
+                  <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center mx-auto mb-4">
+                    <v.icon className="w-6 h-6 text-primary" />
                   </div>
-                  <h3 className="font-serif text-lg text-vedara-900 mb-2">{v.title}</h3>
-                  <p className="text-charcoal/60 text-sm">{v.desc}</p>
+                  <h3 className="font-serif text-lg text-alabaster mb-2">{v.title}</h3>
+                  <p className="text-alabaster/60 text-sm">{v.desc}</p>
                 </div>
               </ScrollReveal>
             ))}

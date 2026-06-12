@@ -33,6 +33,14 @@ export function calculateNights(checkIn: Date, checkOut: Date): number {
   return Math.max(1, Math.round((checkOut.getTime() - checkIn.getTime()) / (1000 * 60 * 60 * 24)));
 }
 
+export function getToday(): string {
+  const now = new Date();
+  const y = now.getFullYear();
+  const m = String(now.getMonth() + 1).padStart(2, '0');
+  const d = String(now.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
+}
+
 export function slugify(text: string): string {
   return text.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]+/g, '');
 }
@@ -43,6 +51,8 @@ export function truncate(text: string, length: number): string {
 }
 
 export function getImageUrl(path: string): string {
+  if (!path) return '';
   if (path.startsWith('http')) return path;
-  return path;
+  const base = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+  return `${base}${path.startsWith('/') ? '' : '/'}${path}`;
 }

@@ -24,7 +24,14 @@ async function request<T = any>(endpoint: string, options: RequestOptions = {}):
   }
 
   const response = await fetch(`${API_URL}${endpoint}`, config)
-  const data = await response.json()
+  const contentType = response.headers.get('content-type') || ''
+  let data: any
+  if (contentType.includes('application/json')) {
+    data = await response.json()
+  } else {
+    const text = await response.text()
+    data = { error: text || 'API request failed' }
+  }
 
   if (!response.ok) {
     throw new Error(data.error || 'API request failed')
@@ -140,7 +147,11 @@ export const endpoints = {
         method: 'POST',
         headers: { Authorization: `Bearer ${token || ''}` },
         body: formData,
-      }).then(r => r.json())
+      }).then(async (r) => {
+        const data = await r.json()
+        if (!r.ok) throw new Error(data.error || 'Upload failed')
+        return data
+      })
     },
     delete: (publicId: string, token: string | null) =>
       api.delete(`/upload/${publicId}`, token),

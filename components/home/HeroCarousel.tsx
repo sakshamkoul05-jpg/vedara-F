@@ -33,6 +33,8 @@ export function HeroCarousel() {
           transition={{ duration: 1.5, ease: [0.43, 0.13, 0.23, 0.96] }}
           className="absolute inset-0 bg-cover bg-center"
           style={{ backgroundImage: `url(${images[current].src})` }}
+          role="img"
+          aria-label={images[current].alt}
         />
       </AnimatePresence>
       <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/25 to-black/60" />
@@ -42,7 +44,7 @@ export function HeroCarousel() {
             key={i}
             onClick={() => setCurrent(i)}
             className={`w-2 h-2 rounded-full transition-all duration-300 ${
-              i === current ? 'bg-white w-6' : 'bg-white/40 hover:bg-white/60'
+              i === current ? 'bg-alabaster w-6' : 'bg-alabaster/40 hover:bg-alabaster/60'
             }`}
             aria-label={`Go to slide ${i + 1}`}
           />

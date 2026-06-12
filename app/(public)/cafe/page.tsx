@@ -351,7 +351,7 @@ export default function CafePage() {
   const ActiveIcon = activeCategoryData?.icon || Coffee;
 
   return (
-    <div ref={pageRef} className="min-h-screen bg-alabaster dark:bg-earth-950 overflow-hidden">
+    <div ref={pageRef} className="min-h-screen bg-alabaster dark:bg-vedara-900 overflow-hidden">
       <motion.div
         style={{ rotateX: bgRotateX, rotateY: bgRotateY }}
         className="fixed inset-0 pointer-events-none"
@@ -384,14 +384,14 @@ export default function CafePage() {
           </div>
         </div>
 
-        <div className="sticky top-0 z-30 bg-alabaster/80 dark:bg-earth-950/80 backdrop-blur-xl border-b border-gold-200/50">
+        <div className="sticky top-0 z-30 bg-alabaster/80 dark:bg-vedara-900/80 backdrop-blur-xl border-b border-gold-200/50">
           <div className="vintage-container">
             <div className="flex items-center gap-3 py-3 overflow-x-auto" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-              <Link href="/" className="shrink-0 p-2 -ml-2 text-charcoal/60 hover:text-vedara-900 dark:hover:text-earth-300 transition-colors">
+              <Link href="/" className="shrink-0 p-2 -ml-2 text-charcoal/60 hover:text-vedara-900 dark:hover:text-gold-300 transition-colors">
                 <ArrowLeft className="w-4 h-4" />
               </Link>
               <div className="relative flex-1 max-w-xs">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-earth-400" />
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gold-400" />
                 <input
                   type="text"
                   placeholder="Search items..."
@@ -410,7 +410,7 @@ export default function CafePage() {
                   className={`shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-300 ${
                     activeCategory === cat.id
                       ? 'bg-vedara-900 text-alabaster shadow-lg shadow-vedara-900/20'
-                      : 'bg-gold-50 text-charcoal/70 dark:text-earth-300 hover:bg-gold-100 dark:hover:bg-earth-700'
+                      : 'bg-gold-50 text-charcoal/70 dark:text-gold-300 hover:bg-gold-100 dark:hover:bg-vedara-900/50'
                   }`}
                 >
                   <cat.icon className="w-3 h-3" />
@@ -480,7 +480,7 @@ export default function CafePage() {
                                   </div>
                                   <div className="flex items-center justify-between">
                                     <span className="text-lg font-bold text-gold-600 dark:text-gold-400">₹{item.price}</span>
-                                    <span className="text-[10px] text-earth-400">Tap to flip</span>
+                                    <span className="text-[10px] text-gold-400">Tap to flip</span>
                                   </div>
                                 </div>
 
@@ -533,7 +533,7 @@ export default function CafePage() {
 
                   {filteredItems.items.length === 0 && (
                     <div className="text-center py-20">
-                      <Search className="w-12 h-12 text-earth-300 mx-auto mb-4" />
+                      <Search className="w-12 h-12 text-gold-300 mx-auto mb-4" />
                       <p className="text-muted-foreground">No items found for &ldquo;{searchQuery}&rdquo;</p>
                     </div>
                   )}
@@ -554,7 +554,7 @@ export default function CafePage() {
                     <motion.div
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className="vintage-card p-4 mb-8 text-sm text-muted-foreground bg-gold-50/50 dark:bg-earth-800/30 border border-gold-200/50"
+                      className="vintage-card p-4 mb-8 text-sm text-muted-foreground bg-gold-50/50 dark:bg-vedara-900/30/30 border border-gold-200/50"
                     >
                       <Leaf className="w-4 h-4 text-gold-500 inline-block mr-1.5 -mt-0.5" />
                       {activeCategoryData.note}
@@ -586,7 +586,7 @@ export default function CafePage() {
                               </div>
                               <div className="flex items-center justify-between">
                                 <span className="text-lg font-bold text-gold-600 dark:text-gold-400">₹{item.price}</span>
-                                <span className="text-[10px] text-earth-400">Tap to flip</span>
+                                <span className="text-[10px] text-gold-400">Tap to flip</span>
                               </div>
                             </div>
 
@@ -637,7 +637,7 @@ export default function CafePage() {
 
                   {filteredItems.type === 'category' && filteredItems.items.length === 0 && (
                     <div className="text-center py-20">
-                      <Search className="w-12 h-12 text-earth-300 mx-auto mb-4" />
+                      <Search className="w-12 h-12 text-gold-300 mx-auto mb-4" />
                       <p className="text-muted-foreground">No items found</p>
                     </div>
                   )}
@@ -776,7 +776,7 @@ export default function CafePage() {
             </div>
 
             <div className="flex gap-3">
-              <button onClick={() => setShowCheckout(false)} className="flex-1 py-2.5 rounded-xl bg-gold-50 text-foreground text-sm font-medium hover:bg-gold-100 dark:hover:bg-earth-700 transition-colors">
+              <button onClick={() => setShowCheckout(false)} className="flex-1 py-2.5 rounded-xl bg-gold-50 text-foreground text-sm font-medium hover:bg-gold-100 dark:hover:bg-vedara-900/50 transition-colors">
                 Cancel
               </button>
               <button

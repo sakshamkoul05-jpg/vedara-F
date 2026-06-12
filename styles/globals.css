@@ -4,48 +4,48 @@
 
 @layer base {
   :root {
-    --background: 40 25% 97%;
-    --foreground: 0 0% 16%;
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 16%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 16%;
-    --primary: 153 30% 15%;
-    --primary-foreground: 40 25% 97%;
-    --secondary: 39 35% 90%;
-    --secondary-foreground: 153 30% 15%;
-    --muted: 40 15% 92%;
-    --muted-foreground: 0 0% 45%;
-    --accent: 39 48% 56%;
+    --background: 30 25% 96%;
+    --foreground: 15 25% 16%;
+    --card: 35 20% 98%;
+    --card-foreground: 15 25% 16%;
+    --popover: 35 20% 98%;
+    --popover-foreground: 15 25% 16%;
+    --primary: 15 55% 56%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 110 10% 52%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 30 12% 90%;
+    --muted-foreground: 20 10% 50%;
+    --accent: 35 40% 60%;
     --accent-foreground: 0 0% 100%;
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 40 25% 97%;
-    --border: 39 20% 85%;
-    --input: 39 20% 85%;
-    --ring: 153 30% 15%;
-    --radius: 0.75rem;
+    --destructive: 5 70% 56%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 30 18% 85%;
+    --input: 30 18% 85%;
+    --ring: 15 55% 56%;
+    --radius: 0.5rem;
   }
 
   .dark {
-    --background: 220 10% 14%;
-    --foreground: 38 20% 88%;
-    --card: 220 8% 17%;
-    --card-foreground: 38 20% 88%;
-    --popover: 220 8% 17%;
-    --popover-foreground: 38 20% 88%;
-    --primary: 150 16% 35%;
-    --primary-foreground: 36 25% 94%;
-    --secondary: 34 12% 22%;
-    --secondary-foreground: 38 20% 88%;
-    --muted: 220 6% 20%;
-    --muted-foreground: 220 8% 60%;
-    --accent: 30 40% 45%;
-    --accent-foreground: 36 25% 94%;
-    --destructive: 0 62% 50%;
-    --destructive-foreground: 36 25% 94%;
-    --border: 220 6% 26%;
-    --input: 220 6% 26%;
-    --ring: 150 16% 35%;
+    --background: 15 20% 12%;
+    --foreground: 35 18% 88%;
+    --card: 15 15% 15%;
+    --card-foreground: 35 18% 88%;
+    --popover: 15 15% 15%;
+    --popover-foreground: 35 18% 88%;
+    --primary: 15 45% 48%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 110 8% 38%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 15 8% 20%;
+    --muted-foreground: 30 8% 60%;
+    --accent: 35 30% 45%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 5 60% 46%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 15 10% 24%;
+    --input: 15 10% 24%;
+    --ring: 15 45% 48%;
   }
 }
 
@@ -82,31 +82,31 @@
   }
 
   .vintage-card {
-    @apply bg-card border border-border/50 rounded-2xl shadow-sm hover:shadow-md transition-all duration-500;
+    @apply bg-card border border-border/50 rounded-xl shadow-sm hover:shadow-lg transition-all duration-500;
   }
 
   .vintage-button {
-    @apply inline-flex items-center justify-center rounded-full px-6 py-3 font-sans text-sm font-medium transition-all duration-500;
+    @apply inline-flex items-center justify-center rounded-lg px-6 py-3 font-sans text-sm font-medium transition-all duration-500;
   }
 
   .vintage-button-primary {
-    @apply vintage-button bg-vedara-900 text-alabaster hover:bg-vedara-900/90 shadow-md hover:shadow-lg;
+    @apply vintage-button bg-primary text-primary-foreground hover:bg-primary/90 shadow-md hover:shadow-lg;
   }
 
   .vintage-button-secondary {
-    @apply vintage-button bg-gold-500 text-alabaster hover:bg-gold-600 shadow-md;
+    @apply vintage-button bg-gold-500 text-white hover:bg-gold-600 shadow-md;
   }
 
   .vintage-button-outline {
-    @apply vintage-button border-2 border-vedara-900 text-vedara-900 hover:bg-vedara-900/5;
+    @apply vintage-button border-2 border-foreground/20 text-foreground hover:bg-foreground/5;
   }
 
   .vintage-input {
-    @apply w-full rounded-xl border border-border bg-white px-4 py-3 font-sans text-sm text-foreground placeholder:text-muted-foreground focus:border-vedara-900 focus:outline-none focus:ring-2 focus:ring-vedara-900/20 transition-all;
+    @apply w-full rounded-lg border border-border bg-alabaster px-4 py-3 font-sans text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all;
   }
 
   .vintage-label {
-    @apply block text-sm font-medium text-vedara-900 mb-1.5;
+    @apply block text-sm font-medium text-foreground/80 mb-1.5;
   }
 
   .section-padding {

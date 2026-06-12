@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import * as Accordion from '@radix-ui/react-accordion';
-import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown, HelpCircle } from 'lucide-react';
 import { BackButton } from '@/components/layout/BackButton';
 import { ScrollReveal } from '@/components/animations/ScrollReveal';

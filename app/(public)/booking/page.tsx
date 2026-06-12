@@ -11,7 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { api } from '@/lib/api';
 import { Cottage } from '@/types';
-import { formatPrice, calculateNights } from '@/lib/utils';
+import { formatPrice, calculateNights, getToday } from '@/lib/utils';
 import { useCouponStore } from '@/store/coupon';
 import {
   Calendar, Home, User, Check, ArrowRight, ArrowLeft,
@@ -175,9 +175,9 @@ export default function BookingPage() {
       }
       const rzp = new (window as any).Razorpay(options);
       rzp.open();
+      setPaymentLoading(false);
     } catch (err: any) {
       alert(err.message || 'Booking failed. Please try again.');
-    } finally {
       setPaymentLoading(false);
     }
   };
@@ -187,7 +187,7 @@ export default function BookingPage() {
   const subtotal = selectedCottageData ? selectedCottageData.pricePerNight * nights : 0;
   const extraGuests = Math.max(0, adults + children - 2);
   const extraGuestCharges = extraGuests * 1500 * nights;
-  const discountAmount = isValid ? (discountType === 'PERCENTAGE' ? Math.round(subtotal * discount / 100) : discount) : 0;
+  const discountAmount = isValid ? Math.min(discountType === 'PERCENTAGE' ? Math.round(subtotal * discount / 100) : discount, subtotal + extraGuestCharges) : 0;
   const taxes = Math.round((subtotal + extraGuestCharges - discountAmount) * 0.12);
   const totalAmount = subtotal + extraGuestCharges - discountAmount + taxes;
 
@@ -211,7 +211,7 @@ export default function BookingPage() {
                 <div key={s} className="flex-1 flex flex-col items-center">
                   <motion.div
                     className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium transition-all ${
-                      step >= s ? 'bg-gold-600 text-alabaster' : 'bg-gold-100 text-earth-400'
+                      step >= s ? 'bg-gold-600 text-alabaster' : 'bg-gold-100 text-gold-400'
                     }`}
                     animate={step === s ? { scale: [1, 1.15, 1] } : {}}
                     transition={{ duration: 0.4 }}
@@ -257,14 +257,14 @@ export default function BookingPage() {
                           <div>
                             <label className="vintage-label">Check-in Date *</label>
                             <div className="relative">
-                              <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-earth-400" />
-                              <Input type="date" value={checkIn} onChange={(e) => { setCheckIn(e.target.value); setDateError(''); if (checkOut && new Date(checkOut) <= new Date(e.target.value)) { setCheckOut(''); setDateError('Check-out must be after check-in'); } }} min={new Date().toISOString().split('T')[0]} className="pl-10" />
+                              <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gold-400" />
+                              <Input type="date" value={checkIn} onChange={(e) => { setCheckIn(e.target.value); setDateError(''); if (checkOut && new Date(checkOut) <= new Date(e.target.value)) { setCheckOut(''); setDateError('Check-out must be after check-in'); } }} min={getToday()} className="pl-10" />
                             </div>
                           </div>
                           <div>
                             <label className="vintage-label">Check-out Date *</label>
                             <div className="relative">
-                              <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-earth-400" />
+                              <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gold-400" />
                               <Input type="date" value={checkOut} onChange={(e) => handleCheckOutChange(e.target.value)} min={checkIn || new Date().toISOString().split('T')[0]} className="pl-10" />
                           {dateError && <p className="text-red-500 text-xs mt-1">{dateError}</p>}
                             </div>
@@ -301,7 +301,7 @@ export default function BookingPage() {
                           >
                             <h3 className="font-serif text-lg text-foreground mb-1">{cottage.name}</h3>
                             <p className="text-sm text-muted-foreground mb-3 line-clamp-2">{cottage.shortDesc || cottage.description}</p>
-                            <span className="text-gold-600 font-semibold">{formatPrice(cottage.pricePerNight)}<span className="text-earth-400 font-normal text-xs">/night</span></span>
+                            <span className="text-gold-600 font-semibold">{formatPrice(cottage.pricePerNight)}<span className="text-gold-400 font-normal text-xs">/night</span></span>
                             {!isAvailable && <span className="block text-red-500 text-xs mt-2">Not available for selected dates</span>}
                           </motion.button>
                         );
@@ -328,7 +328,7 @@ export default function BookingPage() {
                           <motion.div
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
-                            className="bg-earth-50 rounded-xl p-4 mb-6"
+                            className="bg-gold-50 rounded-xl p-4 mb-6"
                           >
                             <div className="flex items-center gap-3 mb-2">
                               <Home className="w-4 h-4 text-gold-500" />
@@ -372,7 +372,7 @@ export default function BookingPage() {
                                 <option value="Indian">Indian</option>
                                 <option value="Foreign">Foreign National</option>
                               </select>
-                              <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-earth-400 pointer-events-none" />
+                              <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gold-400 pointer-events-none" />
                             </div>
                           </div>
 
@@ -392,7 +392,7 @@ export default function BookingPage() {
                                       <option key={type} value={type}>{type}</option>
                                     ))}
                                   </select>
-                                  <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-earth-400 pointer-events-none" />
+                                  <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gold-400 pointer-events-none" />
                                 </div>
                               </div>
                               <div>
@@ -425,7 +425,7 @@ export default function BookingPage() {
                                       <option value="">Select State</option>
                                       {indianStates.map(s => <option key={s} value={s}>{s}</option>)}
                                     </select>
-                                    <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-earth-400 pointer-events-none" />
+                                    <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gold-400 pointer-events-none" />
                                   </div>
                                 </div>
                                 <div>
@@ -460,7 +460,7 @@ export default function BookingPage() {
                             <label className="vintage-label">Have a coupon code?</label>
                             <div className="flex gap-3">
                               <div className="relative flex-1">
-                                <Tag className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-earth-400" />
+                                <Tag className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gold-400" />
                                 <Input
                                   value={couponInput}
                                   onChange={(e) => { setCouponInput(e.target.value); setCode(e.target.value); }}
@@ -533,7 +533,7 @@ export default function BookingPage() {
                         <p className="text-muted-foreground mb-6">
                           Thank you! Your booking has been confirmed. A confirmation email has been sent to {guestEmail || 'your email'}.
                         </p>
-                        <div className="bg-earth-50 rounded-xl p-6 mb-8 text-left">
+                        <div className="bg-gold-50 rounded-xl p-6 mb-8 text-left">
                           <p className="text-sm text-muted-foreground mb-1">Booking Reference</p>
                           <p className="font-mono font-bold text-foreground text-lg">{bookingData?.bookingRef}</p>
                           <div className="border-t border-border mt-4 pt-4 space-y-1 text-sm">

@@ -24,7 +24,14 @@ async function request<T = any>(endpoint: string, options: RequestOptions = {}):
   }
 
   const response = await fetch(`${API_URL}${endpoint}`, config);
-  const data = await response.json();
+  const contentType = response.headers.get('content-type') || '';
+  let data: any;
+  if (contentType.includes('application/json')) {
+    data = await response.json();
+  } else {
+    const text = await response.text();
+    data = { error: text || 'API request failed' };
+  }
 
   if (!response.ok) {
     throw new Error(data.error || 'API request failed');
@@ -62,8 +69,12 @@ export const endpoints = {
     confirmPayment: (data: any) => api.post('/bookings/confirm-payment', data),
     calendar: (cottageId: string, month: number, year: number) =>
       api.get(`/bookings/calendar?cottageId=${cottageId}&month=${month}&year=${year}`),
-    myBookings: (phone?: string, email?: string) =>
-      api.get(`/bookings/my-bookings?${phone ? `phone=${phone}` : ''}${email ? `email=${email}` : ''}`),
+    myBookings: (phone?: string, email?: string) => {
+      const params = new URLSearchParams();
+      if (phone) params.set('phone', phone);
+      if (email) params.set('email', email);
+      return api.get(`/bookings/my-bookings?${params.toString()}`);
+    },
   },
   cafe: {
     menu: (staff = false) => api.get(`/cafe/menu${staff ? '?staff=true' : ''}`),

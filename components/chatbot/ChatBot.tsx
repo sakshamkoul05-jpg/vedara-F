@@ -184,16 +184,16 @@ export function ChatBot() {
 
             {mode !== 'live' && mode !== 'name-prompt' && (
               <div className="bg-gold-700/10 px-4 py-2 flex gap-2 overflow-x-auto">
-                <button onClick={() => handleQuickAction('Show me cottages')} className="text-xs bg-white px-3 py-1.5 rounded-full whitespace-nowrap border border-gold-200 text-vedara-900 hover:bg-gold-600 hover:text-alabaster hover:border-gold-600 transition-colors">
+                <button onClick={() => handleQuickAction('Show me cottages')} className="text-xs bg-gold-50 px-3 py-1.5 rounded-full whitespace-nowrap border border-gold-200 text-vedara-900 hover:bg-gold-600 hover:text-alabaster hover:border-gold-600 transition-colors">
                   Cottages
                 </button>
-                <button onClick={() => handleQuickAction('Café menu')} className="text-xs bg-white px-3 py-1.5 rounded-full whitespace-nowrap border border-gold-200 text-vedara-900 hover:bg-gold-600 hover:text-alabaster hover:border-gold-600 transition-colors">
+                <button onClick={() => handleQuickAction('Café menu')} className="text-xs bg-gold-50 px-3 py-1.5 rounded-full whitespace-nowrap border border-gold-200 text-vedara-900 hover:bg-gold-600 hover:text-alabaster hover:border-gold-600 transition-colors">
                   Café Menu
                 </button>
-                <button onClick={() => handleQuickAction('Booking info')} className="text-xs bg-white px-3 py-1.5 rounded-full whitespace-nowrap border border-gold-200 text-vedara-900 hover:bg-gold-600 hover:text-alabaster hover:border-gold-600 transition-colors">
+                <button onClick={() => handleQuickAction('Booking info')} className="text-xs bg-gold-50 px-3 py-1.5 rounded-full whitespace-nowrap border border-gold-200 text-vedara-900 hover:bg-gold-600 hover:text-alabaster hover:border-gold-600 transition-colors">
                   Booking
                 </button>
-                <button onClick={() => handleQuickAction('Live Support')} className="text-xs bg-white px-3 py-1.5 rounded-full whitespace-nowrap border border-gold-200 text-vedara-900 hover:bg-emerald-500 hover:text-white hover:border-emerald-500 transition-colors">
+                <button onClick={() => handleQuickAction('Live Support')} className="text-xs bg-gold-50 px-3 py-1.5 rounded-full whitespace-nowrap border border-gold-200 text-vedara-900 hover:bg-gold-600 hover:text-alabaster hover:border-gold-600 transition-colors">
                   Live Support
                 </button>
               </div>
@@ -212,7 +212,7 @@ export function ChatBot() {
                     onChange={(e) => setGuestName(e.target.value)}
                     onKeyDown={(e) => e.key === 'Enter' && submitName()}
                     placeholder="Your name"
-                    className="w-full rounded-xl border border-border bg-white px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-gold-500"
+                    className="w-full rounded-xl border border-border bg-alabaster px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-gold-500"
                     autoFocus
                   />
                   <div className="flex gap-2">
@@ -229,8 +229,8 @@ export function ChatBot() {
                       msg.role === 'user' || msg.role === 'live-user'
                         ? 'bg-gold-600 text-alabaster rounded-br-sm'
                         : msg.role === 'live-admin'
-                        ? 'bg-emerald-100 text-earth-800 rounded-bl-sm'
-                        : 'bg-earth-100 text-earth-800 rounded-bl-sm'
+                        ? 'bg-gold-100 text-vedara-900 rounded-bl-sm'
+                        : 'bg-gold-50 text-vedara-900 rounded-bl-sm'
                     }`}>
                       {msg.senderName && (msg.role === 'live-admin' || msg.role === 'live-user') && (
                         <div className="text-xs opacity-70 mb-0.5">{msg.senderName}</div>
@@ -241,11 +241,11 @@ export function ChatBot() {
                 ))}
                 {isLoading && (
                   <div className="flex justify-start">
-                    <div className="bg-earth-100 rounded-2xl rounded-bl-sm px-4 py-2.5">
+                    <div className="bg-gold-50 rounded-2xl rounded-bl-sm px-4 py-2.5">
                       <div className="flex gap-1">
-                        <span className="w-2 h-2 bg-earth-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                        <span className="w-2 h-2 bg-earth-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                        <span className="w-2 h-2 bg-earth-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                        <span className="w-2 h-2 bg-gold-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                        <span className="w-2 h-2 bg-gold-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                        <span className="w-2 h-2 bg-gold-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
                       </div>
                     </div>
                   </div>
@@ -262,7 +262,7 @@ export function ChatBot() {
                     onChange={(e) => setInput(e.target.value)}
                     onKeyDown={(e) => e.key === 'Enter' && handleSend()}
                     placeholder={mode === 'live' ? 'Type your message...' : 'Ask me anything...'}
-                    className="flex-1 rounded-xl border border-gold-200 bg-white px-3 py-2 text-sm text-vedara-900 placeholder:text-charcoal/50 focus:outline-none focus:border-gold-500"
+                    className="flex-1 rounded-xl border border-gold-200 bg-alabaster px-3 py-2 text-sm text-vedara-900 placeholder:text-charcoal/50 focus:outline-none focus:border-gold-500"
                   />
                   <button
                     onClick={handleSend}
@@ -282,10 +282,17 @@ export function ChatBot() {
   );
 }
 
-function Button({ variant, size, className, onClick, disabled, children }: any) {
+function Button({ variant, size, className, onClick, disabled, children }: {
+  variant?: 'primary' | 'secondary';
+  size?: 'sm' | 'md' | 'lg';
+  className?: string;
+  onClick?: () => void;
+  disabled?: boolean;
+  children: React.ReactNode;
+}) {
   const base = variant === 'primary'
     ? 'bg-gold-600 text-alabaster hover:bg-gold-700'
-    : 'bg-gold-100 text-foreground hover:bg-earth-300';
+    : 'bg-gold-50 text-foreground hover:bg-gold-100';
   return (
     <button
       onClick={onClick}
