@@ -8,7 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 import { useAuthStore } from '@/store/auth';
-import { endpoints } from '@/services/api';
+import { endpoints } from '@/lib/api';
 import { formatDateShort } from '@/lib/utils';
 import {
   UserPlus, Trash2, Edit, UserX, UserCheck, BadgeCheck, X

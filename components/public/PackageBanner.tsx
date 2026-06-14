@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Gift, ExternalLink, X } from 'lucide-react';
 import Link from 'next/link';
-import { endpoints } from '@/services/api';
+import { endpoints } from '@/lib/api';
 
 export function PackageBanner() {
   const [packages, setPackages] = useState<any[]>([]);

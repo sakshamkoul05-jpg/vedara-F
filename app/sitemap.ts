@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://vedara-retreat.vercel.app';
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://vedara-retreat.vercel.app';
 
   const routes = [
     '', '/about', '/cottages', '/cafe', '/booking', '/contact', '/gallery', '/policies',

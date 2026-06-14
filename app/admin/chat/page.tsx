@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { useAuthStore } from '@/store/auth';
-import { api } from '@/services/api';
+import { api } from '@/lib/api';
 import { io, Socket } from 'socket.io-client';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';

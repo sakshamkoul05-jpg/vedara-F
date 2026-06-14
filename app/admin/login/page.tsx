@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { useAuthStore } from '@/store/auth';
-import { endpoints } from '@/services/api';
+import { endpoints } from '@/lib/api';
 import { User, KeyRound, ArrowRight, Eye, EyeOff, Shield, Coffee, Users, X, Mountain } from 'lucide-react';
 
 const portalTabs = [

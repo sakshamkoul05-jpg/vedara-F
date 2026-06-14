@@ -5,7 +5,7 @@ import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from
 import { Coffee, Soup, Fish, Salad, UtensilsCrossed, IceCream, CupSoda, Cookie, Baby, Sparkles, Mountain, Leaf, ArrowLeft, ChevronDown, Search, ShoppingCart, Plus, Minus, Trash2, Send, Store, Home, CheckCircle } from 'lucide-react';
 import Link from 'next/link';
 import { useCartStore } from '@/store/cart';
-import { endpoints } from '@/services/api';
+import { endpoints } from '@/lib/api';
 
 type MenuItem = {
   name: string;

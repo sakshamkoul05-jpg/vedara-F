@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/auth';
-import { api } from '@/services/api';
+import { api } from '@/lib/api';
 import { ScrollReveal } from '@/components/animations/ScrollReveal';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';

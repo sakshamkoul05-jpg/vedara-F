@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { endpoints } from '@/services/api'
+import { endpoints } from '@/lib/api'
 
 interface CouponState {
   code: string

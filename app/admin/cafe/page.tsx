@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useAuthStore } from '@/store/auth'
-import { api } from '@/services/api'
+import { api } from '@/lib/api'
 import {
   Coffee, Plus, Edit, Trash2, Check, X,
   ClipboardList, TrendingUp, DollarSign, Users, Package, AlertTriangle

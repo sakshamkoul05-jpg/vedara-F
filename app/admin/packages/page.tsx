@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 import { useAuthStore } from '@/store/auth';
-import { api, endpoints } from '@/services/api';
+import { api, endpoints } from '@/lib/api';
 import { formatDateShort } from '@/lib/utils';
 import { Package, Plus, Trash2, Edit, ToggleLeft, ToggleRight, Calendar } from 'lucide-react';
 

@@ -9,7 +9,7 @@ import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { useAuthStore } from '@/store/auth';
-import { api, endpoints } from '@/services/api';
+import { api, endpoints } from '@/lib/api';
 import { formatDateShort, formatPrice } from '@/lib/utils';
 import {
   Save, Plus, Trash2, Edit, X, Check, Image as ImageIcon, Star, Tag,
