@@ -310,3 +310,167 @@ export interface Package {
   sortOrder: number;
   createdAt: string;
 }
+
+export interface Property {
+  id: string;
+  name: string;
+  slug: string;
+  description: string | null;
+  address: string | null;
+  phone: string | null;
+  email: string | null;
+  timezone: string;
+  isActive: boolean;
+  createdAt: string;
+}
+
+export interface GuestProfile {
+  id: string;
+  guestId: string;
+  guest?: Guest;
+  loyaltyPoints: number;
+  totalStays: number;
+  totalSpent: number;
+  tier: string;
+  referralCode: string | null;
+  notes: string | null;
+  createdAt: string;
+}
+
+export interface LoyaltyTransaction {
+  id: string;
+  profileId: string;
+  points: number;
+  type: 'EARNED' | 'REDEEMED' | 'EXPIRED' | 'ADJUSTED';
+  description: string | null;
+  bookingId: string | null;
+  createdAt: string;
+}
+
+export interface Referral {
+  id: string;
+  referrerId: string;
+  referredId: string | null;
+  referredEmail: string | null;
+  code: string;
+  status: 'PENDING' | 'COMPLETED' | 'EXPIRED';
+  rewardPoints: number;
+  createdAt: string;
+}
+
+export interface PricingRule {
+  id: string;
+  name: string;
+  type: string;
+  discountPercent: number;
+  minNights: number;
+  maxNights: number | null;
+  startDate: string | null;
+  endDate: string | null;
+  daysOfWeek: string | null;
+  isActive: boolean;
+  priority: number;
+  createdAt: string;
+}
+
+export interface StaffShift {
+  id: string;
+  staffId: string;
+  staff?: Staff;
+  date: string;
+  startTime: string;
+  endTime: string;
+  shiftType: string;
+  status: string;
+  notes: string | null;
+}
+
+export interface CafeInventoryItem {
+  id: string;
+  name: string;
+  category: string;
+  quantity: number;
+  unit: string;
+  minStock: number;
+  maxStock: number | null;
+  costPrice: number;
+  supplier: string | null;
+  expiryDate: string | null;
+  isActive: boolean;
+  createdAt: string;
+  logs?: CafeInventoryLog[];
+}
+
+export interface CafeInventoryLog {
+  id: string;
+  inventoryId: string;
+  action: string;
+  quantity: number;
+  previousQuantity: number;
+  reason: string | null;
+  performedBy: string | null;
+  createdAt: string;
+}
+
+export interface Review {
+  id: string;
+  guestId: string;
+  guest?: Guest;
+  bookingId: string | null;
+  rating: number;
+  title: string | null;
+  content: string | null;
+  pros: string | null;
+  cons: string | null;
+  reply: string | null;
+  replyAt: string | null;
+  isPublic: boolean;
+  source: string;
+  createdAt: string;
+}
+
+export interface Webhook {
+  id: string;
+  name: string;
+  url: string;
+  events: string[];
+  secret: string | null;
+  isActive: boolean;
+  failCount: number;
+  lastTriggeredAt: string | null;
+  createdAt: string;
+  deliveries?: WebhookDelivery[];
+}
+
+export interface WebhookDelivery {
+  id: string;
+  webhookId: string;
+  event: string;
+  status: string;
+  statusCode: number | null;
+  response: string | null;
+  duration: number | null;
+  createdAt: string;
+}
+
+export interface DocumentItem {
+  id: string;
+  name: string;
+  category: string;
+  description: string | null;
+  fileUrl: string | null;
+  expiryDate: string | null;
+  uploadedBy: string | null;
+  createdAt: string;
+}
+
+export interface NotificationItem {
+  id: string;
+  userId: string | null;
+  type: string;
+  title: string;
+  message: string;
+  isRead: boolean;
+  readAt: string | null;
+  createdAt: string;
+}

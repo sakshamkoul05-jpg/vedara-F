@@ -170,4 +170,108 @@ export const endpoints = {
   chatbot: {
     chat: (message: string, history?: any[]) => api.post('/chatbot/chat', { message, history }),
   },
+  properties: {
+    list: (token: string | null) => api.get('/properties', token),
+    create: (data: any, token: string | null) => api.post('/properties', data, token),
+    update: (id: string, data: any, token: string | null) => api.put(`/properties/${id}`, data, token),
+    delete: (id: string, token: string | null) => api.delete(`/properties/${id}`, token),
+  },
+  guests: {
+    list: (token: string | null, params?: Record<string, string>) => {
+      const qs = params ? '?' + new URLSearchParams(params).toString() : '';
+      return api.get(`/guests${qs}`, token);
+    },
+    profiles: (token: string | null) => api.get('/guests/profiles', token),
+    getProfile: (id: string, token: string | null) => api.get(`/guests/${id}/profile`, token),
+    updateProfile: (id: string, data: any, token: string | null) => api.put(`/guests/${id}/profile`, data, token),
+    loyalty: {
+      history: (id: string, token: string | null) => api.get(`/guests/${id}/loyalty`, token),
+      award: (id: string, data: any, token: string | null) => api.post(`/guests/${id}/loyalty/award`, data, token),
+      redeem: (id: string, data: any, token: string | null) => api.post(`/guests/${id}/loyalty/redeem`, data, token),
+    },
+    referrals: {
+      list: (id: string, token: string | null) => api.get(`/guests/${id}/referrals`, token),
+      create: (id: string, data: any, token: string | null) => api.post(`/guests/${id}/referrals`, data, token),
+    },
+  },
+  pricing: {
+    list: (token: string | null) => api.get('/pricing', token),
+    create: (data: any, token: string | null) => api.post('/pricing', data, token),
+    update: (id: string, data: any, token: string | null) => api.put(`/pricing/${id}`, data, token),
+    delete: (id: string, token: string | null) => api.delete(`/pricing/${id}`, token),
+    calculate: (data: any, token: string | null) => api.post('/pricing/calculate', data, token),
+  },
+  staffSchedule: {
+    shifts: (token: string | null, params?: Record<string, string>) => {
+      const qs = params ? '?' + new URLSearchParams(params).toString() : '';
+      return api.get(`/staff-schedule${qs}`, token);
+    },
+    createShift: (data: any, token: string | null) => api.post('/staff-schedule', data, token),
+    updateShift: (id: string, data: any, token: string | null) => api.put(`/staff-schedule/${id}`, data, token),
+    deleteShift: (id: string, token: string | null) => api.delete(`/staff-schedule/${id}`, token),
+    bulkCreate: (data: any, token: string | null) => api.post('/staff-schedule/bulk', data, token),
+    checkIn: (id: string, token: string | null) => api.post(`/staff-schedule/${id}/check-in`, {}, token),
+    checkOut: (id: string, token: string | null) => api.post(`/staff-schedule/${id}/check-out`, {}, token),
+    attendance: (token: string | null, params?: Record<string, string>) => {
+      const qs = params ? '?' + new URLSearchParams(params).toString() : '';
+      return api.get(`/staff-schedule/attendance${qs}`, token);
+    },
+    summary: (token: string | null, params?: Record<string, string>) => {
+      const qs = params ? '?' + new URLSearchParams(params).toString() : '';
+      return api.get(`/staff-schedule/summary${qs}`, token);
+    },
+  },
+  inventory: {
+    list: (token: string | null, params?: Record<string, string>) => {
+      const qs = params ? '?' + new URLSearchParams(params).toString() : '';
+      return api.get(`/inventory${qs}`, token);
+    },
+    create: (data: any, token: string | null) => api.post('/inventory', data, token),
+    update: (id: string, data: any, token: string | null) => api.put(`/inventory/${id}`, data, token),
+    delete: (id: string, token: string | null) => api.delete(`/inventory/${id}`, token),
+    restock: (id: string, data: any, token: string | null) => api.post(`/inventory/${id}/restock`, data, token),
+    deduct: (id: string, data: any, token: string | null) => api.post(`/inventory/${id}/deduct`, data, token),
+    lowStock: (token: string | null) => api.get('/inventory/low-stock', token),
+    logs: (id: string, token: string | null) => api.get(`/inventory/${id}/logs`, token),
+    categories: (token: string | null) => api.get('/inventory/categories', token),
+  },
+  reviews: {
+    list: (token: string | null, params?: Record<string, string>) => {
+      const qs = params ? '?' + new URLSearchParams(params).toString() : '';
+      return api.get(`/reviews${qs}`, token);
+    },
+    publicList: (params?: Record<string, string>) => {
+      const qs = params ? '?' + new URLSearchParams(params).toString() : '';
+      return api.get(`/reviews/public${qs}`);
+    },
+    stats: (token: string | null) => api.get('/reviews/stats', token),
+    reply: (id: string, data: any, token: string | null) => api.post(`/reviews/${id}/reply`, data, token),
+    toggleVisibility: (id: string, token: string | null) => api.put(`/reviews/${id}/visibility`, {}, token),
+  },
+  webhooks: {
+    list: (token: string | null) => api.get('/webhooks', token),
+    create: (data: any, token: string | null) => api.post('/webhooks', data, token),
+    update: (id: string, data: any, token: string | null) => api.put(`/webhooks/${id}`, data, token),
+    delete: (id: string, token: string | null) => api.delete(`/webhooks/${id}`, token),
+    testTrigger: (id: string, token: string | null) => api.post(`/webhooks/${id}/test`, {}, token),
+    deliveries: (id: string, token: string | null) => api.get(`/webhooks/${id}/deliveries`, token),
+  },
+  documents: {
+    list: (token: string | null, params?: Record<string, string>) => {
+      const qs = params ? '?' + new URLSearchParams(params).toString() : '';
+      return api.get(`/documents${qs}`, token);
+    },
+    create: (data: any, token: string | null) => api.post('/documents', data, token),
+    update: (id: string, data: any, token: string | null) => api.put(`/documents/${id}`, data, token),
+    delete: (id: string, token: string | null) => api.delete(`/documents/${id}`, token),
+    categories: (token: string | null) => api.get('/documents/categories', token),
+    expiring: (token: string | null, days = 30) => api.get(`/documents/expiring?days=${days}`, token),
+  },
+  notifications: {
+    list: (token: string | null, unreadOnly = false) => api.get(`/notifications${unreadOnly ? '?unread=true' : ''}`, token),
+    unreadCount: (token: string | null) => api.get('/notifications/unread-count', token),
+    markRead: (id: string, token: string | null) => api.put(`/notifications/${id}/read`, {}, token),
+    markAllRead: (token: string | null) => api.put('/notifications/read-all', {}, token),
+    delete: (id: string, token: string | null) => api.delete(`/notifications/${id}`, token),
+  },
 };
