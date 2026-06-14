@@ -5,11 +5,9 @@ import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { useAuthStore } from '@/store/auth';
-import { LanguageSwitcher } from '@/components/layout/LanguageSwitcher';
 import {
   LayoutDashboard, Calendar, Coffee, Settings, BarChart3, LogOut, Mountain, ChevronLeft,
-  Users, HelpCircle, UserPlus, Package, UserCog, DollarSign, CalendarClock,
-  ShoppingBag, Star, Webhook, FileText, Bell
+  Users, HelpCircle, UserPlus, Package
 } from 'lucide-react';
 
 const adminNav = [
@@ -17,16 +15,8 @@ const adminNav = [
   { href: '/admin/dashboard?tab=bookings', label: 'Bookings', icon: Calendar },
   { href: '/admin/dashboard?tab=cafe', label: 'Cafe Orders', icon: Coffee },
   { href: '/admin/staff', label: 'Staff', icon: UserPlus },
-  { href: '/admin/schedule', label: 'Schedule', icon: CalendarClock },
   { href: '/admin/packages', label: 'Packages', icon: Package },
-  { href: '/admin/inventory', label: 'Inventory', icon: ShoppingBag },
-  { href: '/admin/guests', label: 'Guest CRM', icon: UserCog },
-  { href: '/admin/pricing', label: 'Pricing', icon: DollarSign },
-  { href: '/admin/reviews', label: 'Reviews', icon: Star },
   { href: '/admin/analytics', label: 'Analytics', icon: BarChart3 },
-  { href: '/admin/webhooks', label: 'Webhooks', icon: Webhook },
-  { href: '/admin/documents', label: 'Documents', icon: FileText },
-  { href: '/admin/notifications', label: 'Notifications', icon: Bell },
   { href: '/admin/cms', label: 'CMS', icon: Settings },
 ];
 
@@ -90,9 +80,6 @@ export function AdminSidebar() {
       </nav>
 
       <div className="border-t border-earth-100 px-3 py-3">
-        <div className="px-3 mb-3">
-          <LanguageSwitcher />
-        </div>
         <div className="flex items-center gap-3 px-3 py-2.5 mb-2">
           <div className="w-8 h-8 rounded-full bg-gold-100 flex items-center justify-center text-forest-700 text-xs font-bold flex-shrink-0">
             {user?.name?.charAt(0) || 'A'}
