@@ -41,7 +41,7 @@ export function Header() {
       className={cn(
         'fixed top-0 left-0 right-0 z-50 transition-all duration-500',
         isScrolled
-          ? 'glass-nav'
+          ? 'bg-white/95 border-b border-border/50 shadow-[0_1px_3px_rgba(28,43,58,0.03)]'
           : isTransparent
             ? 'bg-transparent'
             : 'bg-[#F5F2EE]'

@@ -90,7 +90,7 @@ export function AvailabilityHeatmap() {
   const totalDays = calendar.filter((d) => d.isCurrentMonth).length;
 
   return (
-    <div className="glass-card rounded-2xl p-5 liquid-gradient">
+    <div className="bg-white rounded-2xl p-5 shadow-[0_1px_3px_rgba(28,43,58,0.04)] border border-[rgba(74,85,104,0.06)]">
       <div className="flex items-center justify-between mb-4">
         <div>
           <p className="text-xs text-white/50 uppercase tracking-wider font-sans mb-1">Availability</p>

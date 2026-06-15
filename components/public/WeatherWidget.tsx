@@ -93,7 +93,7 @@ export function WeatherWidget() {
 
   if (loading) {
     return (
-      <div className="glass-card rounded-2xl p-5 animate-pulse">
+      <div className="bg-white rounded-2xl p-5 animate-pulse shadow-[0_1px_3px_rgba(28,43,58,0.04)] border border-[rgba(74,85,104,0.06)]">
         <div className="h-4 bg-white/20 rounded w-1/3 mb-3" />
         <div className="h-8 bg-white/20 rounded w-1/2 mb-4" />
         <div className="flex gap-2">
@@ -114,7 +114,7 @@ export function WeatherWidget() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: 0.3 }}
-      className="glass-card rounded-2xl p-5 liquid-gradient"
+      className="bg-white rounded-2xl p-5 shadow-[0_1px_3px_rgba(28,43,58,0.04)] border border-[rgba(74,85,104,0.06)]"
     >
       <div className="flex items-start justify-between mb-4">
         <div>
