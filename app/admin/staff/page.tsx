@@ -135,7 +135,7 @@ function StaffTable({ token, showToast }: { token: string | null; showToast: (ms
   };
 
   if (loading) {
-    return <div className="vintage-card p-6 animate-pulse h-48" />;
+    return <div className="glass-card-light rounded-2xl p-6 animate-pulse h-48" />;
   }
 
   return (
@@ -148,11 +148,11 @@ function StaffTable({ token, showToast }: { token: string | null; showToast: (ms
       {staff.length === 0 ? (
         <p className="text-center text-muted-foreground py-12">No staff members yet</p>
       ) : (
-        <div className="vintage-card overflow-hidden">
+        <div className="glass-card-light rounded-2xl overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-border bg-earth-50">
+                <tr className="border-b border-border bg-earth-50/50">
                   <th className="text-left py-3 px-4 font-medium text-foreground">Name</th>
                   <th className="text-left py-3 px-4 font-medium text-foreground">Phone</th>
                   <th className="text-left py-3 px-4 font-medium text-foreground">Employee ID</th>

@@ -160,7 +160,7 @@ function SettingsTab({ token, showToast }: { token: string | null; showToast: (m
   return (
     <div className="space-y-6">
       <ScrollReveal>
-        <div className="vintage-card p-6">
+        <div className="glass-card-light rounded-2xl p-6">
           <h2 className="font-serif text-xl text-foreground mb-6">Site Settings</h2>
           <div className="grid md:grid-cols-2 gap-4">
             {settingFields.map(({ key, label }) => (
@@ -182,7 +182,7 @@ function SettingsTab({ token, showToast }: { token: string | null; showToast: (m
       </ScrollReveal>
 
       <ScrollReveal delay={0.05}>
-        <div className="vintage-card p-6">
+        <div className="glass-card-light rounded-2xl p-6">
           <h2 className="font-serif text-xl text-foreground mb-6">Social Links</h2>
           <div className="space-y-3 mb-4">
             {(settings.socialLinks || []).map((link: any, idx: number) => (
@@ -275,7 +275,7 @@ function CottagesTab({ token, showToast }: { token: string | null; showToast: (m
     return (
       <div className="grid md:grid-cols-2 gap-4 animate-pulse">
         {[1, 2, 3, 4].map((i) => (
-          <div key={i} className="vintage-card p-6 h-32" />
+          <div key={i} className="glass-card-light rounded-2xl p-6 h-32" />
         ))}
       </div>
     );
@@ -289,7 +289,7 @@ function CottagesTab({ token, showToast }: { token: string | null; showToast: (m
       <div className="grid md:grid-cols-2 gap-4">
         {cottages.map((cottage, idx) => (
           <ScrollReveal key={cottage.id} delay={idx * 0.05}>
-            <div className="vintage-card p-5">
+            <div className="glass-card-light rounded-2xl p-5">
                 <div className="flex justify-between items-start mb-3">
                 <div className="flex-1 min-w-0">
                   <h3 className="font-serif text-lg text-foreground truncate">{cottage.name}</h3>
@@ -466,7 +466,7 @@ function GalleryTab({ token, showToast }: { token: string | null; showToast: (ms
     return (
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 animate-pulse">
         {[1, 2, 3, 4].map((i) => (
-          <div key={i} className="vintage-card aspect-square" />
+          <div key={i} className="glass-card-light rounded-2xl aspect-square" />
         ))}
       </div>
     );
@@ -475,7 +475,7 @@ function GalleryTab({ token, showToast }: { token: string | null; showToast: (ms
   return (
     <div className="space-y-6">
       <ScrollReveal>
-        <div className="vintage-card p-6">
+        <div className="glass-card-light rounded-2xl p-6">
           <h2 className="font-serif text-lg text-foreground mb-4">Add Gallery Item</h2>
           <div className="grid md:grid-cols-4 gap-3">
             <Input value={newItem.image} onChange={(e) => setNewItem({ ...newItem, image: e.target.value })} placeholder="Image URL" className="md:col-span-2" />
@@ -496,7 +496,7 @@ function GalleryTab({ token, showToast }: { token: string | null; showToast: (ms
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {items.map((item, idx) => (
             <ScrollReveal key={item.id} delay={idx * 0.03}>
-              <div className="vintage-card overflow-hidden group">
+              <div className="glass-card-light rounded-2xl overflow-hidden group">
                 <div className="aspect-square relative bg-gold-50">
                   {item.image ? (
                     <img src={item.image} alt={item.caption || ''} className="w-full h-full object-cover" />
@@ -587,7 +587,7 @@ function TestimonialsTab({ token, showToast }: { token: string | null; showToast
   };
 
   if (loading) {
-    return <div className="vintage-card p-6 animate-pulse h-32" />;
+    return <div className="glass-card-light rounded-2xl p-6 animate-pulse h-32" />;
   }
 
   return (
@@ -601,7 +601,7 @@ function TestimonialsTab({ token, showToast }: { token: string | null; showToast
         <div className="grid md:grid-cols-2 gap-4">
           {items.map((item, idx) => (
             <ScrollReveal key={item.id} delay={idx * 0.05}>
-              <div className="vintage-card p-5">
+              <div className="glass-card-light rounded-2xl p-5">
                 <div className="flex justify-between items-start mb-3">
                   <div className="flex items-center gap-3">
                     <div className="h-10 w-10 rounded-full bg-gold-100 flex items-center justify-center text-gold-600 font-bold text-sm">
@@ -740,7 +740,7 @@ function CouponsTab({ token, showToast }: { token: string | null; showToast: (ms
   };
 
   if (loading) {
-    return <div className="vintage-card p-6 animate-pulse h-32" />;
+    return <div className="glass-card-light rounded-2xl p-6 animate-pulse h-32" />;
   }
 
   return (
@@ -754,7 +754,7 @@ function CouponsTab({ token, showToast }: { token: string | null; showToast: (ms
         <div className="space-y-3">
           {items.map((item, idx) => (
             <ScrollReveal key={item.id} delay={idx * 0.03}>
-              <div className="vintage-card p-4">
+              <div className="glass-card-light rounded-2xl p-4">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
                     <div className="rounded-xl bg-gold-100 px-3 py-1.5">
@@ -932,7 +932,7 @@ function FaqsTab({ token, showToast }: { token: string | null; showToast: (msg: 
   };
 
   if (loading) {
-    return <div className="vintage-card p-6 animate-pulse h-32" />;
+    return <div className="glass-card-light rounded-2xl p-6 animate-pulse h-32" />;
   }
 
   return (
@@ -946,7 +946,7 @@ function FaqsTab({ token, showToast }: { token: string | null; showToast: (msg: 
         <div className="space-y-3">
           {items.map((item, idx) => (
             <ScrollReveal key={item.id} delay={idx * 0.03}>
-              <div className="vintage-card p-5">
+              <div className="glass-card-light rounded-2xl p-5">
                 <div className="flex justify-between items-start gap-4">
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
@@ -1056,7 +1056,7 @@ function MessagesTab({ token, showToast }: { token: string | null; showToast: (m
   };
 
   if (loading) {
-    return <div className="vintage-card p-6 animate-pulse h-32" />;
+    return <div className="glass-card-light rounded-2xl p-6 animate-pulse h-32" />;
   }
 
   return (
@@ -1073,7 +1073,7 @@ function MessagesTab({ token, showToast }: { token: string | null; showToast: (m
             <ScrollReveal key={msg.id} delay={idx * 0.03}>
               <button
                 onClick={() => { setViewing(msg); if (!msg.isRead) handleMarkRead(msg.id); }}
-                className={`w-full text-left vintage-card p-4 transition-all hover:shadow-md ${
+                className={`w-full text-left glass-card-light rounded-2xl p-4 transition-all hover:shadow-md ${
                   !msg.isRead ? 'border-l-4 border-l-forest-500 bg-gold-50/30' : ''
                 } ${viewing?.id === msg.id ? 'ring-2 ring-forest-500' : ''}`}
               >
@@ -1095,7 +1095,7 @@ function MessagesTab({ token, showToast }: { token: string | null; showToast: (m
       <div>
         {viewing ? (
           <ScrollReveal>
-            <div className="vintage-card p-6 sticky top-24">
+            <div className="glass-card-light rounded-2xl p-6 sticky top-24">
               <div className="flex justify-between items-start mb-4">
                 <div>
                   <h3 className="font-serif text-lg text-foreground">{viewing.name}</h3>
@@ -1126,7 +1126,7 @@ function MessagesTab({ token, showToast }: { token: string | null; showToast: (m
             </div>
           </ScrollReveal>
         ) : (
-          <div className="vintage-card p-6 text-center">
+          <div className="glass-card-light rounded-2xl p-6 text-center">
             <MessageSquare className="w-12 h-12 text-muted-foreground mx-auto mb-3 opacity-50" />
             <p className="text-muted-foreground text-sm">Select a message to view</p>
           </div>

@@ -120,7 +120,7 @@ function PackagesTable({ token, showToast }: { token: string | null; showToast: 
   };
 
   if (loading) {
-    return <div className="vintage-card p-6 animate-pulse h-32" />;
+    return <div className="glass-card-light rounded-2xl p-6 animate-pulse h-32" />;
   }
 
   return (
@@ -133,10 +133,10 @@ function PackagesTable({ token, showToast }: { token: string | null; showToast: 
         <p className="text-center text-muted-foreground py-12">No packages yet</p>
       ) : (
         <ScrollReveal>
-          <div className="vintage-card overflow-x-auto">
+          <div className="glass-card-light rounded-2xl overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-border">
+                <tr className="border-b border-border bg-earth-50/50">
                   <th className="text-left font-medium text-muted-foreground px-4 py-3">Title</th>
                   <th className="text-left font-medium text-muted-foreground px-4 py-3">Description</th>
                   <th className="text-left font-medium text-muted-foreground px-4 py-3">Status</th>
