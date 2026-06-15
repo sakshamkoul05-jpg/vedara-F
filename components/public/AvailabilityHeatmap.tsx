@@ -93,15 +93,15 @@ export function AvailabilityHeatmap() {
     <div className="glass-card rounded-2xl p-5 liquid-gradient">
       <div className="flex items-center justify-between mb-4">
         <div>
-          <p className="text-xs text-alabaster/50 uppercase tracking-wider font-sans mb-1">Availability</p>
-          <p className="text-sm font-medium text-alabaster">{cottageNames[selectedCottage]}</p>
+          <p className="text-xs text-white/50 uppercase tracking-wider font-sans mb-1">Availability</p>
+          <p className="text-sm font-medium text-white">{cottageNames[selectedCottage]}</p>
         </div>
         <div className="flex items-center gap-1">
-          <button onClick={prevMonth} className="p-1.5 rounded-lg hover:bg-alabaster/10 transition-colors text-alabaster/60">
+          <button onClick={prevMonth} className="p-1.5 rounded-lg hover:bg-white/10 transition-colors text-white/60">
             <ChevronLeft className="w-4 h-4" />
           </button>
-          <span className="text-xs text-alabaster/70 font-medium min-w-[100px] text-center">{monthName}</span>
-          <button onClick={nextMonth} className="p-1.5 rounded-lg hover:bg-alabaster/10 transition-colors text-alabaster/60">
+          <span className="text-xs text-white/70 font-medium min-w-[100px] text-center">{monthName}</span>
+          <button onClick={nextMonth} className="p-1.5 rounded-lg hover:bg-white/10 transition-colors text-white/60">
             <ChevronRight className="w-4 h-4" />
           </button>
         </div>
@@ -115,7 +115,7 @@ export function AvailabilityHeatmap() {
             className={`text-[10px] px-2.5 py-1 rounded-full whitespace-nowrap transition-all ${
               selectedCottage === i
                 ? 'bg-gold-500/30 text-gold-300 border border-gold-500/30'
-                : 'bg-alabaster/5 text-alabaster/50 hover:bg-alabaster/10 border border-transparent'
+                : 'bg-white/5 text-white/50 hover:bg-white/10 border border-transparent'
             }`}
           >
             {name.split(' ')[0]}
@@ -125,7 +125,7 @@ export function AvailabilityHeatmap() {
 
       <div className="grid grid-cols-7 gap-0.5 mb-2">
         {weekDays.map((day) => (
-          <div key={day} className="text-center text-[10px] text-alabaster/40 py-1 font-sans">
+          <div key={day} className="text-center text-[10px] text-white/40 py-1 font-sans">
             {day}
           </div>
         ))}
@@ -134,7 +134,7 @@ export function AvailabilityHeatmap() {
       {loading ? (
         <div className="grid grid-cols-7 gap-0.5">
           {Array.from({ length: 42 }).map((_, i) => (
-            <div key={i} className="aspect-square rounded-md bg-alabaster/5 animate-pulse" />
+            <div key={i} className="aspect-square rounded-md bg-white/5 animate-pulse" />
           ))}
         </div>
       ) : (
@@ -147,7 +147,7 @@ export function AvailabilityHeatmap() {
               transition={{ delay: i * 0.005 }}
               className={`aspect-square rounded-md flex items-center justify-center text-[11px] transition-all ${
                 !day.isCurrentMonth
-                  ? 'text-alabaster/10'
+                  ? 'text-white/10'
                   : day.isToday
                   ? 'ring-1 ring-gold-500/50 text-gold-400 font-bold'
                   : day.available
@@ -165,14 +165,14 @@ export function AvailabilityHeatmap() {
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-1">
             <div className="w-2.5 h-2.5 rounded-sm bg-emerald-500/30" />
-            <span className="text-[10px] text-alabaster/50">Available</span>
+            <span className="text-[10px] text-white/50">Available</span>
           </div>
           <div className="flex items-center gap-1">
             <div className="w-2.5 h-2.5 rounded-sm bg-red-500/20" />
-            <span className="text-[10px] text-alabaster/50">Booked</span>
+            <span className="text-[10px] text-white/50">Booked</span>
           </div>
         </div>
-        <span className="text-[10px] text-alabaster/40">
+        <span className="text-[10px] text-white/40">
           {availableCount}/{totalDays} days free
         </span>
       </div>

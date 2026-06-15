@@ -209,7 +209,7 @@ export function TripPlanner() {
         className="fixed bottom-6 right-6 z-50 glass-button rounded-full px-5 py-3 flex items-center gap-2 shadow-xl cursor-pointer"
       >
         <Sparkles className="w-4 h-4 text-gold-400" />
-        <span className="text-sm font-medium text-alabaster">AI Trip Planner</span>
+        <span className="text-sm font-medium text-white">AI Trip Planner</span>
       </motion.button>
 
       <AnimatePresence>
@@ -220,7 +220,7 @@ export function TripPlanner() {
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-50 flex items-center justify-center p-4"
           >
-            <div className="absolute inset-0 bg-vedara-900/80 backdrop-blur-sm" onClick={() => setIsOpen(false)} />
+            <div className="absolute inset-0 bg-[#1C2B3A]/80 backdrop-blur-sm" onClick={() => setIsOpen(false)} />
 
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
@@ -235,11 +235,11 @@ export function TripPlanner() {
                     <Sparkles className="w-5 h-5 text-gold-400" />
                   </div>
                   <div>
-                    <h2 className="font-serif text-xl text-alabaster">AI Trip Planner</h2>
-                    <p className="text-xs text-alabaster/50">Personalized itineraries for The Vedara</p>
+                    <h2 className="font-serif text-xl text-white">AI Trip Planner</h2>
+                    <p className="text-xs text-white/50">Personalized itineraries for The Vedara</p>
                   </div>
                 </div>
-                <button onClick={() => setIsOpen(false)} className="text-alabaster/50 hover:text-alabaster transition-colors">
+                <button onClick={() => setIsOpen(false)} className="text-white/50 hover:text-white transition-colors">
                   <X className="w-5 h-5" />
                 </button>
               </div>
@@ -247,7 +247,7 @@ export function TripPlanner() {
               <div className="p-6">
                 {!plan ? (
                   <>
-                    <p className="text-sm text-alabaster/60 mb-6">What kind of trip are you dreaming of?</p>
+                    <p className="text-sm text-white/60 mb-6">What kind of trip are you dreaming of?</p>
                     <div className="grid grid-cols-2 gap-3">
                       {tripTypes.map((type) => (
                         <motion.button
@@ -265,7 +265,7 @@ export function TripPlanner() {
                           <div className={`absolute inset-0 bg-gradient-to-br ${type.color} opacity-50`} />
                           <div className="relative z-10">
                             <type.icon className="w-6 h-6 text-gold-400 mb-2" />
-                            <p className="text-sm font-medium text-alabaster">{type.label}</p>
+                            <p className="text-sm font-medium text-white">{type.label}</p>
                           </div>
                         </motion.button>
                       ))}
@@ -278,15 +278,15 @@ export function TripPlanner() {
                         className="mt-6 flex items-center justify-center gap-3 py-8"
                       >
                         <Loader2 className="w-5 h-5 text-gold-400 animate-spin" />
-                        <span className="text-sm text-alabaster/60">Crafting your personalized itinerary...</span>
+                        <span className="text-sm text-white/60">Crafting your personalized itinerary...</span>
                       </motion.div>
                     )}
                   </>
                 ) : (
                   <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                     <div className="mb-6">
-                      <h3 className="font-serif text-2xl text-alabaster mb-2">{plan.title}</h3>
-                      <p className="text-sm text-alabaster/60">{plan.description}</p>
+                      <h3 className="font-serif text-2xl text-white mb-2">{plan.title}</h3>
+                      <p className="text-sm text-white/60">{plan.description}</p>
                     </div>
 
                     <div className="space-y-4 mb-6">
@@ -299,10 +299,10 @@ export function TripPlanner() {
                           <div className="space-y-2">
                             {day.activities.map((act, j) => (
                               <div key={j} className="flex items-start gap-3">
-                                <span className="text-xs text-alabaster/40 font-mono mt-0.5 w-14 flex-shrink-0">{act.time}</span>
+                                <span className="text-xs text-white/40 font-mono mt-0.5 w-14 flex-shrink-0">{act.time}</span>
                                 <div className="flex items-center gap-2 flex-1">
                                   <act.icon className="w-3.5 h-3.5 text-gold-400/70 flex-shrink-0" />
-                                  <span className="text-sm text-alabaster/80">{act.activity}</span>
+                                  <span className="text-sm text-white/80">{act.activity}</span>
                                 </div>
                               </div>
                             ))}
@@ -315,7 +315,7 @@ export function TripPlanner() {
                       <h4 className="font-serif text-sm text-gold-400 mb-3">Insider Tips</h4>
                       <ul className="space-y-2">
                         {plan.tips.map((tip, i) => (
-                          <li key={i} className="flex items-start gap-2 text-sm text-alabaster/70">
+                          <li key={i} className="flex items-start gap-2 text-sm text-white/70">
                             <ChevronRight className="w-3.5 h-3.5 text-gold-400/60 mt-0.5 flex-shrink-0" />
                             {tip}
                           </li>
@@ -324,7 +324,7 @@ export function TripPlanner() {
                     </div>
 
                     <div className="flex gap-3">
-                      <button onClick={handleReset} className="flex-1 glass-button rounded-xl py-3 text-sm text-alabaster font-medium">
+                      <button onClick={handleReset} className="flex-1 glass-button rounded-xl py-3 text-sm text-white font-medium">
                         Try Another
                       </button>
                       <a href="/booking" className="flex-1 bg-gold-600 hover:bg-gold-700 rounded-xl py-3 text-sm text-white font-medium text-center transition-colors">

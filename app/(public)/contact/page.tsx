@@ -30,7 +30,7 @@ export default function ContactPage() {
 
   return (
     <>
-      <section className="pt-32 pb-20 bg-alabaster">
+      <section className="pt-32 pb-20 bg-[#F5F2EE]">
         <div className="vintage-container">
           <BackButton />
           <ScrollReveal>
@@ -42,7 +42,7 @@ export default function ContactPage() {
         </div>
       </section>
 
-      <section className="pb-20 bg-alabaster">
+      <section className="pb-20 bg-[#F5F2EE]">
         <div className="vintage-container">
           <div className="grid lg:grid-cols-2 gap-12">
             <ScrollReveal direction="left">
@@ -52,8 +52,8 @@ export default function ContactPage() {
                     <div className="w-12 h-12 rounded-full bg-gold-100 flex items-center justify-center mx-auto mb-4">
                       <Check className="w-6 h-6 text-gold-600" />
                     </div>
-                    <h3 className="font-serif text-xl text-vedara-900 mb-2">Message Sent!</h3>
-                    <p className="text-charcoal/60 text-sm">We will get back to you soon.</p>
+                    <h3 className="font-serif text-xl text-[#1C2B3A] mb-2">Message Sent!</h3>
+                    <p className="text-muted-foreground text-sm">We will get back to you soon.</p>
                   </div>
                 ) : (
                   <form onSubmit={handleSubmit} className="space-y-4">
@@ -101,8 +101,8 @@ export default function ContactPage() {
                       <Mail className="w-5 h-5 text-primary" />
                     </div>
                     <div>
-                      <h3 className="font-medium text-vedara-900">Email</h3>
-                      <a href="mailto:vedararetreat@gmail.com" className="text-charcoal/60 text-sm hover:text-gold-600 transition-colors duration-500">vedararetreat@gmail.com</a>
+                      <h3 className="font-medium text-[#1C2B3A]">Email</h3>
+                      <a href="mailto:vedararetreat@gmail.com" className="text-muted-foreground text-sm hover:text-gold-600 transition-colors duration-500">vedararetreat@gmail.com</a>
                     </div>
                   </div>
                 </div>
@@ -112,8 +112,8 @@ export default function ContactPage() {
                       <Phone className="w-5 h-5 text-primary" />
                     </div>
                     <div>
-                      <h3 className="font-medium text-vedara-900">Phone</h3>
-                      <a href="tel:+919118882242" className="text-charcoal/60 text-sm hover:text-gold-600 transition-colors duration-500">+91-91188-82242</a>
+                      <h3 className="font-medium text-[#1C2B3A]">Phone</h3>
+                      <a href="tel:+919118882242" className="text-muted-foreground text-sm hover:text-gold-600 transition-colors duration-500">+91-91188-82242</a>
                     </div>
                   </div>
                 </div>
@@ -123,8 +123,8 @@ export default function ContactPage() {
                       <MapPin className="w-5 h-5 text-primary" />
                     </div>
                     <div>
-                      <h3 className="font-medium text-vedara-900">Address</h3>
-                      <p className="text-charcoal/60 text-sm">Ghiyagi, Jibhi, Himachal Pradesh – 175123</p>
+                      <h3 className="font-medium text-[#1C2B3A]">Address</h3>
+                      <p className="text-muted-foreground text-sm">Ghiyagi, Jibhi, Himachal Pradesh – 175123</p>
                     </div>
                   </div>
                 </div>
@@ -134,12 +134,12 @@ export default function ContactPage() {
                       <Clock className="w-5 h-5 text-primary" />
                     </div>
                     <div>
-                      <h3 className="font-medium text-vedara-900">Reception Hours</h3>
-                      <p className="text-charcoal/60 text-sm">Daily: 8:00 AM – 11:00 PM</p>
-                      <h3 className="font-medium text-vedara-900 mt-2">Café Charade</h3>
-                      <p className="text-charcoal/60 text-sm">Breakfast: 7:30 AM – 10:00 AM</p>
-                      <p className="text-charcoal/60 text-sm">Lunch: 12:00 PM – 3:30 PM</p>
-                      <p className="text-charcoal/60 text-sm">Dinner: 7:00 PM – 10:00 PM</p>
+                      <h3 className="font-medium text-[#1C2B3A]">Reception Hours</h3>
+                      <p className="text-muted-foreground text-sm">Daily: 8:00 AM – 11:00 PM</p>
+                      <h3 className="font-medium text-[#1C2B3A] mt-2">Café Charade</h3>
+                      <p className="text-muted-foreground text-sm">Breakfast: 7:30 AM – 10:00 AM</p>
+                      <p className="text-muted-foreground text-sm">Lunch: 12:00 PM – 3:30 PM</p>
+                      <p className="text-muted-foreground text-sm">Dinner: 7:00 PM – 10:00 PM</p>
                     </div>
                   </div>
                 </div>

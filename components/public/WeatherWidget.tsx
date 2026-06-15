@@ -118,10 +118,10 @@ export function WeatherWidget() {
     >
       <div className="flex items-start justify-between mb-4">
         <div>
-          <p className="text-xs text-alabaster/50 uppercase tracking-wider font-sans mb-1">Jibhi, Himachal</p>
+          <p className="text-xs text-white/50 uppercase tracking-wider font-sans mb-1">Jibhi, Himachal</p>
           <div className="flex items-end gap-2">
-            <span className="text-4xl font-serif text-alabaster">{weather.temp}°</span>
-            <span className="text-sm text-alabaster/60 mb-1.5">Feels {weather.feelsLike}°</span>
+            <span className="text-4xl font-serif text-white">{weather.temp}°</span>
+            <span className="text-sm text-white/60 mb-1.5">Feels {weather.feelsLike}°</span>
           </div>
         </div>
         <motion.div
@@ -132,18 +132,18 @@ export function WeatherWidget() {
         </motion.div>
       </div>
 
-      <p className="text-sm text-alabaster/70 mb-4 font-sans">{weather.condition}</p>
+      <p className="text-sm text-white/70 mb-4 font-sans">{weather.condition}</p>
 
       <div className="grid grid-cols-3 gap-3 mb-4">
-        <div className="flex items-center gap-1.5 text-alabaster/60">
+        <div className="flex items-center gap-1.5 text-white/60">
           <Droplets className="w-3.5 h-3.5" />
           <span className="text-xs">{weather.humidity}%</span>
         </div>
-        <div className="flex items-center gap-1.5 text-alabaster/60">
+        <div className="flex items-center gap-1.5 text-white/60">
           <Wind className="w-3.5 h-3.5" />
           <span className="text-xs">{weather.windSpeed} km/h</span>
         </div>
-        <div className="flex items-center gap-1.5 text-alabaster/60">
+        <div className="flex items-center gap-1.5 text-white/60">
           <Eye className="w-3.5 h-3.5" />
           <span className="text-xs">{weather.visibility} km</span>
         </div>
@@ -154,10 +154,10 @@ export function WeatherWidget() {
           {weather.forecast.map((f, i) => {
             const FIcon = weatherIcons[f.icon] || Cloud;
             return (
-              <div key={i} className="flex-1 text-center rounded-lg py-2 bg-alabaster/5">
-                <p className="text-[10px] text-alabaster/50 mb-1">{f.day}</p>
+              <div key={i} className="flex-1 text-center rounded-lg py-2 bg-white/5">
+                <p className="text-[10px] text-white/50 mb-1">{f.day}</p>
                 <FIcon className="w-3.5 h-3.5 text-gold-400 mx-auto mb-1" />
-                <p className="text-xs text-alabaster font-medium">{f.temp}°</p>
+                <p className="text-xs text-white font-medium">{f.temp}°</p>
               </div>
             );
           })}

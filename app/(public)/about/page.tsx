@@ -56,20 +56,20 @@ export default function AboutPage() {
   return (
     <>
       {/* Hero Hook */}
-      <section className="relative min-h-[90vh] flex items-center justify-center bg-vedara-900 overflow-hidden">
+      <section className="relative min-h-[90vh] flex items-center justify-center bg-[#1C2B3A] overflow-hidden">
         <div className="absolute inset-0 bg-[url('/images/hero-bg.jpg')] bg-cover bg-center opacity-40" />
-        <div className="absolute inset-0 bg-gradient-to-b from-vedara-900/60 via-vedara-900/40 to-vedara-900/80" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#1C2B3A]/60 via-[#1C2B3A]/40 to-[#1C2B3A]/80" />
         <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
           <ScrollReveal>
             <p className="text-gold-400 text-sm tracking-[0.25em] uppercase mb-6 font-sans">The Vedara – Himalayan Boutique Retreat</p>
           </ScrollReveal>
           <ScrollReveal delay={0.2}>
-            <TextReveal as="h1" className="font-serif text-4xl md:text-6xl lg:text-7xl text-alabaster leading-tight mb-8">
+            <TextReveal as="h1" className="font-serif text-4xl md:text-6xl lg:text-7xl text-white leading-tight mb-8">
               Where the peaks meet peace of mind.
             </TextReveal>
           </ScrollReveal>
           <ScrollReveal delay={0.4}>
-            <p className="text-alabaster/80 text-lg md:text-xl font-light tracking-wide max-w-2xl mx-auto">
+            <p className="text-white/80 text-lg md:text-xl font-light tracking-wide max-w-2xl mx-auto">
               Welcome to slow living in the heart of the Himalayas.
             </p>
           </ScrollReveal>
@@ -77,7 +77,7 @@ export default function AboutPage() {
       </section>
 
       {/* Quotation under Hero */}
-      <section className="py-20 md:py-28 bg-sand-50">
+      <section className="py-20 md:py-28 bg-slate-50">
         <div className="vintage-container">
           <ScrollReveal>
             <div className="max-w-3xl mx-auto text-center">
@@ -117,12 +117,12 @@ export default function AboutPage() {
         </section>
 
         {/* The Three Pillars */}
-        <section className="section-padding bg-sand-50">
+        <section className="section-padding bg-slate-50">
           <div className="vintage-container">
             <ScrollReveal>
               <div className="text-center max-w-3xl mx-auto mb-16">
                 <p className="text-gold-500 text-sm tracking-[0.2em] uppercase mb-4 font-sans">The Vedara Philosophy</p>
-                <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-vedara-900 mb-6">
+                <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-[#1C2B3A] mb-6">
                   Built on Three Pillars
                 </h2>
               </div>
@@ -194,7 +194,7 @@ export default function AboutPage() {
       </section>
 
       {/* Experiences */}
-      <section className="section-padding bg-sand-50">
+      <section className="section-padding bg-slate-50">
         <div className="vintage-container">
           <ScrollReveal>
             <div className="text-center max-w-3xl mx-auto mb-16">
@@ -254,13 +254,13 @@ export default function AboutPage() {
       </section>
 
       {/* Getting Here */}
-      <section className="section-padding bg-vedara-900">
+      <section className="section-padding bg-[#1C2B3A]">
         <div className="vintage-container">
           <ScrollReveal>
             <div className="text-center max-w-3xl mx-auto mb-16">
               <p className="text-gold-400 text-sm tracking-[0.2em] uppercase mb-4 font-sans">Getting Here</p>
-              <h2 className="font-serif text-4xl md:text-5xl text-alabaster mb-6">How to Reach The Vedara</h2>
-              <p className="text-alabaster/60 text-lg">Your journey to the mountains, simplified.</p>
+              <h2 className="font-serif text-4xl md:text-5xl text-white mb-6">How to Reach The Vedara</h2>
+              <p className="text-white/60 text-lg">Your journey to the mountains, simplified.</p>
             </div>
           </ScrollReveal>
           <div className="grid md:grid-cols-3 gap-6">
@@ -269,9 +269,9 @@ export default function AboutPage() {
                 <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-gold-500/25 to-gold-500/10 flex items-center justify-center mx-auto mb-4">
                   <svg className="w-7 h-7 text-gold-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 21a9 9 0 100-18 9 9 0 000 18z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 7v4l2 2" /></svg>
                 </div>
-                <h3 className="font-serif text-lg text-alabaster mb-2">By Air</h3>
-                <p className="text-alabaster/60 text-sm leading-relaxed">
-                  Nearest airport: <strong className="text-alabaster">Kullu-Bhuntar Airport</strong> (70 km, ~2.5 hr drive). Taxis and private cabs available from the airport. Delhi to Kullu flights operate daily.
+                <h3 className="font-serif text-lg text-white mb-2">By Air</h3>
+                <p className="text-white/60 text-sm leading-relaxed">
+                  Nearest airport: <strong className="text-white">Kullu-Bhuntar Airport</strong> (70 km, ~2.5 hr drive). Taxis and private cabs available from the airport. Delhi to Kullu flights operate daily.
                 </p>
               </div>
             </ScrollReveal>
@@ -280,9 +280,9 @@ export default function AboutPage() {
                 <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-gold-500/25 to-gold-500/10 flex items-center justify-center mx-auto mb-4">
                   <svg className="w-7 h-7 text-gold-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
                 </div>
-                <h3 className="font-serif text-lg text-alabaster mb-2">By Train</h3>
-                <p className="text-alabaster/60 text-sm leading-relaxed">
-                  Nearest railway station: <strong className="text-alabaster">Joginder Nagar Railway Station</strong> (80 km). For broader connectivity, <strong className="text-alabaster">Chandigarh</strong> (280 km) and <strong className="text-alabaster">Pathankot</strong> (200 km) are major railheads with taxi services to Jibhi.
+                <h3 className="font-serif text-lg text-white mb-2">By Train</h3>
+                <p className="text-white/60 text-sm leading-relaxed">
+                  Nearest railway station: <strong className="text-white">Joginder Nagar Railway Station</strong> (80 km). For broader connectivity, <strong className="text-white">Chandigarh</strong> (280 km) and <strong className="text-white">Pathankot</strong> (200 km) are major railheads with taxi services to Jibhi.
                 </p>
               </div>
             </ScrollReveal>
@@ -291,8 +291,8 @@ export default function AboutPage() {
                 <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-gold-500/25 to-gold-500/10 flex items-center justify-center mx-auto mb-4">
                   <svg className="w-7 h-7 text-gold-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
                 </div>
-                <h3 className="font-serif text-lg text-alabaster mb-2">By Road</h3>
-                <p className="text-alabaster/60 text-sm leading-relaxed">
+                <h3 className="font-serif text-lg text-white mb-2">By Road</h3>
+                <p className="text-white/60 text-sm leading-relaxed">
                   Vedara is located in Ghiyagi, Jibhi – a 5–6 hr scenic drive from Chandigarh via NH-5. Regular HRTC buses run from Delhi and Chandigarh to Aut (30 km from Jibhi). We can arrange pickup upon request.
                 </p>
               </div>
@@ -314,7 +314,7 @@ export default function AboutPage() {
       </section>
 
       {/* Attractions */}
-      <section className="section-padding bg-sand-50">
+      <section className="section-padding bg-slate-50">
         <div className="vintage-container">
           <ScrollReveal>
             <div className="text-center max-w-3xl mx-auto mb-16">
@@ -357,12 +357,12 @@ export default function AboutPage() {
       </section>
 
       {/* Philosophy */}
-      <section className="section-padding bg-vedara-900">
+      <section className="section-padding bg-[#1C2B3A]">
         <div className="vintage-container">
           <ScrollReveal>
             <div className="text-center max-w-3xl mx-auto mb-16">
               <p className="text-gold-400 text-sm tracking-[0.2em] uppercase mb-4 font-sans">Philosophy</p>
-              <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-alabaster mb-6">What We Stand For</h2>
+              <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-white mb-6">What We Stand For</h2>
             </div>
           </ScrollReveal>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -372,8 +372,8 @@ export default function AboutPage() {
                   <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary/25 to-primary/10 flex items-center justify-center mx-auto mb-4">
                     <v.icon className="w-6 h-6 text-primary" />
                   </div>
-                  <h3 className="font-serif text-lg text-alabaster mb-2">{v.title}</h3>
-                  <p className="text-alabaster/60 text-sm">{v.desc}</p>
+                  <h3 className="font-serif text-lg text-white mb-2">{v.title}</h3>
+                  <p className="text-white/60 text-sm">{v.desc}</p>
                 </div>
               </ScrollReveal>
             ))}

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const images = [
@@ -10,7 +10,7 @@ const images = [
   { src: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1920&q=80', alt: 'Snow capped mountains under starry sky' },
 ];
 
-export function HeroCarousel() {
+export function HeroCarousel({ onSpotlightMove }: { onSpotlightMove?: (x: number, y: number) => void }) {
   const [current, setCurrent] = useState(0);
   const timerRef = useState(() => ({ current: null as ReturnType<typeof setInterval> | null }))[0];
 
@@ -48,14 +48,14 @@ export function HeroCarousel() {
           aria-label={images[current].alt}
         />
       </AnimatePresence>
-      <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/25 to-black/60" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/50" />
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex gap-2">
         {images.map((_, i) => (
           <button
             key={i}
             onClick={() => goToSlide(i)}
             className={`w-2 h-2 rounded-full transition-all duration-300 ${
-              i === current ? 'bg-alabaster w-6' : 'bg-alabaster/40 hover:bg-alabaster/60'
+              i === current ? 'bg-white w-6' : 'bg-white/40 hover:bg-white/60'
             }`}
             aria-label={`Go to slide ${i + 1}`}
           />

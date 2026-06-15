@@ -44,7 +44,7 @@ export function Header() {
           ? 'glass-nav'
           : isTransparent
             ? 'bg-transparent'
-            : 'bg-alabaster'
+            : 'bg-[#F5F2EE]'
       )}
     >
       <div className="vintage-container">
@@ -73,9 +73,9 @@ export function Header() {
                 className={cn(
                   'text-[13px] font-medium tracking-wide transition-all duration-500 relative py-1',
                   isTransparent
-                    ? 'text-alabaster/80 hover:text-alabaster'
+                    ? 'text-white/80 hover:text-white'
                     : 'text-foreground/70 hover:text-foreground',
-                  pathname === link.href && (isTransparent ? 'text-alabaster' : 'text-primary')
+                  pathname === link.href && (isTransparent ? 'text-white' : 'text-primary')
                 )}
               >
                 {link.label}
@@ -84,7 +84,7 @@ export function Header() {
                     layoutId="nav-indicator"
                     className={cn(
                       'absolute -bottom-1 left-0 right-0 h-0.5 rounded-full',
-                      isTransparent ? 'bg-alabaster' : 'bg-primary'
+                      isTransparent             ? 'bg-[#F5F2EE]' : 'bg-primary'
                     )}
                   />
                 )}
@@ -98,7 +98,7 @@ export function Header() {
               className={cn(
                 'p-1.5 rounded-lg transition-all duration-500',
                 isTransparent
-                  ? 'text-alabaster/60 hover:text-alabaster'
+                  ? 'text-white/60 hover:text-white'
                   : 'text-muted-foreground hover:text-primary'
               )}
               aria-label="Email"
@@ -112,7 +112,7 @@ export function Header() {
               className={cn(
                 'p-1.5 rounded-lg transition-all duration-500',
                 isTransparent
-                  ? 'text-alabaster/60 hover:text-alabaster'
+                  ? 'text-white/60 hover:text-white'
                   : 'text-muted-foreground hover:text-primary'
               )}
               aria-label="Facebook"
@@ -126,7 +126,7 @@ export function Header() {
               className={cn(
                 'p-1.5 rounded-lg transition-all duration-500',
                 isTransparent
-                  ? 'text-alabaster/60 hover:text-alabaster'
+                  ? 'text-white/60 hover:text-white'
                   : 'text-muted-foreground hover:text-primary'
               )}
               aria-label="Instagram"
@@ -141,7 +141,7 @@ export function Header() {
               className={cn(
                 'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all border duration-500',
                 isTransparent
-                  ? 'border-white/20 text-alabaster/80 hover:text-alabaster hover:bg-white/10'
+                  ? 'border-white/20 text-white/80 hover:text-white hover:bg-white/10'
                   : 'border-border text-muted-foreground hover:border-primary hover:text-primary'
               )}
             >
@@ -154,13 +154,13 @@ export function Header() {
           </div>
 
           <div className="flex md:hidden items-center gap-1">
-            <a href="mailto:vedararetreat@gmail.com" className={cn('p-1.5', isTransparent ? 'text-alabaster/80' : 'text-vedara-900/40')} aria-label="Email">
+            <a href="mailto:vedararetreat@gmail.com" className={cn('p-1.5', isTransparent ? 'text-white/80' : 'text-vedara-900/40')} aria-label="Email">
               <Mail className="w-4 h-4" />
             </a>
-            <a href="https://facebook.com/vedararetreat" target="_blank" rel="noopener noreferrer" className={cn('p-1.5', isTransparent ? 'text-alabaster/80' : 'text-vedara-900/40')} aria-label="Facebook">
+            <a href="https://facebook.com/vedararetreat" target="_blank" rel="noopener noreferrer" className={cn('p-1.5', isTransparent ? 'text-white/80' : 'text-vedara-900/40')} aria-label="Facebook">
               <Facebook className="w-4 h-4" />
             </a>
-            <a href="https://instagram.com/vedararetreat" target="_blank" rel="noopener noreferrer" className={cn('p-1.5', isTransparent ? 'text-alabaster/80' : 'text-vedara-900/40')} aria-label="Instagram">
+            <a href="https://instagram.com/vedararetreat" target="_blank" rel="noopener noreferrer" className={cn('p-1.5', isTransparent ? 'text-white/80' : 'text-vedara-900/40')} aria-label="Instagram">
               <Instagram className="w-4 h-4" />
             </a>
             <Link
@@ -168,7 +168,7 @@ export function Header() {
               className={cn(
                 'inline-flex items-center gap-1 px-2.5 py-1.5 rounded-full text-xs font-medium border',
                 isTransparent
-                  ? 'border-white/20 text-alabaster/80'
+                  ? 'border-white/20 text-white/80'
                   : 'border-gold-200 text-vedara-900/60'
               )}
             >
@@ -176,7 +176,7 @@ export function Header() {
             </Link>
             <button
               onClick={() => setIsMobileOpen(!isMobileOpen)}
-              className={cn('p-2', isTransparent ? 'text-alabaster' : 'text-vedara-900')}
+              className={cn('p-2', isTransparent ? 'text-white' : 'text-vedara-900')}
               aria-label={isMobileOpen ? 'Close menu' : 'Open menu'}
             >
               {isMobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -191,7 +191,7 @@ export function Header() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-alabaster border-t border-border"
+            className="md:hidden bg-[#F5F2EE] border-t border-border"
           >
             <nav className="vintage-container py-6 space-y-4">
               {navLinks.map((link) => (
