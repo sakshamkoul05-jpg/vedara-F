@@ -8,6 +8,8 @@ import { ScrollReveal } from '@/components/animations/ScrollReveal';
 import { TextReveal } from '@/components/animations/TextReveal';
 import { ImageReveal } from '@/components/animations/ImageReveal';
 import { MagneticButton } from '@/components/animations/MagneticButton';
+import { WaterRipple } from '@/components/animations/WaterRipple';
+import { MountainSpotlight } from '@/components/animations/MountainSpotlight';
 import { HeroCarousel } from '@/components/home/HeroCarousel';
 import { PackageBanner } from '@/components/public/PackageBanner';
 import { WeatherWidget } from '@/components/public/WeatherWidget';
@@ -148,8 +150,11 @@ export default function HomePage() {
 
   return (
     <>
+      <WaterRipple />
+      <MountainSpotlight selector="#hero" radius={220} color="rgba(28, 43, 58, 0.7)" />
+      
       {/* Hero */}
-      <section id="hero" ref={heroRef} className="relative h-screen flex items-center justify-center overflow-hidden">
+      <section id="hero" ref={heroRef} className="relative h-screen flex items-center justify-center overflow-hidden" data-spotlight>
         {/* Parallax Background Layers */}
         <div data-parallax="0.05" className="absolute inset-0 bg-cover bg-center scale-110" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1585409677983-0f6c41ca9c3b?w=1920&q=80)' }} />
         <div data-parallax="0.15" className="absolute inset-0 bg-cover bg-center opacity-60 mix-blend-overlay" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&q=80)' }} />
@@ -181,15 +186,15 @@ export default function HomePage() {
           >
             A Himalayan Boutique Retreat – Seven handcrafted cottages, one cozy café, and a slow-living mountain escape crafted for those who seek stillness.
           </motion.p>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.3, duration: 0.8 }}
-          >
-            <Link href="/booking" className="vintage-button bg-white/90 text-[#1C2B3A] hover:bg-white px-10 py-4 text-base inline-flex items-center justify-center shadow-lg">
-              Book Your Stay <ArrowRight className="w-4 h-4 ml-2" />
-            </Link>
-          </motion.div>
+            <motion.div
+             initial={{ opacity: 0, y: 20 }}
+             animate={{ opacity: 1, y: 0 }}
+             transition={{ delay: 1.3, duration: 0.8 }}
+           >
+             <Link href="/booking" className="vintage-button bg-white/90 text-[#1C2B3A] hover:bg-white px-10 py-4 text-base inline-flex items-center justify-center shadow-lg btn-fill-slide">
+               Book Your Stay <ArrowRight className="w-4 h-4 ml-2" />
+             </Link>
+           </motion.div>
         </div>
         <motion.button
           initial={{ opacity: 0 }}
@@ -214,42 +219,42 @@ export default function HomePage() {
       <PackageBanner />
 
       {/* Booking Bar */}
-      <section id="booking-bar" className="relative z-30 -mt-8 mb-12 px-4">
+      <section id="booking-bar" className="relative z-30 mb-12 px-4">
         <div className="vintage-container max-w-6xl">
           <div className="grid md:grid-cols-3 gap-4">
-            <div className="md:col-span-2 bg-white rounded-2xl p-5 md:p-6 font-sans shadow-[0_4px_24px_rgba(28,43,58,0.06)] border border-[rgba(74,85,104,0.06)]">
+            <div className="md:col-span-2 bg-white rounded-2xl p-5 md:p-6 font-sans shadow-[0_4px_24px_rgba(28,43,58,0.12)] border border-[rgba(74,85,104,0.12)]">
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3 items-end mb-3">
                 <div>
-                  <label className="block text-xs font-medium text-muted-foreground mb-1">Check In</label>
-                  <input type="date" value={homeCheckIn} onChange={handleCheckInChange} min={today} className="w-full rounded-lg border border-border bg-white px-3 py-2.5 text-sm text-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/15" />
+                  <label className="block text-xs font-medium text-foreground/80 mb-1">Check In</label>
+                  <input type="date" value={homeCheckIn} onChange={handleCheckInChange} min={today} className="w-full rounded-lg border border-border/50 bg-white px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-300 hover:border-primary/30" />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-muted-foreground mb-1">Check Out</label>
-                  <input type="date" value={homeCheckOut} onChange={handleCheckOutChange} min={homeCheckIn || today} className="w-full rounded-lg border border-border bg-white px-3 py-2.5 text-sm text-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/15" />
+                  <label className="block text-xs font-medium text-foreground/80 mb-1">Check Out</label>
+                  <input type="date" value={homeCheckOut} onChange={handleCheckOutChange} min={homeCheckIn || today} className="w-full rounded-lg border border-border/50 bg-white px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-300 hover:border-primary/30" />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-muted-foreground mb-1">Adults</label>
-                  <select value={homeAdults} onChange={(e) => setHomeAdults(e.target.value)} className="w-full rounded-lg border border-border bg-white px-3 py-2.5 text-sm text-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/15">
+                  <label className="block text-xs font-medium text-foreground/80 mb-1">Adults</label>
+                  <select value={homeAdults} onChange={(e) => setHomeAdults(e.target.value)} className="w-full rounded-lg border border-border/50 bg-white px-3 py-2.5 text-sm text-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-300 hover:border-primary/30">
                     {[1,2,3,4].map(n => <option key={n} value={n}>{n}</option>)}
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-muted-foreground mb-1">Children</label>
-                  <select value={homeChildren} onChange={(e) => setHomeChildren(e.target.value)} className="w-full rounded-lg border border-border bg-white px-3 py-2.5 text-sm text-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/15">
+                  <label className="block text-xs font-medium text-foreground/80 mb-1">Children</label>
+                  <select value={homeChildren} onChange={(e) => setHomeChildren(e.target.value)} className="w-full rounded-lg border border-border/50 bg-white px-3 py-2.5 text-sm text-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-300 hover:border-primary/30">
                     {[0,1,2,3].map(n => <option key={n} value={n}>{n}</option>)}
                   </select>
                 </div>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3 items-end">
                 <div>
-                  <label className="block text-xs font-medium text-muted-foreground mb-1">Nationality</label>
-                  <select value={homeNationality} onChange={(e) => setHomeNationality(e.target.value)} className="w-full rounded-lg border border-border bg-white px-3 py-2.5 text-sm text-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/15">
+                  <label className="block text-xs font-medium text-foreground/80 mb-1">Nationality</label>
+                  <select value={homeNationality} onChange={(e) => setHomeNationality(e.target.value)} className="w-full rounded-lg border border-border/50 bg-white px-3 py-2.5 text-sm text-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-300 hover:border-primary/30">
                     <option value="Indian">Indian</option>
                     <option value="Foreign">Foreign National</option>
                   </select>
                 </div>
                 <div>
-                  <button onClick={handleHomeBooking} className="vintage-button-primary text-sm px-6 py-2.5 w-full text-center block cursor-pointer">
+                  <button onClick={handleHomeBooking} className="vintage-button-primary text-sm px-6 py-2.5 w-full text-center block cursor-pointer btn-fill-slide">
                     {homeCheckIn && homeCheckOut ? 'Check Availability' : 'Book Your Stay'}
                   </button>
                 </div>
@@ -280,7 +285,7 @@ export default function HomePage() {
                 <p className="text-white/60 leading-relaxed mb-8">
                   With seven handcrafted cottages and a soulful café, we offer more than a stay. We offer a chance to pause, breathe, and remember what truly matters.
                 </p>
-                <Link href="/about" className="vintage-button bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3.5 shadow-lg">
+                <Link href="/about" className="vintage-button bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3.5 shadow-lg btn-bottom-fill">
                   Read Our Story <ArrowRight className="w-4 h-4 ml-2" />
                 </Link>
               </div>
@@ -313,8 +318,8 @@ export default function HomePage() {
             <div className="lg:col-span-3">
               <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-6">
                 {cottages.map((cottage, i) => (
-                  <ScrollReveal key={cottage.name} delay={i * 0.08}>
-                    <div className="group bg-white rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-500">
+                  <ScrollReveal key={cottage.name} delay={i * 0.08} direction="up" distance={40}>
+                    <div className="group bg-white rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-500 reveal">
                       <div className="aspect-[4/3] overflow-hidden bg-sand-200">
                         <img src={`https://images.unsplash.com/photo-${['1504384308090-c894fdcc538d', '1554118811-1e0d58224f24', '1506905925346-21bda4d32df4', '1504384308090-c894fdcc538d', '1554118811-1e0d58224f24', '1506905925346-21bda4d32df4', '1504384308090-c894fdcc538d'][i]}?w=600&q=80`} alt={cottage.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                       </div>
@@ -361,8 +366,8 @@ export default function HomePage() {
           </ScrollReveal>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
             {experiences.map((exp, i) => (
-              <ScrollReveal key={exp.title} delay={i * 0.08}>
-                <div className="group rounded-2xl p-6 text-center transition-all duration-500 font-sans border border-white/8" style={{ background: 'rgba(255,255,255,0.05)' }}>
+              <ScrollReveal key={exp.title} delay={i * 0.08} direction="up" distance={40}>
+                <div className="group rounded-2xl p-6 text-center transition-all duration-500 font-sans border border-white/8 reveal" style={{ background: 'rgba(255,255,255,0.05)' }}>
                   <div className="w-14 h-14 rounded-full bg-gradient-to-br from-[#9B8EA0]/25 to-[#9B8EA0]/10 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-500">
                     <exp.icon className="w-7 h-7 text-[#9B8EA0]" />
                   </div>
@@ -400,7 +405,7 @@ export default function HomePage() {
                   ))}
                 </div>
                 <MagneticButton>
-                  <Link href="/cafe" className="vintage-button bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3.5 inline-block shadow-lg">
+                  <Link href="/cafe" className="vintage-button bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3.5 inline-block shadow-lg btn-bottom-fill">
                     Explore Menu <ArrowRight className="w-4 h-4 ml-2" />
                   </Link>
                 </MagneticButton>
@@ -429,9 +434,9 @@ export default function HomePage() {
           </ScrollReveal>
           <div className="grid md:grid-cols-3 gap-6">
             {testimonials.map((t, i) => (
-              <ScrollReveal key={t.name} delay={i * 0.12}>
+              <ScrollReveal key={t.name} delay={i * 0.12} direction="up" distance={40}>
                 <motion.div
-                  className="bg-white rounded-2xl p-7 relative overflow-hidden"
+                  className="bg-white rounded-2xl p-7 relative overflow-hidden reveal"
                   whileHover={{ y: -4, boxShadow: '0 20px 40px rgba(0,0,0,0.06)' }}
                   transition={{ duration: 0.5 }}
                 >
@@ -472,8 +477,8 @@ export default function HomePage() {
           </ScrollReveal>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {nearbyAttractions.map((place, i) => (
-              <ScrollReveal key={place.name} delay={i * 0.1}>
-                <div className="bg-white rounded-2xl p-5 flex items-start gap-4 group hover:border-primary/30 transition-all duration-500">
+              <ScrollReveal key={place.name} delay={i * 0.1} direction="up" distance={40}>
+                <div className="bg-white rounded-2xl p-5 flex items-start gap-4 group hover:border-primary/30 transition-all duration-500 reveal">
                   <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/20 transition-colors duration-500">
                     <place.icon className="w-5 h-5 text-primary" />
                   </div>
@@ -509,8 +514,8 @@ export default function HomePage() {
             </div>
           </ScrollReveal>
           <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-            <ScrollReveal delay={0.1}>
-              <div className="bg-white rounded-2xl p-7 text-center">
+            <ScrollReveal delay={0.1} direction="up" distance={40}>
+              <div className="bg-white rounded-2xl p-7 text-center reveal">
                 <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
                   <MapPin className="w-7 h-7 text-primary" />
                 </div>
@@ -518,8 +523,8 @@ export default function HomePage() {
                 <p className="text-muted-foreground text-sm leading-relaxed">Delhi to Jibhi via Mandi–Aut–Larji. Approximately 480 km, 10–11 hours. Buses available from Delhi ISBT to Aut, then a taxi to Jibhi.</p>
               </div>
             </ScrollReveal>
-            <ScrollReveal delay={0.2}>
-              <div className="bg-white rounded-2xl p-7 text-center">
+            <ScrollReveal delay={0.2} direction="up" distance={40}>
+              <div className="bg-white rounded-2xl p-7 text-center reveal">
                 <div className="w-14 h-14 rounded-2xl bg-[#9B8EA0]/10 flex items-center justify-center mx-auto mb-4">
                   <MapPin className="w-7 h-7 text-[#9B8EA0]" />
                 </div>
@@ -527,8 +532,8 @@ export default function HomePage() {
                 <p className="text-muted-foreground text-sm leading-relaxed">Nearest broad-gauge station: Amb Andaura (~120 km). Nearest narrow-gauge: Shimla or Joginder Nagar. Taxis available from all stations.</p>
               </div>
             </ScrollReveal>
-            <ScrollReveal delay={0.3}>
-              <div className="bg-white rounded-2xl p-7 text-center">
+            <ScrollReveal delay={0.3} direction="up" distance={40}>
+              <div className="bg-white rounded-2xl p-7 text-center reveal">
                 <div className="w-14 h-14 rounded-2xl bg-gold-400/10 flex items-center justify-center mx-auto mb-4">
                   <MapPin className="w-7 h-7 text-gold-500" />
                 </div>
@@ -551,7 +556,7 @@ export default function HomePage() {
               Book your mountain story today. Early check-in and late check-out are available on request.
             </p>
             <MagneticButton>
-              <Link href="/booking" className="vintage-button bg-white/90 text-[#1C2B3A] hover:bg-white px-10 py-4 text-base inline-block shadow-xl">
+              <Link href="/booking" className="vintage-button bg-white/90 text-[#1C2B3A] hover:bg-white px-10 py-4 text-base inline-block shadow-xl btn-fill-slide">
                 Begin Your Journey <Sparkles className="w-4 h-4 ml-2" />
               </Link>
             </MagneticButton>

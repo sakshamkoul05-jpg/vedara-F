@@ -10,10 +10,10 @@
     --card-foreground: 210 28% 17%;
     --popover: 30 12% 97%;
     --popover-foreground: 210 28% 17%;
-    --primary: 216 14% 35%;
+    --primary: 150 25% 20%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 273 9% 61%;
-    --secondary-foreground: 0 0% 100%;
+    --secondary: 33 38% 71%;
+    --secondary-foreground: 210 28% 17%;
     --muted: 30 10% 90%;
     --muted-foreground: 216 10% 45%;
     --accent: 33 38% 71%;
@@ -22,30 +22,30 @@
     --destructive-foreground: 0 0% 100%;
     --border: 30 10% 87%;
     --input: 30 10% 87%;
-    --ring: 216 14% 35%;
+    --ring: 150 25% 20%;
     --radius: 0.5rem;
   }
 
   .dark {
-    --background: 210 28% 10%;
-    --foreground: 30 15% 92%;
-    --card: 210 25% 13%;
-    --card-foreground: 30 15% 92%;
-    --popover: 210 25% 13%;
-    --popover-foreground: 30 15% 92%;
-    --primary: 216 14% 55%;
-    --primary-foreground: 210 28% 10%;
-    --secondary: 273 9% 50%;
-    --secondary-foreground: 0 0% 100%;
-    --muted: 210 15% 20%;
-    --muted-foreground: 30 10% 65%;
-    --accent: 33 30% 45%;
-    --accent-foreground: 0 0% 100%;
+    --background: 210 28% 8%;
+    --foreground: 30 15% 95%;
+    --card: 210 25% 12%;
+    --card-foreground: 30 15% 95%;
+    --popover: 210 25% 12%;
+    --popover-foreground: 30 15% 95%;
+    --primary: 33 38% 71%;
+    --primary-foreground: 210 28% 8%;
+    --secondary: 33 38% 71%;
+    --secondary-foreground: 210 28% 8%;
+    --muted: 210 15% 18%;
+    --muted-foreground: 30 10% 70%;
+    --accent: 33 38% 71%;
+    --accent-foreground: 210 28% 8%;
     --destructive: 5 55% 45%;
     --destructive-foreground: 0 0% 100%;
-    --border: 210 12% 22%;
-    --input: 210 12% 22%;
-    --ring: 216 14% 55%;
+    --border: 210 12% 25%;
+    --input: 210 12% 25%;
+    --ring: 33 38% 71%;
   }
 }
 
@@ -271,6 +271,84 @@
 @keyframes liquidFlow {
   0%, 100% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
+}
+
+@keyframes ripple {
+  0% {
+    width: 0;
+    height: 0;
+    opacity: 1;
+  }
+  100% {
+    width: 300px;
+    height: 300px;
+    opacity: 0;
+  }
+}
+
+.btn-fill-slide {
+  position: relative;
+  overflow: hidden;
+  transition: color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-fill-slide::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: -1;
+}
+
+.btn-fill-slide:hover::after {
+  transform: scaleX(1);
+}
+
+.btn-fill-slide:hover {
+  color: white;
+}
+
+.btn-bottom-fill {
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.btn-bottom-fill::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 0;
+  background: #1A2A1E;
+  transition: height 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: -1;
+}
+
+.btn-bottom-fill:hover::before {
+  height: 100%;
+}
+
+.btn-bottom-fill:hover {
+  color: white;
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 html.lenis, html.lenis body {

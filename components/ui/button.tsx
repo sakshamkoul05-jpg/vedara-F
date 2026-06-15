@@ -4,15 +4,15 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center whitespace-nowrap rounded-full text-sm font-medium transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-500 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
+  'inline-flex items-center justify-center whitespace-nowrap rounded-full text-sm font-medium transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
   {
     variants: {
       variant: {
-        primary: 'bg-vedara-900 text-alabaster hover:bg-vedara-900/90 shadow-md hover:shadow-lg',
-        secondary: 'bg-gold-500 text-alabaster hover:bg-gold-600 shadow-md',
-        outline: 'border-2 border-vedara-900 text-vedara-900 hover:bg-vedara-900/5',
-        ghost: 'text-vedara-900 hover:bg-vedara-900/5',
-        danger: 'bg-red-600 text-alabaster hover:bg-red-700',
+        primary: 'bg-primary text-primary-foreground hover:bg-primary/90 shadow-md hover:shadow-lg',
+        secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/90 shadow-md',
+        outline: 'border-2 border-primary text-primary hover:bg-primary/5',
+        ghost: 'text-primary hover:bg-primary/5',
+        danger: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
       },
       size: {
         sm: 'h-9 px-4 text-xs',

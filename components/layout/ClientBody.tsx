@@ -13,6 +13,7 @@ const FogParticles = dynamic(() => import('@/components/animations/FogParticles'
 const ParallaxCursor = dynamic(() => import('@/components/animations/ParallaxCursor').then(m => ({ default: m.ParallaxCursor })), { ssr: false });
 const ChatBot = dynamic(() => import('@/components/chatbot/ChatBot').then(m => ({ default: m.ChatBot })), { ssr: false });
 const TripPlanner = dynamic(() => import('@/components/public/TripPlanner').then(m => ({ default: m.TripPlanner })), { ssr: false });
+const RevealOnScroll = dynamic(() => import('@/components/animations/RevealOnScroll').then(m => ({ default: m.RevealOnScroll })), { ssr: false });
 
 export function ClientBody({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -23,6 +24,7 @@ export function ClientBody({ children }: { children: React.ReactNode }) {
     return (
       <>
         <ThemeInitializer />
+        <RevealOnScroll />
         <Toaster
           position="top-right"
           toastOptions={{
@@ -48,6 +50,7 @@ export function ClientBody({ children }: { children: React.ReactNode }) {
       <ScrollProgress />
       <FogParticles />
       <ParallaxCursor />
+      <RevealOnScroll />
       <SmoothScroll>
         <Header />
         <main>{children}</main>
