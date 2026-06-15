@@ -10,12 +10,18 @@ import { ImageReveal } from '@/components/animations/ImageReveal';
 import { MagneticButton } from '@/components/animations/MagneticButton';
 import { HeroCarousel } from '@/components/home/HeroCarousel';
 import { PackageBanner } from '@/components/public/PackageBanner';
+import { WeatherWidget } from '@/components/public/WeatherWidget';
+import { AvailabilityHeatmap } from '@/components/public/AvailabilityHeatmap';
 import { getToday } from '@/lib/utils';
 
 const cottages = [
   { slug: 'monal-haven', name: 'Monal Haven', price: '₹12,000', desc: 'Premium Duplex Family Suite with private jacuzzi, attic yoga balcony, and sweeping mountain views', image: '/images/hero-1.jpg' },
   { slug: 'koklass-cove', name: 'Koklass Cove', price: '₹12,500', desc: 'Premium Duplex Family Suite – our largest with two viewing balconies, private jacuzzi, and unmatched privacy', image: '/images/hero-2.jpg' },
   { slug: 'magpie-retreat', name: 'Magpie Retreat', price: '₹11,000', desc: 'Intimate Mountain View Suite with deep-soak bathtub and dual-balcony setup', image: '/images/hero-3.jpg' },
+  { slug: 'whistling-thrush', name: 'Whistling Thrush', price: '₹10,000', desc: 'Cosy Valley View Cottage with a private sit-out, perfect for couples seeking quiet solitude', image: '/images/hero-1.jpg' },
+  { slug: 'rufous-retreat', name: 'Rufous Retreat', price: '₹9,500', desc: 'Charming Forest-facing Cottage with a reading nook and handcrafted wooden interiors', image: '/images/hero-2.jpg' },
+  { slug: 'kalij-pheasant', name: 'Kalij Pheasant', price: '₹9,000', desc: 'Warm and inviting Garden Cottage with outdoor seating and mountain glimpses', image: '/images/hero-3.jpg' },
+  { slug: 'himalayan-bluetail', name: 'Himalayan Bluetail', price: '₹8,500', desc: 'Compact yet elegant retreat with a private balcony and panoramic valley views', image: '/images/hero-1.jpg' },
 ];
 
 const testimonials = [
@@ -140,47 +146,52 @@ export default function HomePage() {
 
       {/* Booking Bar */}
       <section id="booking-bar" className="relative z-30 mt-12 mb-12 px-4">
-        <div className="vintage-container max-w-4xl">
-          <div className="bg-card backdrop-blur-md rounded-lg shadow-xl border border-border p-4 md:p-6 font-sans">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 items-end mb-3">
-              <div>
-                <label className="block text-xs font-medium text-muted-foreground mb-1">Check In</label>
-                <input type="date" value={homeCheckIn} onChange={handleCheckInChange} min={today} className="w-full rounded-lg border border-border bg-alabaster px-3 py-2.5 text-sm text-foreground focus:outline-none focus:border-primary transition-colors duration-500" />
+        <div className="vintage-container max-w-6xl">
+          <div className="grid md:grid-cols-3 gap-4">
+            <div className="md:col-span-2 glass-card-light rounded-2xl p-5 md:p-6 font-sans">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 items-end mb-3">
+                <div>
+                  <label className="block text-xs font-medium text-muted-foreground mb-1">Check In</label>
+                  <input type="date" value={homeCheckIn} onChange={handleCheckInChange} min={today} className="w-full rounded-lg glass-input px-3 py-2.5 text-sm text-foreground focus:outline-none" />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-muted-foreground mb-1">Check Out</label>
+                  <input type="date" value={homeCheckOut} onChange={handleCheckOutChange} min={homeCheckIn || today} className="w-full rounded-lg glass-input px-3 py-2.5 text-sm text-foreground focus:outline-none" />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-muted-foreground mb-1">Adults</label>
+                  <select value={homeAdults} onChange={(e) => setHomeAdults(e.target.value)} className="w-full rounded-lg glass-input px-3 py-2.5 text-sm text-foreground focus:outline-none">
+                    {[1,2,3,4].map(n => <option key={n} value={n}>{n}</option>)}
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-muted-foreground mb-1">Children</label>
+                  <select value={homeChildren} onChange={(e) => setHomeChildren(e.target.value)} className="w-full rounded-lg glass-input px-3 py-2.5 text-sm text-foreground focus:outline-none">
+                    {[0,1,2,3].map(n => <option key={n} value={n}>{n}</option>)}
+                  </select>
+                </div>
               </div>
-              <div>
-                <label className="block text-xs font-medium text-muted-foreground mb-1">Check Out</label>
-                <input type="date" value={homeCheckOut} onChange={handleCheckOutChange} min={homeCheckIn || today} className="w-full rounded-lg border border-border bg-alabaster px-3 py-2.5 text-sm text-foreground focus:outline-none focus:border-primary transition-colors duration-500" />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 items-end">
+                <div>
+                  <label className="block text-xs font-medium text-muted-foreground mb-1">Nationality</label>
+                  <select value={homeNationality} onChange={(e) => setHomeNationality(e.target.value)} className="w-full rounded-lg glass-input px-3 py-2.5 text-sm text-foreground focus:outline-none">
+                    <option value="Indian">Indian</option>
+                    <option value="Foreign">Foreign National</option>
+                  </select>
+                </div>
+                <div>
+                  <button onClick={handleHomeBooking} className="vintage-button-primary text-sm px-6 py-2.5 w-full text-center block cursor-pointer">
+                    {homeCheckIn && homeCheckOut ? 'Check Availability' : 'Book Your Stay'}
+                  </button>
+                </div>
               </div>
-              <div>
-                <label className="block text-xs font-medium text-muted-foreground mb-1">Adults</label>
-                <select value={homeAdults} onChange={(e) => setHomeAdults(e.target.value)} className="w-full rounded-lg border border-border bg-alabaster px-3 py-2.5 text-sm text-foreground focus:outline-none focus:border-primary transition-colors duration-500">
-                  {[1,2,3,4].map(n => <option key={n} value={n}>{n}</option>)}
-                </select>
-              </div>
-              <div>
-                <label className="block text-xs font-medium text-muted-foreground mb-1">Children</label>
-                <select value={homeChildren} onChange={(e) => setHomeChildren(e.target.value)} className="w-full rounded-lg border border-border bg-alabaster px-3 py-2.5 text-sm text-foreground focus:outline-none focus:border-primary transition-colors duration-500">
-                  {[0,1,2,3].map(n => <option key={n} value={n}>{n}</option>)}
-                </select>
-              </div>
+              {dateError && (
+                <p className="text-red-500 text-xs mt-2 text-center">{dateError}</p>
+              )}
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 items-end">
-              <div>
-                <label className="block text-xs font-medium text-muted-foreground mb-1">Nationality</label>
-                <select value={homeNationality} onChange={(e) => setHomeNationality(e.target.value)} className="w-full rounded-lg border border-border bg-alabaster px-3 py-2.5 text-sm text-foreground focus:outline-none focus:border-primary transition-colors duration-500">
-                  <option value="Indian">Indian</option>
-                  <option value="Foreign">Foreign National</option>
-                </select>
-              </div>
-              <div>
-                <button onClick={handleHomeBooking} className="vintage-button-primary text-sm px-6 py-2.5 w-full text-center block cursor-pointer">
-                  {homeCheckIn && homeCheckOut ? 'Check Availability' : 'Book Your Stay'}
-                </button>
-              </div>
+            <div className="hidden md:block">
+              <WeatherWidget />
             </div>
-            {dateError && (
-              <p className="text-red-500 text-xs mt-2 text-center">{dateError}</p>
-            )}
           </div>
         </div>
       </section>
@@ -218,8 +229,8 @@ export default function HomePage() {
       </section>
 
       {/* Cottages */}
-      <section className="section-padding bg-background">
-        <div className="vintage-container">
+      <section className="section-padding bg-background frosted-section">
+        <div className="relative z-10 vintage-container">
           <ScrollReveal>
             <div className="text-center max-w-3xl mx-auto mb-16">
               <p className="text-primary text-sm tracking-[0.2em] uppercase mb-4 font-sans">Our Cottages</p>
@@ -229,40 +240,48 @@ export default function HomePage() {
               </p>
             </div>
           </ScrollReveal>
-          <div className="grid md:grid-cols-3 gap-8">
-            {cottages.map((cottage, i) => (
-              <ScrollReveal key={cottage.name} delay={i * 0.15}>
-                <div className="group vintage-card overflow-hidden">
-                  <div className="aspect-[4/3] overflow-hidden bg-sand-200">
-                    <img src={`https://images.unsplash.com/photo-${['1504384308090-c894fdcc538d', '1554118811-1e0d58224f24', '1506905925346-21bda4d32df4'][i]}?w=600&q=80`} alt={cottage.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-                  </div>
-                  <div className="p-6">
-                    <div className="flex justify-between items-start mb-2">
-                      <h3 className="font-serif text-xl text-foreground">{cottage.name}</h3>
-                      <span className="text-primary font-semibold text-sm">{cottage.price}<span className="text-muted-foreground font-normal text-xs">/night</span></span>
+          <div className="grid lg:grid-cols-4 gap-6">
+            <div className="lg:col-span-3">
+              <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-6">
+                {cottages.map((cottage, i) => (
+                  <ScrollReveal key={cottage.name} delay={i * 0.08}>
+                    <div className="group glass-card-light rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-500">
+                      <div className="aspect-[4/3] overflow-hidden bg-sand-200">
+                        <img src={`https://images.unsplash.com/photo-${['1504384308090-c894fdcc538d', '1554118811-1e0d58224f24', '1506905925346-21bda4d32df4', '1504384308090-c894fdcc538d', '1554118811-1e0d58224f24', '1506905925346-21bda4d32df4', '1504384308090-c894fdcc538d'][i]}?w=600&q=80`} alt={cottage.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                      </div>
+                      <div className="p-5">
+                        <div className="flex justify-between items-start mb-2">
+                          <h3 className="font-serif text-lg text-foreground">{cottage.name}</h3>
+                          <span className="text-primary font-semibold text-sm">{cottage.price}<span className="text-muted-foreground font-normal text-xs">/night</span></span>
+                        </div>
+                        <p className="text-muted-foreground text-xs mb-3 leading-relaxed">{cottage.desc}</p>
+                        <Link href={`/cottages/slug/${cottage.slug}`} className="text-primary text-xs font-medium inline-flex items-center gap-1 group-hover:gap-2 transition-all duration-500">
+                          View Details <ArrowRight className="w-3 h-3" />
+                        </Link>
+                      </div>
                     </div>
-                    <p className="text-muted-foreground text-sm mb-4">{cottage.desc}</p>
-                    <Link href={`/cottages/slug/${cottage.slug}`} className="text-primary text-sm font-medium inline-flex items-center gap-1 group-hover:gap-2 transition-all duration-500">
-                      View Details <ArrowRight className="w-3 h-3" />
-                    </Link>
-                  </div>
+                  </ScrollReveal>
+                ))}
+              </div>
+              <ScrollReveal delay={0.3}>
+                <div className="text-center mt-10">
+                  <Link href="/cottages" className="vintage-button-outline">
+                    View All Cottages <ArrowRight className="w-4 h-4 ml-2" />
+                  </Link>
                 </div>
               </ScrollReveal>
-            ))}
-          </div>
-          <ScrollReveal delay={0.3}>
-            <div className="text-center mt-12">
-              <Link href="/cottages" className="vintage-button-outline">
-                View All Cottages <ArrowRight className="w-4 h-4 ml-2" />
-              </Link>
             </div>
-          </ScrollReveal>
+            <div className="hidden lg:block">
+              <AvailabilityHeatmap />
+            </div>
+          </div>
         </div>
       </section>
 
       {/* Experiences */}
       <section id="experiences" className="relative py-28 md:py-36 overflow-hidden bg-vedara-900">
         <div className="absolute inset-0 opacity-5" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1920&q=80)', backgroundSize: 'cover' }} />
+        <div className="absolute inset-0 liquid-gradient opacity-30" />
         <div className="relative z-10 vintage-container">
           <ScrollReveal>
             <div className="text-center max-w-3xl mx-auto mb-16">
@@ -271,11 +290,11 @@ export default function HomePage() {
               <p className="text-alabaster/70 text-lg">Beyond the cottages, a world of experiences awaits – each designed to bring you closer to the mountains and to yourself.</p>
             </div>
           </ScrollReveal>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
             {experiences.map((exp, i) => (
-              <ScrollReveal key={exp.title} delay={i * 0.1}>
-                <div className="group vintage-card bg-alabaster/[0.08] backdrop-blur-sm border-alabaster/[0.06] p-6 text-center hover:bg-alabaster/[0.15] transition-all duration-500 font-sans">
-                  <div className="w-14 h-14 rounded-full bg-primary/20 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-500">
+              <ScrollReveal key={exp.title} delay={i * 0.08}>
+                <div className="group glass-card rounded-2xl p-6 text-center hover:bg-white/[0.15] transition-all duration-500 font-sans glass-shimmer">
+                  <div className="w-14 h-14 rounded-full bg-gradient-to-br from-primary/25 to-primary/10 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-500">
                     <exp.icon className="w-7 h-7 text-primary" />
                   </div>
                   <h3 className="font-serif text-lg text-alabaster mb-2">{exp.title}</h3>
@@ -339,15 +358,15 @@ export default function HomePage() {
               <h2 className="section-title mb-6">Voices from the Mountains</h2>
             </div>
           </ScrollReveal>
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-3 gap-6">
             {testimonials.map((t, i) => (
-              <ScrollReveal key={t.name} delay={i * 0.15}>
+              <ScrollReveal key={t.name} delay={i * 0.12}>
                 <motion.div
-                  className="vintage-card p-8 relative overflow-hidden"
-                  whileHover={{ y: -4, boxShadow: '0 20px 40px rgba(0,0,0,0.08)' }}
+                  className="glass-card-light rounded-2xl p-7 relative overflow-hidden"
+                  whileHover={{ y: -4, boxShadow: '0 20px 40px rgba(0,0,0,0.06)' }}
                   transition={{ duration: 0.5 }}
                 >
-                  <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-primary/10 to-transparent rounded-bl-full" />
+                  <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-primary/8 to-transparent rounded-bl-full" />
                   <div className="flex gap-1 mb-4">
                     {Array.from({ length: t.rating }).map((_, idx) => (
                       <motion.div
@@ -360,9 +379,9 @@ export default function HomePage() {
                       </motion.div>
                     ))}
                   </div>
-                  <p className="text-muted-foreground text-sm leading-relaxed mb-6 italic">&ldquo;{t.content}&rdquo;</p>
-                  <div className="border-t border-border/50 pt-4">
-                    <p className="font-serif text-foreground font-medium">{t.name}</p>
+                  <p className="text-muted-foreground text-sm leading-relaxed mb-5 italic">&ldquo;{t.content}&rdquo;</p>
+                  <div className="border-t border-border/30 pt-4">
+                    <p className="font-serif text-foreground font-medium text-sm">{t.name}</p>
                     <p className="text-xs text-muted-foreground/70">{t.location}</p>
                   </div>
                 </motion.div>
@@ -373,8 +392,8 @@ export default function HomePage() {
       </section>
 
       {/* Nearby */}
-      <section className="section-padding bg-background">
-        <div className="vintage-container">
+      <section className="section-padding bg-background frosted-section">
+        <div className="relative z-10 vintage-container">
           <ScrollReveal>
             <div className="text-center max-w-3xl mx-auto mb-16">
               <p className="text-primary text-sm tracking-[0.2em] uppercase mb-4 font-sans">Explore Nearby</p>
@@ -382,11 +401,11 @@ export default function HomePage() {
               <p className="section-subtitle">The Vedara is your gateway to the raw beauty of Jibhi and beyond</p>
             </div>
           </ScrollReveal>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {nearbyAttractions.map((place, i) => (
               <ScrollReveal key={place.name} delay={i * 0.1}>
-                <div className="vintage-card p-6 flex items-start gap-4 group hover:border-primary/30 transition-all duration-500">
-                  <div className="w-11 h-11 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                <div className="glass-card-light rounded-2xl p-5 flex items-start gap-4 group hover:border-primary/30 transition-all duration-500">
+                  <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/20 transition-colors duration-500">
                     <place.icon className="w-5 h-5 text-primary" />
                   </div>
                   <div>
@@ -417,22 +436,22 @@ export default function HomePage() {
             <div className="text-center max-w-3xl mx-auto mb-16">
               <p className="text-primary text-sm tracking-[0.2em] uppercase mb-4 font-sans">Getting Here</p>
               <h2 className="section-title mb-6">How to Reach The Vedara</h2>
-              <p className="section-subtitle">Your journey to Ghiyagi, Jibhi begins here</p>
+              <p className="section-subtitle">Your journey to Ghiyagi, Jibhi, begins here</p>
             </div>
           </ScrollReveal>
-          <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+          <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
             <ScrollReveal delay={0.1}>
-              <div className="vintage-card p-8 text-center">
-                <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
+              <div className="glass-card-light rounded-2xl p-7 text-center">
+                <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
                   <MapPin className="w-7 h-7 text-primary" />
                 </div>
                 <h3 className="font-serif text-lg mb-3 text-foreground">By Road</h3>
-                <p className="text-muted-foreground text-sm leading-relaxed">Delhi to Jibhi via Mandi-Aut-Larji. ~480 km, approximately 10–11 hours. Buses available from Delhi ISBT to Aut, then taxi to Jibhi.</p>
+                <p className="text-muted-foreground text-sm leading-relaxed">Delhi to Jibhi via Mandi–Aut–Larji. Approximately 480 km, 10–11 hours. Buses available from Delhi ISBT to Aut, then a taxi to Jibhi.</p>
               </div>
             </ScrollReveal>
             <ScrollReveal delay={0.2}>
-              <div className="vintage-card p-8 text-center">
-                <div className="w-14 h-14 rounded-full bg-sage-500/10 flex items-center justify-center mx-auto mb-4">
+              <div className="glass-card-light rounded-2xl p-7 text-center">
+                <div className="w-14 h-14 rounded-2xl bg-sage-500/10 flex items-center justify-center mx-auto mb-4">
                   <MapPin className="w-7 h-7 text-sage-500" />
                 </div>
                 <h3 className="font-serif text-lg mb-3 text-foreground">By Rail</h3>
@@ -440,8 +459,8 @@ export default function HomePage() {
               </div>
             </ScrollReveal>
             <ScrollReveal delay={0.3}>
-              <div className="vintage-card p-8 text-center">
-                <div className="w-14 h-14 rounded-full bg-gold-500/10 flex items-center justify-center mx-auto mb-4">
+              <div className="glass-card-light rounded-2xl p-7 text-center">
+                <div className="w-14 h-14 rounded-2xl bg-gold-500/10 flex items-center justify-center mx-auto mb-4">
                   <MapPin className="w-7 h-7 text-gold-500" />
                 </div>
                 <h3 className="font-serif text-lg mb-3 text-foreground">By Air</h3>
@@ -455,11 +474,12 @@ export default function HomePage() {
       {/* CTA */}
       <section className="py-20 md:py-28 bg-primary relative overflow-hidden">
         <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1585409677983-0f6c41ca9c3b?w=1920&q=80)', backgroundSize: 'cover' }} />
+        <div className="absolute inset-0 liquid-gradient opacity-20" />
         <div className="relative z-10 vintage-container text-center">
           <ScrollReveal>
             <h2 className="font-serif text-3xl md:text-5xl text-primary-foreground mb-4">Ready to Escape?</h2>
             <p className="text-primary-foreground/80 text-lg max-w-xl mx-auto mb-8">
-              Book your mountain story today. Early check-in and late check-out available on request.
+              Book your mountain story today. Early check-in and late check-out are available on request.
             </p>
             <MagneticButton>
               <Link href="/booking" className="vintage-button bg-alabaster text-foreground hover:bg-sand-100 px-10 py-4 text-base inline-block shadow-xl">

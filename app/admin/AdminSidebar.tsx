@@ -40,7 +40,7 @@ export function AdminSidebar() {
   };
 
   return (
-    <aside className="fixed left-0 top-0 bottom-0 z-40 flex w-60 flex-col bg-white border-r border-gold-200">
+    <aside className="fixed left-0 top-0 bottom-0 z-40 flex w-60 flex-col glass-card-light border-r border-gold-200 rounded-none">
       <div className="flex items-center gap-3 px-5 py-5 border-b border-earth-100">
         <div className="w-9 h-9 rounded-full overflow-hidden flex-shrink-0">
           <Image
@@ -66,9 +66,9 @@ export function AdminSidebar() {
               key={item.href}
               href={item.href}
               className={cn(
-                'flex items-center gap-3 rounded-lg px-3 py-2 text-[13px] font-medium transition-all duration-150',
+                'flex items-center gap-3 rounded-xl px-3 py-2.5 text-[13px] font-medium transition-all duration-200',
                 active
-                  ? 'bg-gold-600 text-white'
+                  ? 'bg-gold-600 text-white shadow-md'
                   : 'text-charcoal/70 hover:bg-earth-50 hover:text-foreground'
               )}
             >

@@ -94,7 +94,7 @@ export default function AdminDashboardPage() {
             {loading ? (
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
-                  <div key={i} className="vintage-card animate-pulse p-6">
+                  <div key={i} className="glass-card-light animate-pulse p-5 rounded-2xl">
                     <div className="h-4 bg-gold-100 rounded w-1/2 mb-3" />
                     <div className="h-8 bg-gold-100 rounded w-1/3" />
                   </div>
@@ -104,7 +104,7 @@ export default function AdminDashboardPage() {
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {statCards.map((card) => (
                   <ScrollReveal key={card.label} delay={0.05}>
-                    <div className="vintage-card p-5">
+                    <div className="glass-card-light rounded-2xl p-5">
                       <div className={`w-10 h-10 rounded-xl ${card.color} flex items-center justify-center mb-3`}>
                         <card.icon className="w-5 h-5" />
                       </div>
@@ -118,7 +118,7 @@ export default function AdminDashboardPage() {
 
             <div className="mt-8 grid md:grid-cols-2 gap-6">
               <ScrollReveal>
-                <div className="vintage-card p-6">
+                <div className="glass-card-light rounded-2xl p-6">
                   <h2 className="font-serif text-lg text-foreground mb-4">Quick Actions</h2>
                   <div className="space-y-3">
                     {[
@@ -130,7 +130,7 @@ export default function AdminDashboardPage() {
                       <Link
                         key={item.label}
                         href={item.href}
-                        className="block p-3 rounded-xl bg-earth-50 hover:bg-gold-50 transition-colors"
+                        className="block p-3 rounded-xl bg-earth-50/80 hover:bg-gold-50 transition-colors"
                       >
                         <p className="text-sm font-medium text-foreground">{item.label}</p>
                         <p className="text-xs text-muted-foreground">{item.desc}</p>
@@ -140,7 +140,7 @@ export default function AdminDashboardPage() {
                 </div>
               </ScrollReveal>
               <ScrollReveal delay={0.1}>
-                <div className="vintage-card p-6">
+                <div className="glass-card-light rounded-2xl p-6">
                   <h2 className="font-serif text-lg text-foreground mb-4">Activity Log</h2>
                   <p className="text-muted-foreground text-sm">View recent system activity and changes.</p>
                   {stats && (

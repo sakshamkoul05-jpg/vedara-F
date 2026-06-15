@@ -86,6 +86,10 @@ const config: Config = {
         'shimmer': 'shimmer 3s infinite',
         'wind-sweep': 'windSweep 15s linear infinite',
         'tree-sway': 'treeSway 6s ease-in-out infinite',
+        'glass-shimmer': 'glassShimmer 4s ease-in-out infinite',
+        'liquid-flow': 'liquidFlow 12s ease infinite',
+        'glass-pulse': 'glassPulse 3s ease-in-out infinite',
+        'glass-glow': 'glassGlow 4s ease-in-out infinite',
       },
       keyframes: {
         fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } },
@@ -95,6 +99,10 @@ const config: Config = {
         shimmer: { '0%': { backgroundPosition: '-200% 0' }, '100%': { backgroundPosition: '200% 0' } },
         windSweep: { '0%': { transform: 'translateX(-100%)' }, '100%': { transform: 'translateX(100vw)' } },
         treeSway: { '0%, 100%': { transform: 'rotate(0deg) skewX(0deg)' }, '25%': { transform: 'rotate(0.2deg) skewX(0.3deg)' }, '75%': { transform: 'rotate(-0.2deg) skewX(-0.3deg)' } },
+        glassShimmer: { '0%, 100%': { backgroundPosition: '200% center' }, '50%': { backgroundPosition: '-200% center' } },
+        liquidFlow: { '0%, 100%': { backgroundPosition: '0% 50%' }, '50%': { backgroundPosition: '100% 50%' } },
+        glassPulse: { '0%, 100%': { opacity: '0.6' }, '50%': { opacity: '1' } },
+        glassGlow: { '0%, 100%': { boxShadow: '0 0 20px rgba(196, 154, 108, 0.1)' }, '50%': { boxShadow: '0 0 40px rgba(196, 154, 108, 0.2)' } },
       },
       backgroundImage: {
         'vintage-paper': "url('/images/textures/paper-bg.jpg')",

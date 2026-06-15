@@ -121,17 +121,17 @@ export default function AboutPage() {
           <div className="vintage-container">
             <ScrollReveal>
               <div className="text-center max-w-3xl mx-auto mb-16">
-                <p className="text-gold-500 text-sm tracking-[0.2em] uppercase mb-4 font-sans">The Pillars of Vedara</p>
+                <p className="text-gold-500 text-sm tracking-[0.2em] uppercase mb-4 font-sans">The Vedara Philosophy</p>
                 <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-vedara-900 mb-6">
-                  The Pillars of the Vedara Experience
+                  Built on Three Pillars
                 </h2>
               </div>
             </ScrollReveal>
 
             <div className="grid md:grid-cols-3 gap-8 lg:gap-12">
               <ScrollReveal delay={0.1} direction="up">
-                <div className="group p-8 md:p-10 rounded-lg bg-card border border-border/60 hover:border-primary/30 transition-smooth h-full flex flex-col">
-                  <div className="w-14 h-14 rounded-lg bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-smooth">
+                <div className="group glass-card-light rounded-2xl p-8 md:p-10 hover:border-primary/30 transition-smooth h-full flex flex-col">
+                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary/15 to-primary/5 flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-smooth">
                     <Home className="w-7 h-7 text-primary" />
                   </div>
                   <h3 className="font-serif text-2xl text-foreground mb-4">The Sanctuary</h3>
@@ -142,20 +142,20 @@ export default function AboutPage() {
               </ScrollReveal>
 
               <ScrollReveal delay={0.2} direction="up">
-                <div className="group p-8 md:p-10 rounded-lg bg-card border border-border/60 hover:border-primary/30 transition-smooth h-full flex flex-col">
-                  <div className="w-14 h-14 rounded-lg bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-smooth">
+                <div className="group glass-card-light rounded-2xl p-8 md:p-10 hover:border-primary/30 transition-smooth h-full flex flex-col">
+                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary/15 to-primary/5 flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-smooth">
                     <UtensilsCrossed className="w-7 h-7 text-primary" />
                   </div>
                   <h3 className="font-serif text-2xl text-foreground mb-4">The Gastronomy</h3>
-                  <p className="text-charcoal/70 leading-relaxed text-sm md:text-base">
-                    Food at Caf&eacute; Charade is a celebration of time and tradition. We lean into the philosophy of slow food—where meals are crafted from scratch using farm-to-table ingredients and local mountain produce. From slow-simmered regional Himachali heritage delicacies to comforting artisan barista brews and wild herbal infusions, every plate tells the story of the valley.
+                  <p className="text-muted-foreground leading-relaxed text-sm md:text-base">
+                    Food at Café Charade is a celebration of time and tradition. We lean into the philosophy of slow food – where meals are crafted from scratch using farm-to-table ingredients and local mountain produce. From slow-simmered regional Himachali heritage delicacies to comforting artisan barista brews and wild herbal infusions, every plate tells the story of the valley.
                   </p>
                 </div>
               </ScrollReveal>
 
               <ScrollReveal delay={0.3} direction="up">
-                <div className="group p-8 md:p-10 rounded-lg bg-card border border-border/60 hover:border-primary/30 transition-smooth h-full flex flex-col">
-                  <div className="w-14 h-14 rounded-lg bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-smooth">
+                <div className="group glass-card-light rounded-2xl p-8 md:p-10 hover:border-primary/30 transition-smooth h-full flex flex-col">
+                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary/15 to-primary/5 flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-smooth">
                     <Compass className="w-7 h-7 text-primary" />
                   </div>
                   <h3 className="font-serif text-2xl text-foreground mb-4">The Mindfulness</h3>
@@ -179,10 +179,10 @@ export default function AboutPage() {
               <p className="text-muted-foreground text-base md:text-lg max-w-2xl mx-auto">7 luxury cottages Jibhi | 18–22 guests | Launch 2026 | A nature retreat Himachal</p>
             </div>
           </ScrollReveal>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {highlights.map((h, i) => (
               <ScrollReveal key={h.label} delay={i * 0.1}>
-                <div className="vintage-card p-6 text-center transition-smooth">
+                <div className="glass-card-light rounded-2xl p-6 text-center transition-smooth">
                   <h.icon className="w-8 h-8 text-primary mx-auto mb-3" />
                   <h3 className="font-serif text-lg text-foreground mb-1">{h.label}</h3>
                   <p className="text-muted-foreground text-sm">{h.desc}</p>
@@ -203,11 +203,11 @@ export default function AboutPage() {
               <p className="text-muted-foreground text-base md:text-lg">Beyond the cottages, a world of experiences awaits</p>
             </div>
           </ScrollReveal>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
             {activities.map((act, i) => (
               <ScrollReveal key={act.title} delay={i * 0.1}>
-                <div className="group vintage-card p-6 text-center transition-smooth">
-                  <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-smooth">
+                <div className="group glass-card-light rounded-2xl p-6 text-center transition-smooth">
+                  <div className="w-14 h-14 rounded-full bg-gradient-to-br from-primary/15 to-primary/5 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-smooth">
                     <act.icon className="w-7 h-7 text-primary" />
                   </div>
                   <h3 className="font-serif text-lg text-foreground mb-2">{act.title}</h3>
@@ -225,15 +225,15 @@ export default function AboutPage() {
           <ScrollReveal>
             <div className="text-center max-w-3xl mx-auto mb-16">
               <p className="text-primary text-sm tracking-[0.2em] uppercase mb-4 font-sans">Amenities</p>
-              <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-foreground mb-6">Facilities &amp; Experiences</h2>
+              <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-foreground mb-6">Facilities & Experiences</h2>
               <p className="text-muted-foreground text-base md:text-lg">Every comfort thoughtfully curated for your mountain stay</p>
             </div>
           </ScrollReveal>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {amenities.map((a, i) => (
               <ScrollReveal key={a.label} delay={i * 0.08}>
-                <div className="vintage-card p-6 flex items-start gap-4 transition-smooth">
-                  <div className="w-11 h-11 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                <div className="glass-card-light rounded-2xl p-5 flex items-start gap-4 transition-smooth">
+                  <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
                     <a.icon className="w-5 h-5 text-primary" />
                   </div>
                   <div>
@@ -245,7 +245,7 @@ export default function AboutPage() {
             ))}
           </div>
           <ScrollReveal delay={0.2}>
-            <div className="mt-8 vintage-card p-5 inline-flex items-center gap-3 mx-auto transition-smooth">
+            <div className="mt-8 glass-card-light rounded-2xl p-5 inline-flex items-center gap-3 mx-auto transition-smooth">
               <Wifi className="w-5 h-5 text-primary" />
               <span className="text-sm text-foreground"><strong>High-speed WiFi</strong> available throughout the property</span>
             </div>
@@ -263,10 +263,10 @@ export default function AboutPage() {
               <p className="text-alabaster/60 text-lg">Your journey to the mountains, simplified.</p>
             </div>
           </ScrollReveal>
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-3 gap-6">
             <ScrollReveal delay={0.1}>
-              <div className="vintage-card bg-alabaster/5 backdrop-blur-sm border-alabaster/10 p-6 text-center font-sans hover:border-gold-400/30 transition-smooth">
-                <div className="w-14 h-14 rounded-full bg-gold-500/20 flex items-center justify-center mx-auto mb-4">
+              <div className="glass-card rounded-2xl p-6 text-center font-sans hover:border-gold-400/30 transition-smooth glass-shimmer">
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-gold-500/25 to-gold-500/10 flex items-center justify-center mx-auto mb-4">
                   <svg className="w-7 h-7 text-gold-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 21a9 9 0 100-18 9 9 0 000 18z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 7v4l2 2" /></svg>
                 </div>
                 <h3 className="font-serif text-lg text-alabaster mb-2">By Air</h3>
@@ -276,8 +276,8 @@ export default function AboutPage() {
               </div>
             </ScrollReveal>
             <ScrollReveal delay={0.2}>
-              <div className="vintage-card bg-alabaster/5 backdrop-blur-sm border-alabaster/10 p-6 text-center font-sans hover:border-gold-400/30 transition-smooth">
-                <div className="w-14 h-14 rounded-full bg-gold-500/20 flex items-center justify-center mx-auto mb-4">
+              <div className="glass-card rounded-2xl p-6 text-center font-sans hover:border-gold-400/30 transition-smooth glass-shimmer">
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-gold-500/25 to-gold-500/10 flex items-center justify-center mx-auto mb-4">
                   <svg className="w-7 h-7 text-gold-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
                 </div>
                 <h3 className="font-serif text-lg text-alabaster mb-2">By Train</h3>
@@ -287,8 +287,8 @@ export default function AboutPage() {
               </div>
             </ScrollReveal>
             <ScrollReveal delay={0.3}>
-              <div className="vintage-card bg-alabaster/5 backdrop-blur-sm border-alabaster/10 p-6 text-center font-sans hover:border-gold-400/30 transition-smooth">
-                <div className="w-14 h-14 rounded-full bg-gold-500/20 flex items-center justify-center mx-auto mb-4">
+              <div className="glass-card rounded-2xl p-6 text-center font-sans hover:border-gold-400/30 transition-smooth glass-shimmer">
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-gold-500/25 to-gold-500/10 flex items-center justify-center mx-auto mb-4">
                   <svg className="w-7 h-7 text-gold-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
                 </div>
                 <h3 className="font-serif text-lg text-alabaster mb-2">By Road</h3>
@@ -323,10 +323,10 @@ export default function AboutPage() {
               <p className="text-muted-foreground text-base md:text-lg">Discover the raw beauty of Jibhi and beyond</p>
             </div>
           </ScrollReveal>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
             {attractions.map((place, i) => (
               <ScrollReveal key={place.name} delay={i * 0.1}>
-                <div className="group vintage-card overflow-hidden transition-smooth">
+                <div className="group glass-card-light rounded-2xl overflow-hidden transition-smooth">
                   <div className="aspect-[16/10] overflow-hidden">
                     <ImageReveal
                       src={place.image}
@@ -365,11 +365,11 @@ export default function AboutPage() {
               <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-alabaster mb-6">What We Stand For</h2>
             </div>
           </ScrollReveal>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {values.map((v, i) => (
               <ScrollReveal key={v.title} delay={i * 0.1}>
-                <div className="vintage-card bg-alabaster/[0.08] backdrop-blur-sm border-alabaster/[0.06] p-6 text-center hover:bg-alabaster/[0.15] transition-smooth">
-                  <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center mx-auto mb-4">
+                <div className="glass-card rounded-2xl p-6 text-center hover:bg-alabaster/[0.15] transition-smooth glass-shimmer">
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary/25 to-primary/10 flex items-center justify-center mx-auto mb-4">
                     <v.icon className="w-6 h-6 text-primary" />
                   </div>
                   <h3 className="font-serif text-lg text-alabaster mb-2">{v.title}</h3>

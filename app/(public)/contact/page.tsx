@@ -94,37 +94,45 @@ export default function ContactPage() {
             </ScrollReveal>
 
             <ScrollReveal direction="right" delay={0.2}>
-              <div className="space-y-6">
-                <div className="vintage-card p-6">
+              <div className="space-y-5">
+                <div className="glass-card-light rounded-2xl p-6">
                   <div className="flex items-start gap-4">
-                    <Mail className="w-5 h-5 text-gold-500 mt-0.5" />
+                    <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+                      <Mail className="w-5 h-5 text-primary" />
+                    </div>
                     <div>
                       <h3 className="font-medium text-vedara-900">Email</h3>
                       <a href="mailto:vedararetreat@gmail.com" className="text-charcoal/60 text-sm hover:text-gold-600 transition-colors duration-500">vedararetreat@gmail.com</a>
                     </div>
                   </div>
                 </div>
-                <div className="vintage-card p-6">
+                <div className="glass-card-light rounded-2xl p-6">
                   <div className="flex items-start gap-4">
-                    <Phone className="w-5 h-5 text-gold-500 mt-0.5" />
+                    <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+                      <Phone className="w-5 h-5 text-primary" />
+                    </div>
                     <div>
                       <h3 className="font-medium text-vedara-900">Phone</h3>
                       <a href="tel:+919118882242" className="text-charcoal/60 text-sm hover:text-gold-600 transition-colors duration-500">+91-91188-82242</a>
                     </div>
                   </div>
                 </div>
-                <div className="vintage-card p-6">
+                <div className="glass-card-light rounded-2xl p-6">
                   <div className="flex items-start gap-4">
-                    <MapPin className="w-5 h-5 text-gold-500 mt-0.5" />
+                    <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+                      <MapPin className="w-5 h-5 text-primary" />
+                    </div>
                     <div>
                       <h3 className="font-medium text-vedara-900">Address</h3>
                       <p className="text-charcoal/60 text-sm">Ghiyagi, Jibhi, Himachal Pradesh – 175123</p>
                     </div>
                   </div>
                 </div>
-                <div className="vintage-card p-6">
+                <div className="glass-card-light rounded-2xl p-6">
                   <div className="flex items-start gap-4">
-                    <Clock className="w-5 h-5 text-gold-500 mt-0.5" />
+                    <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+                      <Clock className="w-5 h-5 text-primary" />
+                    </div>
                     <div>
                       <h3 className="font-medium text-vedara-900">Reception Hours</h3>
                       <p className="text-charcoal/60 text-sm">Daily: 8:00 AM – 11:00 PM</p>

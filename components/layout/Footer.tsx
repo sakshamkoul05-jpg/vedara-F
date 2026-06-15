@@ -5,7 +5,8 @@ import { Mountain, Mail, Phone, MapPin, Facebook, Instagram } from 'lucide-react
 
 export function Footer() {
   return (
-    <footer className="bg-vedara-900 text-alabaster border-t border-alabaster/5">
+    <footer className="bg-vedara-900 text-alabaster border-t border-alabaster/5 relative overflow-hidden">
+      <div className="absolute inset-0 liquid-gradient opacity-10" />
       <div className="vintage-container py-16 md:py-20">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8">
           <div className="lg:col-span-2">

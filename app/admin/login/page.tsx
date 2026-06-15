@@ -126,7 +126,7 @@ export default function AdminLoginPage() {
                   onChange={(e) => setEmail(e.target.value)}
                   required
                   placeholder={portal === 'admin' ? 'admin@vedara.com' : portal === 'cafe' ? 'cafe@vedara.com' : 'staff@vedara.com'}
-                  className="w-full pl-10 pr-4 py-2.5 bg-white border border-border rounded-lg text-foreground placeholder-muted-foreground text-sm focus:outline-none focus:border-forest-500 focus:ring-2 focus:ring-forest-500/20 transition-all"
+                  className="w-full pl-10 pr-4 py-2.5 glass-input rounded-lg text-foreground placeholder-muted-foreground text-sm focus:outline-none"
                 />
               </div>
             </div>
@@ -143,7 +143,7 @@ export default function AdminLoginPage() {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                   placeholder="Enter password"
-                  className="w-full pl-10 pr-10 py-2.5 bg-white border border-border rounded-lg text-foreground placeholder-muted-foreground text-sm focus:outline-none focus:border-forest-500 focus:ring-2 focus:ring-forest-500/20 transition-all"
+                  className="w-full pl-10 pr-10 py-2.5 glass-input rounded-lg text-foreground placeholder-muted-foreground text-sm focus:outline-none"
                 />
                 <button
                   type="button"

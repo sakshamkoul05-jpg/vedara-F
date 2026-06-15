@@ -12,6 +12,7 @@ import { Toaster } from 'react-hot-toast';
 const FogParticles = dynamic(() => import('@/components/animations/FogParticles').then(m => ({ default: m.FogParticles })), { ssr: false });
 const ParallaxCursor = dynamic(() => import('@/components/animations/ParallaxCursor').then(m => ({ default: m.ParallaxCursor })), { ssr: false });
 const ChatBot = dynamic(() => import('@/components/chatbot/ChatBot').then(m => ({ default: m.ChatBot })), { ssr: false });
+const TripPlanner = dynamic(() => import('@/components/public/TripPlanner').then(m => ({ default: m.TripPlanner })), { ssr: false });
 
 export function ClientBody({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -52,6 +53,7 @@ export function ClientBody({ children }: { children: React.ReactNode }) {
         <main>{children}</main>
         <Footer />
         <ChatBot />
+        <TripPlanner />
       </SmoothScroll>
       <Toaster
         position="top-right"
