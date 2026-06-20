@@ -222,45 +222,45 @@ export default function HomePage() {
       <section id="booking-bar" className="relative z-30 mb-12 px-4">
         <div className="vintage-container max-w-6xl">
           <div className="grid md:grid-cols-3 gap-4">
-            <div className="md:col-span-2 bg-white rounded-2xl p-5 md:p-6 font-sans shadow-[0_4px_24px_rgba(28,43,58,0.12)] border border-[rgba(74,85,104,0.12)]">
+            <div style={{ gridColumn: 'span 2 / span 2', background: 'var(--clr-surface)', borderRadius: '16px', padding: '20px 24px', boxShadow: '0 4px 24px rgba(28,43,58,0.12)', border: '1px solid var(--clr-stone)' }} className="md:col-span-2">
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3 items-end mb-3">
                 <div>
-                  <label className="block text-xs font-medium text-foreground/80 mb-1">Check In</label>
-                  <input type="date" value={homeCheckIn} onChange={handleCheckInChange} min={today} className="w-full rounded-lg border border-border/50 bg-white px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-300 hover:border-primary/30" />
+                  <label className="vintage-label">Check In</label>
+                  <input type="date" value={homeCheckIn} onChange={handleCheckInChange} min={today} className="vintage-input" style={{ borderBottom: '1px solid var(--clr-stone)', fontSize: '0.9rem', padding: '8px 0' }} />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-foreground/80 mb-1">Check Out</label>
-                  <input type="date" value={homeCheckOut} onChange={handleCheckOutChange} min={homeCheckIn || today} className="w-full rounded-lg border border-border/50 bg-white px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-300 hover:border-primary/30" />
+                  <label className="vintage-label">Check Out</label>
+                  <input type="date" value={homeCheckOut} onChange={handleCheckOutChange} min={homeCheckIn || today} className="vintage-input" style={{ borderBottom: '1px solid var(--clr-stone)', fontSize: '0.9rem', padding: '8px 0' }} />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-foreground/80 mb-1">Adults</label>
-                  <select value={homeAdults} onChange={(e) => setHomeAdults(e.target.value)} className="w-full rounded-lg border border-border/50 bg-white px-3 py-2.5 text-sm text-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-300 hover:border-primary/30">
+                  <label className="vintage-label">Adults</label>
+                  <select value={homeAdults} onChange={(e) => setHomeAdults(e.target.value)} className="vintage-input" style={{ borderBottom: '1px solid var(--clr-stone)', fontSize: '0.9rem', padding: '8px 0', background: 'transparent' }}>
                     {[1,2,3,4].map(n => <option key={n} value={n}>{n}</option>)}
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-foreground/80 mb-1">Children</label>
-                  <select value={homeChildren} onChange={(e) => setHomeChildren(e.target.value)} className="w-full rounded-lg border border-border/50 bg-white px-3 py-2.5 text-sm text-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-300 hover:border-primary/30">
+                  <label className="vintage-label">Children</label>
+                  <select value={homeChildren} onChange={(e) => setHomeChildren(e.target.value)} className="vintage-input" style={{ borderBottom: '1px solid var(--clr-stone)', fontSize: '0.9rem', padding: '8px 0', background: 'transparent' }}>
                     {[0,1,2,3].map(n => <option key={n} value={n}>{n}</option>)}
                   </select>
                 </div>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3 items-end">
                 <div>
-                  <label className="block text-xs font-medium text-foreground/80 mb-1">Nationality</label>
-                  <select value={homeNationality} onChange={(e) => setHomeNationality(e.target.value)} className="w-full rounded-lg border border-border/50 bg-white px-3 py-2.5 text-sm text-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-300 hover:border-primary/30">
+                  <label className="vintage-label">Nationality</label>
+                  <select value={homeNationality} onChange={(e) => setHomeNationality(e.target.value)} className="vintage-input" style={{ borderBottom: '1px solid var(--clr-stone)', fontSize: '0.9rem', padding: '8px 0', background: 'transparent' }}>
                     <option value="Indian">Indian</option>
                     <option value="Foreign">Foreign National</option>
                   </select>
                 </div>
                 <div>
-                  <button onClick={handleHomeBooking} className="vintage-button-primary text-sm px-6 py-2.5 w-full text-center block cursor-pointer btn-fill-slide">
+                  <button onClick={handleHomeBooking} className="vintage-button-primary" style={{ width: '100%', padding: '12px 24px', fontSize: '0.85rem' }}>
                     {homeCheckIn && homeCheckOut ? 'Check Availability' : 'Book Your Stay'}
                   </button>
                 </div>
               </div>
               {dateError && (
-                <p className="text-red-500 text-xs mt-2 text-center">{dateError}</p>
+                <p style={{ color: '#dc2626', fontSize: '0.75rem', marginTop: '8px', textAlign: 'center' }}>{dateError}</p>
               )}
             </div>
             <div className="hidden md:block">
