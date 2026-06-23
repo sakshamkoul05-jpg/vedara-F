@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from 'framer-motion';
-import { Coffee, Soup, Fish, Salad, UtensilsCrossed, IceCream, CupSoda, Cookie, Baby, Sparkles, Mountain, Leaf, ArrowLeft, ChevronDown, Search, ShoppingCart, Plus, Minus, Trash2, Send, Store, Home, CheckCircle } from 'lucide-react';
+import { Coffee, Soup, Fish, Salad, UtensilsCrossed, IceCream, CupSoda, Cookie, Baby, Sparkles, Mountain, Leaf, ArrowLeft, ChevronDown, Search, ShoppingCart, Plus, Minus, Trash2, Send, Store, Home, CheckCircle, Moon } from 'lucide-react';
 import Link from 'next/link';
 import { useCartStore } from '@/store/cart';
 import { endpoints } from '@/lib/api';
@@ -420,6 +420,23 @@ export default function CafePage() {
             </div>
           </div>
         </nav>
+
+        <div className="vintage-container pt-6 pb-2">
+          <div className="flex flex-wrap items-center justify-center gap-4 md:gap-8 text-sm text-muted-foreground">
+            <div className="flex items-center gap-2">
+              <Coffee className="w-4 h-4 text-gold-500" />
+              <span><strong className="text-foreground">Breakfast:</strong> 7:30 AM – 10:00 AM</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <UtensilsCrossed className="w-4 h-4 text-gold-500" />
+              <span><strong className="text-foreground">Lunch:</strong> 12:00 PM – 3:30 PM</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Moon className="w-4 h-4 text-gold-500" />
+              <span><strong className="text-foreground">Dinner:</strong> 7:00 PM – 10:00 PM</span>
+            </div>
+          </div>
+        </div>
 
         <div className="vintage-container py-8 md:py-12 pb-28">
           <AnimatePresence mode="wait">

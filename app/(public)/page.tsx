@@ -321,17 +321,17 @@ export default function HomePage() {
             <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-6">
               {cottages.filter(c => c.category === 'Premium Duplex Family Suite').map((cottage, i) => (
                 <ScrollReveal key={cottage.name} delay={i * 0.08} direction="up" distance={40}>
-                  <article className="group bg-white rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-500 reveal">
+                  <article className="group bg-white rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-500 reveal h-full flex flex-col">
                     <div className="aspect-[4/3] overflow-hidden bg-sand-200">
                       <img src={`https://images.unsplash.com/photo-${['1504384308090-c894fdcc538d', '1554118811-1e0d58224f24', '1506905925346-21bda4d32df4'][i]}?w=600&q=80`} alt={cottage.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                     </div>
-                    <div className="p-5">
+                    <div className="p-5 flex flex-col flex-1">
                       <div className="flex justify-between items-start mb-2">
                         <h4 className="font-serif text-lg text-foreground">{cottage.name}</h4>
                         <span className="text-primary font-semibold text-sm">{cottage.price}<span className="text-muted-foreground font-normal text-xs">/night</span></span>
                       </div>
-                      <p className="text-muted-foreground text-xs mb-3 leading-relaxed">{cottage.desc}</p>
-                      <Link href={`/cottages/slug/${cottage.slug}`} className="text-primary text-xs font-medium inline-flex items-center gap-1 group-hover:gap-2 transition-all duration-500">
+                      <p className="text-muted-foreground text-xs mb-3 leading-relaxed line-clamp-2 flex-1">{cottage.desc}</p>
+                      <Link href={`/cottages/slug/${cottage.slug}`} className="text-primary text-xs font-medium inline-flex items-center gap-1 group-hover:gap-2 transition-all duration-500 mt-auto">
                         View Details <ArrowRight className="w-3 h-3" />
                       </Link>
                     </div>
@@ -352,17 +352,17 @@ export default function HomePage() {
             <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-6">
               {cottages.filter(c => c.category === 'Intimate Mountain View Suite').map((cottage, i) => (
                 <ScrollReveal key={cottage.name} delay={i * 0.08} direction="up" distance={40}>
-                  <article className="group bg-white rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-500 reveal">
+                  <article className="group bg-white rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-500 reveal h-full flex flex-col">
                     <div className="aspect-[4/3] overflow-hidden bg-sand-200">
                       <img src={`https://images.unsplash.com/photo-${['1476514525535-07fb3b4ae5f1', '1519681393784-d120267933ba', '1469476568026-46a7f7b2f9c2'][i]}?w=600&q=80`} alt={cottage.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                     </div>
-                    <div className="p-5">
+                    <div className="p-5 flex flex-col flex-1">
                       <div className="flex justify-between items-start mb-2">
                         <h4 className="font-serif text-lg text-foreground">{cottage.name}</h4>
                         <span className="text-primary font-semibold text-sm">{cottage.price}<span className="text-muted-foreground font-normal text-xs">/night</span></span>
                       </div>
-                      <p className="text-muted-foreground text-xs mb-3 leading-relaxed">{cottage.desc}</p>
-                      <Link href={`/cottages/slug/${cottage.slug}`} className="text-primary text-xs font-medium inline-flex items-center gap-1 group-hover:gap-2 transition-all duration-500">
+                      <p className="text-muted-foreground text-xs mb-3 leading-relaxed line-clamp-2 flex-1">{cottage.desc}</p>
+                      <Link href={`/cottages/slug/${cottage.slug}`} className="text-primary text-xs font-medium inline-flex items-center gap-1 group-hover:gap-2 transition-all duration-500 mt-auto">
                         View Details <ArrowRight className="w-3 h-3" />
                       </Link>
                     </div>
@@ -383,17 +383,17 @@ export default function HomePage() {
             <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-6">
               {cottages.filter(c => c.category === 'Cozy Alpine Studio').map((cottage, i) => (
                 <ScrollReveal key={cottage.name} delay={i * 0.08} direction="up" distance={40}>
-                  <article className="group bg-white rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-500 reveal">
+                  <article className="group bg-white rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-500 reveal h-full flex flex-col">
                     <div className="aspect-[4/3] overflow-hidden bg-sand-200">
                       <img src={`https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&q=80`} alt={cottage.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                     </div>
-                    <div className="p-5">
+                    <div className="p-5 flex flex-col flex-1">
                       <div className="flex justify-between items-start mb-2">
                         <h4 className="font-serif text-lg text-foreground">{cottage.name}</h4>
                         <span className="text-primary font-semibold text-sm">{cottage.price}<span className="text-muted-foreground font-normal text-xs">/night</span></span>
                       </div>
-                      <p className="text-muted-foreground text-xs mb-3 leading-relaxed">{cottage.desc}</p>
-                      <Link href={`/cottages/slug/${cottage.slug}`} className="text-primary text-xs font-medium inline-flex items-center gap-1 group-hover:gap-2 transition-all duration-500">
+                      <p className="text-muted-foreground text-xs mb-3 leading-relaxed line-clamp-2 flex-1">{cottage.desc}</p>
+                      <Link href={`/cottages/slug/${cottage.slug}`} className="text-primary text-xs font-medium inline-flex items-center gap-1 group-hover:gap-2 transition-all duration-500 mt-auto">
                         View Details <ArrowRight className="w-3 h-3" />
                       </Link>
                     </div>

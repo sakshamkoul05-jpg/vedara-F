@@ -176,7 +176,7 @@ export default function AboutPage() {
             <div className="text-center max-w-3xl mx-auto mb-12">
               <p className="text-primary text-sm tracking-[0.2em] uppercase mb-4 font-sans">About the Property</p>
               <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-foreground mb-6">The Vedara – Himalayan Boutique Retreat</h2>
-              <p className="text-muted-foreground text-base md:text-lg max-w-2xl mx-auto">7 luxury cottages Jibhi | 18–22 guests | Launch 2026 | A nature retreat Himachal</p>
+              <p className="text-muted-foreground text-base md:text-lg max-w-2xl mx-auto">7 cottages + 1 alpine studio | 18–22 guests | Launch 2026 | A nature retreat Himachal</p>
             </div>
           </ScrollReveal>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
