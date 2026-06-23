@@ -3,17 +3,17 @@
 import { ScrollReveal } from '@/components/animations/ScrollReveal';
 import { TextReveal } from '@/components/animations/TextReveal';
 import { ImageReveal } from '@/components/animations/ImageReveal';
-import { Mountain, Heart, Shield, Leaf, Home, Coffee, MapPin, Users, Wifi, Car, Flame, TreePine, UtensilsCrossed, ExternalLink, Compass, Quote } from 'lucide-react';
+import { Mountain, Heart, Shield, Leaf, Home, Coffee, MapPin, Users, Wifi, Car, Flame, TreePine, UtensilsCrossed, ExternalLink, Music, Star, Compass, Gamepad2, Quote } from 'lucide-react';
 
 const values = [
   { icon: Leaf, title: 'Slow Living', desc: 'A retreat for those who seek more than just a getaway – to slow down, breathe deeply, and reconnect with what truly matters in the Himalayas.' },
   { icon: Heart, title: 'Soulful Hospitality', desc: 'Every detail reflects a balance between refined comfort and the raw beauty of the mountains, creating experiences that feel deeply personal.' },
-  { icon: Shield, title: 'Intimate by Design', desc: 'With just seven thoughtfully designed cottages, we offer privacy, exclusivity, and a deeply personal boutique resort in Jibhi experience.' },
+  { icon: Shield, title: 'Intimate by Design', desc: 'With just eight thoughtfully designed sanctuaries – 7 cottages and 1 alpine studio – we offer privacy, exclusivity, and a deeply personal boutique resort in Jibhi experience.' },
   { icon: Coffee, title: 'Café + Stay Experience', desc: 'Anchored by a curated in-house café that creates a social yet serene atmosphere where conversations, coffee, and calm coexist.' },
 ];
 
 const highlights = [
-  { icon: Home, label: '7 Cottages', desc: '18–22 guests, intimate and exclusive' },
+  { icon: Home, label: '8 Sanctuaries', desc: '7 cottages + 1 alpine studio, intimate and exclusive' },
   { icon: MapPin, label: 'Ghiyagi, Jibhi', desc: 'Untouched Himalayan beauty, away from crowds' },
   { icon: Leaf, label: 'Launch 2026', desc: 'A haven of wisdom, wilderness, and quiet luxury' },
   { icon: Users, label: 'Target Guests', desc: 'Families, solo travellers, remote workers, and groups seeking stillness' },
@@ -41,6 +41,17 @@ const attractions = [
   { name: 'Great Himalayan National Park', distance: '30 km', image: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&q=80', desc: 'A UNESCO World Heritage site with pristine alpine meadows, dense forests, and rich wildlife. Perfect for a day trek from The Vedara.' },
 ];
 
+const activities = [
+  { icon: Flame, title: 'Bonfire Nights', desc: 'Evening bonfires under the starlit Himalayan sky.' },
+  { icon: Music, title: 'Music Nights', desc: 'Live acoustic sessions featuring local artists.' },
+  { icon: TreePine, title: 'Nature Walks', desc: 'Guided walks through cedar and pine forests.' },
+  { icon: Star, title: 'Star Gazing', desc: 'Unpolluted night skies perfect for astronomy.' },
+  { icon: Coffee, title: 'Café Evenings', desc: 'Warm beverages and conversations by the stream.' },
+  { icon: Mountain, title: 'Lambhari Top Trek', desc: 'Guided sunrise trek to panoramic summit views.' },
+  { icon: Compass, title: 'Great Himalayan NP', desc: 'Day trek to the UNESCO World Heritage site.' },
+  { icon: Gamepad2, title: 'Kids Arena', desc: 'Dedicated play zone with nature crafts, outdoor games, and supervised adventures for young explorers.' },
+];
+
 export default function AboutPage() {
   return (
     <>
@@ -66,14 +77,14 @@ export default function AboutPage() {
       </section>
 
       {/* Quotation under Hero */}
-      <section className="py-20 md:py-28 bg-slate-50">
+      <section className="py-20 md:py-28 bg-slate-50 dark:bg-vedara-950/50">
         <div className="vintage-container">
           <ScrollReveal>
             <div className="max-w-3xl mx-auto text-center">
               <Quote className="w-10 h-10 text-primary mx-auto mb-6" />
-              <blockquote className="font-serif text-2xl md:text-3xl lg:text-4xl text-foreground leading-relaxed italic">
+              <p className="font-serif text-2xl md:text-3xl lg:text-4xl text-foreground leading-relaxed italic">
                 "Where the peaks meet peace of mind. Welcome to slow living in the heart of the Himalayas."
-              </blockquote>
+              </p>
               <div className="mt-8 w-16 h-px bg-primary mx-auto" />
             </div>
           </ScrollReveal>
@@ -106,12 +117,12 @@ export default function AboutPage() {
         </section>
 
         {/* The Three Pillars */}
-        <section className="section-padding bg-slate-50">
+        <section className="section-padding bg-slate-50 dark:bg-vedara-950/30">
           <div className="vintage-container">
             <ScrollReveal>
               <div className="text-center max-w-3xl mx-auto mb-16">
                 <p className="text-gold-500 text-sm tracking-[0.2em] uppercase mb-4 font-sans">The Vedara Philosophy</p>
-                <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-[#1C2B3A] mb-6">
+                <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-foreground mb-6">
                   Built on Three Pillars
                 </h2>
               </div>
@@ -119,7 +130,7 @@ export default function AboutPage() {
 
             <div className="grid md:grid-cols-3 gap-8 lg:gap-12">
               <ScrollReveal delay={0.1} direction="up">
-                <div className="group glass-card-light rounded-2xl p-8 md:p-10 hover:border-primary/30 transition-smooth h-full flex flex-col">
+                <article className="group glass-card-light rounded-2xl p-8 md:p-10 hover:border-primary/30 transition-smooth h-full flex flex-col">
                   <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary/15 to-primary/5 flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-smooth">
                     <Home className="w-7 h-7 text-primary" />
                   </div>
@@ -127,11 +138,11 @@ export default function AboutPage() {
                   <p className="text-muted-foreground leading-relaxed text-sm md:text-base">
                     Our spaces are designed in harmony with the terrain. Utilizing locally sourced materials and traditional mountain craftsmanship, our architecture honors the land it rests upon. Every room acts as a private viewing deck to the grand Himalayan canvas, offering sophisticated comfort without distracting from the natural majesty outside.
                   </p>
-                </div>
+                </article>
               </ScrollReveal>
 
               <ScrollReveal delay={0.2} direction="up">
-                <div className="group glass-card-light rounded-2xl p-8 md:p-10 hover:border-primary/30 transition-smooth h-full flex flex-col">
+                <article className="group glass-card-light rounded-2xl p-8 md:p-10 hover:border-primary/30 transition-smooth h-full flex flex-col">
                   <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary/15 to-primary/5 flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-smooth">
                     <UtensilsCrossed className="w-7 h-7 text-primary" />
                   </div>
@@ -139,11 +150,11 @@ export default function AboutPage() {
                   <p className="text-muted-foreground leading-relaxed text-sm md:text-base">
                     Food at Café Charade is a celebration of time and tradition. We lean into the philosophy of slow food – where meals are crafted from scratch using farm-to-table ingredients and local mountain produce. From slow-simmered regional Himachali heritage delicacies to comforting artisan barista brews and wild herbal infusions, every plate tells the story of the valley.
                   </p>
-                </div>
+                </article>
               </ScrollReveal>
 
               <ScrollReveal delay={0.3} direction="up">
-                <div className="group glass-card-light rounded-2xl p-8 md:p-10 hover:border-primary/30 transition-smooth h-full flex flex-col">
+                <article className="group glass-card-light rounded-2xl p-8 md:p-10 hover:border-primary/30 transition-smooth h-full flex flex-col">
                   <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary/15 to-primary/5 flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-smooth">
                     <Compass className="w-7 h-7 text-primary" />
                   </div>
@@ -151,7 +162,7 @@ export default function AboutPage() {
                   <p className="text-muted-foreground leading-relaxed text-sm md:text-base">
                     Mindfulness is woven into the fabric of your day. Whether you spend your morning breathing in the crisp, high-altitude air with a hot cup of saffron milk, reading by a crackling fire, or wandering through nearby village trails, Vedara is a space designed to help you reconnect with yourself.
                   </p>
-                </div>
+                </article>
               </ScrollReveal>
             </div>
           </div>
@@ -171,11 +182,37 @@ export default function AboutPage() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {highlights.map((h, i) => (
               <ScrollReveal key={h.label} delay={i * 0.1}>
-                <div className="glass-card-light rounded-2xl p-6 text-center transition-smooth h-full flex flex-col items-center justify-center">
+                <article className="glass-card-light rounded-2xl p-6 text-center transition-smooth h-full flex flex-col justify-center">
                   <h.icon className="w-8 h-8 text-primary mx-auto mb-3" />
                   <h3 className="font-serif text-lg text-foreground mb-1">{h.label}</h3>
                   <p className="text-muted-foreground text-sm">{h.desc}</p>
-                </div>
+                </article>
+              </ScrollReveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Experiences */}
+      <section className="section-padding bg-slate-50 dark:bg-vedara-950/30">
+        <div className="vintage-container">
+          <ScrollReveal>
+            <div className="text-center max-w-3xl mx-auto mb-16">
+              <p className="text-primary text-sm tracking-[0.2em] uppercase mb-4 font-sans">Experiences</p>
+              <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-foreground mb-6">Moments That Stay With You</h2>
+              <p className="text-muted-foreground text-base md:text-lg">Beyond the cottages, a world of experiences awaits</p>
+            </div>
+          </ScrollReveal>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+            {activities.map((act, i) => (
+              <ScrollReveal key={act.title} delay={i * 0.1}>
+                <article className="group glass-card-light rounded-2xl p-6 text-center transition-smooth h-full flex flex-col justify-center">
+                  <div className="w-14 h-14 rounded-full bg-gradient-to-br from-primary/15 to-primary/5 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-smooth">
+                    <act.icon className="w-7 h-7 text-primary" />
+                  </div>
+                  <h3 className="font-serif text-lg text-foreground mb-2">{act.title}</h3>
+                  <p className="text-muted-foreground text-sm leading-relaxed">{act.desc}</p>
+                </article>
               </ScrollReveal>
             ))}
           </div>
@@ -188,14 +225,14 @@ export default function AboutPage() {
           <ScrollReveal>
             <div className="text-center max-w-3xl mx-auto mb-16">
               <p className="text-primary text-sm tracking-[0.2em] uppercase mb-4 font-sans">Amenities</p>
-              <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-foreground mb-6">Facilities & Experiences</h2>
+              <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-foreground mb-6">Facilities</h2>
               <p className="text-muted-foreground text-base md:text-lg">Every comfort thoughtfully curated for your mountain stay</p>
             </div>
           </ScrollReveal>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {amenities.map((a, i) => (
               <ScrollReveal key={a.label} delay={i * 0.08}>
-                <div className="glass-card-light rounded-2xl p-5 flex items-start gap-4 transition-smooth h-full">
+                <article className="glass-card-light rounded-2xl p-5 flex items-start gap-4 transition-smooth">
                   <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
                     <a.icon className="w-5 h-5 text-primary" />
                   </div>
@@ -203,10 +240,16 @@ export default function AboutPage() {
                     <h3 className="font-medium text-foreground text-sm">{a.label}</h3>
                     <p className="text-muted-foreground text-xs mt-0.5">{a.desc}</p>
                   </div>
-                </div>
+                </article>
               </ScrollReveal>
             ))}
           </div>
+          <ScrollReveal delay={0.2}>
+            <div className="mt-8 glass-card-light rounded-2xl p-5 inline-flex items-center gap-3 mx-auto transition-smooth">
+              <Wifi className="w-5 h-5 text-primary" />
+              <span className="text-sm text-foreground"><strong>High-speed WiFi</strong> available throughout the property</span>
+            </div>
+          </ScrollReveal>
         </div>
       </section>
 
@@ -271,11 +314,11 @@ export default function AboutPage() {
       </section>
 
       {/* Attractions */}
-      <section className="section-padding bg-slate-50">
+      <section className="section-padding bg-slate-50 dark:bg-vedara-950/30">
         <div className="vintage-container">
           <ScrollReveal>
             <div className="text-center max-w-3xl mx-auto mb-16">
-              <p className="text-primary text-sm tracking-[0.2em] uppercase mb-4 font-sans">Explore Nearby</p>
+              <p className="text-primary text-sm tracking-[0.2em] uppercase mb-4 font-sans">Nearby Attractions</p>
               <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-foreground mb-6">Attractions Around The Vedara</h2>
               <p className="text-muted-foreground text-base md:text-lg">Discover the raw beauty of Jibhi and beyond</p>
             </div>
@@ -325,13 +368,13 @@ export default function AboutPage() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {values.map((v, i) => (
               <ScrollReveal key={v.title} delay={i * 0.1}>
-                <div className="rounded-2xl p-6 text-center border border-white/8 transition-smooth h-full flex flex-col items-center" style={{ background: 'rgba(255,255,255,0.05)' }}>
+                <article className="rounded-2xl p-6 text-center border border-white/8 transition-smooth" style={{ background: 'rgba(255,255,255,0.05)' }}>
                   <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary/25 to-primary/10 flex items-center justify-center mx-auto mb-4">
                     <v.icon className="w-6 h-6 text-primary" />
                   </div>
                   <h3 className="font-serif text-lg text-white mb-2">{v.title}</h3>
                   <p className="text-white/60 text-sm">{v.desc}</p>
-                </div>
+                </article>
               </ScrollReveal>
             ))}
           </div>

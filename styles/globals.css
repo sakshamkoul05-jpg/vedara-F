@@ -83,7 +83,7 @@
   }
 
   .vintage-card {
-    @apply bg-card border border-border/50 rounded-xl shadow-sm hover:shadow-md transition-all duration-300;
+    @apply bg-card dark:bg-vedara-900/50 border border-border/50 rounded-xl shadow-sm hover:shadow-md transition-all duration-300;
   }
 
   .vintage-button {
@@ -103,7 +103,7 @@
   }
 
   .vintage-input {
-    @apply w-full rounded-lg border border-border bg-white px-4 py-3 font-sans text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/15 transition-all;
+    @apply w-full rounded-lg border border-border bg-white dark:bg-vedara-900 px-4 py-3 font-sans text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/15 transition-all;
   }
 
   .vintage-label {
@@ -134,9 +134,8 @@
   }
 
   .dark .glass {
-    background: rgba(15, 23, 42, 0.8);
-    border-color: rgba(255, 255, 255, 0.08);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    background: rgba(28, 43, 58, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.08);
   }
 
   .glass-card {
@@ -146,9 +145,8 @@
   }
 
   .dark .glass-card {
-    background: rgba(15, 23, 42, 0.8);
-    border-color: rgba(255, 255, 255, 0.08);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2), 0 4px 12px rgba(0, 0, 0, 0.15);
+    background: rgba(28, 43, 58, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.08);
   }
 
   .glass-card-light {
@@ -158,9 +156,8 @@
   }
 
   .dark .glass-card-light {
-    background: rgba(15, 23, 42, 0.6);
-    border-color: rgba(255, 255, 255, 0.06);
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+    background: rgba(28, 43, 58, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.08);
   }
 
   .glass-dark {
@@ -176,11 +173,6 @@
     transition: all 0.25s ease;
   }
 
-  .dark .glass-button {
-    background: rgba(15, 23, 42, 0.8);
-    border-color: rgba(255, 255, 255, 0.1);
-  }
-
   .glass-button:hover {
     background: #F5F2EE;
     border-color: rgba(74, 85, 104, 0.15);
@@ -188,21 +180,10 @@
     transform: translateY(-1px);
   }
 
-  .dark .glass-button:hover {
-    background: rgba(30, 41, 59, 0.9);
-    border-color: rgba(255, 255, 255, 0.15);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-  }
-
   .glass-input {
     background: #FFFFFF;
     border: 1px solid rgba(74, 85, 104, 0.12);
     transition: all 0.25s ease;
-  }
-
-  .dark .glass-input {
-    background: rgba(15, 23, 42, 0.6);
-    border-color: rgba(255, 255, 255, 0.12);
   }
 
   .glass-input:focus {
@@ -212,22 +193,10 @@
     outline: none;
   }
 
-  .dark .glass-input:focus {
-    background: rgba(15, 23, 42, 0.8);
-    border-color: rgba(255, 255, 255, 0.2);
-    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.06);
-  }
-
   .glass-nav {
     background: rgba(245, 242, 238, 0.95);
     border-bottom: 1px solid rgba(74, 85, 104, 0.06);
     box-shadow: 0 1px 3px rgba(28, 43, 58, 0.03);
-  }
-
-  .dark .glass-nav {
-    background: rgba(15, 23, 42, 0.95);
-    border-bottom-color: rgba(255, 255, 255, 0.06);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
   }
 
   .liquid-gradient {
@@ -345,7 +314,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: #1C2B3A;
+  background: currentColor;
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
@@ -357,7 +326,7 @@
 }
 
 .btn-fill-slide:hover {
-  color: white;
+  color: #1C2B3A;
 }
 
 .btn-bottom-fill {
@@ -383,7 +352,7 @@
 }
 
 .btn-bottom-fill:hover {
-  color: white;
+  color: #F5F2EE;
 }
 
 .reveal {

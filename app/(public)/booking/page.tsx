@@ -17,8 +17,6 @@ import {
   Calendar, Home, User, Check, ArrowRight, ArrowLeft,
   Percent, Tag, Loader2, CreditCard, Sparkles, Gift, ChevronDown, Users
 } from 'lucide-react';
-import PhoneInput from 'react-phone-input-2';
-import 'react-phone-input-2/lib/style.css';
 
 const idProofTypes = ['Aadhaar Card', 'PAN Card', 'Passport', 'Driving License'];
 
@@ -64,7 +62,7 @@ export default function BookingPage() {
   const { code, discount, discountType, isValid, error, loading: couponLoading, setCode, validateCoupon, removeCoupon } = useCouponStore();
 
   useEffect(() => {
-    api.get('/cottages').then((res: any) => setCottages(res.data)).catch(() => {});
+    api.get('/cottages').then((res: any) => setCottages(res.data)).catch((err) => console.error('Failed to load cottages:', err));
   }, []);
 
   useEffect(() => {
@@ -108,8 +106,9 @@ export default function BookingPage() {
       const res = await api.get(`/bookings/available-cottages?checkIn=${encodeURIComponent(checkIn)}&checkOut=${encodeURIComponent(checkOut)}`);
       setCottages(res.data);
       setStep(2);
-    } catch (err) {
-      alert('Failed to check availability');
+    } catch (err: any) {
+      console.error('Availability check failed:', err);
+      alert(`Failed to check availability: ${err?.message || 'Unknown error'}`);
     } finally {
       setStepLoading(false);
     }
@@ -352,15 +351,14 @@ export default function BookingPage() {
                             </div>
                             <div>
                               <label className="vintage-label">Phone *</label>
-                              <PhoneInput
-                                country="in"
-                                value={guestPhone}
-                                onChange={(phone) => setGuestPhone(phone)}
-                                inputProps={{ className: 'flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2' }}
-                                containerClass="!w-full"
-                                inputClass="!w-full !h-10 !text-sm"
-                                buttonClass="!border-input !bg-background"
-                                placeholder="+91-99999-99999"
+                              <Input 
+                                type="tel" 
+                                value={guestPhone} 
+                                onChange={(e) => {
+                                  const value = e.target.value.replace(/[^\d+\-\s]/g, '');
+                                  setGuestPhone(value);
+                                }} 
+                                placeholder="+91 99999 99999" 
                               />
                             </div>
                           </div>

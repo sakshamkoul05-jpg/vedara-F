@@ -17,13 +17,13 @@ import { AvailabilityHeatmap } from '@/components/public/AvailabilityHeatmap';
 import { getToday } from '@/lib/utils';
 
 const cottages = [
-  { slug: 'monal-haven', name: 'Monal Haven', price: '₹12,000', desc: 'Premium Duplex Family Suite with private jacuzzi, attic yoga balcony, and sweeping mountain views', image: '/images/hero-1.jpg' },
-  { slug: 'koklass-cove', name: 'Koklass Cove', price: '₹12,500', desc: 'Premium Duplex Family Suite – our largest with two viewing balconies, private jacuzzi, and unmatched privacy', image: '/images/hero-2.jpg' },
-  { slug: 'magpie-retreat', name: 'Magpie Retreat', price: '₹11,000', desc: 'Intimate Mountain View Suite with deep-soak bathtub and dual-balcony setup', image: '/images/hero-3.jpg' },
-  { slug: 'whistling-thrush', name: 'Whistling Thrush', price: '₹10,000', desc: 'Cosy Valley View Cottage with a private sit-out, perfect for couples seeking quiet solitude', image: '/images/hero-1.jpg' },
-  { slug: 'rufous-retreat', name: 'Rufous Retreat', price: '₹9,500', desc: 'Charming Forest-facing Cottage with a reading nook and handcrafted wooden interiors', image: '/images/hero-2.jpg' },
-  { slug: 'kalij-pheasant', name: 'Kalij Pheasant', price: '₹9,000', desc: 'Warm and inviting Garden Cottage with outdoor seating and mountain glimpses', image: '/images/hero-3.jpg' },
-  { slug: 'himalayan-bluetail', name: 'Himalayan Bluetail', price: '₹8,500', desc: 'Compact yet elegant retreat with a private balcony and panoramic valley views', image: '/images/hero-1.jpg' },
+  { slug: 'monal-haven', name: 'Monal Haven', price: '₹12,000', desc: 'Premium Duplex Family Suite with private jacuzzi, attic yoga balcony, and sweeping mountain views', image: '/images/hero-1.jpg', category: 'Premium Duplex Family Suite' },
+  { slug: 'koklass-cove', name: 'Koklass Cove', price: '₹12,500', desc: 'Our largest duplex with two viewing balconies, private jacuzzi, and unmatched privacy', image: '/images/hero-2.jpg', category: 'Premium Duplex Family Suite' },
+  { slug: 'magpie-retreat', name: 'Magpie Retreat', price: '₹11,000', desc: 'Charming duplex with deep-soak bathtub and dual-balcony setup', image: '/images/hero-3.jpg', category: 'Premium Duplex Family Suite' },
+  { slug: 'whistling-thrush', name: 'Whistling Thrush', price: '₹7,500', desc: 'Intimate Mountain View Suite — a melody of mountain quietude', image: '/images/hero-1.jpg', category: 'Intimate Mountain View Suite' },
+  { slug: 'flycatcher-nook', name: 'Flycatcher Nook', price: '₹7,500', desc: 'Intimate Mountain View Suite — your cozy Himalayan hideaway', image: '/images/hero-2.jpg', category: 'Intimate Mountain View Suite' },
+  { slug: 'bulbul-nest', name: 'Bulbul Nest', price: '₹7,500', desc: 'Intimate Mountain View Suite with workstation — where coziness meets the peaks', image: '/images/hero-3.jpg', category: 'Intimate Mountain View Suite' },
+  { slug: 'the-finch-nook', name: 'The Finch Nook', price: '₹5,000', desc: 'Cozy Alpine Studio — small space, boundless solitude', image: '/images/hero-1.jpg', category: 'Cozy Alpine Studio' },
 ];
 
 const testimonials = [
@@ -184,7 +184,7 @@ export default function HomePage() {
             transition={{ delay: 1, duration: 0.8 }}
             className="text-white/75 text-lg md:text-xl max-w-2xl mx-auto mb-10 font-serif tracking-wide"
           >
-            A Himalayan Boutique Retreat – Seven handcrafted cottages, one cozy café, and a slow-living mountain escape crafted for those who seek stillness.
+            A Himalayan Boutique Retreat – Eight handcrafted sanctuaries, one cozy café, and a slow-living mountain escape crafted for those who seek stillness.
           </motion.p>
             <motion.div
              initial={{ opacity: 0, y: 20 }}
@@ -218,45 +218,45 @@ export default function HomePage() {
       <section id="booking-bar" className="relative z-30 mb-12 px-4">
         <div className="vintage-container max-w-6xl">
           <div className="grid md:grid-cols-3 gap-4">
-            <div className="md:col-span-2 bg-white rounded-2xl p-5 md:p-6 font-sans shadow-[0_4px_24px_rgba(28,43,58,0.12)] border border-[rgba(74,85,104,0.12)]">
+            <div style={{ gridColumn: 'span 2 / span 2', background: 'var(--clr-surface)', borderRadius: '16px', padding: '20px 24px', boxShadow: '0 4px 24px rgba(28,43,58,0.12)', border: '1px solid var(--clr-stone)' }} className="md:col-span-2">
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3 items-end mb-3">
                 <div>
-                  <label className="block text-xs font-medium text-foreground/80 mb-1">Check In</label>
-                  <input type="date" value={homeCheckIn} onChange={handleCheckInChange} min={today} className="w-full rounded-lg border border-border/50 bg-white px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-300 hover:border-primary/30" />
+                  <label className="vintage-label">Check In</label>
+                  <input type="date" value={homeCheckIn} onChange={handleCheckInChange} min={today} className="vintage-input" style={{ borderBottom: '1px solid var(--clr-stone)', fontSize: '0.9rem', padding: '8px 0' }} />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-foreground/80 mb-1">Check Out</label>
-                  <input type="date" value={homeCheckOut} onChange={handleCheckOutChange} min={homeCheckIn || today} className="w-full rounded-lg border border-border/50 bg-white px-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-300 hover:border-primary/30" />
+                  <label className="vintage-label">Check Out</label>
+                  <input type="date" value={homeCheckOut} onChange={handleCheckOutChange} min={homeCheckIn || today} className="vintage-input" style={{ borderBottom: '1px solid var(--clr-stone)', fontSize: '0.9rem', padding: '8px 0' }} />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-foreground/80 mb-1">Adults</label>
-                  <select value={homeAdults} onChange={(e) => setHomeAdults(e.target.value)} className="w-full rounded-lg border border-border/50 bg-white px-3 py-2.5 text-sm text-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-300 hover:border-primary/30">
+                  <label className="vintage-label">Adults</label>
+                  <select value={homeAdults} onChange={(e) => setHomeAdults(e.target.value)} className="vintage-input" style={{ borderBottom: '1px solid var(--clr-stone)', fontSize: '0.9rem', padding: '8px 0', background: 'transparent' }}>
                     {[1,2,3,4].map(n => <option key={n} value={n}>{n}</option>)}
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-foreground/80 mb-1">Children</label>
-                  <select value={homeChildren} onChange={(e) => setHomeChildren(e.target.value)} className="w-full rounded-lg border border-border/50 bg-white px-3 py-2.5 text-sm text-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-300 hover:border-primary/30">
+                  <label className="vintage-label">Children</label>
+                  <select value={homeChildren} onChange={(e) => setHomeChildren(e.target.value)} className="vintage-input" style={{ borderBottom: '1px solid var(--clr-stone)', fontSize: '0.9rem', padding: '8px 0', background: 'transparent' }}>
                     {[0,1,2,3].map(n => <option key={n} value={n}>{n}</option>)}
                   </select>
                 </div>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3 items-end">
                 <div>
-                  <label className="block text-xs font-medium text-foreground/80 mb-1">Nationality</label>
-                  <select value={homeNationality} onChange={(e) => setHomeNationality(e.target.value)} className="w-full rounded-lg border border-border/50 bg-white px-3 py-2.5 text-sm text-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-300 hover:border-primary/30">
+                  <label className="vintage-label">Nationality</label>
+                  <select value={homeNationality} onChange={(e) => setHomeNationality(e.target.value)} className="vintage-input" style={{ borderBottom: '1px solid var(--clr-stone)', fontSize: '0.9rem', padding: '8px 0', background: 'transparent' }}>
                     <option value="Indian">Indian</option>
                     <option value="Foreign">Foreign National</option>
                   </select>
                 </div>
                 <div>
-                  <button onClick={handleHomeBooking} className="vintage-button-primary text-sm px-6 py-2.5 w-full text-center block cursor-pointer btn-fill-slide">
+                  <button onClick={handleHomeBooking} className="vintage-button-primary" style={{ width: '100%', padding: '12px 24px', fontSize: '0.85rem' }}>
                     {homeCheckIn && homeCheckOut ? 'Check Availability' : 'Book Your Stay'}
                   </button>
                 </div>
               </div>
               {dateError && (
-                <p className="text-red-500 text-xs mt-2 text-center">{dateError}</p>
+                <p style={{ color: '#dc2626', fontSize: '0.75rem', marginTop: '8px', textAlign: 'center' }}>{dateError}</p>
               )}
             </div>
             <div className="hidden md:block">
@@ -279,7 +279,7 @@ export default function HomePage() {
                   Nestled in the serene village of Ghiyagi, within the untouched landscapes of Jibhi, The Vedara was born from a simple belief – that the most profound luxury is found in stillness, connection, and the raw beauty of the Himalayas.
                 </p>
                 <p className="text-white/60 leading-relaxed mb-8">
-                  With seven handcrafted cottages and a soulful café, we offer more than a stay. We offer a chance to pause, breathe, and remember what truly matters.
+                  With eight handcrafted sanctuaries and a soulful café, we offer more than a stay. We offer a chance to pause, breathe, and remember what truly matters.
                 </p>
                 <Link href="/about" className="vintage-button bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3.5 shadow-lg btn-bottom-fill">
                   Read Our Story <ArrowRight className="w-4 h-4 ml-2" />
@@ -304,47 +304,112 @@ export default function HomePage() {
           <ScrollReveal>
             <div className="text-center max-w-3xl mx-auto mb-16">
               <p className="text-primary text-sm tracking-[0.2em] uppercase mb-4 font-sans">Our Cottages</p>
-              <h2 className="section-title mb-6">Seven Stories, Seven Retreats</h2>
+              <h2 className="section-title mb-6">Eight Stories, Eight Retreats</h2>
               <p className="section-subtitle">
                 Each cottage is a world unto itself – named after the birds of the valley and crafted with local materials, premium furnishings, and unobstructed mountain views.
               </p>
             </div>
           </ScrollReveal>
-          <div className="grid lg:grid-cols-4 gap-6">
-            <div className="lg:col-span-3">
-              <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-6">
-                {cottages.map((cottage, i) => (
-                  <ScrollReveal key={cottage.name} delay={i * 0.08} direction="up" distance={40}>
-                    <div className="group bg-white rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-500 reveal">
-                      <div className="aspect-[4/3] overflow-hidden bg-sand-200">
-                        <img src={`https://images.unsplash.com/photo-${['1504384308090-c894fdcc538d', '1554118811-1e0d58224f24', '1506905925346-21bda4d32df4', '1504384308090-c894fdcc538d', '1554118811-1e0d58224f24', '1506905925346-21bda4d32df4', '1504384308090-c894fdcc538d'][i]}?w=600&q=80`} alt={cottage.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-                      </div>
-                      <div className="p-5">
-                        <div className="flex justify-between items-start mb-2">
-                          <h3 className="font-serif text-lg text-foreground">{cottage.name}</h3>
-                          <span className="text-primary font-semibold text-sm">{cottage.price}<span className="text-muted-foreground font-normal text-xs">/night</span></span>
-                        </div>
-                        <p className="text-muted-foreground text-xs mb-3 leading-relaxed">{cottage.desc}</p>
-                        <Link href={`/cottages/slug/${cottage.slug}`} className="text-primary text-xs font-medium inline-flex items-center gap-1 group-hover:gap-2 transition-all duration-500">
-                          View Details <ArrowRight className="w-3 h-3" />
-                        </Link>
-                      </div>
-                    </div>
-                  </ScrollReveal>
-                ))}
+          {/* Premium Duplex Family Suites */}
+          <div className="mb-12">
+            <ScrollReveal>
+              <div className="mb-6">
+                <p className="text-gold-500 text-xs tracking-[0.2em] uppercase mb-1 font-sans">Cottages 1 – 3</p>
+                <h3 className="font-serif text-xl text-foreground">Premium Duplex Family Suites</h3>
               </div>
-              <ScrollReveal delay={0.3}>
-                <div className="text-center mt-10">
-                  <Link href="/cottages" className="vintage-button-outline">
-                    View All Cottages <ArrowRight className="w-4 h-4 ml-2" />
-                  </Link>
-                </div>
-              </ScrollReveal>
-            </div>
-            <div className="hidden lg:block">
-              <AvailabilityHeatmap />
+            </ScrollReveal>
+            <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-6">
+              {cottages.filter(c => c.category === 'Premium Duplex Family Suite').map((cottage, i) => (
+                <ScrollReveal key={cottage.name} delay={i * 0.08} direction="up" distance={40}>
+                  <article className="group bg-white rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-500 reveal">
+                    <div className="aspect-[4/3] overflow-hidden bg-sand-200">
+                      <img src={`https://images.unsplash.com/photo-${['1504384308090-c894fdcc538d', '1554118811-1e0d58224f24', '1506905925346-21bda4d32df4'][i]}?w=600&q=80`} alt={cottage.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                    </div>
+                    <div className="p-5">
+                      <div className="flex justify-between items-start mb-2">
+                        <h4 className="font-serif text-lg text-foreground">{cottage.name}</h4>
+                        <span className="text-primary font-semibold text-sm">{cottage.price}<span className="text-muted-foreground font-normal text-xs">/night</span></span>
+                      </div>
+                      <p className="text-muted-foreground text-xs mb-3 leading-relaxed">{cottage.desc}</p>
+                      <Link href={`/cottages/slug/${cottage.slug}`} className="text-primary text-xs font-medium inline-flex items-center gap-1 group-hover:gap-2 transition-all duration-500">
+                        View Details <ArrowRight className="w-3 h-3" />
+                      </Link>
+                    </div>
+                  </article>
+                </ScrollReveal>
+              ))}
             </div>
           </div>
+
+          {/* Intimate Mountain View Suites */}
+          <div className="mb-12">
+            <ScrollReveal>
+              <div className="mb-6">
+                <p className="text-gold-500 text-xs tracking-[0.2em] uppercase mb-1 font-sans">Cottages 4 – 6</p>
+                <h3 className="font-serif text-xl text-foreground">Intimate Mountain View Suites</h3>
+              </div>
+            </ScrollReveal>
+            <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-6">
+              {cottages.filter(c => c.category === 'Intimate Mountain View Suite').map((cottage, i) => (
+                <ScrollReveal key={cottage.name} delay={i * 0.08} direction="up" distance={40}>
+                  <article className="group bg-white rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-500 reveal">
+                    <div className="aspect-[4/3] overflow-hidden bg-sand-200">
+                      <img src={`https://images.unsplash.com/photo-${['1476514525535-07fb3b4ae5f1', '1519681393784-d120267933ba', '1469476568026-46a7f7b2f9c2'][i]}?w=600&q=80`} alt={cottage.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                    </div>
+                    <div className="p-5">
+                      <div className="flex justify-between items-start mb-2">
+                        <h4 className="font-serif text-lg text-foreground">{cottage.name}</h4>
+                        <span className="text-primary font-semibold text-sm">{cottage.price}<span className="text-muted-foreground font-normal text-xs">/night</span></span>
+                      </div>
+                      <p className="text-muted-foreground text-xs mb-3 leading-relaxed">{cottage.desc}</p>
+                      <Link href={`/cottages/slug/${cottage.slug}`} className="text-primary text-xs font-medium inline-flex items-center gap-1 group-hover:gap-2 transition-all duration-500">
+                        View Details <ArrowRight className="w-3 h-3" />
+                      </Link>
+                    </div>
+                  </article>
+                </ScrollReveal>
+              ))}
+            </div>
+          </div>
+
+          {/* Cozy Alpine Studio */}
+          <div className="mb-12">
+            <ScrollReveal>
+              <div className="mb-6">
+                <p className="text-gold-500 text-xs tracking-[0.2em] uppercase mb-1 font-sans">Cottage 7</p>
+                <h3 className="font-serif text-xl text-foreground">Cozy Alpine Studio</h3>
+              </div>
+            </ScrollReveal>
+            <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-6">
+              {cottages.filter(c => c.category === 'Cozy Alpine Studio').map((cottage, i) => (
+                <ScrollReveal key={cottage.name} delay={i * 0.08} direction="up" distance={40}>
+                  <article className="group bg-white rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-500 reveal">
+                    <div className="aspect-[4/3] overflow-hidden bg-sand-200">
+                      <img src={`https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&q=80`} alt={cottage.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                    </div>
+                    <div className="p-5">
+                      <div className="flex justify-between items-start mb-2">
+                        <h4 className="font-serif text-lg text-foreground">{cottage.name}</h4>
+                        <span className="text-primary font-semibold text-sm">{cottage.price}<span className="text-muted-foreground font-normal text-xs">/night</span></span>
+                      </div>
+                      <p className="text-muted-foreground text-xs mb-3 leading-relaxed">{cottage.desc}</p>
+                      <Link href={`/cottages/slug/${cottage.slug}`} className="text-primary text-xs font-medium inline-flex items-center gap-1 group-hover:gap-2 transition-all duration-500">
+                        View Details <ArrowRight className="w-3 h-3" />
+                      </Link>
+                    </div>
+                  </article>
+                </ScrollReveal>
+              ))}
+            </div>
+          </div>
+
+          <ScrollReveal delay={0.3}>
+            <div className="text-center mt-10">
+              <Link href="/cottages" className="vintage-button-outline">
+                View All Cottages <ArrowRight className="w-4 h-4 ml-2" />
+              </Link>
+            </div>
+          </ScrollReveal>
         </div>
       </section>
 
@@ -361,17 +426,17 @@ export default function HomePage() {
             </div>
           </ScrollReveal>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-            {experiences.map((exp, i) => (
-              <ScrollReveal key={exp.title} delay={i * 0.08} direction="up" distance={40}>
-                <div className="group rounded-2xl p-6 text-center transition-all duration-500 font-sans border border-white/8 reveal" style={{ background: 'rgba(255,255,255,0.05)' }}>
-                  <div className="w-14 h-14 rounded-full bg-gradient-to-br from-[#9B8EA0]/25 to-[#9B8EA0]/10 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-500">
-                    <exp.icon className="w-7 h-7 text-[#9B8EA0]" />
-                  </div>
-                  <h3 className="font-serif text-lg text-white mb-2">{exp.title}</h3>
-                  <p className="text-white/60 text-sm leading-relaxed">{exp.desc}</p>
-                </div>
-              </ScrollReveal>
-            ))}
+              {experiences.map((exp, i) => (
+                  <ScrollReveal key={exp.title} delay={i * 0.08} direction="up" distance={40}>
+                    <article className="group rounded-2xl p-6 text-center transition-all duration-500 font-sans border border-white/8 reveal" style={{ background: 'rgba(255,255,255,0.05)' }}>
+                      <div className="w-14 h-14 rounded-full bg-gradient-to-br from-[#9B8EA0]/25 to-[#9B8EA0]/10 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-500">
+                        <exp.icon className="w-7 h-7 text-[#9B8EA0]" />
+                      </div>
+                      <h3 className="font-serif text-lg text-white mb-2">{exp.title}</h3>
+                      <p className="text-white/60 text-sm leading-relaxed">{exp.desc}</p>
+                    </article>
+                  </ScrollReveal>
+                ))}
           </div>
         </div>
       </section>
@@ -431,7 +496,7 @@ export default function HomePage() {
           <div className="grid md:grid-cols-3 gap-6">
             {testimonials.map((t, i) => (
               <ScrollReveal key={t.name} delay={i * 0.12} direction="up" distance={40}>
-                <motion.div
+                <motion.article
                   className="bg-white rounded-2xl p-7 relative overflow-hidden reveal"
                   whileHover={{ y: -4, boxShadow: '0 20px 40px rgba(0,0,0,0.06)' }}
                   transition={{ duration: 0.5 }}
@@ -454,7 +519,7 @@ export default function HomePage() {
                     <p className="font-serif text-foreground font-medium text-sm">{t.name}</p>
                     <p className="text-xs text-muted-foreground/70">{t.location}</p>
                   </div>
-                </motion.div>
+                </motion.article>
               </ScrollReveal>
             ))}
           </div>
@@ -474,7 +539,7 @@ export default function HomePage() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {nearbyAttractions.map((place, i) => (
               <ScrollReveal key={place.name} delay={i * 0.1} direction="up" distance={40}>
-                <div className="bg-white rounded-2xl p-5 flex items-start gap-4 group hover:border-primary/30 transition-all duration-500 reveal">
+                <article className="bg-white rounded-2xl p-5 flex items-start gap-4 group hover:border-primary/30 transition-all duration-500 reveal">
                   <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/20 transition-colors duration-500">
                     <place.icon className="w-5 h-5 text-primary" />
                   </div>
@@ -482,7 +547,7 @@ export default function HomePage() {
                     <h3 className="font-medium text-foreground text-sm group-hover:text-primary transition-colors duration-500">{place.name}</h3>
                     <span className="text-xs text-muted-foreground/70">{place.distance}</span>
                   </div>
-                </div>
+                </article>
               </ScrollReveal>
             ))}
           </div>
@@ -511,31 +576,31 @@ export default function HomePage() {
           </ScrollReveal>
           <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
             <ScrollReveal delay={0.1} direction="up" distance={40}>
-              <div className="bg-white rounded-2xl p-7 text-center reveal">
+              <article className="bg-white rounded-2xl p-7 text-center reveal">
                 <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
                   <MapPin className="w-7 h-7 text-primary" />
                 </div>
                 <h3 className="font-serif text-lg mb-3 text-foreground">By Road</h3>
                 <p className="text-muted-foreground text-sm leading-relaxed">Delhi to Jibhi via Mandi–Aut–Larji. Approximately 480 km, 10–11 hours. Buses available from Delhi ISBT to Aut, then a taxi to Jibhi.</p>
-              </div>
+              </article>
             </ScrollReveal>
             <ScrollReveal delay={0.2} direction="up" distance={40}>
-              <div className="bg-white rounded-2xl p-7 text-center reveal">
+              <article className="bg-white rounded-2xl p-7 text-center reveal">
                 <div className="w-14 h-14 rounded-2xl bg-[#9B8EA0]/10 flex items-center justify-center mx-auto mb-4">
                   <MapPin className="w-7 h-7 text-[#9B8EA0]" />
                 </div>
                 <h3 className="font-serif text-lg mb-3 text-foreground">By Rail</h3>
                 <p className="text-muted-foreground text-sm leading-relaxed">Nearest broad-gauge station: Amb Andaura (~120 km). Nearest narrow-gauge: Shimla or Joginder Nagar. Taxis available from all stations.</p>
-              </div>
+              </article>
             </ScrollReveal>
             <ScrollReveal delay={0.3} direction="up" distance={40}>
-              <div className="bg-white rounded-2xl p-7 text-center reveal">
+              <article className="bg-white rounded-2xl p-7 text-center reveal">
                 <div className="w-14 h-14 rounded-2xl bg-gold-400/10 flex items-center justify-center mx-auto mb-4">
                   <MapPin className="w-7 h-7 text-gold-500" />
                 </div>
                 <h3 className="font-serif text-lg mb-3 text-foreground">By Air</h3>
                 <p className="text-muted-foreground text-sm leading-relaxed">Bhuntar Airport (Kullu) is the nearest, ~50 km from Jibhi. Flights from Delhi and Chandigarh. Taxi from Bhuntar to Ghiyagi takes ~1.5 hours.</p>
-              </div>
+              </article>
             </ScrollReveal>
           </div>
         </div>

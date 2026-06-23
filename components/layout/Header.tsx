@@ -15,7 +15,6 @@ const navLinks = [
   { href: '/cottages', label: 'Stays' },
   { href: '/cafe', label: 'Café' },
   { href: '/gallery', label: 'Gallery' },
-  { href: '/my-bookings', label: 'My Bookings' },
   { href: '/contact', label: 'Contact Us' },
 ];
 
@@ -35,21 +34,6 @@ export function Header() {
     setIsMobileOpen(false);
   }, [pathname]);
 
-  useEffect(() => {
-    if (isMobileOpen) {
-      document.body.style.overflow = 'hidden';
-      const handleEscape = (e: KeyboardEvent) => {
-        if (e.key === 'Escape') setIsMobileOpen(false);
-      };
-      document.addEventListener('keydown', handleEscape);
-      return () => {
-        document.body.style.overflow = '';
-        document.removeEventListener('keydown', handleEscape);
-      };
-    }
-    document.body.style.overflow = '';
-  }, [isMobileOpen]);
-
   const isTransparent = !isScrolled && pathname === '/';
 
   return (
@@ -57,17 +41,17 @@ export function Header() {
       className={cn(
         'fixed top-0 left-0 right-0 z-50 transition-all duration-500',
         isScrolled
-          ? 'bg-white/95 dark:bg-vedara-900/95 border-b border-border/50 shadow-[0_1px_3px_rgba(28,43,58,0.03)]'
+          ? 'bg-white/95 border-b border-border/50 shadow-[0_1px_3px_rgba(28,43,58,0.03)]'
           : isTransparent
             ? 'bg-transparent'
-            : 'bg-[#F5F2EE] dark:bg-vedara-900'
+            : 'bg-[#F5F2EE]'
       )}
     >
       <div className="vintage-container">
         <div className="flex items-center justify-between h-16 md:h-20">
-          <Link href="/" className="flex items-center gap-3 flex-shrink-0">
+          <Link href="/" className="flex items-center gap-3 flex-shrink-0 -ml-2 md:ml-0">
             <div className={cn(
-              'w-14 h-14 md:w-16 md:h-16 rounded-lg overflow-hidden flex-shrink-0 transition-all shadow-sm',
+              'w-14 h-14 md:w-20 md:h-20 rounded-lg overflow-hidden flex-shrink-0 transition-all shadow-sm',
               isTransparent ? 'ring-2 ring-white/20' : 'ring-1 ring-border'
             )}>
               <Image
@@ -81,7 +65,7 @@ export function Header() {
             </div>
           </Link>
 
-          <nav className="hidden lg:flex items-center justify-center gap-7 flex-1 mx-8">
+          <nav className="hidden lg:flex items-center gap-7">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
@@ -221,8 +205,6 @@ export function Header() {
               onClick={() => setIsMobileOpen(!isMobileOpen)}
               className={cn('p-2', isTransparent ? 'text-white' : 'text-vedara-900')}
               aria-label={isMobileOpen ? 'Close menu' : 'Open menu'}
-              aria-expanded={isMobileOpen}
-              aria-controls="mobile-menu"
             >
               {isMobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
@@ -237,67 +219,62 @@ export function Header() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm md:hidden"
+              className="fixed inset-0 bg-black/50 z-40 md:hidden"
               onClick={() => setIsMobileOpen(false)}
-              aria-hidden="true"
             />
             <motion.div
-              id="mobile-menu"
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-              className="md:hidden bg-background border-t border-border relative z-50"
-              role="menu"
+              className="md:hidden bg-[#F5F2EE] dark:bg-[#1C2B3A] border-t border-border relative z-50"
             >
-              <nav className="vintage-container py-6 space-y-4" aria-label="Mobile navigation">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className={cn(
-                    'block text-base font-medium transition-colors duration-500',
-                    pathname === link.href
-                      ? 'text-primary'
-                      : 'text-foreground/70'
-                  )}
-                >
-                  {link.label}
+              <nav className="vintage-container py-6 space-y-4">
+                {navLinks.map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className={cn(
+                      'block text-base font-medium transition-colors duration-500',
+                      pathname === link.href
+                        ? 'text-primary'
+                        : 'text-foreground/70'
+                    )}
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+                <Link href="/booking" className="vintage-button-primary w-full text-center">
+                  Book Your Stay
                 </Link>
-              ))}
-              <Link href="/booking" className="vintage-button-primary w-full text-center">
-                Book Your Stay
-              </Link>
-              <button
-                onClick={toggle}
-                className="flex items-center justify-center gap-2 w-full px-4 py-2 rounded-lg border border-border text-foreground/70 hover:border-primary hover:text-primary transition-colors duration-500"
-              >
-                {theme === 'dark' ? (
-                  <>
-                    <Sun className="w-4 h-4" />
-                    <span>Light Mode</span>
-                  </>
-                ) : (
-                  <>
-                    <Moon className="w-4 h-4" />
-                    <span>Dark Mode</span>
-                  </>
-                )}
-              </button>
-              <div className="flex items-center justify-center gap-6 pt-4 border-t border-border">
-                <a href="mailto:vedararetreat@gmail.com" className="text-muted-foreground hover:text-primary transition-colors duration-500" aria-label="Email">
-                  <Mail className="w-5 h-5" />
-                </a>
-                <a href="tel:+919118882242" className="text-muted-foreground hover:text-primary transition-colors duration-500" aria-label="Phone">
-                  <Phone className="w-5 h-5" />
-                </a>
-                <a href="https://facebook.com/vedararetreat" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors duration-500" aria-label="Facebook">
-                  <Facebook className="w-5 h-5" />
-                </a>
-                <a href="https://instagram.com/vedararetreat" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors duration-500" aria-label="Instagram">
-                  <Instagram className="w-5 h-5" />
-                </a>
+                <button
+                  onClick={toggle}
+                  className="flex items-center justify-center gap-2 w-full px-4 py-2 rounded-lg border border-border text-foreground/70 hover:border-primary hover:text-primary transition-colors duration-500"
+                >
+                  {theme === 'dark' ? (
+                    <>
+                      <Sun className="w-4 h-4" />
+                      <span>Light Mode</span>
+                    </>
+                  ) : (
+                    <>
+                      <Moon className="w-4 h-4" />
+                      <span>Dark Mode</span>
+                    </>
+                  )}
+                </button>
+                <div className="flex items-center justify-center gap-6 pt-4 border-t border-border">
+                  <a href="mailto:vedararetreat@gmail.com" className="text-muted-foreground hover:text-primary transition-colors duration-500" aria-label="Email">
+                    <Mail className="w-5 h-5" />
+                  </a>
+                  <a href="tel:+919118882242" className="text-muted-foreground hover:text-primary transition-colors duration-500" aria-label="Phone">
+                    <Phone className="w-5 h-5" />
+                  </a>
+                  <a href="https://facebook.com/vedararetreat" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors duration-500" aria-label="Facebook">
+                    <Facebook className="w-5 h-5" />
+                  </a>
+                  <a href="https://instagram.com/vedararetreat" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors duration-500" aria-label="Instagram">
+                    <Instagram className="w-5 h-5" />
+                  </a>
               </div>
             </nav>
           </motion.div>

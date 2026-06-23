@@ -180,7 +180,7 @@ export function ChatBot() {
                 {mode === 'live' && (
                   <button
                     onClick={handleCloseLiveChat}
-                    className="text-alabaster hover:text-alabaster p-1 text-xs"
+                    className="text-alabaster hover:text-alabaster p-1 text-xs bg-red-500/20 rounded-full"
                     title="End live chat"
                   >
                     <X className="w-4 h-4" />

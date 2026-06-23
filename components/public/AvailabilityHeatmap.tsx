@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface CalendarDay {
   date: number;
@@ -90,19 +90,19 @@ export function AvailabilityHeatmap() {
   const totalDays = calendar.filter((d) => d.isCurrentMonth).length;
 
   return (
-    <div className="bg-white rounded-2xl p-5 shadow-[0_1px_3px_rgba(28,43,58,0.04)] border border-[rgba(74,85,104,0.06)]">
+    <div className="rounded p-5" style={{ background: 'var(--clr-surface)', border: '1px solid var(--clr-stone)' }}>
       <div className="flex items-center justify-between mb-4">
         <div>
-          <p className="text-xs text-white/50 uppercase tracking-wider font-sans mb-1">Availability</p>
-          <p className="text-sm font-medium text-white">{cottageNames[selectedCottage]}</p>
+          <p style={{ fontSize: '0.7rem', color: 'var(--clr-text-muted)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '4px' }}>Availability</p>
+          <p style={{ fontSize: '0.85rem', fontWeight: 400, color: 'var(--clr-text)' }}>{cottageNames[selectedCottage]}</p>
         </div>
         <div className="flex items-center gap-1">
-          <button onClick={prevMonth} className="p-1.5 rounded-lg hover:bg-white/10 transition-colors text-white/60">
-            <ChevronLeft className="w-4 h-4" />
+          <button onClick={prevMonth} className="p-1.5 rounded transition-colors" style={{ color: 'var(--clr-text-muted)' }}>
+            <ChevronLeft style={{ width: '1rem', height: '1rem' }} />
           </button>
-          <span className="text-xs text-white/70 font-medium min-w-[100px] text-center">{monthName}</span>
-          <button onClick={nextMonth} className="p-1.5 rounded-lg hover:bg-white/10 transition-colors text-white/60">
-            <ChevronRight className="w-4 h-4" />
+          <span style={{ fontSize: '0.75rem', color: 'var(--clr-text-muted)', fontWeight: 400, minWidth: '100px', textAlign: 'center' }}>{monthName}</span>
+          <button onClick={nextMonth} className="p-1.5 rounded transition-colors" style={{ color: 'var(--clr-text-muted)' }}>
+            <ChevronRight style={{ width: '1rem', height: '1rem' }} />
           </button>
         </div>
       </div>
@@ -112,11 +112,15 @@ export function AvailabilityHeatmap() {
           <button
             key={i}
             onClick={() => setSelectedCottage(i)}
-            className={`text-[10px] px-2.5 py-1 rounded-full whitespace-nowrap transition-all ${
-              selectedCottage === i
-                ? 'bg-gold-500/30 text-gold-300 border border-gold-500/30'
-                : 'bg-white/5 text-white/50 hover:bg-white/10 border border-transparent'
-            }`}
+            className="whitespace-nowrap transition-all"
+            style={{
+              fontSize: '0.65rem',
+              padding: '4px 10px',
+              borderRadius: '2px',
+              background: selectedCottage === i ? 'rgba(201,148,58,0.15)' : 'transparent',
+              color: selectedCottage === i ? 'var(--clr-cedar)' : 'var(--clr-text-muted)',
+              border: selectedCottage === i ? '1px solid rgba(201,148,58,0.3)' : '1px solid transparent',
+            }}
           >
             {name.split(' ')[0]}
           </button>
@@ -125,7 +129,7 @@ export function AvailabilityHeatmap() {
 
       <div className="grid grid-cols-7 gap-0.5 mb-2">
         {weekDays.map((day) => (
-          <div key={day} className="text-center text-[10px] text-white/40 py-1 font-sans">
+          <div key={day} style={{ textAlign: 'center', fontSize: '0.65rem', color: 'var(--clr-text-muted)', padding: '4px 0' }}>
             {day}
           </div>
         ))}
@@ -134,45 +138,59 @@ export function AvailabilityHeatmap() {
       {loading ? (
         <div className="grid grid-cols-7 gap-0.5">
           {Array.from({ length: 42 }).map((_, i) => (
-            <div key={i} className="aspect-square rounded-md bg-white/5 animate-pulse" />
+            <div key={i} className="aspect-square rounded animate-pulse" style={{ background: 'var(--clr-stone)' }} />
           ))}
         </div>
       ) : (
         <div className="grid grid-cols-7 gap-0.5">
-          {calendar.map((day, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: i * 0.005 }}
-              className={`aspect-square rounded-md flex items-center justify-center text-[11px] transition-all ${
-                !day.isCurrentMonth
-                  ? 'text-white/10'
-                  : day.isToday
-                  ? 'ring-1 ring-gold-500/50 text-gold-400 font-bold'
-                  : day.available
-                  ? 'bg-emerald-500/20 text-emerald-300 hover:bg-emerald-500/30 cursor-pointer'
-                  : 'bg-red-500/15 text-red-400/50'
-              }`}
-            >
-              {day.date}
-            </motion.div>
-          ))}
+          {calendar.map((day, i) => {
+            let cellBg = 'transparent';
+            let cellColor = 'var(--clr-text-muted)';
+            let cellWeight = '400';
+            let cellBorder = 'none';
+
+            if (!day.isCurrentMonth) {
+              cellColor = 'rgba(107,101,96,0.3)';
+            } else if (day.isToday) {
+              cellBorder = '1px solid var(--clr-saffron)';
+              cellColor = 'var(--clr-saffron)';
+              cellWeight = '500';
+            } else if (day.available) {
+              cellBg = 'rgba(22,163,74,0.08)';
+              cellColor = '#16a34a';
+            } else {
+              cellBg = 'rgba(220,38,38,0.06)';
+              cellColor = 'rgba(220,38,38,0.5)';
+            }
+
+            return (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: i * 0.005 }}
+                className="aspect-square rounded flex items-center justify-center transition-all"
+                style={{ fontSize: '0.7rem', background: cellBg, color: cellColor, fontWeight: cellWeight, border: cellBorder, cursor: day.isCurrentMonth && day.available ? 'pointer' : 'default' }}
+              >
+                {day.date}
+              </motion.div>
+            );
+          })}
         </div>
       )}
 
-      <div className="flex items-center justify-between mt-3 pt-3 border-t border-alabaster/10">
+      <div className="flex items-center justify-between mt-3 pt-3" style={{ borderTop: '1px solid var(--clr-stone)' }}>
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-1">
-            <div className="w-2.5 h-2.5 rounded-sm bg-emerald-500/30" />
-            <span className="text-[10px] text-white/50">Available</span>
+            <div className="w-2.5 h-2.5 rounded-sm" style={{ background: 'rgba(22,163,74,0.2)' }} />
+            <span style={{ fontSize: '0.65rem', color: 'var(--clr-text-muted)' }}>Available</span>
           </div>
           <div className="flex items-center gap-1">
-            <div className="w-2.5 h-2.5 rounded-sm bg-red-500/20" />
-            <span className="text-[10px] text-white/50">Booked</span>
+            <div className="w-2.5 h-2.5 rounded-sm" style={{ background: 'rgba(220,38,38,0.12)' }} />
+            <span style={{ fontSize: '0.65rem', color: 'var(--clr-text-muted)' }}>Booked</span>
           </div>
         </div>
-        <span className="text-[10px] text-white/40">
+        <span style={{ fontSize: '0.65rem', color: 'var(--clr-text-muted)' }}>
           {availableCount}/{totalDays} days free
         </span>
       </div>

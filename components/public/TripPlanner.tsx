@@ -12,10 +12,10 @@ interface TripPlan {
 }
 
 const tripTypes = [
-  { id: 'romantic', label: 'Romantic Escape', icon: Star, color: 'from-pink-500/20 to-rose-500/10' },
-  { id: 'adventure', label: 'Adventure Trek', icon: Mountain, color: 'from-emerald-500/20 to-teal-500/10' },
-  { id: 'family', label: 'Family Retreat', icon: Users, color: 'from-amber-500/20 to-orange-500/10' },
-  { id: 'wellness', label: 'Wellness & Peace', icon: TreePine, color: 'from-violet-500/20 to-indigo-500/10' },
+  { id: 'romantic', label: 'Romantic Escape', icon: Star, color: 'rgba(236,72,153,0.1)' },
+  { id: 'adventure', label: 'Adventure Trek', icon: Mountain, color: 'rgba(22,163,74,0.1)' },
+  { id: 'family', label: 'Family Retreat', icon: Users, color: 'rgba(245,158,11,0.1)' },
+  { id: 'wellness', label: 'Wellness & Peace', icon: TreePine, color: 'rgba(139,92,246,0.1)' },
 ];
 
 const generatedPlans: Record<string, TripPlan> = {
@@ -206,10 +206,10 @@ export function TripPlanner() {
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 right-6 z-50 glass-button rounded-full px-5 py-3 flex items-center gap-2 shadow-xl cursor-pointer"
+        className="fixed bottom-6 right-6 z-50 rounded-full px-5 py-3 flex items-center gap-2 shadow-xl cursor-pointer transition-all bg-gold-600 text-white hover:bg-gold-700 border-0"
       >
-        <Sparkles className="w-4 h-4 text-gold-400" />
-        <span className="text-sm font-medium text-white">AI Trip Planner</span>
+        <Sparkles className="w-4 h-4" />
+        <span className="text-sm font-medium">AI Trip Planner</span>
       </motion.button>
 
       <AnimatePresence>
@@ -220,34 +220,35 @@ export function TripPlanner() {
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-50 flex items-center justify-center p-4"
           >
-            <div className="absolute inset-0 bg-[#1C2B3A]/80 backdrop-blur-sm" onClick={() => setIsOpen(false)} />
+            <div className="absolute inset-0" style={{ background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(4px)' }} onClick={() => setIsOpen(false)} />
 
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-              className="relative w-full max-w-2xl max-h-[85vh] overflow-y-auto glass-dark rounded-3xl"
+              className="relative w-full max-w-2xl max-h-[85vh] overflow-y-auto rounded-3xl"
+              style={{ background: '#1C2B3A', border: '1px solid rgba(255,255,255,0.08)', boxShadow: '0 8px 32px rgba(0,0,0,0.25)' }}
             >
-              <div className="sticky top-0 z-10 flex items-center justify-between p-6 pb-4 border-b border-alabaster/10">
+              <div className="sticky top-0 z-10 flex items-center justify-between p-6 pb-4" style={{ borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-gold-500/30 to-gold-600/10 flex items-center justify-center">
-                    <Sparkles className="w-5 h-5 text-gold-400" />
+                  <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'rgba(201,148,58,0.15)' }}>
+                    <Sparkles style={{ width: '1.25rem', height: '1.25rem', color: 'var(--clr-saffron)' }} />
                   </div>
                   <div>
-                    <h2 className="font-serif text-xl text-white">AI Trip Planner</h2>
-                    <p className="text-xs text-white/50">Personalized itineraries for The Vedara</p>
+                    <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.25rem', color: 'white' }}>AI Trip Planner</h2>
+                    <p style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.5)' }}>Personalized itineraries for The Vedara</p>
                   </div>
                 </div>
-                <button onClick={() => setIsOpen(false)} className="text-white/50 hover:text-white transition-colors">
-                  <X className="w-5 h-5" />
+                <button onClick={() => setIsOpen(false)} style={{ color: 'rgba(255,255,255,0.5)' }} className="hover:text-white transition-colors">
+                  <X style={{ width: '1.25rem', height: '1.25rem' }} />
                 </button>
               </div>
 
               <div className="p-6">
                 {!plan ? (
                   <>
-                    <p className="text-sm text-white/60 mb-6">What kind of trip are you dreaming of?</p>
+                    <p style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.6)', marginBottom: '24px' }}>What kind of trip are you dreaming of?</p>
                     <div className="grid grid-cols-2 gap-3">
                       {tripTypes.map((type) => (
                         <motion.button
@@ -256,16 +257,16 @@ export function TripPlanner() {
                           whileTap={{ scale: 0.98 }}
                           onClick={() => handleSelect(type.id)}
                           disabled={generating}
-                          className={`relative overflow-hidden rounded-xl p-4 text-left transition-all duration-300 ${
-                            selectedType === type.id
-                              ? 'glass-card ring-2 ring-gold-500/40'
-                              : 'glass-card hover:border-gold-400/20'
-                          }`}
+                          className="relative overflow-hidden rounded-xl p-4 text-left transition-all duration-300"
+                          style={{
+                            background: selectedType === type.id ? 'rgba(201,148,58,0.15)' : 'rgba(255,255,255,0.05)',
+                            border: selectedType === type.id ? '1px solid rgba(201,148,58,0.3)' : '1px solid rgba(255,255,255,0.08)',
+                          }}
                         >
-                          <div className={`absolute inset-0 bg-gradient-to-br ${type.color} opacity-50`} />
+                          <div className="absolute inset-0" style={{ background: type.color, opacity: 0.5 }} />
                           <div className="relative z-10">
-                            <type.icon className="w-6 h-6 text-gold-400 mb-2" />
-                            <p className="text-sm font-medium text-white">{type.label}</p>
+                            <type.icon style={{ width: '1.5rem', height: '1.5rem', color: 'var(--clr-saffron)', marginBottom: '8px' }} />
+                            <p style={{ fontSize: '0.85rem', fontWeight: 400, color: 'white' }}>{type.label}</p>
                           </div>
                         </motion.button>
                       ))}
@@ -277,32 +278,32 @@ export function TripPlanner() {
                         animate={{ opacity: 1, y: 0 }}
                         className="mt-6 flex items-center justify-center gap-3 py-8"
                       >
-                        <Loader2 className="w-5 h-5 text-gold-400 animate-spin" />
-                        <span className="text-sm text-white/60">Crafting your personalized itinerary...</span>
+                        <Loader2 style={{ width: '1.25rem', height: '1.25rem', color: 'var(--clr-saffron)' }} className="animate-spin" />
+                        <span style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.6)' }}>Crafting your personalized itinerary...</span>
                       </motion.div>
                     )}
                   </>
                 ) : (
                   <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                     <div className="mb-6">
-                      <h3 className="font-serif text-2xl text-white mb-2">{plan.title}</h3>
-                      <p className="text-sm text-white/60">{plan.description}</p>
+                      <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.5rem', color: 'white', marginBottom: '8px' }}>{plan.title}</h3>
+                      <p style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.6)' }}>{plan.description}</p>
                     </div>
 
                     <div className="space-y-4 mb-6">
                       {plan.itinerary.map((day, i) => (
-                        <div key={i} className="glass-card rounded-xl p-4">
-                          <h4 className="font-serif text-sm text-gold-400 mb-3 flex items-center gap-2">
-                            <Calendar className="w-3.5 h-3.5" />
+                        <div key={i} className="rounded-xl p-4" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                          <h4 style={{ fontFamily: 'var(--font-display)', fontSize: '0.85rem', color: 'var(--clr-saffron)', marginBottom: '12px' }} className="flex items-center gap-2">
+                            <Calendar style={{ width: '0.875rem', height: '0.875rem' }} />
                             {day.day}
                           </h4>
                           <div className="space-y-2">
                             {day.activities.map((act, j) => (
                               <div key={j} className="flex items-start gap-3">
-                                <span className="text-xs text-white/40 font-mono mt-0.5 w-14 flex-shrink-0">{act.time}</span>
+                                <span style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.4)', fontFamily: 'monospace', marginTop: '2px', minWidth: '56px', flexShrink: 0 }}>{act.time}</span>
                                 <div className="flex items-center gap-2 flex-1">
-                                  <act.icon className="w-3.5 h-3.5 text-gold-400/70 flex-shrink-0" />
-                                  <span className="text-sm text-white/80">{act.activity}</span>
+                                  <act.icon style={{ width: '0.875rem', height: '0.875rem', color: 'rgba(201,148,58,0.7)', flexShrink: 0 }} />
+                                  <span style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.8)' }}>{act.activity}</span>
                                 </div>
                               </div>
                             ))}
@@ -311,12 +312,12 @@ export function TripPlanner() {
                       ))}
                     </div>
 
-                    <div className="glass-card rounded-xl p-4 mb-4">
-                      <h4 className="font-serif text-sm text-gold-400 mb-3">Insider Tips</h4>
+                    <div className="rounded-xl p-4 mb-4" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                      <h4 style={{ fontFamily: 'var(--font-display)', fontSize: '0.85rem', color: 'var(--clr-saffron)', marginBottom: '12px' }}>Insider Tips</h4>
                       <ul className="space-y-2">
                         {plan.tips.map((tip, i) => (
-                          <li key={i} className="flex items-start gap-2 text-sm text-white/70">
-                            <ChevronRight className="w-3.5 h-3.5 text-gold-400/60 mt-0.5 flex-shrink-0" />
+                          <li key={i} className="flex items-start gap-2" style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.7)' }}>
+                            <ChevronRight style={{ width: '0.875rem', height: '0.875rem', color: 'rgba(201,148,58,0.6)', marginTop: '2px', flexShrink: 0 }} />
                             {tip}
                           </li>
                         ))}
@@ -324,10 +325,10 @@ export function TripPlanner() {
                     </div>
 
                     <div className="flex gap-3">
-                      <button onClick={handleReset} className="flex-1 glass-button rounded-xl py-3 text-sm text-white font-medium">
+                      <button onClick={handleReset} className="flex-1 rounded-xl py-3 text-sm font-medium" style={{ background: 'rgba(255,255,255,0.08)', color: 'white', border: '1px solid rgba(255,255,255,0.08)' }}>
                         Try Another
                       </button>
-                      <a href="/booking" className="flex-1 bg-gold-600 hover:bg-gold-700 rounded-xl py-3 text-sm text-white font-medium text-center transition-colors">
+                      <a href="/booking" className="flex-1 rounded-xl py-3 text-sm font-medium text-center transition-colors" style={{ background: 'var(--clr-saffron)', color: 'white' }}>
                         Book This Trip
                       </a>
                     </div>
