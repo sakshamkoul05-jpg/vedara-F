@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import { usePathname } from 'next/navigation';
 import { SmoothScroll } from '@/components/layout/SmoothScroll';
@@ -8,6 +9,8 @@ import { Footer } from '@/components/layout/Footer';
 import { ThemeInitializer } from '@/components/layout/ThemeInitializer';
 import { ScrollProgress } from '@/components/animations/ScrollProgress';
 import { Toaster } from 'react-hot-toast';
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
 
 const FogParticles = dynamic(() => import('@/components/animations/FogParticles').then(m => ({ default: m.FogParticles })), { ssr: false });
 const ParallaxCursor = dynamic(() => import('@/components/animations/ParallaxCursor').then(m => ({ default: m.ParallaxCursor })), { ssr: false });
@@ -19,6 +22,16 @@ export function ClientBody({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const isAdmin = pathname.startsWith('/admin') && pathname !== '/admin/login';
   const isEmployee = pathname.startsWith('/employee');
+  const [aiPlannerEnabled, setAiPlannerEnabled] = useState(true);
+
+  useEffect(() => {
+    fetch(`${API_URL}/cms/settings`)
+      .then(res => res.json())
+      .then(data => {
+        if (data?.data?.aiPlannerEnabled === false) setAiPlannerEnabled(false);
+      })
+      .catch(() => {});
+  }, []);
 
   if (isAdmin || isEmployee) {
     return (
@@ -56,7 +69,7 @@ export function ClientBody({ children }: { children: React.ReactNode }) {
         <main>{children}</main>
         <Footer />
         <ChatBot />
-        <TripPlanner />
+        {aiPlannerEnabled && <TripPlanner />}
       </SmoothScroll>
       <Toaster
         position="top-right"

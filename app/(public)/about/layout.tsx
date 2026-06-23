@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'About',
-  description: 'Discover Vedara Retreat – a boutique mountain stay in Ghiyagi, Jibhi. 6 luxury cottages, in-house café, and soulful Himalayan hospitality.',
+  description: 'Discover The Vedara – a boutique mountain stay in Ghiyagi, Jibhi. 7 luxury cottages, in-house café, and soulful Himalayan hospitality.',
   keywords: [
     'boutique stay in Jibhi',
     'luxury cottages Jibhi',
@@ -11,13 +11,12 @@ export const metadata: Metadata = {
     'boutique resort in Jibhi',
     'luxury stay in Tirthan Valley',
     'jacuzzi cottages in Jibhi',
-    'couple friendly stay in Jibhi',
     'mountain retreat Himachal',
     'boutique café stay in Himachal',
   ],
   openGraph: {
-    title: 'About Vedara Retreat – Himalayan Boutique Stay in Jibhi',
-    description: '6 luxury cottages in Ghiyagi, Jibhi. In-house café, mountain views, and unforgettable experiences.',
+    title: 'About The Vedara – Himalayan Boutique Stay in Jibhi',
+    description: '7 luxury cottages in Ghiyagi, Jibhi. In-house café, mountain views, and unforgettable experiences.',
   },
 };
 

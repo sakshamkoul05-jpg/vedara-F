@@ -106,7 +106,7 @@ const generatedPlans: Record<string, TripPlan> = {
         day: 'Day 1 – Arrive & Settle',
         activities: [
           { time: '2:00 PM', activity: 'Check into Koklass Cove (largest family suite)', icon: Mountain },
-          { time: '3:30 PM', activity: 'Kids Arena – supervised nature crafts and games', icon: Users },
+          { time: '3:30 PM', activity: 'Kids Zone – supervised nature crafts and games', icon: Users },
           { time: '6:00 PM', activity: 'Family bonfire with storytelling', icon: Star },
         ],
       },
@@ -123,14 +123,14 @@ const generatedPlans: Record<string, TripPlan> = {
         day: 'Day 3 – Adventure Day',
         activities: [
           { time: '8:00 AM', activity: 'Guided nature walk with bird identification', icon: Compass },
-          { time: '11:00 AM', activity: 'Kids Arena outdoor treasure hunt', icon: Star },
+          { time: '11:00 AM', activity: 'Kids Zone outdoor treasure hunt', icon: Star },
           { time: '3:00 PM', activity: 'Family photo session at sunset point', icon: Mountain },
         ],
       },
     ],
     tips: [
       'Koklass Cove has the most space for families – two balconies and a jacuzzi.',
-      'Kids Arena is supervised from 10 AM to 4 PM daily.',
+      'Kids Zone is supervised from 10 AM to 4 PM daily.',
       'Carry sunscreen and hats for little ones during outdoor activities.',
     ],
   },

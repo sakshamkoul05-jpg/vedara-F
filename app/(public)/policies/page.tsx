@@ -116,7 +116,7 @@ const policySections = [
     title: 'Privacy Policy',
     content: (
       <div className="space-y-3 text-sm leading-relaxed text-muted-foreground">
-                    <p className="text-justify hyphens-auto">At The Vedara Retreat, we are committed to protecting your privacy. Any personal information collected during booking – including name, contact details, and payment information – is used solely for the purpose of facilitating your stay and improving our services.</p>
+                    <p className="text-justify hyphens-auto">At The Vedara, we are committed to protecting your privacy. Any personal information collected during booking – including name, contact details, and payment information – is used solely for the purpose of facilitating your stay and improving our services.</p>
         <p className="text-justify hyphens-auto"><strong className="text-foreground">Data Security:</strong> We implement reasonable security measures to protect your information. Payment processing is handled securely through Razorpay.</p>
         <p className="text-justify hyphens-auto"><strong className="text-foreground">Information Sharing:</strong> We do not sell, trade, or share your personal information with third parties except as required by law or with your explicit consent.</p>
         <p className="text-justify hyphens-auto"><strong className="text-foreground">Photography:</strong> We may capture photographs during your stay for promotional purposes. Please inform us at check-in if you prefer not to be photographed.</p>
@@ -129,7 +129,7 @@ const policySections = [
     content: (
       <div className="space-y-3 text-sm leading-relaxed text-muted-foreground">
         <p className="text-justify hyphens-auto"><strong className="text-foreground">Strictly Non-Smoking Rooms:</strong> To maintain our pristine Himalayan indoor environment and ensure guest safety, all cottages are strictly non-smoking. This includes cigarettes, e-cigarettes, vapes, cigars, and sheesha/hookah.</p>
-        <p className="text-justify hyphens-auto"><strong className="text-foreground">Balconies & Cafe:</strong> While you can smoke in the balconies and cafe, we have designated smoking areas for wider safety.</p>
+        <p className="text-justify hyphens-auto"><strong className="text-foreground">Balconies & Café:</strong> While you can smoke in the balconies and café, we have designated smoking areas for wider safety.</p>
         <p className="text-justify hyphens-auto"><strong className="text-foreground">Hazardous Items:</strong> Due to the timber and stone architecture of our cottages, the use of candles, incense sticks (agarbatti), personal room heaters, or cooking appliances inside the rooms is strictly prohibited.</p>
         <p className="text-justify hyphens-auto"><strong className="text-foreground">Pet Policy:</strong> To maintain an allergen-free environment and ensure the comfort of all visitors, The Vedara is currently a pet-free property. We are unable to accommodate pets of any size.</p>
       </div>
@@ -142,7 +142,7 @@ const policySections = [
       <div className="space-y-3 text-sm leading-relaxed text-muted-foreground">
         <p className="text-justify hyphens-auto"><strong className="text-foreground">Mountain Terrain:</strong> The Vedara is located in a high-altitude Himalayan terrain. Guests are advised to exercise caution while navigating uneven paths, stairs, and natural surfaces around the property.</p>
         <p className="text-justify hyphens-auto"><strong className="text-foreground">Weather:</strong> Mountain weather can be unpredictable. Please carry appropriate clothing and footwear. Management reserves the right to restrict outdoor activities during severe weather.</p>
-                        <p className="text-justify hyphens-auto"><strong className="text-foreground">Liability:</strong> The Vedara Retreat is not liable for any loss, injury, or damage to personal property during your stay. We recommend guests obtain appropriate travel insurance.</p>
+                        <p className="text-justify hyphens-auto"><strong className="text-foreground">Liability:</strong> The Vedara is not liable for any loss, injury, or damage to personal property during your stay. We recommend guests obtain appropriate travel insurance.</p>
         <p className="text-justify hyphens-auto"><strong className="text-foreground">Emergency:</strong> A first-aid kit is available at the reception. In case of medical emergencies, the nearest healthcare facility is approximately 20 km away.</p>
       </div>
     ),
@@ -169,10 +169,10 @@ export default function PoliciesPage() {
 
   const displayFaqs = faqs.length > 0 ? faqs : [
     { id: '1', question: 'What is the check-in and check-out time?', answer: 'Check-in is at 1:00 PM and check-out is at 11:00 AM.', category: null, sortOrder: 1 },
-    { id: '2', question: 'Is breakfast included?', answer: 'A complimentary farm-style breakfast is served daily from 7:30 AM to 10:00 AM at our cafe.', category: null, sortOrder: 2 },
+    { id: '2', question: 'Is breakfast included?', answer: 'A complimentary farm-style breakfast is served daily from 7:30 AM to 10:00 AM at our café.', category: null, sortOrder: 2 },
     { id: '3', question: 'Is there WiFi available?', answer: 'Yes, all cottages and common areas have complimentary high-speed WiFi.', category: null, sortOrder: 3 },
     { id: '4', question: 'What payment methods do you accept?', answer: 'We accept all major credit/debit cards, UPI, and net banking via Razorpay.', category: null, sortOrder: 4 },
-    { id: '5', question: 'Is the cafe open to outside visitors?', answer: 'Absolutely! Our cafe is open to all from 7:30 AM to 10:00 PM. Non-guests are welcome.', category: null, sortOrder: 5 },
+    { id: '5', question: 'Is the café open to outside visitors?', answer: 'Absolutely! Our café is open to all from 7:30 AM to 10:00 PM. Non-guests are welcome.', category: null, sortOrder: 5 },
     { id: '6', question: 'Can I modify or cancel my booking?', answer: 'Yes, subject to our cancellation policy. Please refer to the <a href="/policies#cancellation" class="text-gold-600 underline hover:no-underline">Cancellation Policy section</a> for detailed terms.', category: null, sortOrder: 6 },
   ];
 

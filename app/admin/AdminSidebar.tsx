@@ -52,7 +52,7 @@ export function AdminSidebar() {
           />
         </div>
         <div className="min-w-0">
-          <h2 className="font-serif text-sm font-semibold text-foreground leading-tight truncate">Vedara Retreat</h2>
+          <h2 className="font-serif text-sm font-semibold text-foreground leading-tight truncate">The Vedara</h2>
           <p className="text-[10px] text-muted-foreground uppercase tracking-wider">Admin Panel</p>
         </div>
       </div>

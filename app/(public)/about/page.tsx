@@ -3,7 +3,7 @@
 import { ScrollReveal } from '@/components/animations/ScrollReveal';
 import { TextReveal } from '@/components/animations/TextReveal';
 import { ImageReveal } from '@/components/animations/ImageReveal';
-import { Mountain, Heart, Shield, Leaf, Home, Coffee, MapPin, Users, Wifi, Car, Flame, TreePine, UtensilsCrossed, ExternalLink, Music, Star, Compass, Gamepad2, Quote } from 'lucide-react';
+import { Mountain, Heart, Shield, Leaf, Home, Coffee, MapPin, Users, Wifi, Car, Flame, TreePine, UtensilsCrossed, ExternalLink, Compass, Quote } from 'lucide-react';
 
 const values = [
   { icon: Leaf, title: 'Slow Living', desc: 'A retreat for those who seek more than just a getaway – to slow down, breathe deeply, and reconnect with what truly matters in the Himalayas.' },
@@ -41,17 +41,6 @@ const attractions = [
   { name: 'Great Himalayan National Park', distance: '30 km', image: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&q=80', desc: 'A UNESCO World Heritage site with pristine alpine meadows, dense forests, and rich wildlife. Perfect for a day trek from The Vedara.' },
 ];
 
-const activities = [
-  { icon: Flame, title: 'Bonfire Nights', desc: 'Evening bonfires under the starlit Himalayan sky.' },
-  { icon: Music, title: 'Music Nights', desc: 'Live acoustic sessions featuring local artists.' },
-  { icon: TreePine, title: 'Nature Walks', desc: 'Guided walks through cedar and pine forests.' },
-  { icon: Star, title: 'Star Gazing', desc: 'Unpolluted night skies perfect for astronomy.' },
-  { icon: Coffee, title: 'Café Evenings', desc: 'Warm beverages and conversations by the stream.' },
-  { icon: Mountain, title: 'Lambhari Top Trek', desc: 'Guided sunrise trek to panoramic summit views.' },
-  { icon: Compass, title: 'Great Himalayan NP', desc: 'Day trek to the UNESCO World Heritage site.' },
-  { icon: Gamepad2, title: 'Kids Arena', desc: 'Dedicated play zone with nature crafts, outdoor games, and supervised adventures for young explorers.' },
-];
-
 export default function AboutPage() {
   return (
     <>
@@ -82,9 +71,9 @@ export default function AboutPage() {
           <ScrollReveal>
             <div className="max-w-3xl mx-auto text-center">
               <Quote className="w-10 h-10 text-primary mx-auto mb-6" />
-              <p className="font-serif text-2xl md:text-3xl lg:text-4xl text-foreground leading-relaxed italic">
+              <blockquote className="font-serif text-2xl md:text-3xl lg:text-4xl text-foreground leading-relaxed italic">
                 "Where the peaks meet peace of mind. Welcome to slow living in the heart of the Himalayas."
-              </p>
+              </blockquote>
               <div className="mt-8 w-16 h-px bg-primary mx-auto" />
             </div>
           </ScrollReveal>
@@ -182,36 +171,10 @@ export default function AboutPage() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {highlights.map((h, i) => (
               <ScrollReveal key={h.label} delay={i * 0.1}>
-                <div className="glass-card-light rounded-2xl p-6 text-center transition-smooth">
+                <div className="glass-card-light rounded-2xl p-6 text-center transition-smooth h-full flex flex-col items-center justify-center">
                   <h.icon className="w-8 h-8 text-primary mx-auto mb-3" />
                   <h3 className="font-serif text-lg text-foreground mb-1">{h.label}</h3>
                   <p className="text-muted-foreground text-sm">{h.desc}</p>
-                </div>
-              </ScrollReveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Experiences */}
-      <section className="section-padding bg-slate-50">
-        <div className="vintage-container">
-          <ScrollReveal>
-            <div className="text-center max-w-3xl mx-auto mb-16">
-              <p className="text-primary text-sm tracking-[0.2em] uppercase mb-4 font-sans">Experiences</p>
-              <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-foreground mb-6">Moments That Stay With You</h2>
-              <p className="text-muted-foreground text-base md:text-lg">Beyond the cottages, a world of experiences awaits</p>
-            </div>
-          </ScrollReveal>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-            {activities.map((act, i) => (
-              <ScrollReveal key={act.title} delay={i * 0.1}>
-                <div className="group glass-card-light rounded-2xl p-6 text-center transition-smooth">
-                  <div className="w-14 h-14 rounded-full bg-gradient-to-br from-primary/15 to-primary/5 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-smooth">
-                    <act.icon className="w-7 h-7 text-primary" />
-                  </div>
-                  <h3 className="font-serif text-lg text-foreground mb-2">{act.title}</h3>
-                  <p className="text-muted-foreground text-sm leading-relaxed">{act.desc}</p>
                 </div>
               </ScrollReveal>
             ))}
@@ -232,7 +195,7 @@ export default function AboutPage() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {amenities.map((a, i) => (
               <ScrollReveal key={a.label} delay={i * 0.08}>
-                <div className="glass-card-light rounded-2xl p-5 flex items-start gap-4 transition-smooth">
+                <div className="glass-card-light rounded-2xl p-5 flex items-start gap-4 transition-smooth h-full">
                   <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
                     <a.icon className="w-5 h-5 text-primary" />
                   </div>
@@ -244,12 +207,6 @@ export default function AboutPage() {
               </ScrollReveal>
             ))}
           </div>
-          <ScrollReveal delay={0.2}>
-            <div className="mt-8 glass-card-light rounded-2xl p-5 inline-flex items-center gap-3 mx-auto transition-smooth">
-              <Wifi className="w-5 h-5 text-primary" />
-              <span className="text-sm text-foreground"><strong>High-speed WiFi</strong> available throughout the property</span>
-            </div>
-          </ScrollReveal>
         </div>
       </section>
 
@@ -368,7 +325,7 @@ export default function AboutPage() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {values.map((v, i) => (
               <ScrollReveal key={v.title} delay={i * 0.1}>
-                <div className="rounded-2xl p-6 text-center border border-white/8 transition-smooth" style={{ background: 'rgba(255,255,255,0.05)' }}>
+                <div className="rounded-2xl p-6 text-center border border-white/8 transition-smooth h-full flex flex-col items-center" style={{ background: 'rgba(255,255,255,0.05)' }}>
                   <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary/25 to-primary/10 flex items-center justify-center mx-auto mb-4">
                     <v.icon className="w-6 h-6 text-primary" />
                   </div>

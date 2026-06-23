@@ -117,8 +117,10 @@ export const endpoints = {
     settings: (token: string | null) => api.get('/cms/settings', token),
     updateSetting: (data: any, token: string | null) => api.put('/cms/settings', data, token),
     cottages: (token: string | null) => api.get('/cms/cottages', token),
+    createCottage: (data: any, token: string | null) => api.post('/cms/cottages', data, token),
     updateCottage: (id: string, data: any, token: string | null) =>
       api.put(`/cms/cottages/${id}`, data, token),
+    deleteCottage: (id: string, token: string | null) => api.delete(`/cms/cottages/${id}`, token),
     gallery: (token: string | null) => api.get('/cms/gallery', token),
     addGalleryItem: (data: any, token: string | null) => api.post('/cms/gallery', data, token),
     deleteGalleryItem: (id: string, token: string | null) => api.delete(`/cms/gallery/${id}`, token),

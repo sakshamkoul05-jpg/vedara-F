@@ -43,6 +43,7 @@ export function Footer() {
             <h4 className="font-serif text-gold-400 font-semibold mb-4">Support</h4>
             <ul className="space-y-3">
               <li><Link href="/contact" className="text-sm text-white/70 hover:text-white transition-colors duration-500">Contact Us</Link></li>
+              <li><Link href="/my-bookings" className="text-sm text-white/70 hover:text-white transition-colors duration-500">My Bookings</Link></li>
               <li><Link href="/policies" className="text-sm text-white/70 hover:text-white transition-colors duration-500">Policies</Link></li>
               <li><Link href="/policies#faqs" className="text-sm text-white/70 hover:text-white transition-colors duration-500">FAQs</Link></li>
               <li><Link href="/policies#cancellation" className="text-sm text-white/70 hover:text-white transition-colors duration-500">Cancellation</Link></li>
@@ -62,7 +63,7 @@ export function Footer() {
         </div>
 
         <div className="mt-12 pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-white/50">
-          <p>&copy; {new Date().getFullYear()} The Vedara Retreat. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} The Vedara. All rights reserved.</p>
           <p>Ghiyagi, Jibhi, Himachal Pradesh – 175123</p>
         </div>
       </div>

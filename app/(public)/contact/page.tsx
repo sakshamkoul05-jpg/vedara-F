@@ -8,6 +8,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { endpoints } from '@/lib/api';
 import { Mail, Phone, MapPin, Clock, Send, Check } from 'lucide-react';
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
 
 export default function ContactPage() {
   const [form, setForm] = useState({ name: '', email: '', phone: '', subject: '', message: '' });
@@ -69,7 +71,15 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <label className="vintage-label">Phone</label>
-                      <Input value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} />
+                      <PhoneInput
+                        country="in"
+                        value={form.phone}
+                        onChange={(phone) => setForm({ ...form, phone })}
+                        inputProps={{ className: 'flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2' }}
+                        containerClass="!w-full"
+                        inputClass="!w-full !h-10 !text-sm"
+                        buttonClass="!border-input !bg-background"
+                      />
                     </div>
                     <div>
                       <label className="vintage-label">Subject *</label>
@@ -135,7 +145,7 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <h3 className="font-medium text-[#1C2B3A]">Reception Hours</h3>
-                      <p className="text-muted-foreground text-sm">Daily: 8:00 AM – 11:00 PM</p>
+                      <p className="text-muted-foreground text-sm">Daily: 7:30 AM – 10:00 PM</p>
                       <h3 className="font-medium text-[#1C2B3A] mt-2">Café Charade</h3>
                       <p className="text-muted-foreground text-sm">Breakfast: 7:30 AM – 10:00 AM</p>
                       <p className="text-muted-foreground text-sm">Lunch: 12:00 PM – 3:30 PM</p>
@@ -148,6 +158,29 @@ export default function ContactPage() {
           </div>
         </div>
       </section>
+
+      <ScrollReveal>
+        <section className="px-4 pb-16">
+          <div className="vintage-container">
+            <div className="text-center mb-8">
+              <p className="text-primary text-sm tracking-[0.2em] uppercase mb-3 font-sans">Find Us</p>
+              <h2 className="font-serif text-2xl md:text-3xl text-foreground">Our Location</h2>
+            </div>
+            <div className="rounded-2xl overflow-hidden shadow-lg border border-border">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3360.5!2d77.3!3d31.55!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2sGhiyagi%2C+Jibhi%2C+Himachal+Pradesh!5e0!3m2!1sen!2sin!4v1"
+                width="100%"
+                height="400"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="The Vedara – Ghiyagi, Jibhi, Himachal Pradesh"
+              />
+            </div>
+          </div>
+        </section>
+      </ScrollReveal>
     </>
   );
 }

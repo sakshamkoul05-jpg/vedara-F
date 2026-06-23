@@ -17,6 +17,8 @@ import {
   Calendar, Home, User, Check, ArrowRight, ArrowLeft,
   Percent, Tag, Loader2, CreditCard, Sparkles, Gift, ChevronDown, Users
 } from 'lucide-react';
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
 
 const idProofTypes = ['Aadhaar Card', 'PAN Card', 'Passport', 'Driving License'];
 
@@ -146,7 +148,7 @@ export default function BookingPage() {
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
         amount: razorpayOrder.amount,
         currency: razorpayOrder.currency,
-        name: 'The Vedara Retreat',
+        name: 'The Vedara',
         description: `Booking ${booking.bookingRef}`,
         order_id: razorpayOrder.id,
         handler: async (response: any) => {
@@ -350,14 +352,15 @@ export default function BookingPage() {
                             </div>
                             <div>
                               <label className="vintage-label">Phone *</label>
-                              <Input 
-                                type="tel" 
-                                value={guestPhone} 
-                                onChange={(e) => {
-                                  const value = e.target.value.replace(/[^\d+\-\s]/g, '');
-                                  setGuestPhone(value);
-                                }} 
-                                placeholder="+91-99999-99999" 
+                              <PhoneInput
+                                country="in"
+                                value={guestPhone}
+                                onChange={(phone) => setGuestPhone(phone)}
+                                inputProps={{ className: 'flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2' }}
+                                containerClass="!w-full"
+                                inputClass="!w-full !h-10 !text-sm"
+                                buttonClass="!border-input !bg-background"
+                                placeholder="+91-99999-99999"
                               />
                             </div>
                           </div>

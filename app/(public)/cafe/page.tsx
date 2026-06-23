@@ -361,7 +361,7 @@ export default function CafePage() {
       </motion.div>
 
       <div className="relative z-10">
-        <div className="relative h-[50vh] min-h-[400px] flex items-center justify-center overflow-hidden">
+        <section className="relative h-[50vh] min-h-[400px] flex items-center justify-center overflow-hidden">
           <div
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1600&q=80)', transform: 'scale(1.1)' }}
@@ -373,18 +373,18 @@ export default function CafePage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
             >
-              <p className="text-amber-400 text-sm tracking-[0.3em] uppercase mb-4 font-sans">The Vedara Retreat</p>
+              <p className="text-amber-400 text-sm tracking-[0.3em] uppercase mb-4 font-sans">The Vedara</p>
               <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif text-alabaster mb-4 tracking-wide">
-                Cafe Charade
+                Café Charade
               </h1>
               <p className="text-alabaster/80 text-lg md:text-xl max-w-2xl mx-auto font-light">
                 A Himalayan culinary journey — from mountain mornings to starlit dinners
               </p>
             </motion.div>
           </div>
-        </div>
+        </section>
 
-        <div className="sticky top-0 z-30 bg-alabaster/80 dark:bg-vedara-900/80 backdrop-blur-xl border-b border-gold-200/50">
+        <nav className="sticky top-0 z-30 bg-alabaster/80 dark:bg-vedara-900/80 backdrop-blur-xl border-b border-gold-200/50" aria-label="Menu categories">
           <div className="vintage-container">
             <div className="flex items-center gap-3 py-3 overflow-x-auto" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
               <Link href="/" className="shrink-0 p-2 -ml-2 text-charcoal/60 hover:text-vedara-900 dark:hover:text-gold-300 transition-colors">
@@ -419,7 +419,7 @@ export default function CafePage() {
               ))}
             </div>
           </div>
-        </div>
+        </nav>
 
         <div className="vintage-container py-8 md:py-12 pb-28">
           <AnimatePresence mode="wait">

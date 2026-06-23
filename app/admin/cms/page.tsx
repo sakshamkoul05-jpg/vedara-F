@@ -183,6 +183,40 @@ function SettingsTab({ token, showToast }: { token: string | null; showToast: (m
 
       <ScrollReveal delay={0.05}>
         <div className="glass-card-light rounded-2xl p-6">
+          <h2 className="font-serif text-xl text-foreground mb-6">Feature Toggles</h2>
+          <div className="space-y-4">
+            <div className="flex items-center justify-between bg-earth-50 rounded-xl px-4 py-3">
+              <div>
+                <p className="text-sm font-medium text-foreground">AI Trip Planner</p>
+                <p className="text-xs text-muted-foreground">Show or hide the AI Trip Planner widget on the website</p>
+              </div>
+              <button
+                onClick={async () => {
+                  const newVal = !(settings.aiPlannerEnabled ?? true);
+                  setSettings({ ...settings, aiPlannerEnabled: newVal });
+                  try {
+                    await api.put('/cms/settings', { key: 'aiPlannerEnabled', value: newVal }, token);
+                    showToast(`AI Trip Planner ${newVal ? 'enabled' : 'disabled'}`);
+                  } catch {
+                    setSettings({ ...settings, aiPlannerEnabled: !newVal });
+                    showToast('Failed to update', 'error');
+                  }
+                }}
+                className="transition-colors"
+              >
+                {settings.aiPlannerEnabled ?? true ? (
+                  <ToggleRight className="w-8 h-8 text-green-600" />
+                ) : (
+                  <ToggleLeft className="w-8 h-8 text-muted-foreground" />
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      </ScrollReveal>
+
+      <ScrollReveal delay={0.05}>
+        <div className="glass-card-light rounded-2xl p-6">
           <h2 className="font-serif text-xl text-foreground mb-6">Social Links</h2>
           <div className="space-y-3 mb-4">
             {(settings.socialLinks || []).map((link: any, idx: number) => (
@@ -225,6 +259,12 @@ function CottagesTab({ token, showToast }: { token: string | null; showToast: (m
   const [editingCottage, setEditingCottage] = useState<any | null>(null);
   const [saving, setSaving] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [createDialogOpen, setCreateDialogOpen] = useState(false);
+  const [newCottage, setNewCottage] = useState({
+    name: '', slug: '', description: '', shortDesc: '', pricePerNight: 0,
+    capacity: 2, bedrooms: 1, bathrooms: 1, category: '', amenities: [] as string[],
+    images: [] as string[], sortOrder: 0,
+  });
 
   useEffect(() => {
     if (!token) return;
@@ -271,6 +311,42 @@ function CottagesTab({ token, showToast }: { token: string | null; showToast: (m
     }
   };
 
+  const handleCreate = async () => {
+    if (!token || !newCottage.name || !newCottage.description) {
+      showToast('Name and description are required', 'error');
+      return;
+    }
+    setSaving(true);
+    try {
+      const slug = newCottage.slug || newCottage.name.toLowerCase().replace(/\s+/g, '-');
+      await api.post('/cms/cottages', { ...newCottage, slug }, token);
+      showToast('Cottage created');
+      setCreateDialogOpen(false);
+      setNewCottage({
+        name: '', slug: '', description: '', shortDesc: '', pricePerNight: 0,
+        capacity: 2, bedrooms: 1, bathrooms: 1, category: '', amenities: [],
+        images: [], sortOrder: 0,
+      });
+      loadCottages();
+    } catch {
+      showToast('Failed to create cottage', 'error');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleDelete = async (cottage: any) => {
+    if (!token) return;
+    if (!confirm(`Are you sure you want to delete "${cottage.name}"? This cannot be undone.`)) return;
+    try {
+      await api.delete(`/cms/cottages/${cottage.id}`, token);
+      showToast('Cottage deleted');
+      loadCottages();
+    } catch (err: any) {
+      showToast(err?.message || 'Failed to delete cottage', 'error');
+    }
+  };
+
   if (loading) {
     return (
       <div className="grid md:grid-cols-2 gap-4 animate-pulse">
@@ -285,6 +361,9 @@ function CottagesTab({ token, showToast }: { token: string | null; showToast: (m
     <div className="space-y-4">
       <div className="flex justify-between items-center">
         <p className="text-sm text-muted-foreground">{cottages.length} cottages</p>
+        <Button variant="primary" size="sm" onClick={() => setCreateDialogOpen(true)}>
+          <Plus className="w-4 h-4 mr-1.5" /> Add Cottage
+        </Button>
       </div>
       <div className="grid md:grid-cols-2 gap-4">
         {cottages.map((cottage, idx) => (
@@ -320,15 +399,21 @@ function CottagesTab({ token, showToast }: { token: string | null; showToast: (m
                 <Badge variant={cottage.isActive ? 'success' : 'secondary'} size="sm">
                   {cottage.isActive ? 'Active' : 'Inactive'}
                 </Badge>
-                <Button variant="secondary" size="sm" onClick={() => handleEdit(cottage)}>
-                  <Edit className="w-3.5 h-3.5 mr-1.5" /> Edit
-                </Button>
+                <div className="flex items-center gap-2">
+                  <Button variant="secondary" size="sm" onClick={() => handleEdit(cottage)}>
+                    <Edit className="w-3.5 h-3.5 mr-1.5" /> Edit
+                  </Button>
+                  <Button variant="secondary" size="sm" onClick={() => handleDelete(cottage)} className="text-red-500 hover:text-red-700 hover:bg-red-50">
+                    <Trash2 className="w-3.5 h-3.5" />
+                  </Button>
+                </div>
               </div>
             </div>
           </ScrollReveal>
         ))}
       </div>
 
+      {/* Edit Dialog */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto">
           <DialogHeader>
@@ -413,6 +498,85 @@ function CottagesTab({ token, showToast }: { token: string | null; showToast: (m
             <Button variant="secondary" onClick={() => setDialogOpen(false)}>Cancel</Button>
             <Button variant="primary" onClick={handleSave} disabled={saving}>
               {saving ? 'Saving...' : 'Save Changes'}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Create Dialog */}
+      <Dialog open={createDialogOpen} onOpenChange={setCreateDialogOpen}>
+        <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Create New Cottage</DialogTitle>
+            <DialogDescription>Add a new cottage to the property</DialogDescription>
+          </DialogHeader>
+          <div className="grid grid-cols-2 gap-4 py-4">
+            <div className="col-span-2">
+              <label className="vintage-label">Name *</label>
+              <Input value={newCottage.name} onChange={(e) => setNewCottage({ ...newCottage, name: e.target.value })} placeholder="e.g. Monal Haven" />
+            </div>
+            <div className="col-span-2">
+              <label className="vintage-label">Slug (auto-generated if empty)</label>
+              <Input value={newCottage.slug} onChange={(e) => setNewCottage({ ...newCottage, slug: e.target.value })} placeholder="monal-haven" />
+            </div>
+            <div className="col-span-2">
+              <label className="vintage-label">Short Description</label>
+              <Input value={newCottage.shortDesc} onChange={(e) => setNewCottage({ ...newCottage, shortDesc: e.target.value })} />
+            </div>
+            <div className="col-span-2">
+              <label className="vintage-label">Description *</label>
+              <textarea
+                value={newCottage.description}
+                onChange={(e) => setNewCottage({ ...newCottage, description: e.target.value })}
+                className="vintage-input min-h-[100px] resize-y"
+                rows={4}
+              />
+            </div>
+            <div>
+              <label className="vintage-label">Price per Night (₹)</label>
+              <Input type="number" value={newCottage.pricePerNight || ''} onChange={(e) => setNewCottage({ ...newCottage, pricePerNight: Number(e.target.value) })} />
+            </div>
+            <div>
+              <label className="vintage-label">Capacity</label>
+              <Input type="number" value={newCottage.capacity} onChange={(e) => setNewCottage({ ...newCottage, capacity: Number(e.target.value) })} />
+            </div>
+            <div>
+              <label className="vintage-label">Bedrooms</label>
+              <Input type="number" value={newCottage.bedrooms} onChange={(e) => setNewCottage({ ...newCottage, bedrooms: Number(e.target.value) })} />
+            </div>
+            <div>
+              <label className="vintage-label">Bathrooms</label>
+              <Input type="number" value={newCottage.bathrooms} onChange={(e) => setNewCottage({ ...newCottage, bathrooms: Number(e.target.value) })} />
+            </div>
+            <div className="col-span-2">
+              <label className="vintage-label">Category</label>
+              <Input value={newCottage.category} onChange={(e) => setNewCottage({ ...newCottage, category: e.target.value })} placeholder="e.g. Premium Duplex" />
+            </div>
+            <div className="col-span-2">
+              <label className="vintage-label">Amenities (comma separated)</label>
+              <Input
+                value={newCottage.amenities.join(', ')}
+                onChange={(e) => setNewCottage({ ...newCottage, amenities: e.target.value.split(',').map(s => s.trim()).filter(Boolean) })}
+              />
+            </div>
+            <div className="col-span-2">
+              <label className="vintage-label">Images (URLs, one per line)</label>
+              <textarea
+                value={newCottage.images.join('\n')}
+                onChange={(e) => setNewCottage({ ...newCottage, images: e.target.value.split('\n').map(s => s.trim()).filter(Boolean) })}
+                className="vintage-input min-h-[80px] resize-y"
+                rows={3}
+              />
+            </div>
+            <div>
+              <label className="vintage-label">Sort Order</label>
+              <Input type="number" value={newCottage.sortOrder} onChange={(e) => setNewCottage({ ...newCottage, sortOrder: Number(e.target.value) })} />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="secondary" onClick={() => setCreateDialogOpen(false)}>Cancel</Button>
+            <Button variant="primary" onClick={handleCreate} disabled={saving}>
+              {saving ? 'Creating...' : 'Create Cottage'}
             </Button>
           </DialogFooter>
         </DialogContent>

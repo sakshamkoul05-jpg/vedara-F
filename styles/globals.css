@@ -133,16 +133,34 @@
     box-shadow: 0 1px 3px rgba(28, 43, 58, 0.04);
   }
 
+  .dark .glass {
+    background: rgba(15, 23, 42, 0.8);
+    border-color: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  }
+
   .glass-card {
     background: #FFFFFF;
     border: 1px solid rgba(74, 85, 104, 0.08);
     box-shadow: 0 1px 3px rgba(28, 43, 58, 0.04), 0 4px 12px rgba(28, 43, 58, 0.03);
   }
 
+  .dark .glass-card {
+    background: rgba(15, 23, 42, 0.8);
+    border-color: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2), 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
   .glass-card-light {
     background: #FFFFFF;
     border: 1px solid rgba(74, 85, 104, 0.06);
     box-shadow: 0 1px 2px rgba(28, 43, 58, 0.03);
+  }
+
+  .dark .glass-card-light {
+    background: rgba(15, 23, 42, 0.6);
+    border-color: rgba(255, 255, 255, 0.06);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
   }
 
   .glass-dark {
@@ -158,6 +176,11 @@
     transition: all 0.25s ease;
   }
 
+  .dark .glass-button {
+    background: rgba(15, 23, 42, 0.8);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+
   .glass-button:hover {
     background: #F5F2EE;
     border-color: rgba(74, 85, 104, 0.15);
@@ -165,10 +188,21 @@
     transform: translateY(-1px);
   }
 
+  .dark .glass-button:hover {
+    background: rgba(30, 41, 59, 0.9);
+    border-color: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+
   .glass-input {
     background: #FFFFFF;
     border: 1px solid rgba(74, 85, 104, 0.12);
     transition: all 0.25s ease;
+  }
+
+  .dark .glass-input {
+    background: rgba(15, 23, 42, 0.6);
+    border-color: rgba(255, 255, 255, 0.12);
   }
 
   .glass-input:focus {
@@ -178,10 +212,22 @@
     outline: none;
   }
 
+  .dark .glass-input:focus {
+    background: rgba(15, 23, 42, 0.8);
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.06);
+  }
+
   .glass-nav {
     background: rgba(245, 242, 238, 0.95);
     border-bottom: 1px solid rgba(74, 85, 104, 0.06);
     box-shadow: 0 1px 3px rgba(28, 43, 58, 0.03);
+  }
+
+  .dark .glass-nav {
+    background: rgba(15, 23, 42, 0.95);
+    border-bottom-color: rgba(255, 255, 255, 0.06);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
   }
 
   .liquid-gradient {
@@ -299,7 +345,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: currentColor;
+  background: #1C2B3A;
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);

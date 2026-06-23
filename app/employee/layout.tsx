@@ -46,7 +46,7 @@ export default function EmployeeLayout({ children }: { children: React.ReactNode
                 />
               </div>
               <div className="hidden sm:block">
-                <span className="font-serif text-sm font-semibold text-foreground leading-tight block">Vedara Retreat</span>
+                <span className="font-serif text-sm font-semibold text-foreground leading-tight block">The Vedara</span>
                 <span className="text-[10px] text-muted-foreground uppercase tracking-wider">Staff Portal</span>
               </div>
             </Link>

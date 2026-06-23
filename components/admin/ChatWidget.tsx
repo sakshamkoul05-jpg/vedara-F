@@ -155,6 +155,9 @@ export function ChatWidget() {
             <button onClick={() => setIsMinimized(!isMinimized)} className="text-white/80 hover:text-white p-0.5">
               {isMinimized ? <Maximize2 className="w-3.5 h-3.5" /> : <Minimize2 className="w-3.5 h-3.5" />}
             </button>
+            <button onClick={() => setIsOpen(false)} className="text-white/80 hover:text-white p-0.5" aria-label="Close chat">
+              <X className="w-3.5 h-3.5" />
+            </button>
           </div>
 
           {!isMinimized && (

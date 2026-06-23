@@ -40,7 +40,7 @@ const experiences = [
   { icon: Coffee, title: 'Café Evenings', desc: 'Handcrafted coffee and wood-fired meals as the sun sets behind the pines.' },
   { icon: MapPin, title: 'Lambhari Top Trek', desc: 'A scenic trek to Lambhari Top with panoramic Himalayan views. Explore the trail with our guided excursions.' },
   { icon: TreePine, title: 'Great Himalayan NP', desc: 'Explore the untouched wilderness of the Great Himalayan National Park and Tirthan Valley on a guided hilltop adventure.' },
-  { icon: Sparkles, title: 'Kids Arena', desc: 'A dedicated space for young explorers with supervised nature activities, crafts, and outdoor games.' },
+  { icon: Sparkles, title: 'Kids Zone', desc: 'Dedicated outdoor space for young explorers featuring games, activities, and nature-inspired experiences.' },
 ];
 
 const nearbyAttractions = [
@@ -201,11 +201,7 @@ export default function HomePage() {
           animate={{ opacity: 1 }}
           transition={{ delay: 2, duration: 1 }}
           onClick={() => {
-            if (window.innerWidth >= 768) {
-              document.getElementById('welcome')?.scrollIntoView({ behavior: 'smooth' });
-            } else {
-              document.getElementById('booking-bar')?.scrollIntoView({ behavior: 'smooth' });
-            }
+            document.getElementById('booking-bar')?.scrollIntoView({ behavior: 'smooth' });
           }}
           className="absolute bottom-16 left-1/2 -translate-x-1/2 z-20 cursor-pointer"
           aria-label="Scroll to booking section"
@@ -397,7 +393,7 @@ export default function HomePage() {
                   <span className="block">Dinner 7:00 PM – 10:00 PM</span>
                 </p>
                 <div className="grid grid-cols-2 gap-4 mb-8">
-                  {['Artisan Coffee', 'Home-Style Meals', 'Fresh Treats', 'Evening Sips'].map((item) => (
+                  {['Artisan Coffee', 'Home-Style Meals', 'Mixed Pakodas', 'Fresh Treats'].map((item) => (
                     <div key={item} className="flex items-center gap-2 text-white">
                       <Coffee className="w-4 h-4 text-gold-400" />
                       <span className="text-sm">{item}</span>
@@ -553,7 +549,7 @@ export default function HomePage() {
           <ScrollReveal>
             <h2 className="font-serif text-3xl md:text-5xl text-white mb-4">Ready to Escape?</h2>
             <p className="text-white/70 text-lg max-w-xl mx-auto mb-8">
-              Book your mountain story today. Early check-in and late check-out are available on request.
+              Book your mountain story today. Early check-in and late check-out are subject to availability and prior confirmation.
             </p>
             <MagneticButton>
               <Link href="/booking" className="vintage-button bg-white/90 text-[#1C2B3A] hover:bg-white px-10 py-4 text-base inline-block shadow-xl btn-fill-slide">
