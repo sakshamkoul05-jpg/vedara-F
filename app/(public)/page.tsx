@@ -318,8 +318,6 @@ export default function HomePage() {
                 <h3 className="font-serif text-xl text-foreground">Premium Duplex Family Suites</h3>
               </div>
             </ScrollReveal>
-              </div>
-            </ScrollReveal>
             <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-6">
               {cottages.filter(c => c.category === 'Premium Duplex Family Suite').map((cottage, i) => (
                 <ScrollReveal key={cottage.name} delay={i * 0.08} direction="up" distance={40}>

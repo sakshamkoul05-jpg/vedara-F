@@ -118,7 +118,11 @@ export default function AboutPage() {
 
         {/* The Three Pillars */}
         <section className="section-padding bg-slate-50 dark:bg-vedara-950/30">
-                <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-[#1C2B3A] mb-6">
+          <div className="vintage-container">
+            <ScrollReveal>
+              <div className="text-center max-w-3xl mx-auto mb-16">
+                <p className="text-gold-500 text-sm tracking-[0.2em] uppercase mb-4 font-sans">The Vedara Philosophy</p>
+                <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-foreground mb-6">
                   Built on Three Pillars
                 </h2>
               </div>
@@ -159,37 +163,6 @@ export default function AboutPage() {
                     Mindfulness is woven into the fabric of your day. Whether you spend your morning breathing in the crisp, high-altitude air with a hot cup of saffron milk, reading by a crackling fire, or wandering through nearby village trails, Vedara is a space designed to help you reconnect with yourself.
                   </p>
                 </article>
-              </ScrollReveal>
-            </div>
-                  <h3 className="font-serif text-2xl text-foreground mb-4">The Sanctuary</h3>
-                  <p className="text-muted-foreground leading-relaxed text-sm md:text-base">
-                    Our spaces are designed in harmony with the terrain. Utilizing locally sourced materials and traditional mountain craftsmanship, our architecture honors the land it rests upon. Every room acts as a private viewing deck to the grand Himalayan canvas, offering sophisticated comfort without distracting from the natural majesty outside.
-                  </p>
-                </div>
-              </ScrollReveal>
-
-              <ScrollReveal delay={0.2} direction="up">
-                <div className="group glass-card-light rounded-2xl p-8 md:p-10 hover:border-primary/30 transition-smooth h-full flex flex-col">
-                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary/15 to-primary/5 flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-smooth">
-                    <UtensilsCrossed className="w-7 h-7 text-primary" />
-                  </div>
-                  <h3 className="font-serif text-2xl text-foreground mb-4">The Gastronomy</h3>
-                  <p className="text-muted-foreground leading-relaxed text-sm md:text-base">
-                    Food at Café Charade is a celebration of time and tradition. We lean into the philosophy of slow food – where meals are crafted from scratch using farm-to-table ingredients and local mountain produce. From slow-simmered regional Himachali heritage delicacies to comforting artisan barista brews and wild herbal infusions, every plate tells the story of the valley.
-                  </p>
-                </div>
-              </ScrollReveal>
-
-              <ScrollReveal delay={0.3} direction="up">
-                <div className="group glass-card-light rounded-2xl p-8 md:p-10 hover:border-primary/30 transition-smooth h-full flex flex-col">
-                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary/15 to-primary/5 flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-smooth">
-                    <Compass className="w-7 h-7 text-primary" />
-                  </div>
-                  <h3 className="font-serif text-2xl text-foreground mb-4">The Mindfulness</h3>
-                  <p className="text-muted-foreground leading-relaxed text-sm md:text-base">
-                    Mindfulness is woven into the fabric of your day. Whether you spend your morning breathing in the crisp, high-altitude air with a hot cup of saffron milk, reading by a crackling fire, or wandering through nearby village trails, Vedara is a space designed to help you reconnect with yourself.
-                  </p>
-                </div>
               </ScrollReveal>
             </div>
           </div>
@@ -342,6 +315,10 @@ export default function AboutPage() {
 
       {/* Attractions */}
       <section className="section-padding bg-slate-50 dark:bg-vedara-950/30">
+        <div className="vintage-container">
+          <ScrollReveal>
+            <div className="text-center max-w-3xl mx-auto mb-16">
+              <p className="text-primary text-sm tracking-[0.2em] uppercase mb-4 font-sans">Nearby Attractions</p>
               <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-foreground mb-6">Attractions Around The Vedara</h2>
               <p className="text-muted-foreground text-base md:text-lg">Discover the raw beauty of Jibhi and beyond</p>
             </div>
