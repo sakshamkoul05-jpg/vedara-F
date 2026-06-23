@@ -49,9 +49,9 @@ export function Header() {
     >
       <div className="vintage-container">
         <div className="flex items-center justify-between h-16 md:h-20">
-          <Link href="/" className="flex items-center gap-3 flex-shrink-0 -ml-2 md:ml-0">
+          <Link href="/" className="flex items-center gap-3 flex-shrink-0">
             <div className={cn(
-              'w-14 h-14 md:w-20 md:h-20 rounded-lg overflow-hidden flex-shrink-0 transition-all shadow-sm',
+              'w-12 h-12 md:w-14 md:h-14 rounded-full overflow-hidden flex-shrink-0 transition-all shadow-sm',
               isTransparent ? 'ring-2 ring-white/20' : 'ring-1 ring-border'
             )}>
               <Image
@@ -59,7 +59,7 @@ export function Header() {
                 alt="The Vedara"
                 width={80}
                 height={80}
-                className="w-full h-full object-contain"
+                className="w-full h-full object-cover"
                 priority
               />
             </div>

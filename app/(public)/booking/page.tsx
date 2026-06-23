@@ -17,8 +17,12 @@ import {
   Calendar, Home, User, Check, ArrowRight, ArrowLeft,
   Percent, Tag, Loader2, CreditCard, Sparkles, Gift, ChevronDown, Users
 } from 'lucide-react';
+import { countries } from '@/lib/countries';
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
 
-const idProofTypes = ['Aadhaar Card', 'PAN Card', 'Passport', 'Driving License'];
+const indianIdProofTypes = ['Aadhaar Card', 'PAN Card', 'Passport', 'Driving License'];
+const foreignIdProofTypes = ['Passport'];
 
 const indianStates = [
   'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh', 'Goa', 'Gujarat',
@@ -351,27 +355,35 @@ export default function BookingPage() {
                             </div>
                             <div>
                               <label className="vintage-label">Phone *</label>
-                              <Input 
-                                type="tel" 
-                                value={guestPhone} 
-                                onChange={(e) => {
-                                  const value = e.target.value.replace(/[^\d+\-\s]/g, '');
-                                  setGuestPhone(value);
-                                }} 
-                                placeholder="+91 99999 99999" 
+                              <PhoneInput
+                                country={nationality.toLowerCase()}
+                                value={guestPhone}
+                                onChange={(phone) => setGuestPhone(phone)}
+                                inputProps={{ className: 'flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2' }}
+                                containerClass="!w-full"
+                                inputClass="!w-full !h-10 !text-sm"
+                                buttonClass="!border-input !bg-background"
                               />
                             </div>
                           </div>
                           <div>
-                            <label className="vintage-label">Nationality *</label>
+                            <label className="vintage-label">Country *</label>
                             <div className="relative">
                               <select
                                 value={nationality}
-                                onChange={(e) => setNationality(e.target.value)}
+                                onChange={(e) => {
+                                  setNationality(e.target.value);
+                                  if (e.target.value !== 'IN') {
+                                    setIdProofType('Passport');
+                                  } else {
+                                    setIdProofType('');
+                                  }
+                                }}
                                 className="vintage-input appearance-none pr-10"
                               >
-                                <option value="Indian">Indian</option>
-                                <option value="Foreign">Foreign National</option>
+                                {countries.map((c) => (
+                                  <option key={c.code} value={c.code}>{c.flag} {c.name}</option>
+                                ))}
                               </select>
                               <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gold-400 pointer-events-none" />
                             </div>
@@ -387,9 +399,10 @@ export default function BookingPage() {
                                     value={idProofType}
                                     onChange={(e) => setIdProofType(e.target.value)}
                                     className="vintage-input appearance-none pr-10"
+                                    disabled={nationality !== 'IN'}
                                   >
                                     <option value="">Select ID type</option>
-                                    {idProofTypes.map((type) => (
+                                    {(nationality === 'IN' ? indianIdProofTypes : foreignIdProofTypes).map((type) => (
                                       <option key={type} value={type}>{type}</option>
                                     ))}
                                   </select>
@@ -416,22 +429,26 @@ export default function BookingPage() {
                                   <Input value={city} onChange={(e) => setCity(e.target.value)} placeholder="City" />
                                 </div>
                                 <div>
-                                  <label className="vintage-label">State</label>
-                                  <div className="relative">
-                                    <select
-                                      value={state}
-                                      onChange={(e) => setState(e.target.value)}
-                                      className="vintage-input appearance-none pr-10"
-                                    >
-                                      <option value="">Select State</option>
-                                      {indianStates.map(s => <option key={s} value={s}>{s}</option>)}
-                                    </select>
-                                    <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gold-400 pointer-events-none" />
-                                  </div>
+                                  <label className="vintage-label">{nationality === 'IN' ? 'State' : 'State / Region'}</label>
+                                  {nationality === 'IN' ? (
+                                    <div className="relative">
+                                      <select
+                                        value={state}
+                                        onChange={(e) => setState(e.target.value)}
+                                        className="vintage-input appearance-none pr-10"
+                                      >
+                                        <option value="">Select State</option>
+                                        {indianStates.map(s => <option key={s} value={s}>{s}</option>)}
+                                      </select>
+                                      <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gold-400 pointer-events-none" />
+                                    </div>
+                                  ) : (
+                                    <Input value={state} onChange={(e) => setState(e.target.value)} placeholder="State or region" />
+                                  )}
                                 </div>
                                 <div>
-                                  <label className="vintage-label">Pincode</label>
-                                  <Input value={pincode} onChange={(e) => { const v = e.target.value.replace(/\D/g, '').slice(0, 6); setPincode(v); }} placeholder="000000" maxLength={6} />
+                                  <label className="vintage-label">{nationality === 'IN' ? 'Pincode' : 'Postal Code'}</label>
+                                  <Input value={pincode} onChange={(e) => setPincode(nationality === 'IN' ? e.target.value.replace(/\D/g, '').slice(0, 6) : e.target.value)} placeholder={nationality === 'IN' ? '000000' : 'Postal code'} maxLength={nationality === 'IN' ? 6 : 20} />
                                 </div>
                               </div>
                             </div>

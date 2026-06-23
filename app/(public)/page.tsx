@@ -279,7 +279,7 @@ export default function HomePage() {
                   Nestled in the serene village of Ghiyagi, within the untouched landscapes of Jibhi, The Vedara was born from a simple belief – that the most profound luxury is found in stillness, connection, and the raw beauty of the Himalayas.
                 </p>
                 <p className="text-white/60 leading-relaxed mb-8">
-                  With eight handcrafted sanctuaries and a soulful café, we offer more than a stay. We offer a chance to pause, breathe, and remember what truly matters.
+                  With seven cozy cottages and one alpine studio, and a soulful café, we offer more than a stay. We offer a chance to pause, breathe, and remember what truly matters.
                 </p>
                 <Link href="/about" className="vintage-button bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3.5 shadow-lg btn-bottom-fill">
                   Read Our Story <ArrowRight className="w-4 h-4 ml-2" />
@@ -304,7 +304,7 @@ export default function HomePage() {
           <ScrollReveal>
             <div className="text-center max-w-3xl mx-auto mb-16">
               <p className="text-primary text-sm tracking-[0.2em] uppercase mb-4 font-sans">Our Cottages</p>
-              <h2 className="section-title mb-6">Eight Stories, Eight Retreats</h2>
+              <h2 className="section-title mb-6">7 Cozy Cottages & 1 Alpine Studio</h2>
               <p className="section-subtitle">
                 Each cottage is a world unto itself – named after the birds of the valley and crafted with local materials, premium furnishings, and unobstructed mountain views.
               </p>

@@ -27,25 +27,71 @@
   }
 
   .dark {
-    --background: 210 28% 8%;
-    --foreground: 30 15% 95%;
-    --card: 210 25% 12%;
-    --card-foreground: 30 15% 95%;
-    --popover: 210 25% 12%;
-    --popover-foreground: 30 15% 95%;
-    --primary: 33 38% 71%;
-    --primary-foreground: 210 28% 8%;
-    --secondary: 33 38% 71%;
-    --secondary-foreground: 210 28% 8%;
-    --muted: 210 15% 18%;
-    --muted-foreground: 30 10% 70%;
-    --accent: 33 38% 71%;
-    --accent-foreground: 210 28% 8%;
-    --destructive: 5 55% 45%;
+    --background: 220 30% 6%;
+    --foreground: 30 10% 92%;
+    --card: 220 25% 10%;
+    --card-foreground: 30 10% 92%;
+    --popover: 220 25% 10%;
+    --popover-foreground: 30 10% 92%;
+    --primary: 33 45% 65%;
+    --primary-foreground: 220 30% 6%;
+    --secondary: 33 38% 55%;
+    --secondary-foreground: 220 30% 6%;
+    --muted: 220 15% 14%;
+    --muted-foreground: 30 8% 65%;
+    --accent: 33 45% 65%;
+    --accent-foreground: 220 30% 6%;
+    --destructive: 5 60% 40%;
     --destructive-foreground: 0 0% 100%;
-    --border: 210 12% 25%;
-    --input: 210 12% 25%;
-    --ring: 33 38% 71%;
+    --border: 220 12% 18%;
+    --input: 220 12% 18%;
+    --ring: 33 45% 65%;
+  }
+
+  .dark body {
+    background-color: hsl(220, 30%, 6%);
+  }
+
+  .dark .section-padding {
+    background-color: transparent;
+  }
+
+  .dark [class*="bg-white"] {
+    background-color: hsl(220, 25%, 10%) !important;
+  }
+
+  .dark [class*="bg-[#F5F2EE]"] {
+    background-color: hsl(220, 25%, 10%) !important;
+  }
+
+  .dark [class*="bg-[#F5F2EE]/"] {
+    background-color: hsl(220, 25%, 10%) !important;
+  }
+
+  .dark [class*="bg-slate-50"] {
+    background-color: hsl(220, 20%, 10%) !important;
+  }
+
+  .dark [class*="bg-sand-"] {
+    background-color: hsl(220, 20%, 12%) !important;
+  }
+
+  .dark [class*="text-foreground"]:not([class*="text-white"]) {
+    color: hsl(30, 10%, 92%) !important;
+  }
+
+  .dark [class*="text-[#1C2B3A]"] {
+    color: hsl(30, 10%, 92%) !important;
+  }
+
+  .dark [class*="border-border"] {
+    border-color: hsl(220, 12%, 18%) !important;
+  }
+
+  .dark [class*="shadow-lg"],
+  .dark [class*="shadow-xl"],
+  .dark [class*="shadow-2xl"] {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
   }
 }
 
@@ -70,6 +116,11 @@
   ::selection {
     background: rgba(74, 85, 104, 0.2);
     color: #1C2B3A;
+  }
+
+  .dark ::selection {
+    background: rgba(212, 175, 55, 0.3);
+    color: #fff;
   }
 }
 

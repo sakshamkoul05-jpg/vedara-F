@@ -8,12 +8,12 @@ import { Mountain, Heart, Shield, Leaf, Home, Coffee, MapPin, Users, Wifi, Car, 
 const values = [
   { icon: Leaf, title: 'Slow Living', desc: 'A retreat for those who seek more than just a getaway – to slow down, breathe deeply, and reconnect with what truly matters in the Himalayas.' },
   { icon: Heart, title: 'Soulful Hospitality', desc: 'Every detail reflects a balance between refined comfort and the raw beauty of the mountains, creating experiences that feel deeply personal.' },
-  { icon: Shield, title: 'Intimate by Design', desc: 'With just eight thoughtfully designed sanctuaries – 7 cottages and 1 alpine studio – we offer privacy, exclusivity, and a deeply personal boutique resort in Jibhi experience.' },
+  { icon: Shield, title: 'Intimate by Design', desc: 'With just seven cozy cottages and one alpine studio, we offer privacy, exclusivity, and a deeply personal boutique resort in Jibhi experience.' },
   { icon: Coffee, title: 'Café + Stay Experience', desc: 'Anchored by a curated in-house café that creates a social yet serene atmosphere where conversations, coffee, and calm coexist.' },
 ];
 
 const highlights = [
-  { icon: Home, label: '8 Sanctuaries', desc: '7 cottages + 1 alpine studio, intimate and exclusive' },
+  { icon: Home, label: '7 Cottages + 1 Alpine Studio', desc: 'Intimate and exclusive mountain retreat' },
   { icon: MapPin, label: 'Ghiyagi, Jibhi', desc: 'Untouched Himalayan beauty, away from crowds' },
   { icon: Leaf, label: 'Launch 2026', desc: 'A haven of wisdom, wilderness, and quiet luxury' },
   { icon: Users, label: 'Target Guests', desc: 'Families, solo travellers, remote workers, and groups seeking stillness' },
