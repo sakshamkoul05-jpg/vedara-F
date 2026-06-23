@@ -201,11 +201,7 @@ export default function HomePage() {
           animate={{ opacity: 1 }}
           transition={{ delay: 2, duration: 1 }}
           onClick={() => {
-            if (window.innerWidth >= 768) {
-              document.getElementById('welcome')?.scrollIntoView({ behavior: 'smooth' });
-            } else {
-              document.getElementById('booking-bar')?.scrollIntoView({ behavior: 'smooth' });
-            }
+            document.getElementById('booking-bar')?.scrollIntoView({ behavior: 'smooth' });
           }}
           className="absolute bottom-16 left-1/2 -translate-x-1/2 z-20 cursor-pointer"
           aria-label="Scroll to booking section"
@@ -314,7 +310,6 @@ export default function HomePage() {
               </p>
             </div>
           </ScrollReveal>
-
           {/* Premium Duplex Family Suites */}
           <div className="mb-12">
             <ScrollReveal>
@@ -323,10 +318,12 @@ export default function HomePage() {
                 <h3 className="font-serif text-xl text-foreground">Premium Duplex Family Suites</h3>
               </div>
             </ScrollReveal>
+              </div>
+            </ScrollReveal>
             <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-6">
               {cottages.filter(c => c.category === 'Premium Duplex Family Suite').map((cottage, i) => (
                 <ScrollReveal key={cottage.name} delay={i * 0.08} direction="up" distance={40}>
-                  <div className="group bg-white rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-500 reveal">
+                  <article className="group bg-white rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-500 reveal">
                     <div className="aspect-[4/3] overflow-hidden bg-sand-200">
                       <img src={`https://images.unsplash.com/photo-${['1504384308090-c894fdcc538d', '1554118811-1e0d58224f24', '1506905925346-21bda4d32df4'][i]}?w=600&q=80`} alt={cottage.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                     </div>
@@ -340,7 +337,7 @@ export default function HomePage() {
                         View Details <ArrowRight className="w-3 h-3" />
                       </Link>
                     </div>
-                  </div>
+                  </article>
                 </ScrollReveal>
               ))}
             </div>
@@ -357,7 +354,7 @@ export default function HomePage() {
             <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-6">
               {cottages.filter(c => c.category === 'Intimate Mountain View Suite').map((cottage, i) => (
                 <ScrollReveal key={cottage.name} delay={i * 0.08} direction="up" distance={40}>
-                  <div className="group bg-white rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-500 reveal">
+                  <article className="group bg-white rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-500 reveal">
                     <div className="aspect-[4/3] overflow-hidden bg-sand-200">
                       <img src={`https://images.unsplash.com/photo-${['1476514525535-07fb3b4ae5f1', '1519681393784-d120267933ba', '1469476568026-46a7f7b2f9c2'][i]}?w=600&q=80`} alt={cottage.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                     </div>
@@ -371,7 +368,7 @@ export default function HomePage() {
                         View Details <ArrowRight className="w-3 h-3" />
                       </Link>
                     </div>
-                  </div>
+                  </article>
                 </ScrollReveal>
               ))}
             </div>
@@ -388,7 +385,7 @@ export default function HomePage() {
             <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-6">
               {cottages.filter(c => c.category === 'Cozy Alpine Studio').map((cottage, i) => (
                 <ScrollReveal key={cottage.name} delay={i * 0.08} direction="up" distance={40}>
-                  <div className="group bg-white rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-500 reveal">
+                  <article className="group bg-white rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-500 reveal">
                     <div className="aspect-[4/3] overflow-hidden bg-sand-200">
                       <img src={`https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&q=80`} alt={cottage.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                     </div>
@@ -402,7 +399,7 @@ export default function HomePage() {
                         View Details <ArrowRight className="w-3 h-3" />
                       </Link>
                     </div>
-                  </div>
+                  </article>
                 </ScrollReveal>
               ))}
             </div>
@@ -431,17 +428,17 @@ export default function HomePage() {
             </div>
           </ScrollReveal>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-            {experiences.map((exp, i) => (
-              <ScrollReveal key={exp.title} delay={i * 0.08} direction="up" distance={40}>
-                <div className="group rounded-2xl p-6 text-center transition-all duration-500 font-sans border border-white/8 reveal" style={{ background: 'rgba(255,255,255,0.05)' }}>
-                  <div className="w-14 h-14 rounded-full bg-gradient-to-br from-[#9B8EA0]/25 to-[#9B8EA0]/10 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-500">
-                    <exp.icon className="w-7 h-7 text-[#9B8EA0]" />
-                  </div>
-                  <h3 className="font-serif text-lg text-white mb-2">{exp.title}</h3>
-                  <p className="text-white/60 text-sm leading-relaxed">{exp.desc}</p>
-                </div>
-              </ScrollReveal>
-            ))}
+              {experiences.map((exp, i) => (
+                  <ScrollReveal key={exp.title} delay={i * 0.08} direction="up" distance={40}>
+                    <article className="group rounded-2xl p-6 text-center transition-all duration-500 font-sans border border-white/8 reveal" style={{ background: 'rgba(255,255,255,0.05)' }}>
+                      <div className="w-14 h-14 rounded-full bg-gradient-to-br from-[#9B8EA0]/25 to-[#9B8EA0]/10 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-500">
+                        <exp.icon className="w-7 h-7 text-[#9B8EA0]" />
+                      </div>
+                      <h3 className="font-serif text-lg text-white mb-2">{exp.title}</h3>
+                      <p className="text-white/60 text-sm leading-relaxed">{exp.desc}</p>
+                    </article>
+                  </ScrollReveal>
+                ))}
           </div>
         </div>
       </section>
@@ -501,7 +498,7 @@ export default function HomePage() {
           <div className="grid md:grid-cols-3 gap-6">
             {testimonials.map((t, i) => (
               <ScrollReveal key={t.name} delay={i * 0.12} direction="up" distance={40}>
-                <motion.div
+                <motion.article
                   className="bg-white rounded-2xl p-7 relative overflow-hidden reveal"
                   whileHover={{ y: -4, boxShadow: '0 20px 40px rgba(0,0,0,0.06)' }}
                   transition={{ duration: 0.5 }}
@@ -524,7 +521,7 @@ export default function HomePage() {
                     <p className="font-serif text-foreground font-medium text-sm">{t.name}</p>
                     <p className="text-xs text-muted-foreground/70">{t.location}</p>
                   </div>
-                </motion.div>
+                </motion.article>
               </ScrollReveal>
             ))}
           </div>
@@ -544,7 +541,7 @@ export default function HomePage() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {nearbyAttractions.map((place, i) => (
               <ScrollReveal key={place.name} delay={i * 0.1} direction="up" distance={40}>
-                <div className="bg-white rounded-2xl p-5 flex items-start gap-4 group hover:border-primary/30 transition-all duration-500 reveal">
+                <article className="bg-white rounded-2xl p-5 flex items-start gap-4 group hover:border-primary/30 transition-all duration-500 reveal">
                   <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/20 transition-colors duration-500">
                     <place.icon className="w-5 h-5 text-primary" />
                   </div>
@@ -552,7 +549,7 @@ export default function HomePage() {
                     <h3 className="font-medium text-foreground text-sm group-hover:text-primary transition-colors duration-500">{place.name}</h3>
                     <span className="text-xs text-muted-foreground/70">{place.distance}</span>
                   </div>
-                </div>
+                </article>
               </ScrollReveal>
             ))}
           </div>
@@ -581,31 +578,31 @@ export default function HomePage() {
           </ScrollReveal>
           <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
             <ScrollReveal delay={0.1} direction="up" distance={40}>
-              <div className="bg-white rounded-2xl p-7 text-center reveal">
+              <article className="bg-white rounded-2xl p-7 text-center reveal">
                 <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
                   <MapPin className="w-7 h-7 text-primary" />
                 </div>
                 <h3 className="font-serif text-lg mb-3 text-foreground">By Road</h3>
                 <p className="text-muted-foreground text-sm leading-relaxed">Delhi to Jibhi via Mandi–Aut–Larji. Approximately 480 km, 10–11 hours. Buses available from Delhi ISBT to Aut, then a taxi to Jibhi.</p>
-              </div>
+              </article>
             </ScrollReveal>
             <ScrollReveal delay={0.2} direction="up" distance={40}>
-              <div className="bg-white rounded-2xl p-7 text-center reveal">
+              <article className="bg-white rounded-2xl p-7 text-center reveal">
                 <div className="w-14 h-14 rounded-2xl bg-[#9B8EA0]/10 flex items-center justify-center mx-auto mb-4">
                   <MapPin className="w-7 h-7 text-[#9B8EA0]" />
                 </div>
                 <h3 className="font-serif text-lg mb-3 text-foreground">By Rail</h3>
                 <p className="text-muted-foreground text-sm leading-relaxed">Nearest broad-gauge station: Amb Andaura (~120 km). Nearest narrow-gauge: Shimla or Joginder Nagar. Taxis available from all stations.</p>
-              </div>
+              </article>
             </ScrollReveal>
             <ScrollReveal delay={0.3} direction="up" distance={40}>
-              <div className="bg-white rounded-2xl p-7 text-center reveal">
+              <article className="bg-white rounded-2xl p-7 text-center reveal">
                 <div className="w-14 h-14 rounded-2xl bg-gold-400/10 flex items-center justify-center mx-auto mb-4">
                   <MapPin className="w-7 h-7 text-gold-500" />
                 </div>
                 <h3 className="font-serif text-lg mb-3 text-foreground">By Air</h3>
                 <p className="text-muted-foreground text-sm leading-relaxed">Bhuntar Airport (Kullu) is the nearest, ~50 km from Jibhi. Flights from Delhi and Chandigarh. Taxi from Bhuntar to Ghiyagi takes ~1.5 hours.</p>
-              </div>
+              </article>
             </ScrollReveal>
           </div>
         </div>
@@ -619,7 +616,7 @@ export default function HomePage() {
           <ScrollReveal>
             <h2 className="font-serif text-3xl md:text-5xl text-white mb-4">Ready to Escape?</h2>
             <p className="text-white/70 text-lg max-w-xl mx-auto mb-8">
-              Book your mountain story today. Early check-in and late check-out are available on request.
+              Book your mountain story today. Early check-in and late check-out are subject to availability and prior confirmation.
             </p>
             <MagneticButton>
               <Link href="/booking" className="vintage-button bg-white/90 text-[#1C2B3A] hover:bg-white px-10 py-4 text-base inline-block shadow-xl btn-fill-slide">

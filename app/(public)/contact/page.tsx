@@ -30,7 +30,7 @@ export default function ContactPage() {
 
   return (
     <>
-      <section className="pt-32 pb-20 bg-[#F5F2EE]">
+      <section className="pt-32 pb-20 bg-background">
         <div className="vintage-container">
           <BackButton />
           <ScrollReveal>
@@ -42,17 +42,17 @@ export default function ContactPage() {
         </div>
       </section>
 
-      <section className="pb-20 bg-[#F5F2EE]">
+      <section className="pb-20 bg-background">
         <div className="vintage-container">
           <div className="grid lg:grid-cols-2 gap-12">
             <ScrollReveal direction="left">
-              <div className="space-y-6">
+              <article className="space-y-6">
                 {submitted ? (
-                  <div className="bg-gold-50 border border-gold-200 rounded-2xl p-8 text-center">
-                    <div className="w-12 h-12 rounded-full bg-gold-100 flex items-center justify-center mx-auto mb-4">
-                      <Check className="w-6 h-6 text-gold-600" />
+                  <div className="bg-gold-50 dark:bg-gold-900/20 border border-gold-200 dark:border-gold-800 rounded-2xl p-8 text-center">
+                    <div className="w-12 h-12 rounded-full bg-gold-100 dark:bg-gold-800 flex items-center justify-center mx-auto mb-4">
+                      <Check className="w-6 h-6 text-gold-600 dark:text-gold-400" />
                     </div>
-                    <h3 className="font-serif text-xl text-[#1C2B3A] mb-2">Message Sent!</h3>
+                    <h3 className="font-serif text-xl text-foreground mb-2">Message Sent!</h3>
                     <p className="text-muted-foreground text-sm">We will get back to you soon.</p>
                   </div>
                 ) : (
@@ -69,7 +69,7 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <label className="vintage-label">Phone</label>
-                      <Input value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} />
+                      <Input type="tel" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value.replace(/[^\d+\-\s]/g, '') })} placeholder="+91 99999 99999" />
                     </div>
                     <div>
                       <label className="vintage-label">Subject *</label>
@@ -90,18 +90,18 @@ export default function ContactPage() {
                     </Button>
                   </form>
                 )}
-              </div>
+              </article>
             </ScrollReveal>
 
             <ScrollReveal direction="right" delay={0.2}>
-              <div className="space-y-5">
+              <aside className="space-y-5">
                 <div className="glass-card-light rounded-2xl p-6">
                   <div className="flex items-start gap-4">
                     <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
                       <Mail className="w-5 h-5 text-primary" />
                     </div>
                     <div>
-                      <h3 className="font-medium text-[#1C2B3A]">Email</h3>
+                      <h3 className="font-medium text-foreground">Email</h3>
                       <a href="mailto:vedararetreat@gmail.com" className="text-muted-foreground text-sm hover:text-gold-600 transition-colors duration-500">vedararetreat@gmail.com</a>
                     </div>
                   </div>
@@ -112,7 +112,7 @@ export default function ContactPage() {
                       <Phone className="w-5 h-5 text-primary" />
                     </div>
                     <div>
-                      <h3 className="font-medium text-[#1C2B3A]">Phone</h3>
+                      <h3 className="font-medium text-foreground">Phone</h3>
                       <a href="tel:+919118882242" className="text-muted-foreground text-sm hover:text-gold-600 transition-colors duration-500">+91-91188-82242</a>
                     </div>
                   </div>
@@ -123,7 +123,7 @@ export default function ContactPage() {
                       <MapPin className="w-5 h-5 text-primary" />
                     </div>
                     <div>
-                      <h3 className="font-medium text-[#1C2B3A]">Address</h3>
+                      <h3 className="font-medium text-foreground">Address</h3>
                       <p className="text-muted-foreground text-sm">Ghiyagi, Jibhi, Himachal Pradesh – 175123</p>
                     </div>
                   </div>
@@ -134,16 +134,16 @@ export default function ContactPage() {
                       <Clock className="w-5 h-5 text-primary" />
                     </div>
                     <div>
-                      <h3 className="font-medium text-[#1C2B3A]">Reception Hours</h3>
+                      <h3 className="font-medium text-foreground">Reception Hours</h3>
                       <p className="text-muted-foreground text-sm">Daily: 8:00 AM – 11:00 PM</p>
-                      <h3 className="font-medium text-[#1C2B3A] mt-2">Café Charade</h3>
+                      <h3 className="font-medium text-foreground mt-2">Café Charade</h3>
                       <p className="text-muted-foreground text-sm">Breakfast: 7:30 AM – 10:00 AM</p>
                       <p className="text-muted-foreground text-sm">Lunch: 12:00 PM – 3:30 PM</p>
                       <p className="text-muted-foreground text-sm">Dinner: 7:00 PM – 10:00 PM</p>
                     </div>
                   </div>
                 </div>
-              </div>
+              </aside>
             </ScrollReveal>
           </div>
         </div>

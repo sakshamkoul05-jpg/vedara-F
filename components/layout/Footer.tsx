@@ -2,8 +2,24 @@
 
 import Link from 'next/link';
 import { Mountain, Mail, Phone, MapPin, Facebook, Instagram } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 export function Footer() {
+  const router = useRouter();
+
+  const handleScrollToSection = (sectionId: string) => {
+    // If we're already on the home page, just scroll
+    if (window.location.pathname === '/') {
+      document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      // Navigate to home page with the hash, then scroll after navigation
+      router.push('/#' + sectionId);
+      setTimeout(() => {
+        document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
+      }, 500);
+    }
+  };
+
   return (
     <footer className="bg-[#1C2B3A] text-white border-t border-white/5 relative overflow-hidden">
       <div className="absolute inset-0 liquid-gradient opacity-10" />
@@ -35,7 +51,14 @@ export function Footer() {
               <li><Link href="/cottages" className="text-sm text-white/70 hover:text-white transition-colors duration-500">Our Stays</Link></li>
               <li><Link href="/cafe" className="text-sm text-white/70 hover:text-white transition-colors duration-500">Café Charade</Link></li>
               <li><Link href="/gallery" className="text-sm text-white/70 hover:text-white transition-colors duration-500">Gallery</Link></li>
-              <li><Link href="/#how-to-reach" className="text-sm text-white/70 hover:text-white transition-colors duration-500">How to Reach</Link></li>
+              <li>
+                <button
+                  onClick={() => handleScrollToSection('how-to-reach')}
+                  className="text-sm text-white/70 hover:text-white transition-colors duration-500 text-left"
+                >
+                  How to Reach
+                </button>
+              </li>
             </ul>
           </div>
 
@@ -44,8 +67,34 @@ export function Footer() {
             <ul className="space-y-3">
               <li><Link href="/contact" className="text-sm text-white/70 hover:text-white transition-colors duration-500">Contact Us</Link></li>
               <li><Link href="/policies" className="text-sm text-white/70 hover:text-white transition-colors duration-500">Policies</Link></li>
-              <li><Link href="/policies#faqs" className="text-sm text-white/70 hover:text-white transition-colors duration-500">FAQs</Link></li>
-              <li><Link href="/policies#cancellation" className="text-sm text-white/70 hover:text-white transition-colors duration-500">Cancellation</Link></li>
+              <li>
+                <button
+                  onClick={() => {
+                    if (window.location.pathname === '/policies') {
+                      document.getElementById('faqs')?.scrollIntoView({ behavior: 'smooth' });
+                    } else {
+                      router.push('/policies#faqs');
+                    }
+                  }}
+                  className="text-sm text-white/70 hover:text-white transition-colors duration-500 text-left"
+                >
+                  FAQs
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => {
+                    if (window.location.pathname === '/policies') {
+                      document.getElementById('cancellation')?.scrollIntoView({ behavior: 'smooth' });
+                    } else {
+                      router.push('/policies#cancellation');
+                    }
+                  }}
+                  className="text-sm text-white/70 hover:text-white transition-colors duration-500 text-left"
+                >
+                  Cancellation
+                </button>
+              </li>
             </ul>
             <div className="flex gap-3 mt-6">
               <a href="https://facebook.com/vedararetreat" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center hover:bg-gold-500 transition-all duration-500" aria-label="Facebook">
@@ -62,7 +111,7 @@ export function Footer() {
         </div>
 
         <div className="mt-12 pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-white/50">
-          <p>&copy; {new Date().getFullYear()} The Vedara Retreat. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} The Vedara. All rights reserved.</p>
           <p>Ghiyagi, Jibhi, Himachal Pradesh – 175123</p>
         </div>
       </div>

@@ -177,7 +177,7 @@ const menuData: MenuCategory[] = [
       { name: 'Pahado Wali Maggi (Chicken)', price: '180', desc: 'Mountain-style Maggi with chicken.' },
       { name: 'Crispy Corn', price: '220', desc: 'Crunchy fried corn with spices.' },
       { name: 'French Fries', price: '160', desc: 'Golden crispy fries.' },
-      { name: 'Pakoda', price: '220', desc: 'Crispy onion fritters.' },
+      { name: 'Mixed Pakodas', price: '220', desc: 'Mix of Onion, Gobi, Aloo etc.' },
       { name: 'Siddu (served with Desi Ghee)', price: '250', desc: 'Traditional Himachali steamed bread.' },
       { name: 'Loaded Nachos', price: '220', desc: 'Nachos with cheese and toppings.' },
       { name: 'Green Salad', price: '120', desc: 'Fresh garden salad.' },
@@ -373,7 +373,7 @@ export default function CafePage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
             >
-              <p className="text-amber-400 text-sm tracking-[0.3em] uppercase mb-4 font-sans">The Vedara Retreat</p>
+              <p className="text-amber-400 text-sm tracking-[0.3em] uppercase mb-4 font-sans">The Vedara</p>
               <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif text-alabaster mb-4 tracking-wide">
                 Cafe Charade
               </h1>
@@ -651,7 +651,7 @@ export default function CafePage() {
               <Mountain className="w-5 h-5 text-gold-500 mx-auto mb-2" />
               <p className="text-xs text-muted-foreground max-w-md">
                 All prices are in INR and include applicable taxes. Pre-orders for select items require 24-hour notice.
-                For special dietary requirements, please inform our staff.
+                For special dietary requirements, please inform our staff. Café Charade does not serve alcoholic beverages.
               </p>
             </div>
           </div>

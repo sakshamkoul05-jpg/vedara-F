@@ -62,7 +62,7 @@ export default function BookingPage() {
   const { code, discount, discountType, isValid, error, loading: couponLoading, setCode, validateCoupon, removeCoupon } = useCouponStore();
 
   useEffect(() => {
-    api.get('/cottages').then((res: any) => setCottages(res.data)).catch(() => {});
+    api.get('/cottages').then((res: any) => setCottages(res.data)).catch((err) => console.error('Failed to load cottages:', err));
   }, []);
 
   useEffect(() => {
@@ -106,8 +106,9 @@ export default function BookingPage() {
       const res = await api.get(`/bookings/available-cottages?checkIn=${encodeURIComponent(checkIn)}&checkOut=${encodeURIComponent(checkOut)}`);
       setCottages(res.data);
       setStep(2);
-    } catch (err) {
-      alert('Failed to check availability');
+    } catch (err: any) {
+      console.error('Availability check failed:', err);
+      alert(`Failed to check availability: ${err?.message || 'Unknown error'}`);
     } finally {
       setStepLoading(false);
     }
@@ -146,7 +147,7 @@ export default function BookingPage() {
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
         amount: razorpayOrder.amount,
         currency: razorpayOrder.currency,
-        name: 'The Vedara Retreat',
+        name: 'The Vedara',
         description: `Booking ${booking.bookingRef}`,
         order_id: razorpayOrder.id,
         handler: async (response: any) => {
@@ -357,7 +358,7 @@ export default function BookingPage() {
                                   const value = e.target.value.replace(/[^\d+\-\s]/g, '');
                                   setGuestPhone(value);
                                 }} 
-                                placeholder="+91-99999-99999" 
+                                placeholder="+91 99999 99999" 
                               />
                             </div>
                           </div>

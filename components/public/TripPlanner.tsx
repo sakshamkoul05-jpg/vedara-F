@@ -206,11 +206,10 @@ export function TripPlanner() {
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 right-6 z-50 rounded-full px-5 py-3 flex items-center gap-2 shadow-xl cursor-pointer transition-all"
-        style={{ background: 'var(--clr-surface)', border: '1px solid var(--clr-stone)' }}
+        className="fixed bottom-6 right-6 z-50 rounded-full px-5 py-3 flex items-center gap-2 shadow-xl cursor-pointer transition-all bg-gold-600 text-white hover:bg-gold-700 border-0"
       >
-        <Sparkles style={{ width: '1rem', height: '1rem', color: 'var(--clr-saffron)' }} />
-        <span style={{ fontSize: '0.85rem', fontWeight: 400, color: 'var(--clr-text)' }}>AI Trip Planner</span>
+        <Sparkles className="w-4 h-4" />
+        <span className="text-sm font-medium">AI Trip Planner</span>
       </motion.button>
 
       <AnimatePresence>
