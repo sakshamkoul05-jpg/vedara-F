@@ -353,13 +353,13 @@ export default function CafePage() {
   return (
     <div ref={pageRef} className="min-h-screen bg-white overflow-hidden">
       <div className="relative z-10">
-        <section className="relative h-[35vh] min-h-[280px] flex items-center justify-center overflow-hidden">
+        <section className="relative pt-20 h-[45vh] min-h-[350px] flex items-center justify-center overflow-hidden">
           <div
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1600&q=80)', transform: 'scale(1.1)' }}
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-white" />
-          <div className="relative z-10 text-center px-4 max-w-4xl">
+          <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-white" />
+          <div className="relative z-10 text-center px-4 max-w-4xl mt-12">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
