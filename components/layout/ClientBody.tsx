@@ -25,10 +25,10 @@ export function ClientBody({ children }: { children: React.ReactNode }) {
   const [aiPlannerEnabled, setAiPlannerEnabled] = useState(true);
 
   useEffect(() => {
-    fetch(`${API_URL}/cms/settings`)
+    fetch(`${API_URL}/cms/public-settings`)
       .then(res => res.json())
       .then(data => {
-        if (data?.data?.aiPlannerEnabled === false) setAiPlannerEnabled(false);
+        if (data?.data?.aiPlannerEnabled === 'false') setAiPlannerEnabled(false);
       })
       .catch(() => {});
   }, []);

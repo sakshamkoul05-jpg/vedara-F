@@ -154,7 +154,7 @@ export default function PoliciesPage() {
   const [policyValue, setPolicyValue] = useState<string | undefined>(undefined);
 
   useEffect(() => {
-    api.get('/cms/faqs').then((res: any) => setFaqs(res.data)).catch(() => {});
+    api.get('/cms/faqs/public').then((res: any) => setFaqs(res.data)).catch(() => {});
   }, []);
 
   useEffect(() => {

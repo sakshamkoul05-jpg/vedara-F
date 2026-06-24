@@ -1,5 +1,11 @@
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://vedara-b-production.up.railway.app/api';
 
+function getCookie(name: string): string | null {
+  if (typeof document === 'undefined') return null;
+  const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+  return match ? match[2] : null;
+}
+
 type RequestOptions = {
   method?: string;
   body?: unknown;
@@ -10,13 +16,19 @@ type RequestOptions = {
 async function request<T = any>(endpoint: string, options: RequestOptions = {}): Promise<T> {
   const { method = 'GET', body, headers = {}, token } = options;
 
+  const csrfToken = getCookie('csrf_token') || '';
+
   const config: RequestInit = {
     method,
     headers: {
       'Content-Type': 'application/json',
       ...headers,
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      ...(!['GET', 'HEAD', 'OPTIONS'].includes(method) && csrfToken
+        ? { 'X-CSRF-Token': csrfToken }
+        : {}),
     },
+    credentials: 'include',
   };
 
   if (body && method !== 'GET') {
