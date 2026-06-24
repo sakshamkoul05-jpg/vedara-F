@@ -25,74 +25,6 @@
     --ring: 150 25% 20%;
     --radius: 0.5rem;
   }
-
-  .dark {
-    --background: 220 30% 6%;
-    --foreground: 30 10% 92%;
-    --card: 220 25% 10%;
-    --card-foreground: 30 10% 92%;
-    --popover: 220 25% 10%;
-    --popover-foreground: 30 10% 92%;
-    --primary: 33 45% 65%;
-    --primary-foreground: 220 30% 6%;
-    --secondary: 33 38% 55%;
-    --secondary-foreground: 220 30% 6%;
-    --muted: 220 15% 14%;
-    --muted-foreground: 30 8% 65%;
-    --accent: 33 45% 65%;
-    --accent-foreground: 220 30% 6%;
-    --destructive: 5 60% 40%;
-    --destructive-foreground: 0 0% 100%;
-    --border: 220 12% 18%;
-    --input: 220 12% 18%;
-    --ring: 33 45% 65%;
-  }
-
-  .dark body {
-    background-color: hsl(220, 30%, 6%);
-  }
-
-  .dark .section-padding {
-    background-color: transparent;
-  }
-
-  .dark [class*="bg-white"] {
-    background-color: hsl(220, 25%, 10%) !important;
-  }
-
-  .dark [class*="bg-[#F5F2EE]"] {
-    background-color: hsl(220, 25%, 10%) !important;
-  }
-
-  .dark [class*="bg-[#F5F2EE]/"] {
-    background-color: hsl(220, 25%, 10%) !important;
-  }
-
-  .dark [class*="bg-slate-50"] {
-    background-color: hsl(220, 20%, 10%) !important;
-  }
-
-  .dark [class*="bg-sand-"] {
-    background-color: hsl(220, 20%, 12%) !important;
-  }
-
-  .dark [class*="text-foreground"]:not([class*="text-white"]) {
-    color: hsl(30, 10%, 92%) !important;
-  }
-
-  .dark [class*="text-[#1C2B3A]"] {
-    color: hsl(30, 10%, 92%) !important;
-  }
-
-  .dark [class*="border-border"] {
-    border-color: hsl(220, 12%, 18%) !important;
-  }
-
-  .dark [class*="shadow-lg"],
-  .dark [class*="shadow-xl"],
-  .dark [class*="shadow-2xl"] {
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
-  }
 }
 
 @layer base {
@@ -117,11 +49,6 @@
     background: rgba(74, 85, 104, 0.2);
     color: #1C2B3A;
   }
-
-  .dark ::selection {
-    background: rgba(212, 175, 55, 0.3);
-    color: #fff;
-  }
 }
 
 @layer components {
@@ -134,7 +61,7 @@
   }
 
   .vintage-card {
-    @apply bg-card dark:bg-vedara-900/50 border border-border/50 rounded-xl shadow-sm hover:shadow-md transition-all duration-300;
+    @apply bg-card border border-border/50 rounded-xl shadow-sm hover:shadow-md transition-all duration-300;
   }
 
   .vintage-button {
@@ -154,7 +81,7 @@
   }
 
   .vintage-input {
-    @apply w-full rounded-lg border border-border bg-white dark:bg-vedara-900 px-4 py-3 font-sans text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/15 transition-all;
+    @apply w-full rounded-lg border border-border bg-white px-4 py-3 font-sans text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/15 transition-all;
   }
 
   .vintage-label {
@@ -184,31 +111,16 @@
     box-shadow: 0 1px 3px rgba(28, 43, 58, 0.04);
   }
 
-  .dark .glass {
-    background: rgba(28, 43, 58, 0.8);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-  }
-
   .glass-card {
     background: #FFFFFF;
     border: 1px solid rgba(74, 85, 104, 0.08);
     box-shadow: 0 1px 3px rgba(28, 43, 58, 0.04), 0 4px 12px rgba(28, 43, 58, 0.03);
   }
 
-  .dark .glass-card {
-    background: rgba(28, 43, 58, 0.7);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-  }
-
   .glass-card-light {
     background: #FFFFFF;
     border: 1px solid rgba(74, 85, 104, 0.06);
     box-shadow: 0 1px 2px rgba(28, 43, 58, 0.03);
-  }
-
-  .dark .glass-card-light {
-    background: rgba(28, 43, 58, 0.6);
-    border: 1px solid rgba(255, 255, 255, 0.08);
   }
 
   .glass-dark {

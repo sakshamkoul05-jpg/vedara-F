@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { useState, useRef, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 import { ArrowRight, Star, Coffee, Trees, Sparkles, Music, Moon, MapPin, TreePine } from 'lucide-react';
 import { ScrollReveal } from '@/components/animations/ScrollReveal';
 import { TextReveal } from '@/components/animations/TextReveal';
@@ -13,8 +13,6 @@ import { MountainSpotlight } from '@/components/animations/MountainSpotlight';
 import { HeroCarousel } from '@/components/home/HeroCarousel';
 import { PackageBanner } from '@/components/public/PackageBanner';
 import { WeatherWidget } from '@/components/public/WeatherWidget';
-import { AvailabilityHeatmap } from '@/components/public/AvailabilityHeatmap';
-import { getToday } from '@/lib/utils';
 
 const cottages = [
   { slug: 'monal-haven', name: 'Monal Haven', price: '₹12,000', desc: 'Premium Duplex Family Suite with private jacuzzi, attic yoga balcony, and sweeping mountain views', image: '/images/hero-1.jpg', category: 'Premium Duplex Family Suite' },
@@ -51,16 +49,8 @@ const nearbyAttractions = [
 ];
 
 export default function HomePage() {
-  const [homeCheckIn, setHomeCheckIn] = useState('');
-  const [homeCheckOut, setHomeCheckOut] = useState('');
-  const [homeAdults, setHomeAdults] = useState('2');
-  const [homeChildren, setHomeChildren] = useState('0');
-  const [homeNationality, setHomeNationality] = useState('Indian');
-  const [dateError, setDateError] = useState('');
   const heroRef = useRef<HTMLElement>(null);
   const spotlightRef = useRef<HTMLDivElement>(null);
-
-  const today = getToday();
 
   useEffect(() => {
     const hero = heroRef.current;
@@ -115,39 +105,6 @@ export default function HomePage() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleHomeBooking = () => {
-    if (!homeCheckIn || !homeCheckOut) return;
-    const checkInDate = new Date(homeCheckIn);
-    const checkOutDate = new Date(homeCheckOut);
-    if (checkOutDate <= checkInDate) {
-      setDateError('Check-out date must be after check-in date');
-      return;
-    }
-    setDateError('');
-    const params = new URLSearchParams({
-      checkIn: homeCheckIn,
-      checkOut: homeCheckOut,
-      rooms: '1',
-      adults: homeAdults,
-      children: homeChildren,
-      nationality: homeNationality,
-    });
-    window.location.href = `/booking?${params.toString()}`;
-  };
-
-  const handleCheckInChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setHomeCheckIn(e.target.value);
-    setDateError('');
-    if (homeCheckOut && new Date(homeCheckOut) <= new Date(e.target.value)) {
-      setHomeCheckOut('');
-    }
-  };
-
-  const handleCheckOutChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setHomeCheckOut(e.target.value);
-    setDateError('');
-  };
-
   return (
     <>
       <WaterRipple />
@@ -201,10 +158,10 @@ export default function HomePage() {
           animate={{ opacity: 1 }}
           transition={{ delay: 2, duration: 1 }}
           onClick={() => {
-            document.getElementById('booking-bar')?.scrollIntoView({ behavior: 'smooth' });
+            document.getElementById('welcome')?.scrollIntoView({ behavior: 'smooth' });
           }}
           className="absolute bottom-16 left-1/2 -translate-x-1/2 z-20 cursor-pointer"
-          aria-label="Scroll to booking section"
+          aria-label="Scroll to content"
         >
           <motion.div animate={{ y: [0, 8, 0] }} transition={{ duration: 2, repeat: Infinity }} className="text-white/50">
             <ArrowRight className="w-5 h-5 rotate-90" />
@@ -214,55 +171,10 @@ export default function HomePage() {
 
       <PackageBanner />
 
-      {/* Booking Bar */}
-      <section id="booking-bar" className="relative z-30 mb-12 px-4">
-        <div className="vintage-container max-w-6xl">
-          <div className="grid md:grid-cols-3 gap-4">
-            <div style={{ gridColumn: 'span 2 / span 2', background: 'var(--clr-surface)', borderRadius: '16px', padding: '20px 24px', boxShadow: '0 4px 24px rgba(28,43,58,0.12)', border: '1px solid var(--clr-stone)' }} className="md:col-span-2">
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 items-end mb-3">
-                <div>
-                  <label className="vintage-label">Check In</label>
-                  <input type="date" value={homeCheckIn} onChange={handleCheckInChange} min={today} className="vintage-input" style={{ borderBottom: '1px solid var(--clr-stone)', fontSize: '0.9rem', padding: '8px 0' }} />
-                </div>
-                <div>
-                  <label className="vintage-label">Check Out</label>
-                  <input type="date" value={homeCheckOut} onChange={handleCheckOutChange} min={homeCheckIn || today} className="vintage-input" style={{ borderBottom: '1px solid var(--clr-stone)', fontSize: '0.9rem', padding: '8px 0' }} />
-                </div>
-                <div>
-                  <label className="vintage-label">Adults</label>
-                  <select value={homeAdults} onChange={(e) => setHomeAdults(e.target.value)} className="vintage-input" style={{ borderBottom: '1px solid var(--clr-stone)', fontSize: '0.9rem', padding: '8px 0', background: 'transparent' }}>
-                    {[1,2,3,4].map(n => <option key={n} value={n}>{n}</option>)}
-                  </select>
-                </div>
-                <div>
-                  <label className="vintage-label">Children</label>
-                  <select value={homeChildren} onChange={(e) => setHomeChildren(e.target.value)} className="vintage-input" style={{ borderBottom: '1px solid var(--clr-stone)', fontSize: '0.9rem', padding: '8px 0', background: 'transparent' }}>
-                    {[0,1,2,3].map(n => <option key={n} value={n}>{n}</option>)}
-                  </select>
-                </div>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 items-end">
-                <div>
-                  <label className="vintage-label">Nationality</label>
-                  <select value={homeNationality} onChange={(e) => setHomeNationality(e.target.value)} className="vintage-input" style={{ borderBottom: '1px solid var(--clr-stone)', fontSize: '0.9rem', padding: '8px 0', background: 'transparent' }}>
-                    <option value="Indian">Indian</option>
-                    <option value="Foreign">Foreign National</option>
-                  </select>
-                </div>
-                <div>
-                  <button onClick={handleHomeBooking} className="vintage-button-primary" style={{ width: '100%', padding: '12px 24px', fontSize: '0.85rem' }}>
-                    {homeCheckIn && homeCheckOut ? 'Check Availability' : 'Book Your Stay'}
-                  </button>
-                </div>
-              </div>
-              {dateError && (
-                <p style={{ color: '#dc2626', fontSize: '0.75rem', marginTop: '8px', textAlign: 'center' }}>{dateError}</p>
-              )}
-            </div>
-            <div className="hidden md:block">
-              <WeatherWidget />
-            </div>
-          </div>
+      {/* Weather Section */}
+      <section className="relative z-30 mb-12 px-4">
+        <div className="vintage-container max-w-4xl">
+          <WeatherWidget />
         </div>
       </section>
 
@@ -428,12 +340,12 @@ export default function HomePage() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
               {experiences.map((exp, i) => (
                   <ScrollReveal key={exp.title} delay={i * 0.08} direction="up" distance={40}>
-                    <article className="group rounded-2xl p-6 text-center transition-all duration-500 font-sans border border-white/8 reveal" style={{ background: 'rgba(255,255,255,0.05)' }}>
-                      <div className="w-14 h-14 rounded-full bg-gradient-to-br from-[#9B8EA0]/25 to-[#9B8EA0]/10 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-500">
+                    <article className="group rounded-2xl p-6 text-center transition-all duration-500 font-sans border border-white/8 reveal h-[220px] flex flex-col items-center justify-center" style={{ background: 'rgba(255,255,255,0.05)' }}>
+                      <div className="w-14 h-14 rounded-full bg-gradient-to-br from-[#9B8EA0]/25 to-[#9B8EA0]/10 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-500 flex-shrink-0">
                         <exp.icon className="w-7 h-7 text-[#9B8EA0]" />
                       </div>
                       <h3 className="font-serif text-lg text-white mb-2">{exp.title}</h3>
-                      <p className="text-white/60 text-sm leading-relaxed">{exp.desc}</p>
+                      <p className="text-white/60 text-sm leading-relaxed line-clamp-3">{exp.desc}</p>
                     </article>
                   </ScrollReveal>
                 ))}
@@ -497,12 +409,12 @@ export default function HomePage() {
             {testimonials.map((t, i) => (
               <ScrollReveal key={t.name} delay={i * 0.12} direction="up" distance={40}>
                 <motion.article
-                  className="bg-white rounded-2xl p-7 relative overflow-hidden reveal"
+                  className="bg-white rounded-2xl p-7 relative overflow-hidden reveal h-[260px] flex flex-col"
                   whileHover={{ y: -4, boxShadow: '0 20px 40px rgba(0,0,0,0.06)' }}
                   transition={{ duration: 0.5 }}
                 >
                   <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-primary/8 to-transparent rounded-bl-full" />
-                  <div className="flex gap-1 mb-4">
+                  <div className="flex gap-1 mb-4 flex-shrink-0">
                     {Array.from({ length: t.rating }).map((_, idx) => (
                       <motion.div
                         key={idx}
@@ -514,8 +426,8 @@ export default function HomePage() {
                       </motion.div>
                     ))}
                   </div>
-                  <p className="text-muted-foreground text-sm leading-relaxed mb-5 italic">&ldquo;{t.content}&rdquo;</p>
-                  <div className="border-t border-border/30 pt-4">
+                  <p className="text-muted-foreground text-sm leading-relaxed mb-5 italic flex-1 line-clamp-4">&ldquo;{t.content}&rdquo;</p>
+                  <div className="border-t border-border/30 pt-4 flex-shrink-0">
                     <p className="font-serif text-foreground font-medium text-sm">{t.name}</p>
                     <p className="text-xs text-muted-foreground/70">{t.location}</p>
                   </div>
@@ -539,7 +451,7 @@ export default function HomePage() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {nearbyAttractions.map((place, i) => (
               <ScrollReveal key={place.name} delay={i * 0.1} direction="up" distance={40}>
-                <article className="bg-white rounded-2xl p-5 flex items-start gap-4 group hover:border-primary/30 transition-all duration-500 reveal">
+                <article className="bg-white rounded-2xl p-5 flex items-start gap-4 group hover:border-primary/30 transition-all duration-500 reveal h-[100px]">
                   <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/20 transition-colors duration-500">
                     <place.icon className="w-5 h-5 text-primary" />
                   </div>
@@ -576,8 +488,8 @@ export default function HomePage() {
           </ScrollReveal>
           <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
             <ScrollReveal delay={0.1} direction="up" distance={40}>
-              <article className="bg-white rounded-2xl p-7 text-center reveal">
-                <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
+              <article className="bg-white rounded-2xl p-7 text-center reveal h-[240px] flex flex-col items-center justify-center">
+                <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mb-4 flex-shrink-0">
                   <MapPin className="w-7 h-7 text-primary" />
                 </div>
                 <h3 className="font-serif text-lg mb-3 text-foreground">By Road</h3>
@@ -585,8 +497,8 @@ export default function HomePage() {
               </article>
             </ScrollReveal>
             <ScrollReveal delay={0.2} direction="up" distance={40}>
-              <article className="bg-white rounded-2xl p-7 text-center reveal">
-                <div className="w-14 h-14 rounded-2xl bg-[#9B8EA0]/10 flex items-center justify-center mx-auto mb-4">
+              <article className="bg-white rounded-2xl p-7 text-center reveal h-[240px] flex flex-col items-center justify-center">
+                <div className="w-14 h-14 rounded-2xl bg-[#9B8EA0]/10 flex items-center justify-center mb-4 flex-shrink-0">
                   <MapPin className="w-7 h-7 text-[#9B8EA0]" />
                 </div>
                 <h3 className="font-serif text-lg mb-3 text-foreground">By Rail</h3>
@@ -594,8 +506,8 @@ export default function HomePage() {
               </article>
             </ScrollReveal>
             <ScrollReveal delay={0.3} direction="up" distance={40}>
-              <article className="bg-white rounded-2xl p-7 text-center reveal">
-                <div className="w-14 h-14 rounded-2xl bg-gold-400/10 flex items-center justify-center mx-auto mb-4">
+              <article className="bg-white rounded-2xl p-7 text-center reveal h-[240px] flex flex-col items-center justify-center">
+                <div className="w-14 h-14 rounded-2xl bg-gold-400/10 flex items-center justify-center mb-4 flex-shrink-0">
                   <MapPin className="w-7 h-7 text-gold-500" />
                 </div>
                 <h3 className="font-serif text-lg mb-3 text-foreground">By Air</h3>

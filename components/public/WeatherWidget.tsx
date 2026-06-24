@@ -93,13 +93,19 @@ export function WeatherWidget() {
 
   if (loading) {
     return (
-      <div className="rounded p-5 animate-pulse" style={{ background: 'var(--clr-surface)', border: '1px solid var(--clr-stone)' }}>
-        <div className="h-4 rounded w-1/3 mb-3" style={{ background: 'var(--clr-stone)' }} />
-        <div className="h-8 rounded w-1/2 mb-4" style={{ background: 'var(--clr-stone)' }} />
-        <div className="flex gap-2">
-          {[1, 2, 3, 4, 5].map((i) => (
-            <div key={i} className="h-12 rounded flex-1" style={{ background: 'var(--clr-stone)' }} />
-          ))}
+      <div className="rounded-2xl p-6 animate-pulse" style={{ background: 'var(--clr-surface)', border: '1px solid var(--clr-stone)' }}>
+        <div className="flex items-center gap-6">
+          <div className="h-16 w-16 rounded-xl" style={{ background: 'var(--clr-stone)' }} />
+          <div className="flex-1">
+            <div className="h-4 rounded w-1/4 mb-2" style={{ background: 'var(--clr-stone)' }} />
+            <div className="h-8 rounded w-1/3 mb-2" style={{ background: 'var(--clr-stone)' }} />
+            <div className="h-3 rounded w-1/2" style={{ background: 'var(--clr-stone)' }} />
+          </div>
+          <div className="hidden md:flex gap-3">
+            {[1, 2, 3, 4, 5].map((i) => (
+              <div key={i} className="h-20 w-16 rounded-xl" style={{ background: 'var(--clr-stone)' }} />
+            ))}
+          </div>
         </div>
       </div>
     );
@@ -114,54 +120,66 @@ export function WeatherWidget() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: 0.3 }}
-      className="rounded p-5"
+      className="rounded-2xl p-6"
       style={{ background: 'var(--clr-surface)', border: '1px solid var(--clr-stone)' }}
     >
-      <div className="flex items-start justify-between mb-4">
-        <div>
-          <p style={{ fontSize: '0.7rem', color: 'var(--clr-text-muted)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '4px' }}>Jibhi, Himachal</p>
-          <div className="flex items-end gap-2">
-            <span style={{ fontFamily: 'var(--font-display)', fontSize: '2.5rem', fontWeight: 300, color: 'var(--clr-text)' }}>{weather.temp}°</span>
-            <span style={{ fontSize: '0.85rem', color: 'var(--clr-text-muted)', marginBottom: '6px' }}>Feels {weather.feelsLike}°</span>
+      <div className="flex flex-col md:flex-row items-center gap-6">
+        {/* Left: Current Weather */}
+        <div className="flex items-center gap-5 flex-shrink-0">
+          <motion.div
+            animate={{ y: [0, -4, 0] }}
+            transition={{ duration: 3, repeat: Infinity }}
+            className="w-16 h-16 rounded-xl flex items-center justify-center"
+            style={{ background: 'rgba(201,148,58,0.08)' }}
+          >
+            <IconComponent style={{ width: '2rem', height: '2rem', color: 'var(--clr-saffron)' }} />
+          </motion.div>
+          <div>
+            <p style={{ fontSize: '0.65rem', color: 'var(--clr-text-muted)', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '2px' }}>Jibhi, Himachal</p>
+            <div className="flex items-end gap-2">
+              <span style={{ fontFamily: 'var(--font-display)', fontSize: '2.25rem', fontWeight: 300, color: 'var(--clr-text)', lineHeight: 1 }}>{weather.temp}°</span>
+              <span style={{ fontSize: '0.8rem', color: 'var(--clr-text-muted)', marginBottom: '4px' }}>Feels {weather.feelsLike}°</span>
+            </div>
+            <p style={{ fontSize: '0.8rem', color: 'var(--clr-text-muted)', marginTop: '2px' }}>{weather.condition}</p>
           </div>
         </div>
-        <motion.div
-          animate={{ y: [0, -4, 0] }}
-          transition={{ duration: 3, repeat: Infinity }}
-        >
-          <IconComponent style={{ width: '2.5rem', height: '2.5rem', color: 'var(--clr-saffron)' }} />
-        </motion.div>
-      </div>
 
-      <p style={{ fontSize: '0.85rem', color: 'var(--clr-text-muted)', marginBottom: '16px' }}>{weather.condition}</p>
+        {/* Divider */}
+        <div className="hidden md:block w-px h-16" style={{ background: 'var(--clr-stone)' }} />
 
-      <div className="grid grid-cols-3 gap-3 mb-4">
-        <div className="flex items-center gap-1.5" style={{ color: 'var(--clr-text-muted)' }}>
-          <Droplets style={{ width: '0.875rem', height: '0.875rem' }} />
-          <span style={{ fontSize: '0.75rem' }}>{weather.humidity}%</span>
+        {/* Middle: Stats */}
+        <div className="flex items-center gap-5 flex-shrink-0">
+          <div className="flex items-center gap-1.5" style={{ color: 'var(--clr-text-muted)' }}>
+            <Droplets style={{ width: '0.875rem', height: '0.875rem' }} />
+            <span style={{ fontSize: '0.75rem' }}>{weather.humidity}%</span>
+          </div>
+          <div className="flex items-center gap-1.5" style={{ color: 'var(--clr-text-muted)' }}>
+            <Wind style={{ width: '0.875rem', height: '0.875rem' }} />
+            <span style={{ fontSize: '0.75rem' }}>{weather.windSpeed} km/h</span>
+          </div>
+          <div className="flex items-center gap-1.5" style={{ color: 'var(--clr-text-muted)' }}>
+            <Eye style={{ width: '0.875rem', height: '0.875rem' }} />
+            <span style={{ fontSize: '0.75rem' }}>{weather.visibility} km</span>
+          </div>
         </div>
-        <div className="flex items-center gap-1.5" style={{ color: 'var(--clr-text-muted)' }}>
-          <Wind style={{ width: '0.875rem', height: '0.875rem' }} />
-          <span style={{ fontSize: '0.75rem' }}>{weather.windSpeed} km/h</span>
-        </div>
-        <div className="flex items-center gap-1.5" style={{ color: 'var(--clr-text-muted)' }}>
-          <Eye style={{ width: '0.875rem', height: '0.875rem' }} />
-          <span style={{ fontSize: '0.75rem' }}>{weather.visibility} km</span>
-        </div>
-      </div>
 
-      <div style={{ borderTop: '1px solid var(--clr-stone)', paddingTop: '12px' }}>
-        <div className="flex gap-1.5">
-          {weather.forecast.map((f, i) => {
-            const FIcon = weatherIcons[f.icon] || Cloud;
-            return (
-              <div key={i} className="flex-1 text-center rounded py-2" style={{ background: 'rgba(201,148,58,0.06)' }}>
-                <p style={{ fontSize: '0.6rem', color: 'var(--clr-text-muted)', marginBottom: '4px' }}>{f.day}</p>
-                <FIcon style={{ width: '0.875rem', height: '0.875rem', color: 'var(--clr-saffron)', margin: '0 auto 4px' }} />
-                <p style={{ fontSize: '0.75rem', fontWeight: 400, color: 'var(--clr-text)' }}>{f.temp}°</p>
-              </div>
-            );
-          })}
+        {/* Divider */}
+        <div className="hidden md:block w-px h-16" style={{ background: 'var(--clr-stone)' }} />
+
+        {/* Right: Forecast */}
+        <div className="flex-1 w-full md:w-auto">
+          <div className="flex gap-2 md:justify-end">
+            {weather.forecast.map((f, i) => {
+              const FIcon = weatherIcons[f.icon] || Cloud;
+              return (
+                <div key={i} className="flex-1 md:flex-none text-center rounded-xl py-2.5 px-2 min-w-[56px]" style={{ background: 'rgba(201,148,58,0.06)' }}>
+                  <p style={{ fontSize: '0.6rem', color: 'var(--clr-text-muted)', marginBottom: '4px' }}>{f.day}</p>
+                  <FIcon style={{ width: '0.875rem', height: '0.875rem', color: 'var(--clr-saffron)', margin: '0 auto 4px' }} />
+                  <p style={{ fontSize: '0.75rem', fontWeight: 400, color: 'var(--clr-text)' }}>{f.temp}°</p>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
     </motion.div>
