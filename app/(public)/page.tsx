@@ -354,15 +354,14 @@ export default function HomePage() {
       </section>
 
       {/* Café */}
-      <section className="relative py-28 md:py-36 overflow-hidden bg-slate-50">
+      <section className="relative py-28 md:py-36 overflow-hidden bg-white">
         <div className="relative z-10 vintage-container">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <ScrollReveal direction="left">
               <div>
-                <p className="text-primary text-sm tracking-[0.2em] uppercase mb-4 font-sans">Our Café</p>
-                <h2 className="font-serif text-4xl md:text-5xl text-foreground mb-6">Café Charade</h2>
+                <h2 className="font-serif text-4xl md:text-5xl text-foreground mb-6">THE VEDARA</h2>
                 <p className="text-muted-foreground text-lg leading-relaxed mb-4">
-                  Nestled beside a whispering stream, Café Charade serves handcrafted coffee, wood-fired meals, and mountain-fresh bakes.
+                  A Himalayan Boutique Retreat – 7 Cozy Cottages and 1 Alpine Studio with One Cozy Café
                 </p>
                 <p className="text-muted-foreground/70 text-sm mb-8 space-y-1">
                   <span className="block">Breakfast 7:30 AM – 10:00 AM</span>
