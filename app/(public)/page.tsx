@@ -141,7 +141,7 @@ export default function HomePage() {
             transition={{ delay: 1, duration: 0.8 }}
             className="text-white/75 text-lg md:text-xl max-w-2xl mx-auto mb-10 font-serif tracking-wide"
           >
-            A Himalayan Boutique Retreat – Eight handcrafted sanctuaries, one cozy café, and a slow-living mountain escape crafted for those who seek stillness.
+            A Himalayan Boutique Retreat – 7 Cozy Cottages and 1 Alpine Studio with One Cozy Café
           </motion.p>
             <motion.div
              initial={{ opacity: 0, y: 20 }}
