@@ -226,7 +226,7 @@ export default function CottageBySlugPage() {
                       <Flame className="w-5 h-5 text-gold-500" />
                       <div>
                         <p className="text-xs text-muted-foreground">Additional Heater</p>
-                        <p className="font-medium text-foreground">₹{cottage.heaterCharge || 500}/night</p>
+                        <p className="font-medium text-foreground">₹{cottage.heaterCharge || 600}/night</p>
                       </div>
                     </div>
                   </div>

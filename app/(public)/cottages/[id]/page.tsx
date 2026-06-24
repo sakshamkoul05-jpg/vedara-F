@@ -26,7 +26,7 @@ const amenityIcons: Record<string, React.ElementType> = {
 const mockCottage: Cottage = {
   id: '1', slug: 'pine-perch', name: 'The Pine Perch',
   description: 'Secluded pine-wood haven with mountain views. Wake up to the mist over the mountains and enjoy the warm fireplace at night. This cottage offers a perfect blend of rustic charm and modern comfort, featuring handcrafted wooden furniture, a private sit-out area, and panoramic views of the Himalayan range.',
-  shortDesc: 'Secluded pine-wood haven with mountain views', pricePerNight: 8500, heaterCharge: 500,
+  shortDesc: 'Secluded pine-wood haven with mountain views', pricePerNight: 8500, heaterCharge: 600,
   capacity: 3, bedrooms: 1, bathrooms: 1, size: 450,
   amenities: ['wifi', 'fireplace', 'coffee maker', 'mountain view', 'balcony', 'garden'],
   images: [], isActive: true, sortOrder: 1,
@@ -242,7 +242,7 @@ export default function CottageDetailPage() {
                       <Flame className="w-5 h-5 text-gold-500" />
                       <div>
                         <p className="text-xs text-muted-foreground">Additional Heater</p>
-                        <p className="font-medium text-foreground">₹{cottage.heaterCharge || 500}/night</p>
+                        <p className="font-medium text-foreground">₹{cottage.heaterCharge || 600}/night</p>
                       </div>
                     </div>
                   </div>

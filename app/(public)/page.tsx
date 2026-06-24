@@ -354,25 +354,25 @@ export default function HomePage() {
       </section>
 
       {/* Café */}
-      <section className="relative py-28 md:py-36 overflow-hidden bg-[#1C2B3A]">
+      <section className="relative py-28 md:py-36 overflow-hidden bg-slate-50">
         <div className="relative z-10 vintage-container">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <ScrollReveal direction="left">
               <div>
-                <p className="text-gold-400 text-sm tracking-[0.2em] uppercase mb-4 font-sans">Our Café</p>
-                <h2 className="font-serif text-4xl md:text-5xl text-white mb-6">Café Charade</h2>
-                <p className="text-white/80 text-lg leading-relaxed mb-4">
+                <p className="text-primary text-sm tracking-[0.2em] uppercase mb-4 font-sans">Our Café</p>
+                <h2 className="font-serif text-4xl md:text-5xl text-foreground mb-6">Café Charade</h2>
+                <p className="text-muted-foreground text-lg leading-relaxed mb-4">
                   Nestled beside a whispering stream, Café Charade serves handcrafted coffee, wood-fired meals, and mountain-fresh bakes.
                 </p>
-                <p className="text-white/60 text-sm mb-8 space-y-1">
+                <p className="text-muted-foreground/70 text-sm mb-8 space-y-1">
                   <span className="block">Breakfast 7:30 AM – 10:00 AM</span>
                   <span className="block">Lunch 12:00 PM – 3:30 PM</span>
                   <span className="block">Dinner 7:00 PM – 10:00 PM</span>
                 </p>
                 <div className="grid grid-cols-2 gap-4 mb-8">
                   {['Artisan Coffee', 'Home-Style Meals', 'Mixed Pakodas', 'Fresh Treats'].map((item) => (
-                    <div key={item} className="flex items-center gap-2 text-white">
-                      <Coffee className="w-4 h-4 text-gold-400" />
+                    <div key={item} className="flex items-center gap-2 text-foreground">
+                      <Coffee className="w-4 h-4 text-gold-500" />
                       <span className="text-sm">{item}</span>
                     </div>
                   ))}

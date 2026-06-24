@@ -254,45 +254,45 @@ export default function AboutPage() {
       </section>
 
       {/* Getting Here */}
-      <section className="section-padding bg-[#1C2B3A]">
+      <section className="section-padding bg-slate-50">
         <div className="vintage-container">
           <ScrollReveal>
             <div className="text-center max-w-3xl mx-auto mb-16">
-              <p className="text-gold-400 text-sm tracking-[0.2em] uppercase mb-4 font-sans">Getting Here</p>
-              <h2 className="font-serif text-4xl md:text-5xl text-white mb-6">How to Reach The Vedara</h2>
-              <p className="text-white/60 text-lg">Your journey to the mountains, simplified.</p>
+              <p className="text-primary text-sm tracking-[0.2em] uppercase mb-4 font-sans">Getting Here</p>
+              <h2 className="font-serif text-4xl md:text-5xl text-foreground mb-6">How to Reach The Vedara</h2>
+              <p className="text-muted-foreground text-lg">Your journey to the mountains, simplified.</p>
             </div>
           </ScrollReveal>
           <div className="grid md:grid-cols-3 gap-6">
             <ScrollReveal delay={0.1}>
-              <div className="rounded-2xl p-6 text-center font-sans border border-white/8 transition-smooth" style={{ background: 'rgba(255,255,255,0.05)' }}>
-                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-gold-500/25 to-gold-500/10 flex items-center justify-center mx-auto mb-4">
-                  <svg className="w-7 h-7 text-gold-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 21a9 9 0 100-18 9 9 0 000 18z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 7v4l2 2" /></svg>
+              <div className="rounded-2xl p-6 text-center font-sans glass-card-light h-[240px] flex flex-col items-center justify-center">
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary/15 to-primary/5 flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-7 h-7 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 21a9 9 0 100-18 9 9 0 000 18z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 7v4l2 2" /></svg>
                 </div>
-                <h3 className="font-serif text-lg text-white mb-2">By Air</h3>
-                <p className="text-white/60 text-sm leading-relaxed">
-                  Nearest airport: <strong className="text-white">Kullu-Bhuntar Airport</strong> (70 km, ~2.5 hr drive). Taxis and private cabs available from the airport. Delhi to Kullu flights operate daily.
+                <h3 className="font-serif text-lg text-foreground mb-2">By Air</h3>
+                <p className="text-muted-foreground text-sm leading-relaxed">
+                  Nearest airport: <strong className="text-foreground">Kullu-Bhuntar Airport</strong> (70 km, ~2.5 hr drive). Taxis and private cabs available from the airport. Delhi to Kullu flights operate daily.
                 </p>
               </div>
             </ScrollReveal>
             <ScrollReveal delay={0.2}>
-              <div className="rounded-2xl p-6 text-center font-sans border border-white/8 transition-smooth" style={{ background: 'rgba(255,255,255,0.05)' }}>
-                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-gold-500/25 to-gold-500/10 flex items-center justify-center mx-auto mb-4">
-                  <svg className="w-7 h-7 text-gold-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+              <div className="rounded-2xl p-6 text-center font-sans glass-card-light h-[240px] flex flex-col items-center justify-center">
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary/15 to-primary/5 flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-7 h-7 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
                 </div>
-                <h3 className="font-serif text-lg text-white mb-2">By Train</h3>
-                <p className="text-white/60 text-sm leading-relaxed">
-                  Nearest railway station: <strong className="text-white">Joginder Nagar Railway Station</strong> (80 km). For broader connectivity, <strong className="text-white">Chandigarh</strong> (280 km) and <strong className="text-white">Pathankot</strong> (200 km) are major railheads with taxi services to Jibhi.
+                <h3 className="font-serif text-lg text-foreground mb-2">By Train</h3>
+                <p className="text-muted-foreground text-sm leading-relaxed">
+                  Nearest railway station: <strong className="text-foreground">Joginder Nagar Railway Station</strong> (80 km). For broader connectivity, <strong className="text-foreground">Chandigarh</strong> (280 km) and <strong className="text-foreground">Pathankot</strong> (200 km) are major railheads with taxi services to Jibhi.
                 </p>
               </div>
             </ScrollReveal>
             <ScrollReveal delay={0.3}>
-              <div className="rounded-2xl p-6 text-center font-sans border border-white/8 transition-smooth" style={{ background: 'rgba(255,255,255,0.05)' }}>
-                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-gold-500/25 to-gold-500/10 flex items-center justify-center mx-auto mb-4">
-                  <svg className="w-7 h-7 text-gold-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+              <div className="rounded-2xl p-6 text-center font-sans glass-card-light h-[240px] flex flex-col items-center justify-center">
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary/15 to-primary/5 flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-7 h-7 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
                 </div>
-                <h3 className="font-serif text-lg text-white mb-2">By Road</h3>
-                <p className="text-white/60 text-sm leading-relaxed">
+                <h3 className="font-serif text-lg text-foreground mb-2">By Road</h3>
+                <p className="text-muted-foreground text-sm leading-relaxed">
                   Vedara is located in Ghiyagi, Jibhi – a 5–6 hr scenic drive from Chandigarh via NH-5. Regular HRTC buses run from Delhi and Chandigarh to Aut (30 km from Jibhi). We can arrange pickup upon request.
                 </p>
               </div>
@@ -357,23 +357,23 @@ export default function AboutPage() {
       </section>
 
       {/* Philosophy */}
-      <section className="section-padding bg-[#1C2B3A]">
+      <section className="section-padding bg-slate-50">
         <div className="vintage-container">
           <ScrollReveal>
             <div className="text-center max-w-3xl mx-auto mb-16">
-              <p className="text-gold-400 text-sm tracking-[0.2em] uppercase mb-4 font-sans">Philosophy</p>
-              <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-white mb-6">What We Stand For</h2>
+              <p className="text-primary text-sm tracking-[0.2em] uppercase mb-4 font-sans">Philosophy</p>
+              <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-foreground mb-6">What We Stand For</h2>
             </div>
           </ScrollReveal>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {values.map((v, i) => (
               <ScrollReveal key={v.title} delay={i * 0.1}>
-                <article className="rounded-2xl p-6 text-center border border-white/8 transition-smooth" style={{ background: 'rgba(255,255,255,0.05)' }}>
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary/25 to-primary/10 flex items-center justify-center mx-auto mb-4">
+                <article className="rounded-2xl p-6 text-center glass-card-light h-[240px] flex flex-col items-center justify-center">
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary/15 to-primary/5 flex items-center justify-center mx-auto mb-4">
                     <v.icon className="w-6 h-6 text-primary" />
                   </div>
-                  <h3 className="font-serif text-lg text-white mb-2">{v.title}</h3>
-                  <p className="text-white/60 text-sm">{v.desc}</p>
+                  <h3 className="font-serif text-lg text-foreground mb-2">{v.title}</h3>
+                  <p className="text-muted-foreground text-sm">{v.desc}</p>
                 </article>
               </ScrollReveal>
             ))}
