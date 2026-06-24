@@ -358,7 +358,7 @@ export default function CafePage() {
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1600&q=80)', transform: 'scale(1.1)' }}
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/60" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-white" />
           <div className="relative z-10 text-center px-4 max-w-4xl">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -804,7 +804,7 @@ export default function CafePage() {
         </div>
       )}
 
-      <div className="fixed bottom-6 right-6 z-40 flex flex-col items-end gap-3">
+      <div className="fixed bottom-24 right-6 z-40 flex flex-col items-end gap-3">
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
