@@ -351,69 +351,60 @@ export default function CafePage() {
   const ActiveIcon = activeCategoryData?.icon || Coffee;
 
   return (
-    <div ref={pageRef} className="min-h-screen bg-alabaster dark:bg-vedara-900 overflow-hidden">
-      <motion.div
-        style={{ rotateX: bgRotateX, rotateY: bgRotateY }}
-        className="fixed inset-0 pointer-events-none"
-      >
-        <div className="absolute top-1/4 -left-32 w-96 h-96 bg-gold-200/20 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 -right-32 w-96 h-96 bg-amber-200/20 dark:bg-amber-800/10 rounded-full blur-3xl" />
-      </motion.div>
-
+    <div ref={pageRef} className="min-h-screen bg-white overflow-hidden">
       <div className="relative z-10">
-        <section className="relative h-[50vh] min-h-[400px] flex items-center justify-center overflow-hidden">
+        <section className="relative h-[35vh] min-h-[280px] flex items-center justify-center overflow-hidden">
           <div
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1600&q=80)', transform: 'scale(1.1)' }}
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-alabaster" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/60" />
           <div className="relative z-10 text-center px-4 max-w-4xl">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
             >
-              <p className="text-amber-400 text-sm tracking-[0.3em] uppercase mb-4 font-sans">The Vedara</p>
-              <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif text-alabaster mb-4 tracking-wide">
+              <p className="text-gold-300 text-sm tracking-[0.3em] uppercase mb-3 font-sans">The Vedara</p>
+              <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif text-white mb-4 tracking-wide">
                 Café Charade
               </h1>
-              <p className="text-alabaster/80 text-lg md:text-xl max-w-2xl mx-auto font-light">
+              <p className="text-white/80 text-lg md:text-xl max-w-2xl mx-auto font-light">
                 A Himalayan culinary journey — from mountain mornings to starlit dinners
               </p>
             </motion.div>
           </div>
         </section>
 
-        <nav className="sticky top-0 z-30 bg-alabaster/80 dark:bg-vedara-900/80 backdrop-blur-xl border-b border-gold-200/50" aria-label="Menu categories">
+        <nav className="sticky top-0 z-30 bg-white border-b border-gray-100 shadow-sm" aria-label="Menu categories">
           <div className="vintage-container">
             <div className="flex items-center gap-3 py-3 overflow-x-auto" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-              <Link href="/" className="shrink-0 p-2 -ml-2 text-charcoal/60 hover:text-vedara-900 dark:hover:text-gold-300 transition-colors">
+              <Link href="/" className="shrink-0 p-2 -ml-2 text-gray-400 hover:text-vedara-900 transition-colors">
                 <ArrowLeft className="w-4 h-4" />
               </Link>
               <div className="relative flex-1 max-w-xs">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gold-400" />
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400" />
                 <input
                   type="text"
-                  placeholder="Search items..."
+                  placeholder="Search menu..."
                   value={searchQuery}
                   onChange={e => setSearchQuery(e.target.value)}
-                  className="w-full pl-9 pr-3 py-1.5 text-xs rounded-full bg-gold-50 border-0 text-foreground placeholder:text-charcoal/40 focus:outline-none focus:ring-1 focus:ring-gold-500"
+                  className="w-full pl-9 pr-3 py-2 text-sm rounded-lg bg-gray-50 border border-gray-200 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-vedara-900/20 focus:border-vedara-900"
                 />
               </div>
-
             </div>
-            <div className="flex gap-1 pb-3 overflow-x-auto" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+            <div className="flex gap-2 pb-3 overflow-x-auto" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
               {menuData.map(cat => (
                 <button
                   key={cat.id}
                   onClick={() => { setActiveCategory(cat.id); setSearchQuery(''); }}
-                  className={`shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-300 ${
+                  className={`shrink-0 flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-medium transition-all duration-200 ${
                     activeCategory === cat.id
-                      ? 'bg-vedara-900 text-alabaster shadow-lg shadow-vedara-900/20'
-                      : 'bg-gold-50 text-charcoal/70 dark:text-gold-300 hover:bg-gold-100 dark:hover:bg-vedara-900/50'
+                      ? 'bg-vedara-900 text-white shadow-md'
+                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                   }`}
                 >
-                  <cat.icon className="w-3 h-3" />
+                  <cat.icon className="w-3.5 h-3.5" />
                   {cat.title}
                 </button>
               ))}
@@ -422,18 +413,18 @@ export default function CafePage() {
         </nav>
 
         <div className="vintage-container pt-6 pb-2">
-          <div className="flex flex-wrap items-center justify-center gap-4 md:gap-8 text-sm text-muted-foreground">
+          <div className="flex flex-wrap items-center justify-center gap-4 md:gap-8 text-sm text-gray-500">
             <div className="flex items-center gap-2">
-              <Coffee className="w-4 h-4 text-gold-500" />
-              <span><strong className="text-foreground">Breakfast:</strong> 7:30 AM – 10:00 AM</span>
+              <Coffee className="w-4 h-4 text-vedara-900" />
+              <span><strong className="text-gray-900">Breakfast:</strong> 7:30 AM – 10:00 AM</span>
             </div>
             <div className="flex items-center gap-2">
-              <UtensilsCrossed className="w-4 h-4 text-gold-500" />
-              <span><strong className="text-foreground">Lunch:</strong> 12:00 PM – 3:30 PM</span>
+              <UtensilsCrossed className="w-4 h-4 text-vedara-900" />
+              <span><strong className="text-gray-900">Lunch:</strong> 12:00 PM – 3:30 PM</span>
             </div>
             <div className="flex items-center gap-2">
-              <Moon className="w-4 h-4 text-gold-500" />
-              <span><strong className="text-foreground">Dinner:</strong> 7:00 PM – 10:00 PM</span>
+              <Moon className="w-4 h-4 text-vedara-900" />
+              <span><strong className="text-gray-900">Dinner:</strong> 7:00 PM – 10:00 PM</span>
             </div>
           </div>
         </div>
@@ -450,10 +441,10 @@ export default function CafePage() {
               {filteredItems.type === 'search' && searchQuery ? (
                 <div>
                   <div className="text-center mb-12">
-                    <h2 className="font-serif text-3xl md:text-4xl text-foreground mb-3">
+                    <h2 className="font-serif text-3xl md:text-4xl text-gray-900 mb-3">
                       Search Results
                     </h2>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-sm text-gray-500">
                       {filteredItems.items.length} result{filteredItems.items.length !== 1 ? 's' : ''} for &ldquo;{searchQuery}&rdquo; across all categories
                     </p>
                   </div>
@@ -469,7 +460,7 @@ export default function CafePage() {
                     }, {} as Record<string, { title: string; items: Array<{ item: MenuItem; categoryId: string; categoryTitle: string; idx: number }> }>)
                   ).map(([categoryId, { title, items }]) => (
                     <div key={categoryId} className="mb-12">
-                      <h3 className="font-serif text-2xl text-foreground mb-6 pb-2 border-b border-gold-200">
+                      <h3 className="font-serif text-2xl text-gray-900 mb-6 pb-2 border-b border-gray-200">
                         {title}
                       </h3>
                       <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
@@ -488,43 +479,43 @@ export default function CafePage() {
                                 onClick={() => toggleFlip(localId)}
                               >
                                 <div
-                                  className="absolute inset-0 vintage-card p-5 flex flex-col justify-between"
+                                  className="absolute inset-0 bg-white border border-gray-200 rounded-xl p-5 flex flex-col justify-between"
                                   style={{ backfaceVisibility: 'hidden' }}
                                 >
                                   <div>
-                                    <h3 className="font-serif text-base text-foreground leading-snug mb-1.5">{item.name}</h3>
-                                    <p className="text-xs text-muted-foreground line-clamp-2">{item.desc}</p>
+                                    <h3 className="font-serif text-base text-gray-900 leading-snug mb-1.5">{item.name}</h3>
+                                    <p className="text-xs text-gray-500 line-clamp-2">{item.desc}</p>
                                   </div>
                                   <div className="flex items-center justify-between">
-                                    <span className="text-lg font-bold text-gold-600 dark:text-gold-400">₹{item.price}</span>
-                                    <span className="text-[10px] text-gold-400">Tap to flip</span>
+                                    <span className="text-lg font-bold text-vedara-900">₹{item.price}</span>
+                                    <span className="text-[10px] text-gray-400">Tap to flip</span>
                                   </div>
                                 </div>
 
                                 <div
-                                  className="absolute inset-0 vintage-card p-5 flex flex-col justify-between"
+                                  className="absolute inset-0 bg-white border border-gray-200 rounded-xl p-5 flex flex-col justify-between"
                                   style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
                                 >
                                   <div>
-                                    <p className="text-xs text-muted-foreground leading-relaxed mb-3">{item.desc}</p>
+                                    <p className="text-xs text-gray-500 leading-relaxed mb-3">{item.desc}</p>
                                     <div className="flex items-center gap-2 mb-3">
                                       <Sparkles className="w-3 h-3 text-amber-500" />
-                                      <span className="text-sm font-semibold text-gold-600 dark:text-gold-400">₹{item.price}</span>
+                                      <span className="text-sm font-semibold text-vedara-900">₹{item.price}</span>
                                     </div>
                                   </div>
                                   <div className="flex items-center gap-2" onClick={e => e.stopPropagation()}>
                                     {qty > 0 ? (
-                                      <div className="flex items-center gap-2 bg-gold-100 rounded-full px-2 py-1">
+                                      <div className="flex items-center gap-2 bg-gray-100 rounded-full px-2 py-1">
                                         <button
                                           onClick={() => { if (qty === 1) removeItem(cartItem!.itemId); else updateQuantity(cartItem!.itemId, qty - 1); }}
-                                          className="w-6 h-6 rounded-full bg-gold-600 text-alabaster flex items-center justify-center hover:bg-vedara-900 transition-colors"
+                                          className="w-6 h-6 rounded-full bg-vedara-900 text-white flex items-center justify-center hover:bg-vedara-900/80 transition-colors"
                                         >
                                           <Minus className="w-3 h-3" />
                                         </button>
-                                        <span className="text-sm font-semibold text-vedara-900 min-w-[20px] text-center">{qty}</span>
+                                        <span className="text-sm font-semibold text-gray-900 min-w-[20px] text-center">{qty}</span>
                                         <button
                                           onClick={() => handleAddToCart(item, localId)}
-                                          className="w-6 h-6 rounded-full bg-gold-600 text-alabaster flex items-center justify-center hover:bg-vedara-900 transition-colors"
+                                          className="w-6 h-6 rounded-full bg-vedara-900 text-white flex items-center justify-center hover:bg-vedara-900/80 transition-colors"
                                         >
                                           <Plus className="w-3 h-3" />
                                         </button>
@@ -532,7 +523,7 @@ export default function CafePage() {
                                     ) : (
                                       <button
                                         onClick={() => handleAddToCart(item, localId)}
-                                        className="flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-gold-600 text-alabaster text-xs font-medium hover:bg-vedara-900 transition-all shadow-md"
+                                        className="flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-vedara-900 text-white text-xs font-medium hover:bg-vedara-900/80 transition-all shadow-md"
                                       >
                                         <Plus className="w-3 h-3" />
                                         Add
@@ -550,19 +541,19 @@ export default function CafePage() {
 
                   {filteredItems.items.length === 0 && (
                     <div className="text-center py-20">
-                      <Search className="w-12 h-12 text-gold-300 mx-auto mb-4" />
-                      <p className="text-muted-foreground">No items found for &ldquo;{searchQuery}&rdquo;</p>
+                      <Search className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+                      <p className="text-gray-400">No items found for &ldquo;{searchQuery}&rdquo;</p>
                     </div>
                   )}
                 </div>
               ) : (
                 <>
                   <div className="text-center mb-12">
-                    <div className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gradient-to-r ${activeCategoryData?.color} text-alabaster text-xs font-medium mb-4 shadow-lg`}>
-                      <ActiveIcon className="w-3.5 h-3.5" />
+                    <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-vedara-900 text-white text-sm font-medium mb-4 shadow-md">
+                      <ActiveIcon className="w-4 h-4" />
                       {activeCategoryData?.subtitle}
                     </div>
-                    <h2 className="font-serif text-3xl md:text-4xl text-foreground mb-3">
+                    <h2 className="font-serif text-3xl md:text-4xl text-gray-900 mb-3">
                       {activeCategoryData?.title}
                     </h2>
                   </div>
@@ -571,9 +562,9 @@ export default function CafePage() {
                     <motion.div
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className="vintage-card p-4 mb-8 text-sm text-muted-foreground bg-gold-50/50 dark:bg-vedara-900/30/30 border border-gold-200/50"
+                      className="rounded-xl p-4 mb-8 text-sm text-gray-600 bg-amber-50 border border-amber-200"
                     >
-                      <Leaf className="w-4 h-4 text-gold-500 inline-block mr-1.5 -mt-0.5" />
+                      <Leaf className="w-4 h-4 text-amber-600 inline-block mr-1.5 -mt-0.5" />
                       {activeCategoryData.note}
                     </motion.div>
                   )}
@@ -594,43 +585,43 @@ export default function CafePage() {
                             onClick={() => toggleFlip(localId)}
                           >
                             <div
-                              className="absolute inset-0 vintage-card p-5 flex flex-col justify-between"
+                              className="absolute inset-0 bg-white border border-gray-200 rounded-xl p-5 flex flex-col justify-between hover:shadow-lg transition-shadow duration-200"
                               style={{ backfaceVisibility: 'hidden' }}
                             >
                               <div>
-                                <h3 className="font-serif text-base text-foreground leading-snug mb-1.5">{item.name}</h3>
-                                <p className="text-xs text-muted-foreground line-clamp-2">{item.desc}</p>
+                                <h3 className="font-serif text-base text-gray-900 leading-snug mb-1.5">{item.name}</h3>
+                                <p className="text-xs text-gray-500 line-clamp-2">{item.desc}</p>
                               </div>
                               <div className="flex items-center justify-between">
-                                <span className="text-lg font-bold text-gold-600 dark:text-gold-400">₹{item.price}</span>
-                                <span className="text-[10px] text-gold-400">Tap to flip</span>
+                                <span className="text-lg font-bold text-vedara-900">₹{item.price}</span>
+                                <span className="text-[10px] text-gray-400">Tap to flip</span>
                               </div>
                             </div>
 
                             <div
-                              className="absolute inset-0 vintage-card p-5 flex flex-col justify-between"
+                              className="absolute inset-0 bg-white border border-gray-200 rounded-xl p-5 flex flex-col justify-between"
                               style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
                             >
                               <div>
-                                <p className="text-xs text-muted-foreground leading-relaxed mb-3">{item.desc}</p>
+                                <p className="text-xs text-gray-500 leading-relaxed mb-3">{item.desc}</p>
                                 <div className="flex items-center gap-2 mb-3">
                                   <Sparkles className="w-3 h-3 text-amber-500" />
-                                  <span className="text-sm font-semibold text-gold-600 dark:text-gold-400">₹{item.price}</span>
+                                  <span className="text-sm font-semibold text-vedara-900">₹{item.price}</span>
                                 </div>
                               </div>
                               <div className="flex items-center gap-2" onClick={e => e.stopPropagation()}>
                                 {qty > 0 ? (
-                                  <div className="flex items-center gap-2 bg-gold-100 rounded-full px-2 py-1">
+                                  <div className="flex items-center gap-2 bg-gray-100 rounded-full px-2 py-1">
                                     <button
                                       onClick={() => { if (qty === 1) removeItem(cartItem!.itemId); else updateQuantity(cartItem!.itemId, qty - 1); }}
-                                      className="w-6 h-6 rounded-full bg-gold-600 text-alabaster flex items-center justify-center hover:bg-vedara-900 transition-colors"
+                                      className="w-6 h-6 rounded-full bg-vedara-900 text-white flex items-center justify-center hover:bg-vedara-900/80 transition-colors"
                                     >
                                       <Minus className="w-3 h-3" />
                                     </button>
-                                    <span className="text-sm font-semibold text-vedara-900 min-w-[20px] text-center">{qty}</span>
+                                    <span className="text-sm font-semibold text-gray-900 min-w-[20px] text-center">{qty}</span>
                                     <button
                                       onClick={() => handleAddToCart(item, localId)}
-                                      className="w-6 h-6 rounded-full bg-gold-600 text-alabaster flex items-center justify-center hover:bg-vedara-900 transition-colors"
+                                      className="w-6 h-6 rounded-full bg-vedara-900 text-white flex items-center justify-center hover:bg-vedara-900/80 transition-colors"
                                     >
                                       <Plus className="w-3 h-3" />
                                     </button>
@@ -638,7 +629,7 @@ export default function CafePage() {
                                 ) : (
                                   <button
                                     onClick={() => handleAddToCart(item, localId)}
-                                    className="flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-gold-600 text-alabaster text-xs font-medium hover:bg-vedara-900 transition-all shadow-md"
+                                    className="flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-vedara-900 text-white text-xs font-medium hover:bg-vedara-900/80 transition-all shadow-md"
                                   >
                                     <Plus className="w-3 h-3" />
                                     Add
@@ -654,8 +645,8 @@ export default function CafePage() {
 
                   {filteredItems.type === 'category' && filteredItems.items.length === 0 && (
                     <div className="text-center py-20">
-                      <Search className="w-12 h-12 text-gold-300 mx-auto mb-4" />
-                      <p className="text-muted-foreground">No items found</p>
+                      <Search className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+                      <p className="text-gray-400">No items found</p>
                     </div>
                   )}
                 </>
@@ -664,9 +655,9 @@ export default function CafePage() {
           </AnimatePresence>
 
           <div className="mt-16 text-center">
-            <div className="vintage-card inline-block px-8 py-6">
-              <Mountain className="w-5 h-5 text-gold-500 mx-auto mb-2" />
-              <p className="text-xs text-muted-foreground max-w-md">
+            <div className="bg-gray-50 border border-gray-200 rounded-xl inline-block px-8 py-6">
+              <Mountain className="w-5 h-5 text-gray-400 mx-auto mb-2" />
+              <p className="text-xs text-gray-500 max-w-md">
                 All prices are in INR and include applicable taxes. Pre-orders for select items require 24-hour notice.
                 For special dietary requirements, please inform our staff. Café Charade does not serve alcoholic beverages.
               </p>
@@ -681,17 +672,17 @@ export default function CafePage() {
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             onClick={e => e.stopPropagation()}
-            className="vintage-card p-8 text-center max-w-sm mx-4"
+            className="bg-white p-8 text-center max-w-sm mx-4 rounded-2xl shadow-2xl"
           >
             <div className="w-16 h-16 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center mx-auto mb-4">
               <CheckCircle className="w-8 h-8 text-green-600" />
             </div>
-            <h3 className="font-serif text-xl text-foreground mb-2">Order Placed!</h3>
-            <p className="text-sm text-muted-foreground mb-1">Reference: {orderSuccess}</p>
-            <p className="text-xs text-muted-foreground mb-6">Your order has been sent to the kitchen.</p>
+            <h3 className="font-serif text-xl text-gray-900 mb-2">Order Placed!</h3>
+            <p className="text-sm text-gray-500 mb-1">Reference: {orderSuccess}</p>
+            <p className="text-xs text-gray-400 mb-6">Your order has been sent to the kitchen.</p>
             <button
               onClick={() => setOrderSuccess(null)}
-              className="px-6 py-2 rounded-full bg-gold-600 text-alabaster text-sm font-medium hover:bg-vedara-900 transition-colors"
+              className="px-6 py-2 rounded-full bg-vedara-900 text-white text-sm font-medium hover:bg-vedara-900/80 transition-colors"
             >
               Continue Browsing
             </button>
@@ -704,13 +695,13 @@ export default function CafePage() {
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 50 }}
-          className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 bg-gold-600 text-alabaster px-5 py-3 rounded-xl shadow-xl shadow-vedara-900/30 flex items-center gap-3"
+          className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 bg-vedara-900 text-white px-5 py-3 rounded-xl shadow-xl flex items-center gap-3"
         >
           <CheckCircle className="w-5 h-5 shrink-0" />
           <span className="text-sm font-medium">&ldquo;{cartNotification}&rdquo; added to cart!</span>
           <button
             onClick={() => { setShowCheckout(true); setCartNotification(null); }}
-            className="text-xs font-semibold bg-alabaster text-vedara-900 px-3 py-1.5 rounded-lg hover:bg-gold-50 transition-colors"
+            className="text-xs font-semibold bg-white text-vedara-900 px-3 py-1.5 rounded-lg hover:bg-gray-100 transition-colors"
           >
             View Cart
           </button>
@@ -723,15 +714,15 @@ export default function CafePage() {
             initial={{ y: 50, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             onClick={e => e.stopPropagation()}
-            className="vintage-card p-6 max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto"
+            className="bg-white p-6 max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto rounded-2xl shadow-2xl"
           >
-            <h3 className="font-serif text-xl text-foreground mb-4">Place Your Order</h3>
+            <h3 className="font-serif text-xl text-gray-900 mb-4">Place Your Order</h3>
 
             <div className="flex gap-2 mb-4">
               <button
                 onClick={() => setOrderType('table')}
                 className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-medium transition-all ${
-                  orderType === 'table' ? 'bg-gold-600 text-alabaster shadow-md' : 'bg-gold-50 text-charcoal/70'
+                  orderType === 'table' ? 'bg-vedara-900 text-white shadow-md' : 'bg-gray-100 text-gray-600'
                 }`}
               >
                 <Store className="w-4 h-4" />
@@ -740,7 +731,7 @@ export default function CafePage() {
               <button
                 onClick={() => setOrderType('cottage')}
                 className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-medium transition-all ${
-                  orderType === 'cottage' ? 'bg-gold-600 text-alabaster shadow-md' : 'bg-gold-50 text-charcoal/70'
+                  orderType === 'cottage' ? 'bg-vedara-900 text-white shadow-md' : 'bg-gray-100 text-gray-600'
                 }`}
               >
                 <Home className="w-4 h-4" />
@@ -758,7 +749,7 @@ export default function CafePage() {
                 placeholder={orderType === 'table' ? 'e.g. 3' : 'e.g. Monal Haven'}
                 value={tableCottageInput}
                 onChange={e => setTableCottageInput(e.target.value)}
-                className="w-full px-4 py-2.5 rounded-xl bg-gold-50 border-0 text-foreground text-sm placeholder:text-charcoal/40 focus:outline-none focus:ring-1 focus:ring-gold-500"
+                className="w-full px-4 py-2.5 rounded-xl bg-gray-50 border border-gray-200 text-gray-900 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-vedara-900/20 focus:border-vedara-900"
               />
             </div>
 
@@ -769,7 +760,7 @@ export default function CafePage() {
                 placeholder="Your name"
                 value={guestName}
                 onChange={e => setGuestName(e.target.value)}
-                className="w-full px-4 py-2.5 rounded-xl bg-gold-50 border-0 text-foreground text-sm placeholder:text-charcoal/40 focus:outline-none focus:ring-1 focus:ring-gold-500"
+                className="w-full px-4 py-2.5 rounded-xl bg-gray-50 border border-gray-200 text-gray-900 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-vedara-900/20 focus:border-vedara-900"
               />
             </div>
 
@@ -787,19 +778,19 @@ export default function CafePage() {
               ))}
             </div>
 
-            <div className="flex items-center justify-between pt-3 border-t border-border mb-6">
-              <span className="text-sm text-muted-foreground">Total</span>
-              <span className="text-lg font-bold text-gold-600 dark:text-gold-400">₹{total()}</span>
+            <div className="flex items-center justify-between pt-3 border-t border-gray-200 mb-6">
+              <span className="text-sm text-gray-500">Total</span>
+              <span className="text-lg font-bold text-vedara-900">₹{total()}</span>
             </div>
 
             <div className="flex gap-3">
-              <button onClick={() => setShowCheckout(false)} className="flex-1 py-2.5 rounded-xl bg-gold-50 text-foreground text-sm font-medium hover:bg-gold-100 dark:hover:bg-vedara-900/50 transition-colors">
+              <button onClick={() => setShowCheckout(false)} className="flex-1 py-2.5 rounded-xl bg-gray-100 text-gray-600 text-sm font-medium hover:bg-gray-200 transition-colors">
                 Cancel
               </button>
               <button
                 onClick={handlePlaceOrder}
                 disabled={ordering || !tableCottageInput.trim() || cartItems.length === 0}
-                className="flex-1 py-2.5 rounded-xl bg-gold-600 text-alabaster text-sm font-medium hover:bg-vedara-900 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                className="flex-1 py-2.5 rounded-xl bg-vedara-900 text-white text-sm font-medium hover:bg-vedara-900/80 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 {ordering ? 'Placing...' : (
                   <>
@@ -818,11 +809,11 @@ export default function CafePage() {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => setShowCheckout(true)}
-          className="relative w-14 h-14 rounded-full bg-gold-600 text-alabaster shadow-xl shadow-vedara-900/30 hover:bg-vedara-900 transition-colors flex items-center justify-center"
+          className="relative w-14 h-14 rounded-full bg-vedara-900 text-white shadow-xl hover:bg-vedara-900/80 transition-colors flex items-center justify-center"
         >
           <ShoppingCart className="w-6 h-6" />
           {itemCount() > 0 && (
-            <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-amber-500 text-alabaster text-[10px] font-bold flex items-center justify-center shadow-md">
+            <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-red-500 text-white text-[10px] font-bold flex items-center justify-center shadow-md">
               {itemCount()}
             </span>
           )}
