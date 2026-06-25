@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import { usePathname } from 'next/navigation';
-import { SmoothScroll } from '@/components/layout/SmoothScroll';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { ThemeInitializer } from '@/components/layout/ThemeInitializer';
@@ -64,13 +63,11 @@ export function ClientBody({ children }: { children: React.ReactNode }) {
       <FogParticles />
       <ParallaxCursor />
       <RevealOnScroll />
-      <SmoothScroll>
-        <Header />
-        <main>{children}</main>
-        <Footer />
-        <ChatBot />
-        {aiPlannerEnabled && <TripPlanner />}
-      </SmoothScroll>
+      <Header />
+      <main>{children}</main>
+      <Footer />
+      <ChatBot />
+      {aiPlannerEnabled && <TripPlanner />}
       <Toaster
         position="top-right"
         toastOptions={{

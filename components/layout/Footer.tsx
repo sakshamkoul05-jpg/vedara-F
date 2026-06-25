@@ -5,7 +5,7 @@ import { Mountain, Mail, Phone, MapPin, Facebook, Instagram } from 'lucide-react
 
 export function Footer() {
   return (
-    <footer data-lenis-prevent className="bg-[#1C2B3A] text-white border-t border-white/5 relative overflow-hidden">
+    <footer className="bg-[#1C2B3A] text-white border-t border-white/5 relative overflow-hidden">
       <div className="absolute inset-0 liquid-gradient opacity-10" />
       <div className="vintage-container py-16 md:py-20">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8">
@@ -31,22 +31,22 @@ export function Footer() {
           <div>
             <h4 className="font-serif text-gold-400 font-semibold mb-4">Explore</h4>
             <ul className="space-y-3">
-              <li><Link href="/about" data-lenis-prevent className="text-sm text-white/70 hover:text-white transition-colors duration-500">About Us</Link></li>
-              <li><Link href="/cottages" data-lenis-prevent className="text-sm text-white/70 hover:text-white transition-colors duration-500">Our Stays</Link></li>
-              <li><Link href="/cafe" data-lenis-prevent className="text-sm text-white/70 hover:text-white transition-colors duration-500">Café Charade</Link></li>
-              <li><Link href="/gallery" data-lenis-prevent className="text-sm text-white/70 hover:text-white transition-colors duration-500">Gallery</Link></li>
-              <li><Link href="/#how-to-reach" data-lenis-prevent className="text-sm text-white/70 hover:text-white transition-colors duration-500">How to Reach</Link></li>
+              <li><Link href="/about"  className="text-sm text-white/70 hover:text-white transition-colors duration-500">About Us</Link></li>
+              <li><Link href="/cottages"  className="text-sm text-white/70 hover:text-white transition-colors duration-500">Our Stays</Link></li>
+              <li><Link href="/cafe"  className="text-sm text-white/70 hover:text-white transition-colors duration-500">Café Charade</Link></li>
+              <li><Link href="/gallery"  className="text-sm text-white/70 hover:text-white transition-colors duration-500">Gallery</Link></li>
+              <li><Link href="/#how-to-reach"  className="text-sm text-white/70 hover:text-white transition-colors duration-500">How to Reach</Link></li>
             </ul>
           </div>
 
           <div>
             <h4 className="font-serif text-gold-400 font-semibold mb-4">Support</h4>
             <ul className="space-y-3">
-              <li><Link href="/contact" data-lenis-prevent className="text-sm text-white/70 hover:text-white transition-colors duration-500">Contact Us</Link></li>
-              <li><Link href="/my-bookings" data-lenis-prevent className="text-sm text-white/70 hover:text-white transition-colors duration-500">My Bookings</Link></li>
-              <li><Link href="/policies" data-lenis-prevent className="text-sm text-white/70 hover:text-white transition-colors duration-500">Policies</Link></li>
-              <li><Link href="/policies#faqs" data-lenis-prevent className="text-sm text-white/70 hover:text-white transition-colors duration-500">FAQs</Link></li>
-              <li><Link href="/policies#cancellation" data-lenis-prevent className="text-sm text-white/70 hover:text-white transition-colors duration-500">Cancellation</Link></li>
+              <li><Link href="/contact"  className="text-sm text-white/70 hover:text-white transition-colors duration-500">Contact Us</Link></li>
+              <li><Link href="/my-bookings"  className="text-sm text-white/70 hover:text-white transition-colors duration-500">My Bookings</Link></li>
+              <li><Link href="/policies"  className="text-sm text-white/70 hover:text-white transition-colors duration-500">Policies</Link></li>
+              <li><Link href="/policies#faqs"  className="text-sm text-white/70 hover:text-white transition-colors duration-500">FAQs</Link></li>
+              <li><Link href="/policies#cancellation"  className="text-sm text-white/70 hover:text-white transition-colors duration-500">Cancellation</Link></li>
             </ul>
             <div className="flex gap-3 mt-6">
               <a href="https://facebook.com/vedararetreat" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center hover:bg-gold-500 transition-all duration-500" aria-label="Facebook">
