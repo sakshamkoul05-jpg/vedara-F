@@ -182,7 +182,7 @@ className={`px-5 py-2 rounded-full text-sm font-sans font-medium transition-all 
                           </p>
                           <p className="text-xs text-muted-foreground flex items-center gap-1.5">
                             <Clock className="w-3 h-3" />
-                            {formatDateShort(booking.checkIn)} – {formatDateShort(booking.checkOut)}
+                            {formatDateShort(booking.checkIn)} - {formatDateShort(booking.checkOut)}
                           </p>
                           <p className="text-xs text-muted-foreground">
                             {booking.adults} adults{booking.children ? `, ${booking.children} children` : ''} · {booking.bookingRef}

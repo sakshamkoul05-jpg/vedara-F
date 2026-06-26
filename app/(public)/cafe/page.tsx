@@ -370,7 +370,7 @@ export default function CafePage() {
                 Café Charade
               </h1>
               <p className="text-white/80 text-lg md:text-xl max-w-2xl mx-auto font-light">
-                A Himalayan culinary journey — from mountain mornings to starlit dinners
+                A Himalayan culinary journey, from mountain mornings to starlit dinners
               </p>
             </motion.div>
           </div>
@@ -416,15 +416,15 @@ export default function CafePage() {
           <div className="flex flex-wrap items-center justify-center gap-4 md:gap-8 text-sm text-gray-500">
             <div className="flex items-center gap-2">
               <Coffee className="w-4 h-4 text-vedara-900" />
-              <span><strong className="text-gray-900">Breakfast:</strong> 7:30 AM – 10:00 AM</span>
+              <span><strong className="text-gray-900">Breakfast:</strong> 7:30 AM - 10:00 AM</span>
             </div>
             <div className="flex items-center gap-2">
               <UtensilsCrossed className="w-4 h-4 text-vedara-900" />
-              <span><strong className="text-gray-900">Lunch:</strong> 12:00 PM – 3:30 PM</span>
+              <span><strong className="text-gray-900">Lunch:</strong> 12:00 PM - 3:30 PM</span>
             </div>
             <div className="flex items-center gap-2">
               <Moon className="w-4 h-4 text-vedara-900" />
-              <span><strong className="text-gray-900">Dinner:</strong> 7:00 PM – 10:00 PM</span>
+              <span><strong className="text-gray-900">Dinner:</strong> 7:00 PM - 10:00 PM</span>
             </div>
           </div>
         </div>
@@ -769,7 +769,7 @@ export default function CafePage() {
                 <div key={ci.itemId} className="flex items-center justify-between text-sm">
                   <div className="flex-1 min-w-0">
                     <p className="text-foreground truncate">{ci.name}</p>
-                    <p className="text-xs text-muted-foreground">×{ci.quantity} — ₹{ci.price * ci.quantity}</p>
+                    <p className="text-xs text-muted-foreground">×{ci.quantity} x ₹{ci.price * ci.quantity}</p>
                   </div>
                   <button onClick={() => removeItem(ci.itemId)} className="text-red-400 hover:text-red-600 p-1">
                     <Trash2 className="w-3.5 h-3.5" />

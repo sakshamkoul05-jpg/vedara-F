@@ -447,8 +447,8 @@ export default function BookingPage() {
                                   )}
                                 </div>
                                 <div>
-                                  <label className="vintage-label">{nationality === 'IN' ? 'Pincode' : 'Postal Code'}</label>
-                                  <Input value={pincode} onChange={(e) => setPincode(nationality === 'IN' ? e.target.value.replace(/\D/g, '').slice(0, 6) : e.target.value)} placeholder={nationality === 'IN' ? '000000' : 'Postal code'} maxLength={nationality === 'IN' ? 6 : 20} />
+                                  <label className="vintage-label">Postcode/Zipcode</label>
+                                  <Input value={pincode} onChange={(e) => setPincode(nationality === 'IN' ? e.target.value.replace(/\D/g, '').slice(0, 6) : e.target.value)} placeholder={nationality === 'IN' ? '000000' : 'Postcode/Zipcode'} maxLength={nationality === 'IN' ? 6 : 20} />
                                 </div>
                               </div>
                             </div>

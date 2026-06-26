@@ -6,7 +6,7 @@ import { ImageReveal } from '@/components/animations/ImageReveal';
 import { Mountain, Heart, Shield, Leaf, Home, Coffee, MapPin, Users, Wifi, Car, Flame, TreePine, UtensilsCrossed, ExternalLink, Music, Star, Compass, Gamepad2, Quote } from 'lucide-react';
 
 const values = [
-  { icon: Leaf, title: 'Slow Living', desc: 'A retreat for those who seek more than just a getaway – to slow down, breathe deeply, and reconnect with what truly matters in the Himalayas.' },
+  { icon: Leaf, title: 'Slow Living', desc: 'A retreat for those who seek more than just a getaway: to slow down, breathe deeply, and reconnect with what truly matters in the Himalayas.' },
   { icon: Heart, title: 'Soulful Hospitality', desc: 'Every detail reflects a balance between refined comfort and the raw beauty of the mountains, creating experiences that feel deeply personal.' },
   { icon: Shield, title: 'Intimate by Design', desc: 'With just seven cozy cottages and one alpine studio, we offer privacy, exclusivity, and a deeply personal boutique resort in Jibhi experience.' },
   { icon: Coffee, title: 'Café + Stay Experience', desc: 'Anchored by a curated in-house café that creates a social yet serene atmosphere where conversations, coffee, and calm coexist.' },
@@ -31,12 +31,10 @@ const amenities = [
 ];
 
 const attractions = [
-  { name: 'Jibhi Waterfall', distance: '4 km', image: '/images/jibhi-waterfall.avif', desc: 'A cascading gem hidden in the forest – a perfect spot for a peaceful afternoon.' },
-  { name: 'Mini Thailand', distance: '1.2 km', image: '/images/mini-thailand.jpg', desc: 'Serene river bend with turquoise pools, known as a boutique stay in Jibhi highlight.' },
-  { name: 'Jalori Pass', distance: '10 km', image: '/images/jalori-pass.jpg', desc: 'High-altitude pass with sweeping views – a must for any nature retreat Himachal visit.' },
-  { name: 'Serolsar Lake', distance: '10 km + trek', image: '/images/seroslar-lake.webp', desc: 'Crystal-clear lake surrounded by ancient oaks – a luxury stay in Tirthan Valley experience.' },
-  { name: 'Chehni Kothi', distance: '10 km', image: '/images/chehni-kothi.jpg', desc: 'Centuries-old medieval tower fortress offering a glimpse into local history.' },
-  { name: 'Tirthan Valley', distance: '26 km', image: '/images/tirthan-valley.jpg', desc: 'Pristine valley famous for trout fishing – ideal for luxury cottages Jibhi explorers.' },
+  { name: 'Jibhi Waterfall', distance: '4 km', image: '/images/jibhi-waterfall.avif', desc: 'A cascading gem hidden in the forest, perfect for a peaceful afternoon.' },
+  { name: 'Jalori Pass', distance: '10 km', image: '/images/jalori-pass.jpg', desc: 'High-altitude pass with sweeping views, a must for any nature retreat Himachal visit.' },
+  { name: 'Serolsar Lake', distance: '10 km + trek', image: '/images/seroslar-lake.webp', desc: 'Crystal-clear lake surrounded by ancient oaks, a luxury stay in Tirthan Valley experience.' },
+  { name: 'Tirthan Valley', distance: '26 km', image: '/images/tirthan-valley.jpg', desc: 'Pristine valley famous for trout fishing, ideal for luxury cottages Jibhi explorers.' },
   { name: 'Lambhari Top', distance: '8 km', image: 'https://images.unsplash.com/photo-1585409677983-0f6c41ca9c3b?w=800&q=80', desc: 'A breathtaking trek to the summit with panoramic Himalayan views. Our guided excursions make for an unforgettable mountain adventure.' },
   { name: 'Great Himalayan National Park', distance: '30 km', image: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&q=80', desc: 'A UNESCO World Heritage site with pristine alpine meadows, dense forests, and rich wildlife. Perfect for a day trek from The Vedara.' },
 ];
@@ -61,7 +59,7 @@ export default function AboutPage() {
         <div className="absolute inset-0 bg-gradient-to-b from-[#1C2B3A]/60 via-[#1C2B3A]/40 to-[#1C2B3A]/80" />
         <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
           <ScrollReveal>
-            <p className="text-gold-400 text-sm tracking-[0.25em] uppercase mb-6 font-sans">The Vedara – Himalayan Boutique Retreat</p>
+            <p className="text-gold-400 text-sm tracking-[0.25em] uppercase mb-6 font-sans">The Vedara - Himalayan Boutique Retreat</p>
           </ScrollReveal>
           <ScrollReveal delay={0.2}>
             <TextReveal as="h1" className="font-serif text-4xl md:text-6xl lg:text-7xl text-white leading-tight mb-8">
@@ -105,7 +103,7 @@ export default function AboutPage() {
               <ScrollReveal delay={0.2}>
                 <div className="space-y-6 text-muted-foreground leading-relaxed text-base md:text-lg">
                   <p>
-                    Vedara was born out of a simple, intentional desire: to create a sanctuary where time slows down. In a world that demands constant momentum, we invite you to pause. Tucked away in the pristine embrace of the Himalayas, Vedara is not just a place to stay—it is a conscious return to nature, architecture, and quiet luxury.
+                    Vedara was born out of a simple, intentional desire: to create a sanctuary where time slows down. In a world that demands constant momentum, we invite you to pause. Tucked away in the pristine embrace of the Himalayas, Vedara is not just a place to stay; it is a conscious return to nature, architecture, and quiet luxury.
                   </p>
                   <p>
                     Here, luxury isn't loud. It is found in the scent of local cedarwood, the touch of native hand-hewn stone, the sound of the wind through the pines, and the unfiltered panoramic vistas that greet you at every sunrise. We intentionally chose to remain an intimate boutique retreat, swapping the crowds of commercial hospitality for personalized care, quiet corners, and deep, restorative stillness.
@@ -148,7 +146,7 @@ export default function AboutPage() {
                   </div>
                   <h3 className="font-serif text-2xl text-foreground mb-4">The Gastronomy</h3>
                   <p className="text-muted-foreground leading-relaxed text-sm md:text-base">
-                    Food at Café Charade is a celebration of time and tradition. We lean into the philosophy of slow food – where meals are crafted from scratch using farm-to-table ingredients and local mountain produce. From slow-simmered regional Himachali heritage delicacies to comforting artisan barista brews and wild herbal infusions, every plate tells the story of the valley.
+                    Food at Café Charade is a celebration of time and tradition. We lean into the philosophy of slow food, where meals are crafted from scratch using farm-to-table ingredients and local mountain produce. From slow-simmered regional Himachali heritage delicacies to comforting artisan barista brews and wild herbal infusions, every plate tells the story of the valley.
                   </p>
                 </article>
               </ScrollReveal>
@@ -175,8 +173,8 @@ export default function AboutPage() {
           <ScrollReveal>
             <div className="text-center max-w-3xl mx-auto mb-12">
               <p className="text-primary text-sm tracking-[0.2em] uppercase mb-4 font-sans">About the Property</p>
-              <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-foreground mb-6">The Vedara – Himalayan Boutique Retreat</h2>
-              <p className="text-muted-foreground text-base md:text-lg max-w-2xl mx-auto">7 cottages + 1 alpine studio | 18–22 guests | Launch 2026 | A nature retreat Himachal</p>
+              <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-foreground mb-6">The Vedara - Himalayan Boutique Retreat</h2>
+              <p className="text-muted-foreground text-base md:text-lg max-w-2xl mx-auto">7 cottages + 1 alpine studio | 18-22 guests | Launch 2026 | A nature retreat Himachal</p>
             </div>
           </ScrollReveal>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
@@ -293,7 +291,7 @@ export default function AboutPage() {
                 </div>
                 <h3 className="font-serif text-lg text-foreground mb-2">By Road</h3>
                 <p className="text-muted-foreground text-sm leading-relaxed">
-                  Vedara is located in Ghiyagi, Jibhi – a 5–6 hr scenic drive from Chandigarh via NH-5. Regular HRTC buses run from Delhi and Chandigarh to Aut (30 km from Jibhi). We can arrange pickup upon request.
+                   Vedara is located in Ghiyagi, Jibhi, a 5-6 hr scenic drive from Chandigarh via NH-5. Regular HRTC buses run from Delhi and Chandigarh to Aut (30 km from Jibhi). We can arrange pickup upon request.
                 </p>
               </div>
             </ScrollReveal>

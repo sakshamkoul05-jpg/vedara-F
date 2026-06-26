@@ -12,7 +12,7 @@ export function Footer() {
           <div className="lg:col-span-2">
             <Link href="/" className="flex items-center gap-2 mb-4">
               <Mountain className="w-6 h-6 text-gold-400" />
-              <span className="font-serif text-xl font-bold text-white">The Vedara – Himalayan Boutique Retreat</span>
+              <span className="font-serif text-xl font-bold text-white">The Vedara - Himalayan Boutique Retreat</span>
             </Link>
 
             <div className="space-y-3 text-sm">
@@ -23,7 +23,7 @@ export function Footer() {
                 <Phone className="w-4 h-4" /> +91-91188-82242
               </a>
               <span className="flex items-start gap-2 text-white/70">
-                <MapPin className="w-4 h-4 mt-0.5 flex-shrink-0" /> Ghiyagi, Jibhi, Himachal Pradesh – 175123
+                <MapPin className="w-4 h-4 mt-0.5 flex-shrink-0" /> Ghiyagi, Jibhi, Himachal Pradesh - 175123
               </span>
             </div>
           </div>
@@ -64,7 +64,7 @@ export function Footer() {
 
         <div className="mt-12 pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-white/50">
           <p>&copy; {new Date().getFullYear()} The Vedara. All rights reserved.</p>
-          <p>Ghiyagi, Jibhi, Himachal Pradesh – 175123</p>
+          <p>Ghiyagi, Jibhi, Himachal Pradesh - 175123</p>
         </div>
       </div>
     </footer>

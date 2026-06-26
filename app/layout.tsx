@@ -21,8 +21,8 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://vedara.com';
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: 'The Vedara – Himalayan Boutique Retreat | Luxury Stay in Jibhi',
-    template: '%s | The Vedara – Himalayan Boutique Retreat',
+    default: 'The Vedara - Himalayan Boutique Retreat | Luxury Stay in Jibhi',
+    template: '%s | The Vedara - Himalayan Boutique Retreat',
   },
   description: 'The Vedara is a Himalayan boutique retreat in Jibhi, offering handcrafted luxury cottages, a serene mountain escape, and Café Charade. Book your stay in the heart of Himachal.',
   keywords: [
@@ -42,16 +42,16 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_IN',
-    siteName: 'The Vedara – Himalayan Boutique Retreat',
-    title: 'The Vedara – Himalayan Boutique Retreat | Luxury Stay in Jibhi',
+    siteName: 'The Vedara - Himalayan Boutique Retreat',
+    title: 'The Vedara - Himalayan Boutique Retreat | Luxury Stay in Jibhi',
     description: 'The Vedara is a Himalayan luxury retreat in Jibhi with handcrafted cottages, bonfire nights, and Café Charade. Book your mountain escape in Himachal.',
     url: siteUrl,
-    images: [{ url: `${siteUrl}/images/vedlogo.jpeg`, width: 1200, height: 630, alt: 'The Vedara – Himalayan Boutique Retreat' }],
+    images: [{ url: `${siteUrl}/images/vedlogo.jpeg`, width: 1200, height: 630, alt: 'The Vedara - Himalayan Boutique Retreat' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'The Vedara – Himalayan Boutique Retreat',
-    description: 'Himalayan boutique retreat in Jibhi with luxury cottages and Café Charade. Discover The Vedara – a nature retreat in Himachal.',
+    title: 'The Vedara - Himalayan Boutique Retreat',
+    description: 'Himalayan boutique retreat in Jibhi with luxury cottages and Café Charade. Discover The Vedara, a nature retreat in Himachal.',
     images: [`${siteUrl}/images/vedlogo.jpeg`],
   },
   alternates: { canonical: siteUrl },
@@ -61,7 +61,7 @@ export const metadata: Metadata = {
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'LodgingBusiness',
-  name: 'The Vedara – A Himalayan Boutique Retreat',
+  name: 'The Vedara - A Himalayan Boutique Retreat',
   description: 'Himalayan luxury retreat in Jibhi offering handcrafted cottages, Café Charade, and serene nature experiences in Himachal Pradesh.',
   url: siteUrl,
   telephone: '+91-9118882242',

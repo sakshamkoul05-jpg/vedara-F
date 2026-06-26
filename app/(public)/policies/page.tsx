@@ -54,7 +54,7 @@ const policySections = [
         </div>
         <ul className="list-disc pl-5 space-y-1 text-muted-foreground">
           <li><strong className="text-foreground">No-Shows & Early Departures:</strong> 100% of the booking amount will be forfeited in the event of a no-show or an early check-out.</li>
-          <li><strong className="text-foreground">Processing Time:</strong> Eligible refunds will be processed within 7–14 business days.</li>
+          <li><strong className="text-foreground">Processing Time:</strong> Eligible refunds will be processed within 7-14 business days.</li>
           <li><strong className="text-foreground">Channel:</strong> Refunds will be credited back through the original payment method wherever possible.</li>
         </ul>
         <p className="text-muted-foreground text-justify hyphens-auto"><strong className="text-foreground">Force Majeure:</strong> The Vedara is located in a high-altitude Himalayan terrain. In the rare event of severe weather, landslides, or official road closures that physically prevent travel, refunds are not issued. Instead, we will issue a credit voucher for a future stay (subject to availability and seasonal tariff differences).</p>
@@ -116,7 +116,7 @@ const policySections = [
     title: 'Privacy Policy',
     content: (
       <div className="space-y-3 text-sm leading-relaxed text-muted-foreground">
-                    <p className="text-justify hyphens-auto">At The Vedara, we are committed to protecting your privacy. Any personal information collected during booking – including name, contact details, and payment information – is used solely for the purpose of facilitating your stay and improving our services.</p>
+                    <p className="text-justify hyphens-auto">At The Vedara, we are committed to protecting your privacy. Any personal information collected during booking, including name, contact details, and payment information, is used solely for the purpose of facilitating your stay and improving our services.</p>
         <p className="text-justify hyphens-auto"><strong className="text-foreground">Data Security:</strong> We implement reasonable security measures to protect your information. Payment processing is handled securely through Razorpay.</p>
         <p className="text-justify hyphens-auto"><strong className="text-foreground">Information Sharing:</strong> We do not sell, trade, or share your personal information with third parties except as required by law or with your explicit consent.</p>
         <p className="text-justify hyphens-auto"><strong className="text-foreground">Photography:</strong> We may capture photographs during your stay for promotional purposes. Please inform us at check-in if you prefer not to be photographed.</p>

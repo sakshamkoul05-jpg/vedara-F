@@ -167,7 +167,7 @@ export function BookingsPage() {
                     </span>
                   </div>
                   <p className="text-xs text-muted-foreground">
-                    {booking.cottage?.name || 'Cottage'} • {formatDateShort(booking.checkIn)} – {formatDateShort(booking.checkOut)}
+                    {booking.cottage?.name || 'Cottage'} • {formatDateShort(booking.checkIn)} - {formatDateShort(booking.checkOut)}
                   </p>
                   <p className="text-xs text-muted-foreground font-mono">{booking.bookingRef}</p>
                 </div>

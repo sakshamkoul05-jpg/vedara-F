@@ -47,7 +47,7 @@ export function CouponBanner() {
                 >
                   <Tag className="w-2.5 h-2.5" />
                   {c.code}
-                  {c.description && <span className="hidden sm:inline text-alabaster/70">– {c.description}</span>}
+                  {c.description && <span className="hidden sm:inline text-alabaster/70">: {c.description}</span>}
                 </button>
               ))}
             </div>

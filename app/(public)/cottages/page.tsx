@@ -132,7 +132,7 @@ export default function CottagesPage() {
                 <div className="mb-16">
                   <ScrollReveal>
                     <div className="mb-8">
-                      <p className="text-gold-500 text-sm tracking-[0.2em] uppercase mb-2 font-sans">Cottages 1 – 3</p>
+                      <p className="text-gold-500 text-sm tracking-[0.2em] uppercase mb-2 font-sans">Cottages 1 - 3</p>
                       <h2 className="font-serif text-2xl md:text-3xl text-foreground mb-3">Premium Duplex Family Suites</h2>
                       <p className="text-muted-foreground text-sm max-w-2xl">Perfect for families, groups of four, or couples seeking expansive structural luxury. These multi-level chalets feature signature wooden attic layouts, dual balconies, and private soaking experiences.</p>
                     </div>
@@ -164,6 +164,9 @@ export default function CottagesPage() {
                                 <span className="text-gold-600 dark:text-gold-400 font-semibold">{formatPrice(cottage.pricePerNight)}<span className="text-gold-400 font-normal text-xs">/night</span></span>
                               </div>
                               <p className="text-muted-foreground text-sm mb-4 line-clamp-2">{cottage.shortDesc || cottage.description}</p>
+                              <div className="flex items-center gap-2 mb-3">
+                                <span className="text-xs bg-red-50 text-red-600 px-2 py-0.5 rounded-full font-medium">Cooking not allowed</span>
+                              </div>
                               <div className="flex gap-4 text-xs text-muted-foreground mb-4">
                                 <span className="flex items-center gap-1"><Users className="w-3 h-3" /> {cottage.capacity} guests</span>
                                 <span className="flex items-center gap-1"><Bed className="w-3 h-3" /> {cottage.bedrooms} BR</span>
@@ -196,7 +199,7 @@ export default function CottagesPage() {
                 <div className="mb-16">
                   <ScrollReveal>
                     <div className="mb-8">
-                      <p className="text-gold-500 text-sm tracking-[0.2em] uppercase mb-2 font-sans">Cottages 4 – 6</p>
+                      <p className="text-gold-500 text-sm tracking-[0.2em] uppercase mb-2 font-sans">Cottages 4 - 6</p>
                       <h2 className="font-serif text-2xl md:text-3xl text-foreground mb-3">Intimate Mountain View Suites</h2>
                       <p className="text-muted-foreground text-sm max-w-2xl">Tailor-made for couples, solo adventurers, and remote professionals. These elegant 270 sq. ft. single-level sanctuaries offer premium warmth, dedicated workspace/dining seating layouts, and a front-row seat to the Jibhi valley vistas.</p>
                     </div>
@@ -228,6 +231,9 @@ export default function CottagesPage() {
                                 <span className="text-gold-600 dark:text-gold-400 font-semibold">{formatPrice(cottage.pricePerNight)}<span className="text-gold-400 font-normal text-xs">/night</span></span>
                               </div>
                               <p className="text-muted-foreground text-sm mb-4 line-clamp-2">{cottage.shortDesc || cottage.description}</p>
+                              <div className="flex items-center gap-2 mb-3">
+                                <span className="text-xs bg-red-50 text-red-600 px-2 py-0.5 rounded-full font-medium">Cooking not allowed</span>
+                              </div>
                               <div className="flex gap-4 text-xs text-muted-foreground mb-4">
                                 <span className="flex items-center gap-1"><Users className="w-3 h-3" /> {cottage.capacity} guests</span>
                                 <span className="flex items-center gap-1"><Bed className="w-3 h-3" /> {cottage.bedrooms} BR</span>
@@ -292,6 +298,9 @@ export default function CottagesPage() {
                                 <span className="text-gold-600 dark:text-gold-400 font-semibold">{formatPrice(cottage.pricePerNight)}<span className="text-gold-400 font-normal text-xs">/night</span></span>
                               </div>
                               <p className="text-muted-foreground text-sm mb-4 line-clamp-2">{cottage.shortDesc || cottage.description}</p>
+                              <div className="flex items-center gap-2 mb-3">
+                                <span className="text-xs bg-red-50 text-red-600 px-2 py-0.5 rounded-full font-medium">Cooking not allowed</span>
+                              </div>
                               <div className="flex gap-4 text-xs text-muted-foreground mb-4">
                                 <span className="flex items-center gap-1"><Users className="w-3 h-3" /> {cottage.capacity} guests</span>
                                 <span className="flex items-center gap-1"><Bed className="w-3 h-3" /> {cottage.bedrooms} BR</span>

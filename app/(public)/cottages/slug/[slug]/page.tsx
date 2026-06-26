@@ -184,6 +184,12 @@ export default function CottageBySlugPage() {
                         </div>
                       );
                     })}
+                    <div className="vintage-card p-3.5 flex items-center gap-3 bg-red-50 border border-red-100">
+                      <div className="w-9 h-9 rounded-lg bg-red-100 flex items-center justify-center flex-shrink-0">
+                        <Flame className="w-4 h-4 text-red-500" />
+                      </div>
+                      <span className="text-sm text-red-700 font-medium">Cooking not allowed</span>
+                    </div>
                   </div>
                 </div>
               </ScrollReveal>
@@ -337,7 +343,7 @@ export default function CottageBySlugPage() {
                             href={`/booking?cottageId=${cottage.id}&checkIn=${checkIn}&checkOut=${checkOut}`}
                             className="vintage-button-primary text-base px-8 py-4 w-full text-center inline-block"
                           >
-                            Book Now — {formatPrice(totalAmount)}
+                            Book Now - {formatPrice(totalAmount)}
                           </Link>
                         </motion.div>
                       )}

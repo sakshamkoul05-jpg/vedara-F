@@ -18,16 +18,16 @@ const cottages = [
   { slug: 'monal-haven', name: 'Monal Haven', price: '₹12,000', desc: 'Premium Duplex Family Suite with private jacuzzi, attic yoga balcony, and sweeping mountain views', image: '/images/hero-1.jpg', category: 'Premium Duplex Family Suite' },
   { slug: 'koklass-cove', name: 'Koklass Cove', price: '₹12,500', desc: 'Our largest duplex with two viewing balconies, private jacuzzi, and unmatched privacy', image: '/images/hero-2.jpg', category: 'Premium Duplex Family Suite' },
   { slug: 'magpie-retreat', name: 'Magpie Retreat', price: '₹11,000', desc: 'Charming duplex with deep-soak bathtub and dual-balcony setup', image: '/images/hero-3.jpg', category: 'Premium Duplex Family Suite' },
-  { slug: 'whistling-thrush', name: 'Whistling Thrush', price: '₹7,500', desc: 'Intimate Mountain View Suite — a melody of mountain quietude', image: '/images/hero-1.jpg', category: 'Intimate Mountain View Suite' },
-  { slug: 'flycatcher-nook', name: 'Flycatcher Nook', price: '₹7,500', desc: 'Intimate Mountain View Suite — your cozy Himalayan hideaway', image: '/images/hero-2.jpg', category: 'Intimate Mountain View Suite' },
-  { slug: 'bulbul-nest', name: 'Bulbul Nest', price: '₹7,500', desc: 'Intimate Mountain View Suite with workstation — where coziness meets the peaks', image: '/images/hero-3.jpg', category: 'Intimate Mountain View Suite' },
-  { slug: 'the-finch-nook', name: 'The Finch Nook', price: '₹5,000', desc: 'Cozy Alpine Studio — small space, boundless solitude', image: '/images/hero-1.jpg', category: 'Cozy Alpine Studio' },
+  { slug: 'whistling-thrush', name: 'Whistling Thrush', price: '₹7,500', desc: 'Intimate Mountain View Suite : a melody of mountain quietude', image: '/images/hero-1.jpg', category: 'Intimate Mountain View Suite' },
+  { slug: 'flycatcher-nook', name: 'Flycatcher Nook', price: '₹7,500', desc: 'Intimate Mountain View Suite : your cozy Himalayan hideaway', image: '/images/hero-2.jpg', category: 'Intimate Mountain View Suite' },
+  { slug: 'bulbul-nest', name: 'Bulbul Nest', price: '₹7,500', desc: 'Intimate Mountain View Suite with workstation , where coziness meets the peaks', image: '/images/hero-3.jpg', category: 'Intimate Mountain View Suite' },
+  { slug: 'the-finch-nook', name: 'The Finch Nook', price: '₹5,000', desc: 'Cozy Alpine Studio : small space, boundless solitude', image: '/images/hero-1.jpg', category: 'Cozy Alpine Studio' },
 ];
 
 const testimonials = [
-  { name: 'Ananya & Rohit', content: 'Monal Haven was everything we dreamed of. Waking up to the mist over the mountains, the jacuzzi under the stars – pure magic.', rating: 5, location: 'Mumbai, India' },
+  { name: 'Ananya & Rohit', content: 'Monal Haven was everything we dreamed of. Waking up to the mist over the mountains, the jacuzzi under the stars : pure magic.', rating: 5, location: 'Mumbai, India' },
   { name: 'Daniel Park', content: 'I wrote half my manuscript sitting on the balcony at Whistling Thrush. The staff was incredibly thoughtful.', rating: 5, location: 'Seoul, South Korea' },
-  { name: 'Emily & James', content: 'Koklass Cove was perfection. The attic yoga balcony, the sweeping views – we felt like we were floating above the world.', rating: 5, location: 'Melbourne, Australia' },
+  { name: 'Emily & James', content: 'Koklass Cove was perfection. The attic yoga balcony, the sweeping views : we felt like we were floating above the world.', rating: 5, location: 'Melbourne, Australia' },
 ];
 
 const experiences = [
@@ -141,7 +141,7 @@ export default function HomePage() {
             transition={{ delay: 1, duration: 0.8 }}
             className="text-white/80 text-xl md:text-2xl lg:text-3xl max-w-3xl mx-auto mb-10 font-serif tracking-wide text-center"
           >
-            A Himalayan Boutique Retreat – 7 Cozy Cottages and 1 Alpine Studio with One Cozy Café
+            A Himalayan Boutique Retreat: 7 Cozy Cottages and 1 Alpine Studio with One Cozy Café
           </motion.p>
             <motion.div
              initial={{ opacity: 0, y: 20 }}
@@ -188,7 +188,7 @@ export default function HomePage() {
                 <p className="text-gold-400 text-sm tracking-[0.2em] uppercase mb-4 font-sans">Welcome to The Vedara</p>
                 <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-white mb-6">A Story Rooted in the Mountains</h2>
                 <p className="text-white/80 text-lg leading-relaxed mb-6">
-                  Nestled in the serene village of Ghiyagi, within the untouched landscapes of Jibhi, The Vedara was born from a simple belief – that the most profound luxury is found in stillness, connection, and the raw beauty of the Himalayas.
+                  Nestled in the serene village of Ghiyagi, within the untouched landscapes of Jibhi, The Vedara was born from a simple belief: that the most profound luxury is found in stillness, connection, and the raw beauty of the Himalayas.
                 </p>
                 <p className="text-white/60 leading-relaxed mb-8">
                   With seven cozy cottages and one alpine studio, and a soulful café, we offer more than a stay. We offer a chance to pause, breathe, and remember what truly matters.
@@ -218,7 +218,7 @@ export default function HomePage() {
               <p className="text-primary text-sm tracking-[0.2em] uppercase mb-4 font-sans">Our Cottages</p>
               <h2 className="section-title mb-6">7 Cozy Cottages & 1 Alpine Studio</h2>
               <p className="section-subtitle">
-                Each cottage is a world unto itself – named after the birds of the valley and crafted with local materials, premium furnishings, and unobstructed mountain views.
+                Each cottage is a world unto itself, named after the birds of the valley and crafted with local materials, premium furnishings, and unobstructed mountain views.
               </p>
             </div>
           </ScrollReveal>
@@ -226,7 +226,7 @@ export default function HomePage() {
           <div className="mb-12">
             <ScrollReveal>
               <div className="mb-6">
-                <p className="text-gold-500 text-xs tracking-[0.2em] uppercase mb-1 font-sans">Cottages 1 – 3</p>
+                <p className="text-gold-500 text-xs tracking-[0.2em] uppercase mb-1 font-sans">Cottages 1 - 3</p>
                 <h3 className="font-serif text-xl text-foreground">Premium Duplex Family Suites</h3>
               </div>
             </ScrollReveal>
@@ -243,6 +243,9 @@ export default function HomePage() {
                         <span className="text-primary font-semibold text-sm">{cottage.price}<span className="text-muted-foreground font-normal text-xs">/night</span></span>
                       </div>
                       <p className="text-muted-foreground text-xs mb-3 leading-relaxed line-clamp-2 flex-1">{cottage.desc}</p>
+                      <div className="flex items-center gap-2 mb-2">
+                        <span className="text-xs bg-red-50 text-red-600 px-2 py-0.5 rounded-full font-medium">Cooking not allowed</span>
+                      </div>
                       <Link href={`/cottages/slug/${cottage.slug}`} className="text-primary text-xs font-medium inline-flex items-center gap-1 group-hover:gap-2 transition-all duration-500 mt-auto">
                         View Details <ArrowRight className="w-3 h-3" />
                       </Link>
@@ -257,7 +260,7 @@ export default function HomePage() {
           <div className="mb-12">
             <ScrollReveal>
               <div className="mb-6">
-                <p className="text-gold-500 text-xs tracking-[0.2em] uppercase mb-1 font-sans">Cottages 4 – 6</p>
+                <p className="text-gold-500 text-xs tracking-[0.2em] uppercase mb-1 font-sans">Cottages 4 - 6</p>
                 <h3 className="font-serif text-xl text-foreground">Intimate Mountain View Suites</h3>
               </div>
             </ScrollReveal>
@@ -274,6 +277,9 @@ export default function HomePage() {
                         <span className="text-primary font-semibold text-sm">{cottage.price}<span className="text-muted-foreground font-normal text-xs">/night</span></span>
                       </div>
                       <p className="text-muted-foreground text-xs mb-3 leading-relaxed line-clamp-2 flex-1">{cottage.desc}</p>
+                      <div className="flex items-center gap-2 mb-2">
+                        <span className="text-xs bg-red-50 text-red-600 px-2 py-0.5 rounded-full font-medium">Cooking not allowed</span>
+                      </div>
                       <Link href={`/cottages/slug/${cottage.slug}`} className="text-primary text-xs font-medium inline-flex items-center gap-1 group-hover:gap-2 transition-all duration-500 mt-auto">
                         View Details <ArrowRight className="w-3 h-3" />
                       </Link>
@@ -305,6 +311,9 @@ export default function HomePage() {
                         <span className="text-primary font-semibold text-sm">{cottage.price}<span className="text-muted-foreground font-normal text-xs">/night</span></span>
                       </div>
                       <p className="text-muted-foreground text-xs mb-3 leading-relaxed line-clamp-2 flex-1">{cottage.desc}</p>
+                      <div className="flex items-center gap-2 mb-2">
+                        <span className="text-xs bg-red-50 text-red-600 px-2 py-0.5 rounded-full font-medium">Cooking not allowed</span>
+                      </div>
                       <Link href={`/cottages/slug/${cottage.slug}`} className="text-primary text-xs font-medium inline-flex items-center gap-1 group-hover:gap-2 transition-all duration-500 mt-auto">
                         View Details <ArrowRight className="w-3 h-3" />
                       </Link>
@@ -334,7 +343,7 @@ export default function HomePage() {
             <div className="text-center max-w-3xl mx-auto mb-16">
               <p className="text-gold-400 text-sm tracking-[0.2em] uppercase mb-4 font-sans">Experiences</p>
               <h2 className="font-serif text-4xl md:text-5xl text-white mb-6">Moments That Stay With You</h2>
-              <p className="text-white/70 text-lg">Beyond the cottages, a world of experiences awaits – each designed to bring you closer to the mountains and to yourself.</p>
+              <p className="text-white/70 text-lg">Beyond the cottages, a world of experiences awaits, each designed to bring you closer to the mountains and to yourself.</p>
             </div>
           </ScrollReveal>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
@@ -361,12 +370,12 @@ export default function HomePage() {
               <div>
                 <h2 className="font-serif text-4xl md:text-5xl text-foreground mb-6">THE VEDARA</h2>
                 <p className="text-muted-foreground text-lg leading-relaxed mb-4">
-                  A Himalayan Boutique Retreat – 7 Cozy Cottages and 1 Alpine Studio with One Cozy Café
+                  A Himalayan Boutique Retreat: 7 Cozy Cottages and 1 Alpine Studio with One Cozy Café
                 </p>
                 <p className="text-muted-foreground/70 text-sm mb-8 space-y-1">
-                  <span className="block">Breakfast 7:30 AM – 10:00 AM</span>
-                  <span className="block">Lunch 12:00 PM – 3:30 PM</span>
-                  <span className="block">Dinner 7:00 PM – 10:00 PM</span>
+                  <span className="block">Breakfast 7:30 AM - 10:00 AM</span>
+                  <span className="block">Lunch 12:00 PM - 3:30 PM</span>
+                  <span className="block">Dinner 7:00 PM - 10:00 PM</span>
                 </p>
                 <div className="grid grid-cols-2 gap-4 mb-8">
                   {['Artisan Coffee', 'Home-Style Meals', 'Mixed Pakodas', 'Fresh Treats'].map((item) => (
@@ -492,7 +501,7 @@ export default function HomePage() {
                   <MapPin className="w-7 h-7 text-primary" />
                 </div>
                 <h3 className="font-serif text-lg mb-3 text-foreground">By Road</h3>
-                <p className="text-muted-foreground text-sm leading-relaxed">Delhi to Jibhi via Mandi–Aut–Larji. Approximately 480 km, 10–11 hours. Buses available from Delhi ISBT to Aut, then a taxi to Jibhi.</p>
+                <p className="text-muted-foreground text-sm leading-relaxed">Delhi to Jibhi via Mandi, Aut, and Larji. Approximately 480 km, 10-11 hours. Buses available from Delhi ISBT to Aut, then a taxi to Jibhi.</p>
               </article>
             </ScrollReveal>
             <ScrollReveal delay={0.2} direction="up" distance={40}>
