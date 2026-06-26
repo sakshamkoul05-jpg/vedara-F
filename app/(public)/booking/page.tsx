@@ -58,6 +58,7 @@ export default function BookingPage() {
   const [cottages, setCottages] = useState<Cottage[]>([]);
   const [loading, setLoading] = useState(false);
   const [stepLoading, setStepLoading] = useState(false);
+  const [detailCottage, setDetailCottage] = useState<Cottage | null>(null);
   const [bookingData, setBookingData] = useState<any>(null);
   const [paymentLoading, setPaymentLoading] = useState(false);
   const [dateError, setDateError] = useState('');
@@ -342,7 +343,10 @@ export default function BookingPage() {
                                 <div className="flex items-center gap-2 mb-3">
                                   <span className="text-xs bg-red-50 text-red-600 px-2 py-0.5 rounded-full font-medium">Cooking not allowed</span>
                                 </div>
-                                {!isAvailable && <span className="block text-red-500 text-xs font-medium">Not available for selected dates</span>}
+                                <div className="flex items-center justify-between">
+                                  <button type="button" onClick={(e) => { e.stopPropagation(); setDetailCottage(cottage); }} className="text-xs text-primary font-medium hover:underline">View Details</button>
+                                  {!isAvailable && <span className="text-red-500 text-xs font-medium">Not available for selected dates</span>}
+                                </div>
                               </div>
                             </div>
                           </motion.button>
@@ -688,6 +692,87 @@ export default function BookingPage() {
           </div>
         </div>
       </section>
+
+      {detailCottage && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={() => setDetailCottage(null)}>
+          <div className="absolute inset-0 bg-black/50" />
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            className="relative bg-white rounded-2xl max-w-2xl w-full max-h-[85vh] overflow-y-auto shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {(() => {
+              let images: string[] = [];
+              try { images = typeof detailCottage.images === 'string' ? JSON.parse(detailCottage.images) : (detailCottage.images || []); } catch { images = []; }
+              const imageUrl = images.length > 0 ? images[0] : `https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=800&q=80`;
+              let amenitiesList: string[] = [];
+              try { amenitiesList = typeof detailCottage.amenities === 'string' ? JSON.parse(detailCottage.amenities) : (detailCottage.amenities || []); } catch { amenitiesList = []; }
+              return (
+                <>
+                  <div className="aspect-[2/1] overflow-hidden rounded-t-2xl">
+                    <img src={imageUrl} alt={detailCottage.name} className="w-full h-full object-cover" />
+                  </div>
+                  <div className="p-6">
+                    <div className="flex items-start justify-between mb-4">
+                      <div>
+                        {detailCottage.category && <span className="text-xs text-gold-600 bg-gold-50 px-2 py-0.5 rounded-full font-medium">{detailCottage.category}</span>}
+                        <h2 className="font-serif text-2xl text-foreground mt-1">{detailCottage.name}</h2>
+                      </div>
+                      <button onClick={() => setDetailCottage(null)} className="text-muted-foreground hover:text-foreground p-1">&times;</button>
+                    </div>
+                    <div className="flex items-baseline gap-2 mb-4">
+                      <span className="text-gold-600 font-bold text-xl">{formatPrice(detailCottage.pricePerNight)}</span>
+                      <span className="text-muted-foreground text-sm">/night</span>
+                    </div>
+                    <p className="text-muted-foreground leading-relaxed mb-4">{detailCottage.description}</p>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+                      <div className="vintage-card p-3 text-center">
+                        <Users className="w-4 h-4 text-gold-500 mx-auto mb-1" />
+                        <p className="text-xs text-muted-foreground">Guests</p>
+                        <p className="text-sm font-medium text-foreground">{detailCottage.capacity}</p>
+                      </div>
+                      <div className="vintage-card p-3 text-center">
+                        <Home className="w-4 h-4 text-gold-500 mx-auto mb-1" />
+                        <p className="text-xs text-muted-foreground">Bedrooms</p>
+                        <p className="text-sm font-medium text-foreground">{detailCottage.bedrooms}</p>
+                      </div>
+                      <div className="vintage-card p-3 text-center">
+                        <Home className="w-4 h-4 text-gold-500 mx-auto mb-1" />
+                        <p className="text-xs text-muted-foreground">Bathrooms</p>
+                        <p className="text-sm font-medium text-foreground">{detailCottage.bathrooms}</p>
+                      </div>
+                      {detailCottage.size && (
+                        <div className="vintage-card p-3 text-center">
+                          <p className="text-xs text-muted-foreground">Size</p>
+                          <p className="text-sm font-medium text-foreground">{detailCottage.size} sqft</p>
+                        </div>
+                      )}
+                    </div>
+                    {amenitiesList.length > 0 && (
+                      <div className="mb-4">
+                        <h4 className="text-sm font-medium text-foreground mb-2">Amenities</h4>
+                        <div className="flex flex-wrap gap-1.5">
+                          {amenitiesList.map((a: string) => (
+                            <span key={a} className="text-xs bg-slate-100 text-slate-600 px-2 py-1 rounded-full capitalize">{a}</span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                    <div className="flex items-center gap-2 mb-4">
+                      <span className="text-xs bg-red-50 text-red-600 px-2 py-1 rounded-full font-medium">Cooking not allowed</span>
+                    </div>
+                    <Button variant="primary" size="lg" className="w-full" onClick={() => { setSelectedCottage(detailCottage.id); setDetailCottage(null); setStep(3); }}>
+                      Select This Cottage <ArrowRight className="w-4 h-4 ml-2" />
+                    </Button>
+                  </div>
+                </>
+              );
+            })()}
+          </motion.div>
+        </div>
+      )}
     </>
   );
 }
