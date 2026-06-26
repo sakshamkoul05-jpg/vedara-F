@@ -13,10 +13,8 @@ type RequestOptions = {
   token?: string;
 };
 
-async function request<T = any>(endpoint: string, options: RequestOptions = {}): Promise<T> {
+function request<T = any>(endpoint: string, options: RequestOptions = {}): Promise<T> {
   const { method = 'GET', body, headers = {}, token } = options;
-
-  const csrfToken = getCookie('csrf_token') || '';
 
   const config: RequestInit = {
     method,
@@ -24,9 +22,6 @@ async function request<T = any>(endpoint: string, options: RequestOptions = {}):
       'Content-Type': 'application/json',
       ...headers,
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
-      ...(!['GET', 'HEAD', 'OPTIONS'].includes(method) && csrfToken
-        ? { 'X-CSRF-Token': csrfToken }
-        : {}),
     },
     credentials: 'include',
   };
