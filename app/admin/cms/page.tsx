@@ -274,7 +274,12 @@ function CottagesTab({ token, showToast }: { token: string | null; showToast: (m
   const loadCottages = async () => {
     try {
       const res = await api.get('/cms/cottages', token);
-      setCottages(Array.isArray(res) ? res : (res.data || []));
+      const list = Array.isArray(res) ? res : (res.data || []);
+      setCottages(list.map((c: any) => ({
+        ...c,
+        amenities: Array.isArray(c.amenities) ? c.amenities : (typeof c.amenities === 'string' ? (() => { try { return JSON.parse(c.amenities); } catch { return []; } })() : []),
+        images: Array.isArray(c.images) ? c.images : (typeof c.images === 'string' ? (() => { try { return JSON.parse(c.images); } catch { return []; } })() : []),
+      })));
     } catch {} finally {
       setLoading(false);
     }
@@ -299,13 +304,24 @@ function CottagesTab({ token, showToast }: { token: string | null; showToast: (m
     if (!token || !editingCottage) return;
     setSaving(true);
     try {
-      await api.put(`/cms/cottages/${editingCottage.id}`, editingCottage, token);
+      const payload = {
+        ...editingCottage,
+        amenities: Array.isArray(editingCottage.amenities) ? editingCottage.amenities : [],
+        images: Array.isArray(editingCottage.images) ? editingCottage.images : [],
+        pricePerNight: Number(editingCottage.pricePerNight) || 0,
+        capacity: Number(editingCottage.capacity) || 2,
+        bedrooms: Number(editingCottage.bedrooms) || 1,
+        bathrooms: Number(editingCottage.bathrooms) || 1,
+        size: editingCottage.size ? Number(editingCottage.size) : null,
+        sortOrder: Number(editingCottage.sortOrder) || 0,
+      };
+      await api.put(`/cms/cottages/${editingCottage.id}`, payload, token);
       showToast('Cottage updated');
       setDialogOpen(false);
       setEditingCottage(null);
       loadCottages();
-    } catch {
-      showToast('Failed to update cottage', 'error');
+    } catch (err: any) {
+      showToast(err?.message || 'Failed to update cottage', 'error');
     } finally {
       setSaving(false);
     }
