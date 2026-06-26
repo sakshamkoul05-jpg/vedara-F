@@ -291,23 +291,60 @@ export default function BookingPage() {
                     exit={{ opacity: 0, x: 20 }}
                   >
                     <h2 className="font-serif text-2xl text-foreground mb-6">Select a Cottage</h2>
-                    <div className="grid md:grid-cols-2 gap-6">
+                    <div className="space-y-6">
                       {cottages.map((cottage) => {
                         const isAvailable = (cottage as any).isAvailable !== false;
+                        let images: string[] = [];
+                        try { images = typeof cottage.images === 'string' ? JSON.parse(cottage.images) : (cottage.images || []); } catch { images = []; }
+                        const imageUrl = images.length > 0 ? images[0] : `https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&q=80`;
+                        let amenitiesList: string[] = [];
+                        try { amenitiesList = typeof cottage.amenities === 'string' ? JSON.parse(cottage.amenities) : (cottage.amenities || []); } catch { amenitiesList = []; }
                         return (
                           <motion.button
                             key={cottage.id}
                             onClick={() => { setSelectedCottage(cottage.id); setStep(3); }}
                             disabled={!isAvailable}
-                            className={`vintage-card p-6 text-left transition-all ${
+                            className={`vintage-card overflow-hidden text-left transition-all w-full ${
                               !isAvailable ? 'opacity-40 cursor-not-allowed' : 'hover:border-gold-400 cursor-pointer'
                             } ${selectedCottage === cottage.id ? 'border-gold-500 ring-2 ring-gold-500/20' : ''}`}
                             whileHover={isAvailable ? { y: -2 } : {}}
                           >
-                            <h3 className="font-serif text-lg text-foreground mb-1">{cottage.name}</h3>
-                            <p className="text-sm text-muted-foreground mb-3 line-clamp-2">{cottage.shortDesc || cottage.description}</p>
-                            <span className="text-gold-600 font-semibold">{formatPrice(cottage.pricePerNight)}<span className="text-gold-400 font-normal text-xs">/night</span></span>
-                            {!isAvailable && <span className="block text-red-500 text-xs mt-2">Not available for selected dates</span>}
+                            <div className="md:flex">
+                              <div className="md:w-48 md:flex-shrink-0 aspect-[4/3] md:aspect-auto overflow-hidden bg-gold-50">
+                                <img src={imageUrl} alt={cottage.name} className="w-full h-full object-cover" loading="lazy" />
+                              </div>
+                              <div className="p-5 flex-1">
+                                <div className="flex items-start justify-between gap-3 mb-2">
+                                  <div>
+                                    {cottage.category && <span className="text-xs text-gold-600 bg-gold-50 px-2 py-0.5 rounded-full font-medium">{cottage.category}</span>}
+                                    <h3 className="font-serif text-xl text-foreground mt-1">{cottage.name}</h3>
+                                  </div>
+                                  <div className="text-right flex-shrink-0">
+                                    <span className="text-gold-600 font-bold text-lg">{formatPrice(cottage.pricePerNight)}</span>
+                                    <span className="text-gold-400 text-xs block">/night</span>
+                                  </div>
+                                </div>
+                                <p className="text-sm text-muted-foreground mb-3 leading-relaxed">{cottage.shortDesc || cottage.description}</p>
+                                <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground mb-3">
+                                  <span className="flex items-center gap-1"><Users className="w-3 h-3" /> {cottage.capacity} guests</span>
+                                  <span className="flex items-center gap-1"><Home className="w-3 h-3" /> {cottage.bedrooms} BR</span>
+                                  <span className="flex items-center gap-1"><Home className="w-3 h-3" /> {cottage.bathrooms} bath</span>
+                                  {cottage.size && <span className="flex items-center gap-1">{cottage.size} sqft</span>}
+                                </div>
+                                {amenitiesList.length > 0 && (
+                                  <div className="flex flex-wrap gap-1.5 mb-3">
+                                    {amenitiesList.slice(0, 5).map((a: string) => (
+                                      <span key={a} className="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full capitalize">{a}</span>
+                                    ))}
+                                    {amenitiesList.length > 5 && <span className="text-xs text-muted-foreground">+{amenitiesList.length - 5} more</span>}
+                                  </div>
+                                )}
+                                <div className="flex items-center gap-2 mb-3">
+                                  <span className="text-xs bg-red-50 text-red-600 px-2 py-0.5 rounded-full font-medium">Cooking not allowed</span>
+                                </div>
+                                {!isAvailable && <span className="block text-red-500 text-xs font-medium">Not available for selected dates</span>}
+                              </div>
+                            </div>
                           </motion.button>
                         );
                       })}
