@@ -1,11 +1,5 @@
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://vedara-b-production.up.railway.app/api';
 
-function getCookie(name: string): string | null {
-  if (typeof document === 'undefined') return null;
-  const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
-  return match ? match[2] : null;
-}
-
 type RequestOptions = {
   method?: string;
   body?: unknown;
@@ -13,7 +7,7 @@ type RequestOptions = {
   token?: string;
 };
 
-function request<T = any>(endpoint: string, options: RequestOptions = {}): Promise<T> {
+async function request<T = any>(endpoint: string, options: RequestOptions = {}): Promise<T> {
   const { method = 'GET', body, headers = {}, token } = options;
 
   const config: RequestInit = {
