@@ -362,18 +362,18 @@ export default function CafePage() {
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1600&q=80)', transform: 'scale(1.1)' }}
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-white" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/10" />
           <div className="relative z-10 text-center px-4 max-w-4xl mt-12">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
             >
-              <p className="text-gold-300 text-sm tracking-[0.3em] uppercase mb-3 font-sans">The Vedara</p>
-              <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif text-white mb-4 tracking-wide">
+              <p className="text-gold-400 text-sm tracking-[0.3em] uppercase mb-3 font-sans drop-shadow-lg">The Vedara</p>
+              <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif text-white mb-4 tracking-wide drop-shadow-lg">
                 Café Charade
               </h1>
-              <p className="text-white/80 text-lg md:text-xl max-w-2xl mx-auto font-light">
+              <p className="text-white text-lg md:text-xl max-w-2xl mx-auto font-light drop-shadow-lg">
                 A Himalayan culinary journey, from mountain mornings to starlit dinners
               </p>
             </motion.div>
