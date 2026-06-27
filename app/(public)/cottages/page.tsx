@@ -189,11 +189,11 @@ export default function CottagesPage() {
                   <div key={category} className="mb-16">
                     <ScrollReveal>
                       <div className="mb-8">
-                        <h2 className="font-serif text-2xl md:text-3xl text-foreground mb-3">{category}s</h2>
+                        <h2 className="font-serif text-2xl md:text-3xl text-foreground mb-3">{category}</h2>
                         {catInfo ? (
                           <p className="text-muted-foreground text-sm max-w-2xl">{catInfo.description}</p>
                         ) : (
-                          <p className="text-muted-foreground text-sm max-w-2xl">{items.length} {prefix.toLowerCase()} in this category</p>
+                          <p className="text-muted-foreground text-sm max-w-2xl">{items.length} {items.length === 1 ? prefix.toLowerCase() : prefix.toLowerCase() + 's'} in this category</p>
                         )}
                       </div>
                     </ScrollReveal>
@@ -201,6 +201,9 @@ export default function CottagesPage() {
                       {items.map((cottage: any, i: number) => {
                         const slug = cottage.slug || cottage.name.toLowerCase().replace(/\s+/g, '-');
                         const available = availabilityChecked ? cottage.isAvailable : true;
+                        let images: string[] = [];
+                        try { images = typeof cottage.images === 'string' ? JSON.parse(cottage.images) : (cottage.images || []); } catch { images = []; }
+                        const imageUrl = images.length > 0 ? images[0] : `https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&q=80`;
                         return (
                           <ScrollReveal key={cottage.id} delay={i * 0.1}>
                             <Link href={`/cottages/slug/${slug}`} className="group block">
@@ -212,7 +215,7 @@ export default function CottagesPage() {
                                     </div>
                                   )}
                                   <img
-                                    src={cottage.images?.[0] || `https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&q=80`}
+                                    src={imageUrl}
                                     alt={cottage.name}
                                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                                     loading="lazy"
