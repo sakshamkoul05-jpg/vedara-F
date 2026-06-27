@@ -161,12 +161,12 @@ export default function CottagesPage() {
           ) : (
             <>
               {availabilityChecked && (
-                <div className="mb-8 p-4 bg-gold-50 dark:bg-vedara-900/30 rounded-xl border border-gold-200 dark:border-gold-800">
-                  <p className="text-foreground">
+                <div className="mb-8 p-4 bg-green-50 rounded-xl border border-green-200">
+                  <p className="text-green-800 font-medium">
                     {cottages.filter((c: any) => c.isAvailable).length} of {cottages.length} cottages available for these dates
                   </p>
                   {checkIn && checkOut && (
-                    <p className="text-sm text-muted-foreground mt-1">
+                    <p className="text-sm text-green-700 mt-1">
                       {new Date(checkIn).toLocaleDateString('en-IN', { weekday: 'short', month: 'short', day: 'numeric' })} →{' '}
                       {new Date(checkOut).toLocaleDateString('en-IN', { weekday: 'short', month: 'short', day: 'numeric' })}
                       ({Math.ceil((new Date(checkOut).getTime() - new Date(checkIn).getTime()) / 86400000)} nights)
@@ -174,7 +174,7 @@ export default function CottagesPage() {
                   )}
                   <button
                     onClick={() => { setAvailabilityChecked(false); setCheckIn(''); setCheckOut(''); }}
-                    className="text-sm text-gold-600 dark:text-gold-400 hover:underline mt-2"
+                    className="text-sm text-green-700 hover:text-green-900 underline mt-2"
                   >
                     Show all cottages
                   </button>
@@ -203,7 +203,7 @@ export default function CottagesPage() {
                         const available = availabilityChecked ? cottage.isAvailable : true;
                         let images: string[] = [];
                         try { images = typeof cottage.images === 'string' ? JSON.parse(cottage.images) : (cottage.images || []); } catch { images = []; }
-                        const imageUrl = images.length > 0 ? images[0] : `https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&q=80`;
+                        const imageUrl = images.length > 0 ? (images[0].startsWith('http') ? images[0] : `${process.env.NEXT_PUBLIC_API_URL?.replace('/api', '')}${images[0]}`) : `https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&q=80`;
                         return (
                           <ScrollReveal key={cottage.id} delay={i * 0.1}>
                             <Link href={`/cottages/slug/${slug}`} className="group block">
