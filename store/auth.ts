@@ -21,7 +21,8 @@ export const useAuthStore = create<AuthState>((set) => ({
     if (typeof window !== 'undefined') {
       localStorage.setItem('vd_token', token);
       localStorage.setItem('vd_user', JSON.stringify(user));
-      document.cookie = `vd_token=${token}; path=/; max-age=604800; SameSite=Lax; Secure`;
+      const isSecure = window.location.protocol === 'https:';
+      document.cookie = `vd_token=${token}; path=/; max-age=604800; SameSite=Lax${isSecure ? '; Secure' : ''}`;
     }
     set({ user, token, isAuthenticated: true });
   },
@@ -29,7 +30,8 @@ export const useAuthStore = create<AuthState>((set) => ({
     if (typeof window !== 'undefined') {
       localStorage.removeItem('vd_token');
       localStorage.removeItem('vd_user');
-      document.cookie = 'vd_token=; path=/; max-age=0; Secure';
+      const isSecure = window.location.protocol === 'https:';
+      document.cookie = `vd_token=; path=/; max-age=0${isSecure ? '; Secure' : ''}`;
     }
     set({ user: null, token: null, isAuthenticated: false });
   },

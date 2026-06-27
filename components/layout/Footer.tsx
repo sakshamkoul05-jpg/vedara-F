@@ -12,7 +12,8 @@ export function Footer() {
           <div className="lg:col-span-2">
             <Link href="/" className="flex items-center gap-2 mb-4">
               <Mountain className="w-6 h-6 text-gold-400" />
-              <span className="font-serif text-xl font-bold text-white">The Vedara - Himalayan Boutique Retreat</span>
+              <span className="font-serif text-xl font-bold text-white break-words">The Vedara</span>
+              <span className="font-serif text-sm font-normal text-white/70 block sm:hidden">Himalayan Boutique Retreat</span>
             </Link>
 
             <div className="space-y-3 text-sm">

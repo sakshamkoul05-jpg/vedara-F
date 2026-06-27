@@ -53,7 +53,7 @@ export interface Booking {
   payment: Payment | null;
 }
 
-export type BookingStatus = 'PENDING' | 'RESERVED' | 'CONFIRMED' | 'CANCELLED' | 'EXPIRED';
+export type BookingStatus = 'PENDING' | 'RESERVED' | 'CONFIRMED' | 'CANCELLED' | 'EXPIRED' | 'HOLD' | 'COMPLETED' | 'CHECKED_IN' | 'CHECKED_OUT';
 export type PaymentStatus = 'PENDING' | 'PAID' | 'REFUNDED' | 'FAILED';
 
 export interface Guest {

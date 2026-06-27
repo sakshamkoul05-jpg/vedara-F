@@ -57,7 +57,7 @@ export default function ContactPage() {
                   </div>
                 ) : (
                   <form onSubmit={handleSubmit} className="space-y-4">
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
                         <label className="vintage-label">Name *</label>
                         <Input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required />

@@ -159,7 +159,7 @@ export const endpoints = {
     image: (formData: FormData, token: string | null) => {
       return fetch(`${API_URL}/upload`, {
         method: 'POST',
-        headers: { Authorization: `Bearer ${token || ''}` },
+        headers: { Authorization: `Bearer ${token || ''}`, 'credentials': 'include' as any },
         body: formData,
       }).then(async (r) => {
         const data = await r.json();

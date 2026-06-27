@@ -3,14 +3,13 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import {
   ArrowLeft, Users, Bed, Bath, Maximize, Check, Wifi, Flame,
   Snowflake, Coffee, Tv, Wind, Warehouse, TreePine, Mountain,
   Calendar
 } from 'lucide-react';
 import { ScrollReveal } from '@/components/animations/ScrollReveal';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { FormattedText } from '@/components/ui/formatted-text';
 import { api } from '@/lib/api';
@@ -121,7 +120,8 @@ export default function CottageDetailPage() {
     );
   }
 
-  const amenitiesList: string[] = typeof cottage.amenities === 'string' ? JSON.parse(cottage.amenities as string) : cottage.amenities;
+  let amenitiesList: string[] = [];
+  try { amenitiesList = typeof cottage.amenities === 'string' ? JSON.parse(cottage.amenities as string) : (cottage.amenities || []); } catch { amenitiesList = []; }
 
   return (
     <>
@@ -357,7 +357,7 @@ export default function CottageDetailPage() {
 
                           <Link
                             href={`/booking?cottageId=${cottage.id}&checkIn=${checkIn}&checkOut=${checkOut}`}
-                            className="vintage-button-primary text-base px-8 py-4 w-full text-center inline-block"
+                            className="vintage-button-primary text-base px-8 py-4 w-full text-center block"
                           >
                             Book Now - {formatPrice(totalAmount)}
                           </Link>
