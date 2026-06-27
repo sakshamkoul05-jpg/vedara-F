@@ -75,7 +75,17 @@ export default function BookingPage() {
       setSelectedCottage(searchParams.get('cottageId') || '');
       setStepLoading(true);
       api.get(`/bookings/available-cottages?checkIn=${encodeURIComponent(searchParams.get('checkIn') || '')}&checkOut=${encodeURIComponent(searchParams.get('checkOut') || '')}`)
-        .then((res: any) => { setCottages(res.data); setStep(3); })
+        .then((res: any) => {
+          setCottages(res.data);
+          const urlCottageId = searchParams.get('cottageId');
+          const found = (res.data || []).find((c: any) => c.id === urlCottageId);
+          if (found) {
+            setSelectedCottage(urlCottageId!);
+          } else if (res.data?.length > 0) {
+            setSelectedCottage(res.data[0].id);
+          }
+          setStep(3);
+        })
         .catch(() => { setStep(1); })
         .finally(() => setStepLoading(false));
     }
@@ -141,6 +151,7 @@ export default function BookingPage() {
     if (nationality === 'IN' && !/^\d{6}$/.test(pincode)) errors.push('Indian pincode must be 6 digits');
     if (adults < 1) errors.push('At least 1 adult is required');
     if (selectedCottageData && adults > selectedCottageData.capacity) errors.push(`Maximum ${selectedCottageData.capacity} guests allowed`);
+    if (selectedCottageData && (adults + children) > selectedCottageData.capacity) errors.push(`Total guests (${adults + children}) exceeds cottage capacity of ${selectedCottageData.capacity}`);
     if (children < 0) errors.push('Children cannot be negative');
     if (errors.length > 0) { setFormErrors(errors); return; }
     setFormErrors([]);
@@ -176,8 +187,10 @@ export default function BookingPage() {
               razorpaySignature: response.razorpay_signature,
             });
             setBookingData({ ...booking, confirmed: true });
+            setPaymentLoading(false);
             setStep(4);
           } catch {
+            setPaymentLoading(false);
             alert('Payment verification failed. Please contact support at +91-91188-82242.');
           }
         },
@@ -432,8 +445,9 @@ export default function BookingPage() {
                               <select
                                 value={nationality}
                                 onChange={(e) => {
-                                  setNationality(e.target.value);
-                                  if (e.target.value !== 'IN') {
+              setNationality(e.target.value);
+              setIdProofNumber('');
+              if (e.target.value !== 'IN') {
                                     setIdProofType('Passport');
                                   } else {
                                     setIdProofType('');

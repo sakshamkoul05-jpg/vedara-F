@@ -251,7 +251,6 @@ export default function CafePage() {
   const [ordering, setOrdering] = useState(false);
   const [orderSuccess, setOrderSuccess] = useState<string | null>(null);
   const [itemIdMap, setItemIdMap] = useState<Record<string, string>>({});
-  const [menuLoading, setMenuLoading] = useState(true);
 
   const toggleFlip = (localId: string) => {
     setFlippedIds(prev => ({ ...prev, [localId]: !prev[localId] }));
@@ -280,7 +279,6 @@ export default function CafePage() {
   }, [mouseX, mouseY]);
 
   useEffect(() => {
-    setMenuLoading(true);
     endpoints.cafe.menu().then((res: any) => {
       const cats = res?.data || res?.categories || [];
       const map: Record<string, string> = {};
@@ -291,7 +289,7 @@ export default function CafePage() {
         });
       });
       setItemIdMap(map);
-    }).catch(() => {}).finally(() => setMenuLoading(false));
+    }).catch(() => {});
   }, []);
 
   const activeCategoryData = menuData.find(c => c.id === activeCategory);

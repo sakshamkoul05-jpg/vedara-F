@@ -16,6 +16,10 @@ const statusVariant: Record<string, 'success' | 'warning' | 'danger' | 'secondar
   CANCELLED: 'danger',
   COMPLETED: 'success',
   HOLD: 'warning',
+  RESERVED: 'warning',
+  EXPIRED: 'danger',
+  CHECKED_IN: 'success',
+  CHECKED_OUT: 'success',
 };
 
 export default function MyBookingsPage() {
