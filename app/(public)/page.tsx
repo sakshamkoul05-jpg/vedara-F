@@ -111,7 +111,7 @@ export default function HomePage() {
       <MountainSpotlight selector="#hero" radius={220} color="rgba(28, 43, 58, 0.7)" />
       
       {/* Hero */}
-      <section id="hero" ref={heroRef} className="relative h-screen flex items-center justify-center overflow-hidden" data-spotlight>
+      <section id="hero" ref={heroRef} className="relative h-[100dvh] min-h-[600px] flex items-center justify-center overflow-hidden" data-spotlight>
         {/* Parallax Background Layers */}
         <div data-parallax="0.05" className="absolute inset-0 bg-cover bg-center scale-110" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1585409677983-0f6c41ca9c3b?w=1920&q=80)' }} />
         <div data-parallax="0.15" className="absolute inset-0 bg-cover bg-center opacity-60 mix-blend-overlay" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&q=80)' }} />
@@ -160,7 +160,7 @@ export default function HomePage() {
           onClick={() => {
             document.getElementById('welcome')?.scrollIntoView({ behavior: 'smooth' });
           }}
-          className="absolute bottom-16 left-1/2 -translate-x-1/2 z-20 cursor-pointer"
+          className="absolute bottom-16 left-1/2 -translate-x-1/2 z-20 cursor-pointer p-3 min-w-[44px] min-h-[44px] flex items-center justify-center"
           aria-label="Scroll to content"
         >
           <motion.div animate={{ y: [0, 8, 0] }} transition={{ duration: 2, repeat: Infinity }} className="text-white/50">

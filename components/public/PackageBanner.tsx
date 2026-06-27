@@ -58,10 +58,10 @@ export function PackageBanner() {
         </div>
         <button
           onClick={() => setDismissed(true)}
-          className="shrink-0 px-3 text-amber-200/60 hover:text-amber-100 transition-colors"
+          className="shrink-0 p-3 min-w-[44px] min-h-[44px] flex items-center justify-center text-amber-200/60 hover:text-amber-100 transition-colors"
           aria-label="Dismiss offers"
         >
-          <X className="w-3.5 h-3.5" />
+          <X className="w-4 h-4" />
         </button>
       </div>
     </motion.div>

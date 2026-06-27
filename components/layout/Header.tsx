@@ -154,7 +154,7 @@ export function Header() {
           <div className="flex md:hidden items-center gap-1">
             <a
               href="mailto:vedararetreat@gmail.com"
-              className={cn('p-1.5', isTransparent ? 'text-white/80' : 'text-foreground/60 hover:text-primary')}
+              className={cn('p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center', isTransparent ? 'text-white/80' : 'text-foreground/60 hover:text-primary')}
               aria-label="Email"
             >
               <Mail className="w-4 h-4" />
@@ -163,7 +163,7 @@ export function Header() {
               href="https://facebook.com/vedararetreat"
               target="_blank"
               rel="noopener noreferrer"
-              className={cn('p-1.5', isTransparent ? 'text-white/80' : 'text-foreground/60 hover:text-primary')}
+              className={cn('p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center', isTransparent ? 'text-white/80' : 'text-foreground/60 hover:text-primary')}
               aria-label="Facebook"
             >
               <Facebook className="w-4 h-4" />
@@ -172,7 +172,7 @@ export function Header() {
               href="https://instagram.com/vedararetreat"
               target="_blank"
               rel="noopener noreferrer"
-              className={cn('p-1.5', isTransparent ? 'text-white/80' : 'text-foreground/60 hover:text-primary')}
+              className={cn('p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center', isTransparent ? 'text-white/80' : 'text-foreground/60 hover:text-primary')}
               aria-label="Instagram"
             >
               <Instagram className="w-4 h-4" />
@@ -180,7 +180,7 @@ export function Header() {
             <Link
               href="/admin/login"
               className={cn(
-                'inline-flex items-center gap-1 px-2.5 py-1.5 rounded-full text-xs font-medium border',
+                'inline-flex items-center gap-1 px-3 py-2.5 min-h-[44px] rounded-full text-xs font-medium border',
                 isTransparent
                   ? 'border-white/20 text-white/80 hover:bg-white/10'
                   : 'border-border text-foreground/60 hover:border-primary hover:text-primary'
@@ -190,7 +190,7 @@ export function Header() {
             </Link>
             <button
               onClick={() => setIsMobileOpen(!isMobileOpen)}
-              className={cn('p-2', isTransparent ? 'text-white' : 'text-foreground')}
+              className={cn('p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center', isTransparent ? 'text-white' : 'text-foreground')}
               aria-label={isMobileOpen ? 'Close menu' : 'Open menu'}
             >
               {isMobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}

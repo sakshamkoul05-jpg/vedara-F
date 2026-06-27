@@ -31,29 +31,29 @@ export function Footer() {
 
           <div>
             <h4 className="font-serif text-gold-400 font-semibold mb-4">Explore</h4>
-            <ul className="space-y-3">
-              <li><Link href="/about"  className="text-sm text-white/70 hover:text-white transition-colors duration-500">About Us</Link></li>
-              <li><Link href="/cottages"  className="text-sm text-white/70 hover:text-white transition-colors duration-500">Our Stays</Link></li>
-              <li><Link href="/cafe"  className="text-sm text-white/70 hover:text-white transition-colors duration-500">Café Charade</Link></li>
-              <li><Link href="/gallery"  className="text-sm text-white/70 hover:text-white transition-colors duration-500">Gallery</Link></li>
-              <li><Link href="/#how-to-reach"  className="text-sm text-white/70 hover:text-white transition-colors duration-500">How to Reach</Link></li>
+            <ul className="space-y-1">
+              <li><Link href="/about"  className="text-sm text-white/70 hover:text-white transition-colors duration-500 py-2 inline-block min-h-[44px]">About Us</Link></li>
+              <li><Link href="/cottages"  className="text-sm text-white/70 hover:text-white transition-colors duration-500 py-2 inline-block min-h-[44px]">Our Stays</Link></li>
+              <li><Link href="/cafe"  className="text-sm text-white/70 hover:text-white transition-colors duration-500 py-2 inline-block min-h-[44px]">Café Charade</Link></li>
+              <li><Link href="/gallery"  className="text-sm text-white/70 hover:text-white transition-colors duration-500 py-2 inline-block min-h-[44px]">Gallery</Link></li>
+              <li><Link href="/#how-to-reach"  className="text-sm text-white/70 hover:text-white transition-colors duration-500 py-2 inline-block min-h-[44px]">How to Reach</Link></li>
             </ul>
           </div>
 
           <div>
             <h4 className="font-serif text-gold-400 font-semibold mb-4">Support</h4>
-            <ul className="space-y-3">
-              <li><Link href="/contact"  className="text-sm text-white/70 hover:text-white transition-colors duration-500">Contact Us</Link></li>
-              <li><Link href="/my-bookings"  className="text-sm text-white/70 hover:text-white transition-colors duration-500">My Bookings</Link></li>
-              <li><Link href="/policies"  className="text-sm text-white/70 hover:text-white transition-colors duration-500">Policies</Link></li>
-              <li><Link href="/policies#faqs"  className="text-sm text-white/70 hover:text-white transition-colors duration-500">FAQs</Link></li>
-              <li><Link href="/policies#cancellation"  className="text-sm text-white/70 hover:text-white transition-colors duration-500">Cancellation</Link></li>
+            <ul className="space-y-1">
+              <li><Link href="/contact"  className="text-sm text-white/70 hover:text-white transition-colors duration-500 py-2 inline-block min-h-[44px]">Contact Us</Link></li>
+              <li><Link href="/my-bookings"  className="text-sm text-white/70 hover:text-white transition-colors duration-500 py-2 inline-block min-h-[44px]">My Bookings</Link></li>
+              <li><Link href="/policies"  className="text-sm text-white/70 hover:text-white transition-colors duration-500 py-2 inline-block min-h-[44px]">Policies</Link></li>
+              <li><Link href="/policies#faqs"  className="text-sm text-white/70 hover:text-white transition-colors duration-500 py-2 inline-block min-h-[44px]">FAQs</Link></li>
+              <li><Link href="/policies#cancellation"  className="text-sm text-white/70 hover:text-white transition-colors duration-500 py-2 inline-block min-h-[44px]">Cancellation</Link></li>
             </ul>
-            <div className="flex gap-3 mt-6">
-              <a href="https://facebook.com/vedararetreat" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center hover:bg-gold-500 transition-all duration-500" aria-label="Facebook">
+            <div className="flex gap-3 mt-4">
+              <a href="https://facebook.com/vedararetreat" target="_blank" rel="noopener noreferrer" className="w-11 h-11 rounded-full bg-white/10 flex items-center justify-center hover:bg-gold-500 transition-all duration-500" aria-label="Facebook">
                 <Facebook className="w-4 h-4" />
               </a>
-              <a href="https://instagram.com/vedararetreat" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center hover:bg-gold-500 transition-all duration-500" aria-label="Instagram">
+              <a href="https://instagram.com/vedararetreat" target="_blank" rel="noopener noreferrer" className="w-11 h-11 rounded-full bg-white/10 flex items-center justify-center hover:bg-gold-500 transition-all duration-500" aria-label="Instagram">
                 <Instagram className="w-4 h-4" />
               </a>
             </div>

@@ -46,10 +46,13 @@
   body {
     @apply bg-background text-foreground font-sans antialiased;
     transition: background-color 0.4s ease, color 0.4s ease;
-    text-align: justify;
+    text-align: left;
     -webkit-hyphens: none;
     hyphens: none;
-    overflow-x: hidden;
+  }
+
+  a, button, [role="button"], input, select, textarea, [role="tab"] {
+    -webkit-tap-highlight-color: transparent;
   }
 
   h1, h2, h3, h4, h5 {
