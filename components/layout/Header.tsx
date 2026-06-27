@@ -151,12 +151,28 @@ export function Header() {
             </Link>
           </div>
 
-          <div className="flex md:hidden items-center gap-0.5">
+          <div className="flex md:hidden items-center gap-1">
+            <a
+              href="mailto:vedararetreat@gmail.com"
+              className={cn('p-1.5', isTransparent ? 'text-white/80' : 'text-foreground/60 hover:text-primary')}
+              aria-label="Email"
+            >
+              <Mail className="w-4 h-4" />
+            </a>
+            <a
+              href="https://facebook.com/vedararetreat"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={cn('p-1.5', isTransparent ? 'text-white/80' : 'text-foreground/60 hover:text-primary')}
+              aria-label="Facebook"
+            >
+              <Facebook className="w-4 h-4" />
+            </a>
             <a
               href="https://instagram.com/vedararetreat"
               target="_blank"
               rel="noopener noreferrer"
-              className={cn('p-1.5 hidden [380px]:inline-flex', isTransparent ? 'text-white/80' : 'text-vedara-900/40')}
+              className={cn('p-1.5', isTransparent ? 'text-white/80' : 'text-foreground/60 hover:text-primary')}
               aria-label="Instagram"
             >
               <Instagram className="w-4 h-4" />
@@ -164,17 +180,17 @@ export function Header() {
             <Link
               href="/admin/login"
               className={cn(
-                'inline-flex items-center gap-1 px-2 py-1.5 rounded-full text-xs font-medium border',
+                'inline-flex items-center gap-1 px-2.5 py-1.5 rounded-full text-xs font-medium border',
                 isTransparent
-                  ? 'border-white/20 text-white/80'
-                  : 'border-gold-200 text-vedara-900/60'
+                  ? 'border-white/20 text-white/80 hover:bg-white/10'
+                  : 'border-border text-foreground/60 hover:border-primary hover:text-primary'
               )}
             >
-              <LogIn className="w-3 h-3" /> <span className="hidden [400px]:inline">Login</span>
+              <LogIn className="w-3 h-3" /> <span className="hidden [380px]:inline">Login</span>
             </Link>
             <button
               onClick={() => setIsMobileOpen(!isMobileOpen)}
-              className={cn('p-2', isTransparent ? 'text-white' : 'text-vedara-900')}
+              className={cn('p-2', isTransparent ? 'text-white' : 'text-foreground')}
               aria-label={isMobileOpen ? 'Close menu' : 'Open menu'}
             >
               {isMobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
