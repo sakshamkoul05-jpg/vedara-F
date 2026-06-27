@@ -106,6 +106,21 @@ export default function BookingPage() {
     }
   }, [pincode]);
 
+  const handleCheckInChange = (value: string) => {
+    const today = getToday();
+    if (value < today) {
+      setDateError('Check-in date cannot be in the past');
+      setCheckIn(today);
+      return;
+    }
+    setCheckIn(value);
+    setDateError('');
+    if (checkOut && new Date(checkOut) <= new Date(value)) {
+      setCheckOut('');
+      setDateError('Check-out must be after check-in');
+    }
+  };
+
   const handleCheckOutChange = (value: string) => {
     setCheckOut(value);
     setDateError('');
@@ -113,10 +128,19 @@ export default function BookingPage() {
       setDateError('Check-out date must be after check-in date');
       setCheckOut('');
     }
+    if (value && value < getToday()) {
+      setDateError('Check-out date cannot be in the past');
+      setCheckOut('');
+    }
   };
 
   const handleAvailabilityCheck = async () => {
     if (!checkIn || !checkOut) return;
+    const today = getToday();
+    if (checkIn < today) {
+      setDateError('Check-in date cannot be in the past');
+      return;
+    }
     if (new Date(checkOut) <= new Date(checkIn)) {
       setDateError('Check-out date must be after check-in date');
       return;
@@ -288,7 +312,7 @@ export default function BookingPage() {
                             <label className="vintage-label">Check-in Date *</label>
                             <div className="relative">
                               <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gold-400" />
-                              <Input type="date" value={checkIn} onChange={(e) => { setCheckIn(e.target.value); setDateError(''); if (checkOut && new Date(checkOut) <= new Date(e.target.value)) { setCheckOut(''); setDateError('Check-out must be after check-in'); } }} min={getToday()} className="pl-10" />
+                              <Input type="date" value={checkIn} onChange={(e) => handleCheckInChange(e.target.value)} min={getToday()} className="pl-10" />
                             </div>
                           </div>
                           <div>
