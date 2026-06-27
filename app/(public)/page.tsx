@@ -130,7 +130,7 @@ export default function HomePage() {
         <div className="relative z-20 text-center px-4 max-w-5xl">
           <TextReveal
             as="h1"
-            className="text-7xl md:text-9xl lg:text-[10rem] font-serif text-white leading-none mb-6 tracking-widest whitespace-nowrap text-center"
+            className="text-5xl sm:text-7xl md:text-9xl lg:text-[10rem] font-serif text-white leading-none mb-6 tracking-widest whitespace-nowrap text-center"
             delay={0.5}
           >
             THE VEDARA

@@ -389,7 +389,7 @@ export default function BookingPage() {
                             <label className="vintage-label">Full Name *</label>
                             <Input value={guestName} onChange={(e) => setGuestName(e.target.value)} placeholder="As on ID proof" />
                           </div>
-                          <div className="grid grid-cols-2 gap-4">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
                               <label className="vintage-label">Email</label>
                               <Input type="email" value={guestEmail} onChange={(e) => setGuestEmail(e.target.value)} placeholder="email@example.com" />
@@ -432,7 +432,7 @@ export default function BookingPage() {
 
                           <div className="border-t border-border pt-4">
                             <h3 className="font-medium text-foreground mb-3 text-sm">ID Proof *</h3>
-                            <div className="grid grid-cols-2 gap-4">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                               <div>
                                 <label className="vintage-label">ID Type</label>
                                 <div className="relative">
@@ -464,7 +464,7 @@ export default function BookingPage() {
                                 <label className="vintage-label">Street Address</label>
                                 <Input value={address} onChange={(e) => setAddress(e.target.value)} placeholder="House/Flat no, Street, Locality" />
                               </div>
-                              <div className="grid grid-cols-3 gap-3">
+                              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                                 <div>
                                   <label className="vintage-label">City</label>
                                   <Input value={city} onChange={(e) => setCity(e.target.value)} placeholder="City" />

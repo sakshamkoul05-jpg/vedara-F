@@ -151,26 +151,26 @@ export function Header() {
             </Link>
           </div>
 
-          <div className="flex md:hidden items-center gap-1">
-            <a href="mailto:vedararetreat@gmail.com" className={cn('p-1.5', isTransparent ? 'text-white/80' : 'text-vedara-900/40')} aria-label="Email">
-              <Mail className="w-4 h-4" />
-            </a>
-            <a href="https://facebook.com/vedararetreat" target="_blank" rel="noopener noreferrer" className={cn('p-1.5', isTransparent ? 'text-white/80' : 'text-vedara-900/40')} aria-label="Facebook">
-              <Facebook className="w-4 h-4" />
-            </a>
-            <a href="https://instagram.com/vedararetreat" target="_blank" rel="noopener noreferrer" className={cn('p-1.5', isTransparent ? 'text-white/80' : 'text-vedara-900/40')} aria-label="Instagram">
+          <div className="flex md:hidden items-center gap-0.5">
+            <a
+              href="https://instagram.com/vedararetreat"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={cn('p-1.5 hidden [380px]:inline-flex', isTransparent ? 'text-white/80' : 'text-vedara-900/40')}
+              aria-label="Instagram"
+            >
               <Instagram className="w-4 h-4" />
             </a>
             <Link
               href="/admin/login"
               className={cn(
-                'inline-flex items-center gap-1 px-2.5 py-1.5 rounded-full text-xs font-medium border',
+                'inline-flex items-center gap-1 px-2 py-1.5 rounded-full text-xs font-medium border',
                 isTransparent
                   ? 'border-white/20 text-white/80'
                   : 'border-gold-200 text-vedara-900/60'
               )}
             >
-              <LogIn className="w-3 h-3" /> Login
+              <LogIn className="w-3 h-3" /> <span className="hidden [400px]:inline">Login</span>
             </Link>
             <button
               onClick={() => setIsMobileOpen(!isMobileOpen)}

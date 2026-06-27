@@ -20,7 +20,7 @@ const adminNav = [
   { href: '/admin/cms', label: 'CMS', icon: Settings },
 ];
 
-export function AdminSidebar() {
+export function AdminSidebar({ isOpen, onClose }: { isOpen?: boolean; onClose?: () => void }) {
   const pathname = usePathname();
   const router = useRouter();
   const { user, logout } = useAuthStore();
@@ -40,7 +40,18 @@ export function AdminSidebar() {
   };
 
   return (
-    <aside className="fixed left-0 top-0 bottom-0 z-40 flex w-60 flex-col glass-card-light border-r border-border rounded-none">
+    <>
+      {isOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-30 lg:hidden"
+          onClick={onClose}
+        />
+      )}
+      <aside className={cn(
+        "fixed left-0 top-0 bottom-0 z-40 flex w-60 flex-col glass-card-light border-r border-border rounded-none transition-transform duration-300",
+        "lg:translate-x-0",
+        isOpen ? "translate-x-0" : "-translate-x-full"
+      )}>
       <div className="flex items-center gap-3 px-5 py-5 border-b border-border">
         <div className="w-9 h-9 rounded-full overflow-hidden flex-shrink-0">
           <Image
@@ -98,5 +109,6 @@ export function AdminSidebar() {
         </button>
       </div>
     </aside>
+    </>
   );
 }

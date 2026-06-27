@@ -470,7 +470,7 @@ export default function CafePage() {
                           const cartItem = cartItems.find(ci => ci.name === item.name);
                           const qty = cartItem?.quantity || 0;
                           return (
-                            <TiltCard key={localId} className="group perspective-[1000px] h-52">
+                            <TiltCard key={localId} className="group perspective-[1000px] h-auto min-h-[208px]">
                               <motion.div
                                 className="relative w-full h-full cursor-pointer"
                                 style={{ transformStyle: 'preserve-3d' }}
