@@ -377,7 +377,7 @@ export default function HomePage() {
                   ))}
                 </div>
                 <MagneticButton>
-                  <Link href="/cafe" className="vintage-button bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3.5 inline-block shadow-lg btn-bottom-fill">
+                  <Link href="/cafe" className="vintage-button bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3.5 inline-flex items-center shadow-lg btn-bottom-fill">
                     Explore Menu <ArrowRight className="w-4 h-4 ml-2" />
                   </Link>
                 </MagneticButton>

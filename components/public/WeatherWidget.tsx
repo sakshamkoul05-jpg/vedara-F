@@ -120,10 +120,10 @@ export function WeatherWidget() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: 0.3 }}
-      className="rounded-2xl p-6"
+      className="rounded-2xl p-4 sm:p-6 overflow-hidden"
       style={{ background: 'var(--clr-surface)', border: '1px solid var(--clr-stone)' }}
     >
-      <div className="flex flex-col md:flex-row items-center gap-6">
+      <div className="flex flex-col md:flex-row items-center gap-4 sm:gap-6">
         {/* Left: Current Weather */}
         <div className="flex items-center gap-5 flex-shrink-0">
           <motion.div
@@ -148,7 +148,7 @@ export function WeatherWidget() {
         <div className="hidden md:block w-px h-16" style={{ background: 'var(--clr-stone)' }} />
 
         {/* Middle: Stats */}
-        <div className="flex items-center gap-5 flex-shrink-0">
+        <div className="flex items-center gap-3 sm:gap-5 flex-shrink-0 flex-wrap justify-center">
           <div className="flex items-center gap-1.5" style={{ color: 'var(--clr-text-muted)' }}>
             <Droplets style={{ width: '0.875rem', height: '0.875rem' }} />
             <span style={{ fontSize: '0.75rem' }}>{weather.humidity}%</span>
@@ -167,7 +167,7 @@ export function WeatherWidget() {
         <div className="hidden md:block w-px h-16" style={{ background: 'var(--clr-stone)' }} />
 
         {/* Right: Forecast */}
-        <div className="flex-1 w-full md:w-auto">
+        <div className="hidden md:block flex-1 w-full md:w-auto">
           <div className="flex gap-2 md:justify-end">
             {weather.forecast.map((f, i) => {
               const FIcon = weatherIcons[f.icon] || Cloud;
