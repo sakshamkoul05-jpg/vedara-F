@@ -121,7 +121,8 @@ export default function CottageDetailPage() {
     );
   }
 
-  const amenitiesList: string[] = typeof cottage.amenities === 'string' ? JSON.parse(cottage.amenities as string) : cottage.amenities;
+  let amenitiesList: string[] = [];
+  try { amenitiesList = typeof cottage.amenities === 'string' ? JSON.parse(cottage.amenities as string) : (cottage.amenities || []); } catch { amenitiesList = []; }
 
   return (
     <>

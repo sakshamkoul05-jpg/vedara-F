@@ -44,7 +44,7 @@ export default function BookingPage() {
   const [selectedCottage, setSelectedCottage] = useState<string>(searchParams.get('cottageId') || '');
   const [adults, setAdults] = useState(parseInt(searchParams.get('adults') || '2'));
   const [children, setChildren] = useState(parseInt(searchParams.get('children') || '0'));
-  const [nationality, setNationality] = useState(searchParams.get('nationality') || 'Indian');
+  const [nationality, setNationality] = useState(searchParams.get('nationality') || 'IN');
   const [guestName, setGuestName] = useState('');
   const [guestEmail, setGuestEmail] = useState('');
   const [guestPhone, setGuestPhone] = useState('');
@@ -56,8 +56,8 @@ export default function BookingPage() {
   const [pincode, setPincode] = useState('');
   const [specialRequests, setSpecialRequests] = useState('');
   const [cottages, setCottages] = useState<Cottage[]>([]);
-  const [loading, setLoading] = useState(false);
   const [stepLoading, setStepLoading] = useState(false);
+  const [formErrors, setFormErrors] = useState<string[]>([]);
   const [detailCottage, setDetailCottage] = useState<Cottage | null>(null);
   const [bookingData, setBookingData] = useState<any>(null);
   const [paymentLoading, setPaymentLoading] = useState(false);
@@ -72,7 +72,12 @@ export default function BookingPage() {
 
   useEffect(() => {
     if (searchParams.get('cottageId') && searchParams.get('checkIn') && searchParams.get('checkOut')) {
-      setStep(3);
+      setSelectedCottage(searchParams.get('cottageId') || '');
+      setStepLoading(true);
+      api.get(`/bookings/available-cottages?checkIn=${encodeURIComponent(searchParams.get('checkIn') || '')}&checkOut=${encodeURIComponent(searchParams.get('checkOut') || '')}`)
+        .then((res: any) => { setCottages(res.data); setStep(3); })
+        .catch(() => { setStep(1); })
+        .finally(() => setStepLoading(false));
     }
   }, [searchParams]);
 
@@ -120,18 +125,25 @@ export default function BookingPage() {
   };
 
   const handleCreateBooking = async () => {
-    if (!selectedCottage || !guestName || !guestPhone) {
-      alert('Please fill in all required fields (Name and Phone)');
-      return;
-    }
-    if (!idProofType || !idProofNumber) {
-      alert('Please provide ID proof details');
-      return;
-    }
-    if (!address || !city || !state || !pincode) {
-      alert('Please provide your complete address');
-      return;
-    }
+    const errors: string[] = [];
+    if (!selectedCottage) errors.push('Please select a cottage');
+    if (!guestName.trim()) errors.push('Full name is required');
+    if (!guestPhone || guestPhone.length < 7) errors.push('Valid phone number is required');
+    if (guestEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(guestEmail)) errors.push('Please enter a valid email address');
+    if (!idProofType) errors.push('Please select an ID proof type');
+    if (!idProofNumber.trim()) errors.push('ID proof number is required');
+    if (idProofType === 'Aadhaar Card' && !/^\d{12}$/.test(idProofNumber.replace(/\s/g, ''))) errors.push('Aadhaar Card must be 12 digits');
+    if (idProofType === 'PAN Card' && !/^[A-Z]{5}\d{4}[A-Z]$/.test(idProofNumber.toUpperCase().trim())) errors.push('PAN Card format: AAAAA0000A');
+    if (!address.trim()) errors.push('Street address is required');
+    if (!city.trim()) errors.push('City is required');
+    if (!state.trim()) errors.push('State is required');
+    if (!pincode.trim()) errors.push('Postcode is required');
+    if (nationality === 'IN' && !/^\d{6}$/.test(pincode)) errors.push('Indian pincode must be 6 digits');
+    if (adults < 1) errors.push('At least 1 adult is required');
+    if (selectedCottageData && adults > selectedCottageData.capacity) errors.push(`Maximum ${selectedCottageData.capacity} guests allowed`);
+    if (children < 0) errors.push('Children cannot be negative');
+    if (errors.length > 0) { setFormErrors(errors); return; }
+    setFormErrors([]);
     setPaymentLoading(true);
     try {
       const fullAddress = `${address}, ${city}, ${state} - ${pincode}`;
@@ -181,7 +193,6 @@ export default function BookingPage() {
       }
       const rzp = new (window as any).Razorpay(options);
       rzp.open();
-      setPaymentLoading(false);
     } catch (err: any) {
       alert(err.message || 'Booking failed. Please try again.');
       setPaymentLoading(false);
@@ -191,7 +202,7 @@ export default function BookingPage() {
   const selectedCottageData = cottages.find((c) => c.id === selectedCottage);
   const nights = checkIn && checkOut ? calculateNights(new Date(checkIn), new Date(checkOut)) : 0;
   const subtotal = selectedCottageData ? selectedCottageData.pricePerNight * nights : 0;
-  const extraGuests = Math.max(0, adults + children - 2);
+  const extraGuests = Math.max(0, adults + children - (selectedCottageData?.capacity || 2));
   const extraGuestCharges = extraGuests * 1500 * nights;
   const discountAmount = isValid ? Math.min(discountType === 'PERCENTAGE' ? Math.round(subtotal * discount / 100) : discount, subtotal + extraGuestCharges) : 0;
   const taxes = Math.round((subtotal + extraGuestCharges - discountAmount) * 0.12);
@@ -292,6 +303,16 @@ export default function BookingPage() {
                     exit={{ opacity: 0, x: 20 }}
                   >
                     <h2 className="font-serif text-2xl text-foreground mb-6">Select a Cottage</h2>
+                    {cottages.length === 0 ? (
+                      <div className="text-center py-12">
+                        <Home className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                        <p className="text-foreground font-medium mb-1">No cottages available</p>
+                        <p className="text-muted-foreground text-sm mb-4">There are no cottages available for your selected dates. Try different dates.</p>
+                        <Button variant="secondary" onClick={() => setStep(1)}>
+                          <ArrowLeft className="w-4 h-4 mr-2" /> Change Dates
+                        </Button>
+                      </div>
+                    ) : (
                     <div className="space-y-6">
                       {cottages.map((cottage) => {
                         const isAvailable = (cottage as any).isAvailable !== false;
@@ -340,9 +361,6 @@ export default function BookingPage() {
                                     {amenitiesList.length > 5 && <span className="text-xs text-muted-foreground">+{amenitiesList.length - 5} more</span>}
                                   </div>
                                 )}
-                                <div className="flex items-center gap-2 mb-3">
-                                  <span className="text-xs bg-red-50 text-red-600 px-2 py-0.5 rounded-full font-medium">Cooking not allowed</span>
-                                </div>
                                 <div className="flex items-center justify-between">
                                   <button type="button" onClick={(e) => { e.stopPropagation(); setDetailCottage(cottage); }} className="text-xs text-primary font-medium hover:underline">View Details</button>
                                   {!isAvailable && <span className="text-red-500 text-xs font-medium">Not available for selected dates</span>}
@@ -353,7 +371,8 @@ export default function BookingPage() {
                         );
                       })}
                     </div>
-                    <Button variant="secondary" onClick={() => setStep(1)} className="mt-6">
+                    )}
+                    <Button variant="secondary" onClick={() => { setSelectedCottage(''); setStep(1); }} className="mt-6">
                       <ArrowLeft className="w-4 h-4 mr-2" /> Back
                     </Button>
                   </motion.div>
@@ -498,11 +517,11 @@ export default function BookingPage() {
                           <div className="grid grid-cols-2 gap-4">
                             <div>
                               <label className="vintage-label">Adults (max {selectedCottageData?.capacity || 4})</label>
-                              <Input type="number" min={1} max={selectedCottageData?.capacity || 4} value={adults} onChange={(e) => { const v = parseInt(e.target.value) || 1; setAdults(Math.min(v, selectedCottageData?.capacity || 4)); }} />
+                              <Input type="number" min={1} max={selectedCottageData?.capacity || 4} value={adults} onChange={(e) => { const v = parseInt(e.target.value); if (!isNaN(v)) setAdults(Math.max(1, Math.min(v, selectedCottageData?.capacity || 4))); }} />
                             </div>
                             <div>
                               <label className="vintage-label">Children</label>
-                              <Input type="number" min={0} max={10} value={children} onChange={(e) => setChildren(parseInt(e.target.value) || 0)} />
+                              <Input type="number" min={0} max={10} value={children} onChange={(e) => { const v = parseInt(e.target.value); if (!isNaN(v)) setChildren(Math.max(0, Math.min(v, 10))); }} />
                             </div>
                           </div>
                           <div>
@@ -566,6 +585,13 @@ export default function BookingPage() {
                               {paymentLoading ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Processing...</> : `Pay ${formatPrice(totalAmount)}`}
                             </Button>
                           </div>
+                          {formErrors.length > 0 && (
+                            <div className="mt-4 p-3 rounded-lg bg-red-50 border border-red-200">
+                              {formErrors.map((err, i) => (
+                                <p key={i} className="text-red-600 text-xs">{err}</p>
+                              ))}
+                            </div>
+                          )}
                         </div>
                       </div>
                     </ScrollReveal>
@@ -590,7 +616,7 @@ export default function BookingPage() {
                         </motion.div>
                         <h2 className="font-serif text-3xl text-foreground mb-4">Booking Confirmed!</h2>
                         <p className="text-muted-foreground mb-6">
-                          Thank you! Your booking has been confirmed. A confirmation email has been sent to {guestEmail || 'your email'}.
+                          Thank you! Your booking has been confirmed.{guestEmail ? ` A confirmation email has been sent to ${guestEmail}.` : ' Please check your email for confirmation details.'}
                         </p>
                         <div className="bg-gold-50 rounded-xl p-6 mb-8 text-left">
                           <p className="text-sm text-muted-foreground mb-1">Booking Reference</p>
@@ -607,9 +633,12 @@ export default function BookingPage() {
                           </div>
                         </div>
                         <p className="text-xs text-muted-foreground mb-6">
-                          WhatsApp confirmation sent to +91-91188-82242 and email to vedararetreat@gmail.com
+                          A confirmation has been sent to your phone and email.
                         </p>
-                        <Button variant="primary" onClick={() => router.push('/')}>Back to Home</Button>
+                        <div className="flex gap-3 justify-center">
+                          <Button variant="primary" onClick={() => router.push('/')}>Back to Home</Button>
+                          <Button variant="secondary" onClick={() => router.push('/my-bookings')}>View My Bookings</Button>
+                        </div>
                       </div>
                     </ScrollReveal>
                   </motion.div>
@@ -760,9 +789,6 @@ export default function BookingPage() {
                         </div>
                       </div>
                     )}
-                    <div className="flex items-center gap-2 mb-4">
-                      <span className="text-xs bg-red-50 text-red-600 px-2 py-1 rounded-full font-medium">Cooking not allowed</span>
-                    </div>
                     <Button variant="primary" size="lg" className="w-full" onClick={() => { setSelectedCottage(detailCottage.id); setDetailCottage(null); setStep(3); }}>
                       Select This Cottage <ArrowRight className="w-4 h-4 ml-2" />
                     </Button>

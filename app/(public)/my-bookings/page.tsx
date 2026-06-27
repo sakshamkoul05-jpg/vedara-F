@@ -197,7 +197,7 @@ export default function MyBookingsPage() {
                       </div>
                       {booking.cottage?.slug && (
                         <a
-                          href={`/cottages/${booking.cottage.slug}`}
+                          href={`/cottages/slug/${booking.cottage.slug}`}
                           className="text-primary hover:underline text-sm font-medium"
                         >
                           View Cottage →

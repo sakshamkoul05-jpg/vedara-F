@@ -251,6 +251,7 @@ export default function CafePage() {
   const [ordering, setOrdering] = useState(false);
   const [orderSuccess, setOrderSuccess] = useState<string | null>(null);
   const [itemIdMap, setItemIdMap] = useState<Record<string, string>>({});
+  const [menuLoading, setMenuLoading] = useState(true);
 
   const toggleFlip = (localId: string) => {
     setFlippedIds(prev => ({ ...prev, [localId]: !prev[localId] }));
@@ -279,6 +280,7 @@ export default function CafePage() {
   }, [mouseX, mouseY]);
 
   useEffect(() => {
+    setMenuLoading(true);
     endpoints.cafe.menu().then((res: any) => {
       const cats = res?.data || res?.categories || [];
       const map: Record<string, string> = {};
@@ -289,7 +291,7 @@ export default function CafePage() {
         });
       });
       setItemIdMap(map);
-    }).catch(() => {});
+    }).catch(() => {}).finally(() => setMenuLoading(false));
   }, []);
 
   const activeCategoryData = menuData.find(c => c.id === activeCategory);
@@ -314,19 +316,23 @@ export default function CafePage() {
   const filteredItems = getFilteredItems();
 
   const handleAddToCart = (item: MenuItem, localId: string) => {
-    const price = typeof item.price === 'string' ? parseInt(item.price) || 0 : item.price;
+    const price = typeof item.price === 'string' ? parseFloat(item.price) || 0 : item.price;
     addItem({ itemId: localId, name: item.name, price });
     showNotification(item.name);
   };
 
   const getApiItemId = (itemName: string): string => {
     const key = itemName.toLowerCase().trim();
-    return itemIdMap[key] || itemName;
+    return itemIdMap[key] || '';
   };
 
   const handlePlaceOrder = async () => {
     if (!tableCottageInput.trim()) return;
     if (cartItems.length === 0) return;
+    if (cartItems.some(i => !getApiItemId(i.name))) {
+      alert('Some items could not be identified. Please refresh the page and try again.');
+      return;
+    }
     setOrdering(true);
     try {
       const seatLabel = orderType === 'table' ? `Table ${tableCottageInput.trim()}` : `Cottage ${tableCottageInput.trim()}`;

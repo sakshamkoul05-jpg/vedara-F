@@ -243,9 +243,6 @@ export default function HomePage() {
                         <span className="text-primary font-semibold text-sm">{cottage.price}<span className="text-muted-foreground font-normal text-xs">/night</span></span>
                       </div>
                       <p className="text-muted-foreground text-xs mb-3 leading-relaxed line-clamp-2 flex-1">{cottage.desc}</p>
-                      <div className="flex items-center gap-2 mb-2">
-                        <span className="text-xs bg-red-50 text-red-600 px-2 py-0.5 rounded-full font-medium">Cooking not allowed</span>
-                      </div>
                       <Link href={`/cottages/slug/${cottage.slug}`} className="text-primary text-xs font-medium inline-flex items-center gap-1 group-hover:gap-2 transition-all duration-500 mt-auto">
                         View Details <ArrowRight className="w-3 h-3" />
                       </Link>
@@ -277,9 +274,6 @@ export default function HomePage() {
                         <span className="text-primary font-semibold text-sm">{cottage.price}<span className="text-muted-foreground font-normal text-xs">/night</span></span>
                       </div>
                       <p className="text-muted-foreground text-xs mb-3 leading-relaxed line-clamp-2 flex-1">{cottage.desc}</p>
-                      <div className="flex items-center gap-2 mb-2">
-                        <span className="text-xs bg-red-50 text-red-600 px-2 py-0.5 rounded-full font-medium">Cooking not allowed</span>
-                      </div>
                       <Link href={`/cottages/slug/${cottage.slug}`} className="text-primary text-xs font-medium inline-flex items-center gap-1 group-hover:gap-2 transition-all duration-500 mt-auto">
                         View Details <ArrowRight className="w-3 h-3" />
                       </Link>
@@ -311,9 +305,6 @@ export default function HomePage() {
                         <span className="text-primary font-semibold text-sm">{cottage.price}<span className="text-muted-foreground font-normal text-xs">/night</span></span>
                       </div>
                       <p className="text-muted-foreground text-xs mb-3 leading-relaxed line-clamp-2 flex-1">{cottage.desc}</p>
-                      <div className="flex items-center gap-2 mb-2">
-                        <span className="text-xs bg-red-50 text-red-600 px-2 py-0.5 rounded-full font-medium">Cooking not allowed</span>
-                      </div>
                       <Link href={`/cottages/slug/${cottage.slug}`} className="text-primary text-xs font-medium inline-flex items-center gap-1 group-hover:gap-2 transition-all duration-500 mt-auto">
                         View Details <ArrowRight className="w-3 h-3" />
                       </Link>
@@ -368,7 +359,7 @@ export default function HomePage() {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <ScrollReveal direction="left">
               <div>
-                <h2 className="font-serif text-4xl md:text-5xl text-foreground mb-6">THE VEDARA</h2>
+                <h2 className="font-serif text-4xl md:text-5xl text-foreground mb-6">Café Charade</h2>
                 <p className="text-muted-foreground text-lg leading-relaxed mb-4">
                   A Himalayan Boutique Retreat: 7 Cozy Cottages and 1 Alpine Studio with One Cozy Café
                 </p>
@@ -447,7 +438,7 @@ export default function HomePage() {
       </section>
 
       {/* Nearby */}
-      <section className="section-padding bg-background frosted-section">
+      <section id="nearby" className="section-padding bg-background frosted-section">
         <div className="relative z-10 vintage-container">
           <ScrollReveal>
             <div className="text-center max-w-3xl mx-auto mb-16">
@@ -474,7 +465,7 @@ export default function HomePage() {
           <ScrollReveal delay={0.3}>
             <div className="text-center mt-10">
               <button
-                onClick={() => document.getElementById('how-to-reach')?.scrollIntoView({ behavior: 'smooth' })}
+                onClick={() => document.getElementById('nearby')?.scrollIntoView({ behavior: 'smooth' })}
                 className="vintage-button-outline text-sm"
               >
                 Explore Nearby Attractions <ArrowRight className="w-4 h-4 ml-2" />
