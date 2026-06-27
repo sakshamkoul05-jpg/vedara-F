@@ -462,16 +462,6 @@ export default function HomePage() {
               </ScrollReveal>
             ))}
           </div>
-          <ScrollReveal delay={0.3}>
-            <div className="text-center mt-10">
-              <button
-                onClick={() => document.getElementById('nearby')?.scrollIntoView({ behavior: 'smooth' })}
-                className="vintage-button-outline text-sm"
-              >
-                Explore Nearby Attractions <ArrowRight className="w-4 h-4 ml-2" />
-              </button>
-            </div>
-          </ScrollReveal>
         </div>
       </section>
 

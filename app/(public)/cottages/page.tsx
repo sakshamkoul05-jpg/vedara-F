@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import Link from 'next/link';
 import { ArrowRight, Users, Bed, Bath, Maximize, Loader2, XCircle, CheckCircle } from 'lucide-react';
 import { ScrollReveal } from '@/components/animations/ScrollReveal';
@@ -11,6 +11,21 @@ import { Input } from '@/components/ui/input';
 import { api } from '@/lib/api';
 import { Cottage } from '@/types';
 import { formatPrice, getToday } from '@/lib/utils';
+
+const CATEGORY_DESCRIPTIONS: Record<string, { prefix: string; description: string }> = {
+  'Premium Duplex Family Suite': {
+    prefix: 'Cottages',
+    description: 'Perfect for families, groups of four, or couples seeking expansive structural luxury. These multi-level chalets feature signature wooden attic layouts, dual balconies, and private soaking experiences.',
+  },
+  'Intimate Mountain View Suite': {
+    prefix: 'Cottages',
+    description: 'Tailor-made for couples, solo adventurers, and remote professionals. These elegant single-level sanctuaries offer premium warmth, dedicated workspace/dining seating layouts, and a front-row seat to the Jibhi valley vistas.',
+  },
+  'Cozy Alpine Studio': {
+    prefix: 'Cottage',
+    description: 'Thoughtfully tailored minimalist escapes optimized for solo travelers, remote writers, digital nomads, or simple comfort. These rooms pack rich warmth and structural utility into a smartly integrated design.',
+  },
+};
 
 export default function CottagesPage() {
   const [cottages, setCottages] = useState<Cottage[]>([]);
@@ -56,43 +71,72 @@ export default function CottagesPage() {
     }).catch(() => setLoading(false));
   }, []);
 
+  const groupedCottages = useMemo(() => {
+    const groups: Record<string, Cottage[]> = {};
+    const uncategorized: Cottage[] = [];
+    cottages.forEach((c: any) => {
+      const cat = c.category?.trim();
+      if (cat) {
+        if (!groups[cat]) groups[cat] = [];
+        groups[cat].push(c);
+      } else {
+        uncategorized.push(c);
+      }
+    });
+    if (uncategorized.length > 0) {
+      groups['Our Cottages'] = uncategorized;
+    }
+    return groups;
+  }, [cottages]);
+
+  const categoryOrder = useMemo(() => {
+    const preferred = ['Premium Duplex Family Suite', 'Intimate Mountain View Suite', 'Cozy Alpine Studio'];
+    const keys = Object.keys(groupedCottages);
+    const ordered = preferred.filter(k => keys.includes(k));
+    keys.forEach(k => { if (!ordered.includes(k)) ordered.push(k); });
+    return ordered;
+  }, [groupedCottages]);
+
   return (
     <>
-      <section className="pt-32 pb-20 bg-alabaster">
-        <div className="vintage-container">
-          <ScrollReveal>
-            <BackButton />
-            <p className="text-gold-500 text-sm tracking-[0.2em] uppercase mb-4 font-sans">Accommodations</p>
-            <TextReveal as="h1" className="section-title max-w-3xl">
-              Find Your Mountain Retreat
-            </TextReveal>
-          </ScrollReveal>
+      {/* Hero */}
+      <section className="relative pt-24 pb-16 h-[40vh] min-h-[320px] flex items-center overflow-hidden">
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1510798831971-661eb04b3739?w=1600&q=80)', transform: 'scale(1.1)' }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-white" />
+        <div className="relative z-10 vintage-container">
+          <BackButton className="mb-6" />
+          <TextReveal as="h1" className="font-serif text-4xl md:text-5xl lg:text-6xl text-white mb-4">
+            Our Cottages
+          </TextReveal>
+          <p className="text-white/90 text-lg max-w-2xl">Handpicked mountain retreats, each with its own character and warmth</p>
         </div>
       </section>
 
-      <section className="pb-12 -mt-8">
+      {/* Filters */}
+      <section className="py-8 border-b border-border">
         <div className="vintage-container">
           <ScrollReveal>
-            <div className="bg-card border border-border rounded-2xl p-6 md:p-8 shadow-sm">
-              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <div>
-                  <label className="vintage-label">Check-in</label>
-                  <Input type="date" value={checkIn} onChange={handleCheckInChange} min={today} />
-                </div>
-                <div>
-                  <label className="vintage-label">Check-out</label>
-                  <Input type="date" value={checkOut} onChange={handleCheckOutChange} min={checkIn || today} />
-                </div>
-                <div className="flex items-end">
-                  <Button variant="primary" size="md" className="w-full" onClick={handleCheckAvailability} disabled={!checkIn || !checkOut || checking}>
-                    {checking ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Checking...</> : 'Check Availability'}
-                  </Button>
-                </div>
-                <div className="flex items-end">
-                  <Link href="/booking" className="vintage-button-secondary w-full text-center">
-                    Quick Book
-                  </Link>
-                </div>
+            <div className="flex flex-col md:flex-row gap-4 items-end">
+              <div className="flex-1 w-full">
+                <label className="block text-sm font-medium mb-1.5">Check-in</label>
+                <Input type="date" value={checkIn} min={today} onChange={handleCheckInChange} />
+              </div>
+              <div className="flex-1 w-full">
+                <label className="block text-sm font-medium mb-1.5">Check-out</label>
+                <Input type="date" value={checkOut} min={checkIn || today} onChange={handleCheckOutChange} />
+              </div>
+              <div className="flex items-end">
+                <Button variant="primary" size="md" className="w-full" onClick={handleCheckAvailability} disabled={!checkIn || !checkOut || checking}>
+                  {checking ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Checking...</> : 'Check Availability'}
+                </Button>
+              </div>
+              <div className="flex items-end">
+                <Link href="/booking" className="vintage-button-secondary w-full text-center">
+                  Quick Book
+                </Link>
               </div>
             </div>
           </ScrollReveal>
@@ -117,216 +161,97 @@ export default function CottagesPage() {
           ) : (
             <>
               {availabilityChecked && (
-                <div className="flex items-center justify-between mb-6">
-                  <p className="text-sm text-muted-foreground">
+                <div className="mb-8 p-4 bg-gold-50 dark:bg-vedara-900/30 rounded-xl border border-gold-200 dark:border-gold-800">
+                  <p className="text-foreground">
                     {cottages.filter((c: any) => c.isAvailable).length} of {cottages.length} cottages available for these dates
                   </p>
-                  <button onClick={() => { setAvailabilityChecked(false); api.get('/cottages').then((res: any) => setCottages(res.data)); }} className="text-sm text-gold-600 dark:text-gold-400 hover:underline">
+                  {checkIn && checkOut && (
+                    <p className="text-sm text-muted-foreground mt-1">
+                      {new Date(checkIn).toLocaleDateString('en-IN', { weekday: 'short', month: 'short', day: 'numeric' })} →{' '}
+                      {new Date(checkOut).toLocaleDateString('en-IN', { weekday: 'short', month: 'short', day: 'numeric' })}
+                      ({Math.ceil((new Date(checkOut).getTime() - new Date(checkIn).getTime()) / 86400000)} nights)
+                    </p>
+                  )}
+                  <button
+                    onClick={() => { setAvailabilityChecked(false); setCheckIn(''); setCheckOut(''); }}
+                    className="text-sm text-gold-600 dark:text-gold-400 hover:underline mt-2"
+                  >
                     Show all cottages
                   </button>
                 </div>
               )}
 
-              {/* Premium Duplex Family Suites */}
-              {cottages.some((c: any) => c.category === 'Premium Duplex Family Suite') && (
-                <div className="mb-16">
-                  <ScrollReveal>
-                    <div className="mb-8">
-                      <p className="text-gold-500 text-sm tracking-[0.2em] uppercase mb-2 font-sans">Cottages 1 - 3</p>
-                      <h2 className="font-serif text-2xl md:text-3xl text-foreground mb-3">Premium Duplex Family Suites</h2>
-                      <p className="text-muted-foreground text-sm max-w-2xl">Perfect for families, groups of four, or couples seeking expansive structural luxury. These multi-level chalets feature signature wooden attic layouts, dual balconies, and private soaking experiences.</p>
-                    </div>
-                  </ScrollReveal>
-                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {cottages.filter((c: any) => c.category === 'Premium Duplex Family Suite').map((cottage: any, i) => {
-                      const slug = cottage.slug || cottage.name.toLowerCase().replace(/\s+/g, '-');
-                      const available = availabilityChecked ? cottage.isAvailable : true;
-                      return (
-                      <ScrollReveal key={cottage.id} delay={i * 0.1}>
-                        <Link href={`/cottages/slug/${slug}`} className="group block">
-                          <div className={`vintage-card overflow-hidden ${availabilityChecked && !available ? 'opacity-50' : ''}`}>
-                            <div className="aspect-[4/3] overflow-hidden bg-gold-50 dark:bg-vedara-900/30 relative">
-                              {availabilityChecked && !available && (
-                                <div className="absolute inset-0 bg-black/40 z-10 flex items-center justify-center">
-                                  <span className="bg-vedara-900/80 text-alabaster px-4 py-2 rounded-full text-sm font-medium">Not available</span>
-                                </div>
-                              )}
-                              <img
-                                src={`https://images.unsplash.com/photo-${['1504384308090-c894fdcc538d', '1554118811-1e0d58224f24', '1506905925346-21bda4d32df4'][i % 3]}?w=600&q=80`}
-                                alt={cottage.name}
-                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                                loading="lazy"
-                              />
-                            </div>
-                            <div className="p-6">
-                              <div className="flex justify-between items-start mb-1">
-                                <h3 className="font-serif text-xl text-foreground group-hover:text-gold-600 dark:group-hover:text-gold-400 transition-colors">{cottage.name}</h3>
-                                <span className="text-gold-600 dark:text-gold-400 font-semibold">{formatPrice(cottage.pricePerNight)}<span className="text-gold-400 font-normal text-xs">/night</span></span>
-                              </div>
-                              <p className="text-muted-foreground text-sm mb-4 line-clamp-2">{cottage.shortDesc || cottage.description}</p>
-                              <div className="flex items-center gap-2 mb-3">
-                                <span className="text-xs bg-red-50 text-red-600 px-2 py-0.5 rounded-full font-medium">Cooking not allowed</span>
-                              </div>
-                              <div className="flex gap-4 text-xs text-muted-foreground mb-4">
-                                <span className="flex items-center gap-1"><Users className="w-3 h-3" /> {cottage.capacity} guests</span>
-                                <span className="flex items-center gap-1"><Bed className="w-3 h-3" /> {cottage.bedrooms} BR</span>
-                                <span className="flex items-center gap-1"><Bath className="w-3 h-3" /> {cottage.bathrooms} bath</span>
-                                {cottage.size && <span className="flex items-center gap-1"><Maximize className="w-3 h-3" /> {cottage.size} sqft</span>}
-                              </div>
-                              {availabilityChecked && (
-                                <div className="mb-3">
-                                  {available ? (
-                                    <span className="inline-flex items-center gap-1 text-xs text-green-600 font-medium"><CheckCircle className="w-3 h-3" /> Available</span>
-                                  ) : (
-                                    <span className="inline-flex items-center gap-1 text-xs text-red-500 font-medium"><XCircle className="w-3 h-3" /> Booked for these dates</span>
+              {categoryOrder.map((category) => {
+                const items = groupedCottages[category];
+                const catInfo = CATEGORY_DESCRIPTIONS[category];
+                const prefix = catInfo?.prefix || 'Cottages';
+                return (
+                  <div key={category} className="mb-16">
+                    <ScrollReveal>
+                      <div className="mb-8">
+                        <h2 className="font-serif text-2xl md:text-3xl text-foreground mb-3">{category}s</h2>
+                        {catInfo ? (
+                          <p className="text-muted-foreground text-sm max-w-2xl">{catInfo.description}</p>
+                        ) : (
+                          <p className="text-muted-foreground text-sm max-w-2xl">{items.length} {prefix.toLowerCase()} in this category</p>
+                        )}
+                      </div>
+                    </ScrollReveal>
+                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                      {items.map((cottage: any, i: number) => {
+                        const slug = cottage.slug || cottage.name.toLowerCase().replace(/\s+/g, '-');
+                        const available = availabilityChecked ? cottage.isAvailable : true;
+                        return (
+                          <ScrollReveal key={cottage.id} delay={i * 0.1}>
+                            <Link href={`/cottages/slug/${slug}`} className="group block">
+                              <div className={`vintage-card overflow-hidden ${availabilityChecked && !available ? 'opacity-50' : ''}`}>
+                                <div className="aspect-[4/3] overflow-hidden bg-gold-50 dark:bg-vedara-900/30 relative">
+                                  {availabilityChecked && !available && (
+                                    <div className="absolute inset-0 bg-black/40 z-10 flex items-center justify-center">
+                                      <span className="bg-vedara-900/80 text-alabaster px-4 py-2 rounded-full text-sm font-medium">Not available</span>
+                                    </div>
                                   )}
+                                  <img
+                                    src={cottage.images?.[0] || `https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&q=80`}
+                                    alt={cottage.name}
+                                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                                    loading="lazy"
+                                  />
                                 </div>
-                              )}
-                              <span className="text-gold-600 dark:text-gold-400 text-sm font-medium inline-flex items-center gap-1 group-hover:gap-2 transition-all">
-                                View Details <ArrowRight className="w-3 h-3" />
-                              </span>
-                            </div>
-                          </div>
-                        </Link>
-                      </ScrollReveal>
-                    )})}
-                  </div>
-                </div>
-              )}
-
-              {/* Intimate Mountain View Suites */}
-              {cottages.some((c: any) => c.category === 'Intimate Mountain View Suite') && (
-                <div className="mb-16">
-                  <ScrollReveal>
-                    <div className="mb-8">
-                      <p className="text-gold-500 text-sm tracking-[0.2em] uppercase mb-2 font-sans">Cottages 4 - 6</p>
-                      <h2 className="font-serif text-2xl md:text-3xl text-foreground mb-3">Intimate Mountain View Suites</h2>
-                      <p className="text-muted-foreground text-sm max-w-2xl">Tailor-made for couples, solo adventurers, and remote professionals. These elegant 270 sq. ft. single-level sanctuaries offer premium warmth, dedicated workspace/dining seating layouts, and a front-row seat to the Jibhi valley vistas.</p>
-                    </div>
-                  </ScrollReveal>
-                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {cottages.filter((c: any) => c.category === 'Intimate Mountain View Suite').map((cottage: any, i) => {
-                      const slug = cottage.slug || cottage.name.toLowerCase().replace(/\s+/g, '-');
-                      const available = availabilityChecked ? cottage.isAvailable : true;
-                      return (
-                      <ScrollReveal key={cottage.id} delay={i * 0.1}>
-                        <Link href={`/cottages/slug/${slug}`} className="group block">
-                          <div className={`vintage-card overflow-hidden ${availabilityChecked && !available ? 'opacity-50' : ''}`}>
-                            <div className="aspect-[4/3] overflow-hidden bg-gold-50 dark:bg-vedara-900/30 relative">
-                              {availabilityChecked && !available && (
-                                <div className="absolute inset-0 bg-black/40 z-10 flex items-center justify-center">
-                                  <span className="bg-vedara-900/80 text-alabaster px-4 py-2 rounded-full text-sm font-medium">Not available</span>
-                                </div>
-                              )}
-                              <img
-                                src={`https://images.unsplash.com/photo-${['1476514525535-07fb3b4ae5f1', '1519681393784-d120267933ba', '1469476568026-46a7f7b2f9c2'][i % 3]}?w=600&q=80`}
-                                alt={cottage.name}
-                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                                loading="lazy"
-                              />
-                            </div>
-                            <div className="p-6">
-                              <div className="flex justify-between items-start mb-1">
-                                <h3 className="font-serif text-xl text-foreground group-hover:text-gold-600 dark:group-hover:text-gold-400 transition-colors">{cottage.name}</h3>
-                                <span className="text-gold-600 dark:text-gold-400 font-semibold">{formatPrice(cottage.pricePerNight)}<span className="text-gold-400 font-normal text-xs">/night</span></span>
-                              </div>
-                              <p className="text-muted-foreground text-sm mb-4 line-clamp-2">{cottage.shortDesc || cottage.description}</p>
-                              <div className="flex items-center gap-2 mb-3">
-                                <span className="text-xs bg-red-50 text-red-600 px-2 py-0.5 rounded-full font-medium">Cooking not allowed</span>
-                              </div>
-                              <div className="flex gap-4 text-xs text-muted-foreground mb-4">
-                                <span className="flex items-center gap-1"><Users className="w-3 h-3" /> {cottage.capacity} guests</span>
-                                <span className="flex items-center gap-1"><Bed className="w-3 h-3" /> {cottage.bedrooms} BR</span>
-                                <span className="flex items-center gap-1"><Bath className="w-3 h-3" /> {cottage.bathrooms} bath</span>
-                                {cottage.size && <span className="flex items-center gap-1"><Maximize className="w-3 h-3" /> {cottage.size} sqft</span>}
-                              </div>
-                              {availabilityChecked && (
-                                <div className="mb-3">
-                                  {available ? (
-                                    <span className="inline-flex items-center gap-1 text-xs text-green-600 font-medium"><CheckCircle className="w-3 h-3" /> Available</span>
-                                  ) : (
-                                    <span className="inline-flex items-center gap-1 text-xs text-red-500 font-medium"><XCircle className="w-3 h-3" /> Booked for these dates</span>
+                                <div className="p-6">
+                                  <div className="flex justify-between items-start mb-1">
+                                    <h3 className="font-serif text-xl text-foreground group-hover:text-gold-600 dark:group-hover:text-gold-400 transition-colors">{cottage.name}</h3>
+                                    <span className="text-gold-600 dark:text-gold-400 font-semibold">{formatPrice(cottage.pricePerNight)}<span className="text-gold-400 font-normal text-xs">/night</span></span>
+                                  </div>
+                                  <p className="text-muted-foreground text-sm mb-4 line-clamp-2">{cottage.shortDesc || cottage.description}</p>
+                                  <div className="flex gap-4 text-xs text-muted-foreground mb-4">
+                                    <span className="flex items-center gap-1"><Users className="w-3 h-3" /> {cottage.capacity} guests</span>
+                                    <span className="flex items-center gap-1"><Bed className="w-3 h-3" /> {cottage.bedrooms} BR</span>
+                                    <span className="flex items-center gap-1"><Bath className="w-3 h-3" /> {cottage.bathrooms} bath</span>
+                                    {cottage.size && <span className="flex items-center gap-1"><Maximize className="w-3 h-3" /> {cottage.size} sqft</span>}
+                                  </div>
+                                  {availabilityChecked && (
+                                    <div className="mb-3">
+                                      {available ? (
+                                        <span className="inline-flex items-center gap-1 text-xs text-green-600 font-medium"><CheckCircle className="w-3 h-3" /> Available</span>
+                                      ) : (
+                                        <span className="inline-flex items-center gap-1 text-xs text-red-500 font-medium"><XCircle className="w-3 h-3" /> Booked for these dates</span>
+                                      )}
+                                    </div>
                                   )}
+                                  <span className="text-gold-600 dark:text-gold-400 text-sm font-medium inline-flex items-center gap-1 group-hover:gap-2 transition-all">
+                                    View Details <ArrowRight className="w-3 h-3" />
+                                  </span>
                                 </div>
-                              )}
-                              <span className="text-gold-600 dark:text-gold-400 text-sm font-medium inline-flex items-center gap-1 group-hover:gap-2 transition-all">
-                                View Details <ArrowRight className="w-3 h-3" />
-                              </span>
-                            </div>
-                          </div>
-                        </Link>
-                      </ScrollReveal>
-                    )})}
-                  </div>
-                </div>
-              )}
-
-              {/* Cozy Alpine Studio */}
-              {cottages.some((c: any) => c.category === 'Cozy Alpine Studio') && (
-                <div className="mb-16">
-                  <ScrollReveal>
-                    <div className="mb-8">
-                      <p className="text-gold-500 text-sm tracking-[0.2em] uppercase mb-2 font-sans">Cottage 7</p>
-                      <h2 className="font-serif text-2xl md:text-3xl text-foreground mb-3">Cozy Alpine Studio</h2>
-                      <p className="text-muted-foreground text-sm max-w-2xl">Thoughtfully tailored minimalist escapes optimized for solo travelers, remote writers, digital nomads, or simple comfort. These rooms pack rich warmth and structural utility into a smartly integrated design.</p>
+                              </div>
+                            </Link>
+                          </ScrollReveal>
+                        );
+                      })}
                     </div>
-                  </ScrollReveal>
-                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {cottages.filter((c: any) => c.category === 'Cozy Alpine Studio').map((cottage: any, i) => {
-                      const slug = cottage.slug || cottage.name.toLowerCase().replace(/\s+/g, '-');
-                      const available = availabilityChecked ? cottage.isAvailable : true;
-                      return (
-                      <ScrollReveal key={cottage.id} delay={i * 0.1}>
-                        <Link href={`/cottages/slug/${slug}`} className="group block">
-                          <div className={`vintage-card overflow-hidden ${availabilityChecked && !available ? 'opacity-50' : ''}`}>
-                            <div className="aspect-[4/3] overflow-hidden bg-gold-50 dark:bg-vedara-900/30 relative">
-                              {availabilityChecked && !available && (
-                                <div className="absolute inset-0 bg-black/40 z-10 flex items-center justify-center">
-                                  <span className="bg-vedara-900/80 text-alabaster px-4 py-2 rounded-full text-sm font-medium">Not available</span>
-                                </div>
-                              )}
-                              <img
-                                src={`https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&q=80`}
-                                alt={cottage.name}
-                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                                loading="lazy"
-                              />
-                            </div>
-                            <div className="p-6">
-                              <div className="flex justify-between items-start mb-1">
-                                <h3 className="font-serif text-xl text-foreground group-hover:text-gold-600 dark:group-hover:text-gold-400 transition-colors">{cottage.name}</h3>
-                                <span className="text-gold-600 dark:text-gold-400 font-semibold">{formatPrice(cottage.pricePerNight)}<span className="text-gold-400 font-normal text-xs">/night</span></span>
-                              </div>
-                              <p className="text-muted-foreground text-sm mb-4 line-clamp-2">{cottage.shortDesc || cottage.description}</p>
-                              <div className="flex items-center gap-2 mb-3">
-                                <span className="text-xs bg-red-50 text-red-600 px-2 py-0.5 rounded-full font-medium">Cooking not allowed</span>
-                              </div>
-                              <div className="flex gap-4 text-xs text-muted-foreground mb-4">
-                                <span className="flex items-center gap-1"><Users className="w-3 h-3" /> {cottage.capacity} guests</span>
-                                <span className="flex items-center gap-1"><Bed className="w-3 h-3" /> {cottage.bedrooms} BR</span>
-                                <span className="flex items-center gap-1"><Bath className="w-3 h-3" /> {cottage.bathrooms} bath</span>
-                                {cottage.size && <span className="flex items-center gap-1"><Maximize className="w-3 h-3" /> {cottage.size} sqft</span>}
-                              </div>
-                              {availabilityChecked && (
-                                <div className="mb-3">
-                                  {available ? (
-                                    <span className="inline-flex items-center gap-1 text-xs text-green-600 font-medium"><CheckCircle className="w-3 h-3" /> Available</span>
-                                  ) : (
-                                    <span className="inline-flex items-center gap-1 text-xs text-red-500 font-medium"><XCircle className="w-3 h-3" /> Booked for these dates</span>
-                                  )}
-                                </div>
-                              )}
-                              <span className="text-gold-600 dark:text-gold-400 text-sm font-medium inline-flex items-center gap-1 group-hover:gap-2 transition-all">
-                                View Details <ArrowRight className="w-3 h-3" />
-                              </span>
-                            </div>
-                          </div>
-                        </Link>
-                      </ScrollReveal>
-                    )})}
                   </div>
-                </div>
-              )}
+                );
+              })}
             </>
           )}
         </div>
