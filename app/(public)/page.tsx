@@ -130,7 +130,7 @@ export default function HomePage() {
         <div className="relative z-20 text-center px-4 max-w-5xl">
           <TextReveal
             as="h1"
-            className="text-7xl md:text-9xl lg:text-[10rem] font-serif text-white leading-none mb-6 tracking-widest whitespace-nowrap text-center"
+            className="text-5xl sm:text-7xl md:text-9xl lg:text-[10rem] font-serif text-white leading-none mb-6 tracking-widest sm:whitespace-nowrap text-center"
             delay={0.5}
           >
             THE VEDARA
@@ -139,7 +139,7 @@ export default function HomePage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1, duration: 0.8 }}
-            className="text-white/80 text-xl md:text-2xl lg:text-3xl max-w-3xl mx-auto mb-10 font-serif tracking-wide text-center"
+            className="text-white/80 text-base sm:text-xl md:text-2xl lg:text-3xl max-w-3xl mx-auto mb-10 font-serif tracking-wide text-center px-2"
           >
             A Himalayan Boutique Retreat: 7 Cozy Cottages and 1 Alpine Studio with One Cozy Café
           </motion.p>
@@ -233,7 +233,7 @@ export default function HomePage() {
             <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-6">
               {cottages.filter(c => c.category === 'Premium Duplex Family Suite').map((cottage, i) => (
                 <ScrollReveal key={cottage.name} delay={i * 0.08} direction="up" distance={40}>
-                  <article className="group bg-white rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-500 reveal h-full flex flex-col">
+                  <article className="group bg-white rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-500 h-full flex flex-col">
                     <div className="aspect-[4/3] overflow-hidden bg-sand-200">
                       <img src={`https://images.unsplash.com/photo-${['1504384308090-c894fdcc538d', '1554118811-1e0d58224f24', '1506905925346-21bda4d32df4'][i]}?w=600&q=80`} alt={cottage.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                     </div>
@@ -243,9 +243,6 @@ export default function HomePage() {
                         <span className="text-primary font-semibold text-sm">{cottage.price}<span className="text-muted-foreground font-normal text-xs">/night</span></span>
                       </div>
                       <p className="text-muted-foreground text-xs mb-3 leading-relaxed line-clamp-2 flex-1">{cottage.desc}</p>
-                      <div className="flex items-center gap-2 mb-2">
-                        <span className="text-xs bg-red-50 text-red-600 px-2 py-0.5 rounded-full font-medium">Cooking not allowed</span>
-                      </div>
                       <Link href={`/cottages/slug/${cottage.slug}`} className="text-primary text-xs font-medium inline-flex items-center gap-1 group-hover:gap-2 transition-all duration-500 mt-auto">
                         View Details <ArrowRight className="w-3 h-3" />
                       </Link>
@@ -267,7 +264,7 @@ export default function HomePage() {
             <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-6">
               {cottages.filter(c => c.category === 'Intimate Mountain View Suite').map((cottage, i) => (
                 <ScrollReveal key={cottage.name} delay={i * 0.08} direction="up" distance={40}>
-                  <article className="group bg-white rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-500 reveal h-full flex flex-col">
+                  <article className="group bg-white rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-500 h-full flex flex-col">
                     <div className="aspect-[4/3] overflow-hidden bg-sand-200">
                       <img src={`https://images.unsplash.com/photo-${['1476514525535-07fb3b4ae5f1', '1519681393784-d120267933ba', '1469476568026-46a7f7b2f9c2'][i]}?w=600&q=80`} alt={cottage.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                     </div>
@@ -277,9 +274,6 @@ export default function HomePage() {
                         <span className="text-primary font-semibold text-sm">{cottage.price}<span className="text-muted-foreground font-normal text-xs">/night</span></span>
                       </div>
                       <p className="text-muted-foreground text-xs mb-3 leading-relaxed line-clamp-2 flex-1">{cottage.desc}</p>
-                      <div className="flex items-center gap-2 mb-2">
-                        <span className="text-xs bg-red-50 text-red-600 px-2 py-0.5 rounded-full font-medium">Cooking not allowed</span>
-                      </div>
                       <Link href={`/cottages/slug/${cottage.slug}`} className="text-primary text-xs font-medium inline-flex items-center gap-1 group-hover:gap-2 transition-all duration-500 mt-auto">
                         View Details <ArrowRight className="w-3 h-3" />
                       </Link>
@@ -301,7 +295,7 @@ export default function HomePage() {
             <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-6">
               {cottages.filter(c => c.category === 'Cozy Alpine Studio').map((cottage, i) => (
                 <ScrollReveal key={cottage.name} delay={i * 0.08} direction="up" distance={40}>
-                  <article className="group bg-white rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-500 reveal h-full flex flex-col">
+                  <article className="group bg-white rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-500 h-full flex flex-col">
                     <div className="aspect-[4/3] overflow-hidden bg-sand-200">
                       <img src={`https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&q=80`} alt={cottage.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                     </div>
@@ -311,9 +305,6 @@ export default function HomePage() {
                         <span className="text-primary font-semibold text-sm">{cottage.price}<span className="text-muted-foreground font-normal text-xs">/night</span></span>
                       </div>
                       <p className="text-muted-foreground text-xs mb-3 leading-relaxed line-clamp-2 flex-1">{cottage.desc}</p>
-                      <div className="flex items-center gap-2 mb-2">
-                        <span className="text-xs bg-red-50 text-red-600 px-2 py-0.5 rounded-full font-medium">Cooking not allowed</span>
-                      </div>
                       <Link href={`/cottages/slug/${cottage.slug}`} className="text-primary text-xs font-medium inline-flex items-center gap-1 group-hover:gap-2 transition-all duration-500 mt-auto">
                         View Details <ArrowRight className="w-3 h-3" />
                       </Link>
@@ -349,7 +340,7 @@ export default function HomePage() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
               {experiences.map((exp, i) => (
                   <ScrollReveal key={exp.title} delay={i * 0.08} direction="up" distance={40}>
-                    <article className="group rounded-2xl p-6 text-center transition-all duration-500 font-sans border border-white/8 reveal h-[220px] flex flex-col items-center justify-center" style={{ background: 'rgba(255,255,255,0.05)' }}>
+                    <article className="group rounded-2xl p-6 text-center transition-all duration-500 font-sans border border-white/8 h-[220px] flex flex-col items-center justify-center" style={{ background: 'rgba(255,255,255,0.05)' }}>
                       <div className="w-14 h-14 rounded-full bg-gradient-to-br from-[#9B8EA0]/25 to-[#9B8EA0]/10 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-500 flex-shrink-0">
                         <exp.icon className="w-7 h-7 text-[#9B8EA0]" />
                       </div>
@@ -417,7 +408,7 @@ export default function HomePage() {
             {testimonials.map((t, i) => (
               <ScrollReveal key={t.name} delay={i * 0.12} direction="up" distance={40}>
                 <motion.article
-                  className="bg-white rounded-2xl p-7 relative overflow-hidden reveal h-[260px] flex flex-col"
+                  className="bg-white rounded-2xl p-7 relative overflow-hidden h-[260px] flex flex-col"
                   whileHover={{ y: -4, boxShadow: '0 20px 40px rgba(0,0,0,0.06)' }}
                   transition={{ duration: 0.5 }}
                 >
@@ -459,7 +450,7 @@ export default function HomePage() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {nearbyAttractions.map((place, i) => (
               <ScrollReveal key={place.name} delay={i * 0.1} direction="up" distance={40}>
-                <article className="bg-white rounded-2xl p-5 flex items-start gap-4 group hover:border-primary/30 transition-all duration-500 reveal h-[100px]">
+                <article className="bg-white rounded-2xl p-5 flex items-start gap-4 group hover:border-primary/30 transition-all duration-500 h-[100px]">
                   <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/20 transition-colors duration-500">
                     <place.icon className="w-5 h-5 text-primary" />
                   </div>
@@ -496,7 +487,7 @@ export default function HomePage() {
           </ScrollReveal>
           <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
             <ScrollReveal delay={0.1} direction="up" distance={40}>
-              <article className="bg-white rounded-2xl p-7 text-center reveal h-[240px] flex flex-col items-center justify-center">
+              <article className="bg-white rounded-2xl p-7 text-center h-[240px] flex flex-col items-center justify-center">
                 <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mb-4 flex-shrink-0">
                   <MapPin className="w-7 h-7 text-primary" />
                 </div>
@@ -505,7 +496,7 @@ export default function HomePage() {
               </article>
             </ScrollReveal>
             <ScrollReveal delay={0.2} direction="up" distance={40}>
-              <article className="bg-white rounded-2xl p-7 text-center reveal h-[240px] flex flex-col items-center justify-center">
+              <article className="bg-white rounded-2xl p-7 text-center h-[240px] flex flex-col items-center justify-center">
                 <div className="w-14 h-14 rounded-2xl bg-[#9B8EA0]/10 flex items-center justify-center mb-4 flex-shrink-0">
                   <MapPin className="w-7 h-7 text-[#9B8EA0]" />
                 </div>
@@ -514,7 +505,7 @@ export default function HomePage() {
               </article>
             </ScrollReveal>
             <ScrollReveal delay={0.3} direction="up" distance={40}>
-              <article className="bg-white rounded-2xl p-7 text-center reveal h-[240px] flex flex-col items-center justify-center">
+              <article className="bg-white rounded-2xl p-7 text-center h-[240px] flex flex-col items-center justify-center">
                 <div className="w-14 h-14 rounded-2xl bg-gold-400/10 flex items-center justify-center mb-4 flex-shrink-0">
                   <MapPin className="w-7 h-7 text-gold-500" />
                 </div>

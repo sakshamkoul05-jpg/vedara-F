@@ -44,6 +44,8 @@ export function FogParticles({ opacity = 0.3, count = 30, color = '255,255,255',
     const canvas = canvasRef.current;
     if (!canvas) return;
 
+    if (window.matchMedia('(max-width: 768px)').matches) return;
+
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
