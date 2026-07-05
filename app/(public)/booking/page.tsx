@@ -186,7 +186,8 @@ export default function BookingPage() {
         guestName, guestEmail, guestPhone, nationality,
         cottageId: selectedCottage,
         checkIn, checkOut,
-        adults, children,
+        adults,
+        ...(children ? { children } : {}),
         specialRequests,
         couponCode: isValid ? code : null,
         idProof: `${idProofType}: ${idProofNumber}`,
@@ -194,6 +195,10 @@ export default function BookingPage() {
       });
 
       const { booking, razorpayOrder } = res.data;
+
+      if (!razorpayOrder?.id) {
+        throw new Error('Failed to create payment order. Please try again.');
+      }
 
       const options = {
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
@@ -229,6 +234,12 @@ export default function BookingPage() {
         throw new Error('Payment gateway failed to load. Please refresh the page or try a different browser.');
       }
       const rzp = new (window as any).Razorpay(options);
+      rzp.on('payment.failed', (response: any) => {
+        setPaymentLoading(false);
+        const desc = response.error?.description || 'Something went wrong.';
+        const code = response.error?.code ? ` (${response.error.code})` : '';
+        alert(`Payment failed${code}: ${desc}\nPlease try again or contact support at +91-91188-82242.`);
+      });
       rzp.open();
     } catch (err: any) {
       alert(err.message || 'Booking failed. Please try again.');

@@ -53,6 +53,20 @@ export const api = {
 
   delete: <T = any>(endpoint: string, token?: string | null) =>
     request<T>(endpoint, { method: 'DELETE', token: token || undefined }),
+
+  /** Local Razorpay endpoints (handled by this Next.js app) */
+  local: {
+    createOrder: (data: { amount: number; currency?: string; receipt?: string }) =>
+      fetch('/api/payments/create-order', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      }).then(async (r) => { const d = await r.json(); if (!r.ok) throw new Error(d.error || 'Failed to create order'); return d; }),
+    verify: (data: { razorpay_order_id: string; razorpay_payment_id: string; razorpay_signature: string }) =>
+      fetch('/api/payments/verify', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      }).then(async (r) => { const d = await r.json(); if (!r.ok) throw new Error(d.error || 'Verification failed'); return d; }),
+  },
 };
 
 export const endpoints = {
