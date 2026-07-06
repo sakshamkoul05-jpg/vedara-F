@@ -1,4 +1,4 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://vedara-b-production.up.railway.app/api';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://vedara-backend-production.up.railway.app/api';
 const LOCAL_API = ''; // empty = same origin for Next.js API routes
 
 type RequestOptions = {

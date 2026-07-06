@@ -7,7 +7,7 @@ const ContentSecurityPolicy = [
   "font-src 'self' https://fonts.gstatic.com",
   "img-src 'self' data: blob: https: http:",
   "media-src 'self' https:",
-  "connect-src 'self' https://vedara-b-production.up.railway.app wss://vedara-b-production.up.railway.app",
+  "connect-src 'self' https://vedara-backend-production.up.railway.app wss://vedara-backend-production.up.railway.app https://vedara-b-production.up.railway.app wss://vedara-b-production.up.railway.app",
   "frame-src 'self' https://checkout.razorpay.com",
   "object-src 'none'",
   "base-uri 'self'",
@@ -16,25 +16,18 @@ const ContentSecurityPolicy = [
 ].join('; ');
 
 const securityHeaders = [
-  { key: 'Content-Security-Policy', value: ContentSecurityPolicy },
   { key: 'X-Content-Type-Options', value: 'nosniff' },
   { key: 'X-Frame-Options', value: 'DENY' },
   { key: 'X-XSS-Protection', value: '1; mode=block' },
   { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
   { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=(), payment=(self)' },
-  { key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubDomains; preload' },
   { key: 'X-DNS-Prefetch-Control', value: 'on' },
-  {
-    key: 'Set-Cookie',
-    value: 'HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=604800',
-  },
 ];
 
 const nextConfig: NextConfig = {
   images: {
     domains: ['res.cloudinary.com', 'images.unsplash.com'],
     formats: ['image/avif', 'image/webp'],
-    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
   experimental: {
     optimizePackageImports: ['lucide-react', 'framer-motion'],
@@ -43,7 +36,11 @@ const nextConfig: NextConfig = {
     return [
       {
         source: '/(.*)',
-        headers: securityHeaders,
+        headers: [
+          ...securityHeaders,
+          { key: 'Content-Security-Policy', value: ContentSecurityPolicy },
+          { key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubDomains; preload' },
+        ],
       },
       {
         source: '/api/:path*',
