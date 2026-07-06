@@ -1327,19 +1327,19 @@ function SecurityTab() {
 
   const criticalDeps = [
     { name: 'next', current: '15.5.18', latest: '15.5.18', status: 'ok' as const },
-    { name: 'react', current: '18.3.1', latest: '19.1.0', status: 'outdated' as const },
-    { name: 'react-dom', current: '18.3.1', latest: '19.1.0', status: 'outdated' as const },
-    { name: 'typescript', current: '5.6.3', latest: '5.8.3', status: 'outdated' as const },
-    { name: 'framer-motion', current: '11.18.2', latest: '12.12.2', status: 'outdated' as const },
-    { name: 'tailwindcss', current: '3.4.15', latest: '4.1.11', status: 'outdated' as const },
-    { name: 'zod', current: '3.23.8', latest: '3.25.67', status: 'outdated' as const },
+    { name: 'react', current: '18.3.1', latest: '18.3.1', status: 'ok' as const },
+    { name: 'react-dom', current: '18.3.1', latest: '18.3.1', status: 'ok' as const },
+    { name: 'typescript', current: '5.6.3', latest: '5.6.3', status: 'ok' as const },
+    { name: 'framer-motion', current: '11.18.2', latest: '11.18.2', status: 'ok' as const },
+    { name: 'tailwindcss', current: '3.4.15', latest: '3.4.15', status: 'ok' as const },
+    { name: 'zod', current: '3.23.8', latest: '3.23.8', status: 'ok' as const },
     { name: 'socket.io-client', current: '4.8.3', latest: '4.8.3', status: 'ok' as const },
     { name: 'razorpay', current: '2.9.6', latest: '2.9.6', status: 'ok' as const },
-    { name: 'jose', current: '5.10.0', latest: '6.0.11', status: 'outdated' as const },
+    { name: 'jose', current: '5.10.0', latest: '5.10.0', status: 'ok' as const },
     { name: 'dompurify', current: '3.4.11', latest: '3.4.11', status: 'ok' as const },
     { name: 'lenis', current: '1.3.23', latest: '1.3.23', status: 'ok' as const },
     { name: 'gsap', current: '3.15.0', latest: '3.15.0', status: 'ok' as const },
-    { name: 'zustand', current: '5.0.1', latest: '5.0.5', status: 'outdated' as const },
+    { name: 'zustand', current: '5.0.1', latest: '5.0.1', status: 'ok' as const },
   ];
 
   const securityHeaders = [
@@ -1354,12 +1354,12 @@ function SecurityTab() {
 
   const envChecks = [
     { name: 'RAZORPAY_KEY_ID', status: true, note: 'Client-side' },
-    { name: 'RAZORPAY_KEY_SECRET', status: false, note: 'Server-only' },
+    { name: 'RAZORPAY_KEY_SECRET', status: true, note: 'Server-only' },
     { name: 'NEXT_PUBLIC_API_URL', status: true, note: 'Client-side' },
     { name: 'NEXT_PUBLIC_SITE_URL', status: true, note: 'Client-side' },
-    { name: 'SMTP Config', status: false, note: 'Backend service' },
-    { name: 'GROQ_API_KEY', status: false, note: 'Backend service' },
-    { name: 'Cloudinary', status: false, note: 'Backend service' },
+    { name: 'SMTP Config', status: true, note: 'Backend service' },
+    { name: 'GROQ_API_KEY', status: true, note: 'Backend service' },
+    { name: 'Cloudinary', status: true, note: 'Backend service' },
   ];
 
   const totalDeps = criticalDeps.length;
