@@ -17,8 +17,12 @@ import {
   Calendar, Home, User, Check, ArrowRight, ArrowLeft,
   Percent, Tag, Loader2, CreditCard, Sparkles, Gift, ChevronDown, Users
 } from 'lucide-react';
+import { countries } from '@/lib/countries';
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
 
-const idProofTypes = ['Aadhaar Card', 'Passport', 'Driving License'];
+const indianIdProofTypes = ['Aadhaar Card', 'Passport', 'Driving License'];
+const foreignIdProofTypes = ['Passport'];
 
 const indianStates = [
   'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh', 'Goa', 'Gujarat',
@@ -40,7 +44,7 @@ export default function BookingPage() {
   const [selectedCottage, setSelectedCottage] = useState<string>(searchParams.get('cottageId') || '');
   const [adults, setAdults] = useState(parseInt(searchParams.get('adults') || '2'));
   const [children, setChildren] = useState(parseInt(searchParams.get('children') || '0'));
-  const [nationality, setNationality] = useState(searchParams.get('nationality') || 'Indian');
+  const [nationality, setNationality] = useState(searchParams.get('nationality') || 'IN');
   const [guestName, setGuestName] = useState('');
   const [guestEmail, setGuestEmail] = useState('');
   const [guestPhone, setGuestPhone] = useState('');
@@ -52,8 +56,9 @@ export default function BookingPage() {
   const [pincode, setPincode] = useState('');
   const [specialRequests, setSpecialRequests] = useState('');
   const [cottages, setCottages] = useState<Cottage[]>([]);
-  const [loading, setLoading] = useState(false);
   const [stepLoading, setStepLoading] = useState(false);
+  const [formErrors, setFormErrors] = useState<string[]>([]);
+  const [detailCottage, setDetailCottage] = useState<Cottage | null>(null);
   const [bookingData, setBookingData] = useState<any>(null);
   const [paymentLoading, setPaymentLoading] = useState(false);
   const [dateError, setDateError] = useState('');
@@ -67,7 +72,22 @@ export default function BookingPage() {
 
   useEffect(() => {
     if (searchParams.get('cottageId') && searchParams.get('checkIn') && searchParams.get('checkOut')) {
-      setStep(3);
+      setSelectedCottage(searchParams.get('cottageId') || '');
+      setStepLoading(true);
+      api.get(`/bookings/available-cottages?checkIn=${encodeURIComponent(searchParams.get('checkIn') || '')}&checkOut=${encodeURIComponent(searchParams.get('checkOut') || '')}`)
+        .then((res: any) => {
+          setCottages(res.data);
+          const urlCottageId = searchParams.get('cottageId');
+          const found = (res.data || []).find((c: any) => c.id === urlCottageId);
+          if (found) {
+            setSelectedCottage(urlCottageId!);
+          } else if (res.data?.length > 0) {
+            setSelectedCottage(res.data[0].id);
+          }
+          setStep(3);
+        })
+        .catch(() => { setStep(1); })
+        .finally(() => setStepLoading(false));
     }
   }, [searchParams]);
 
@@ -86,6 +106,21 @@ export default function BookingPage() {
     }
   }, [pincode]);
 
+  const handleCheckInChange = (value: string) => {
+    const today = getToday();
+    if (value < today) {
+      setDateError('Check-in date cannot be in the past');
+      setCheckIn(today);
+      return;
+    }
+    setCheckIn(value);
+    setDateError('');
+    if (checkOut && new Date(checkOut) <= new Date(value)) {
+      setCheckOut('');
+      setDateError('Check-out must be after check-in');
+    }
+  };
+
   const handleCheckOutChange = (value: string) => {
     setCheckOut(value);
     setDateError('');
@@ -93,10 +128,19 @@ export default function BookingPage() {
       setDateError('Check-out date must be after check-in date');
       setCheckOut('');
     }
+    if (value && value < getToday()) {
+      setDateError('Check-out date cannot be in the past');
+      setCheckOut('');
+    }
   };
 
   const handleAvailabilityCheck = async () => {
     if (!checkIn || !checkOut) return;
+    const today = getToday();
+    if (checkIn < today) {
+      setDateError('Check-in date cannot be in the past');
+      return;
+    }
     if (new Date(checkOut) <= new Date(checkIn)) {
       setDateError('Check-out date must be after check-in date');
       return;
@@ -115,78 +159,66 @@ export default function BookingPage() {
   };
 
   const handleCreateBooking = async () => {
-    if (!selectedCottage || !guestName || !guestPhone) {
-      alert('Please fill in all required fields (Name and Phone)');
-      return;
-    }
-    if (!idProofType || !idProofNumber) {
-      alert('Please provide ID proof details');
-      return;
-    }
-    if (!address || !city || !state || !pincode) {
-      alert('Please provide your complete address');
-      return;
-    }
+    const errors: string[] = [];
+    if (!selectedCottage) errors.push('Please select a cottage');
+    if (!guestName.trim()) errors.push('Full name is required');
+    if (!guestPhone || guestPhone.length < 7) errors.push('Valid phone number is required');
+    if (guestEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(guestEmail)) errors.push('Please enter a valid email address');
+    if (!idProofType) errors.push('Please select an ID proof type');
+    if (!idProofNumber.trim()) errors.push('ID proof number is required');
+    if (idProofType === 'Aadhaar Card' && !/^\d{12}$/.test(idProofNumber.replace(/\s/g, ''))) errors.push('Aadhaar Card must be 12 digits');
+    if (!address.trim()) errors.push('Street address is required');
+    if (!city.trim()) errors.push('City is required');
+    if (!state.trim()) errors.push('State is required');
+    if (!pincode.trim()) errors.push('Postcode is required');
+    if (nationality === 'IN' && !/^\d{6}$/.test(pincode)) errors.push('Indian pincode must be 6 digits');
+    if (adults < 1) errors.push('At least 1 adult is required');
+    if (selectedCottageData && adults > selectedCottageData.capacity) errors.push(`Maximum ${selectedCottageData.capacity} guests allowed`);
+    if (selectedCottageData && (adults + children) > selectedCottageData.capacity) errors.push(`Total guests (${adults + children}) exceeds cottage capacity of ${selectedCottageData.capacity}`);
+    if (children < 0) errors.push('Children cannot be negative');
+    if (errors.length > 0) { setFormErrors(errors); return; }
+    setFormErrors([]);
     setPaymentLoading(true);
     try {
       const fullAddress = `${address}, ${city}, ${state} - ${pincode}`;
-      // Create booking on backend (booking created, its razorpay order ignored)
       const res = await api.post('/bookings', {
         guestName, guestEmail, guestPhone, nationality,
         cottageId: selectedCottage,
         checkIn, checkOut,
         adults,
-        ...(children > 0 ? { children } : {}),
+        ...(children ? { children } : {}),
         specialRequests,
         couponCode: isValid ? code : null,
         idProof: `${idProofType}: ${idProofNumber}`,
         address: fullAddress,
       });
 
-      const { booking } = res.data;
+      const { booking, razorpayOrder } = res.data;
 
-      // Create Razorpay order locally using our key
-      const order = await api.local.createOrder({
-        amount: totalAmount,
-        currency: 'INR',
-        receipt: booking.bookingRef || `booking_${booking.id}`,
-      });
+      if (!razorpayOrder?.id) {
+        throw new Error('Failed to create payment order. Please try again.');
+      }
 
       const options = {
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
-        amount: order.amount,
-        currency: order.currency,
+        amount: razorpayOrder.amount,
+        currency: razorpayOrder.currency,
         name: 'The Vedara',
         description: `Booking ${booking.bookingRef}`,
-        order_id: order.id,
+        order_id: razorpayOrder.id,
         handler: async (response: any) => {
           try {
-            // Verify signature locally
-            const verification = await api.local.verify({
-              razorpay_order_id: response.razorpay_order_id,
-              razorpay_payment_id: response.razorpay_payment_id,
-              razorpay_signature: response.razorpay_signature,
+            await api.post('/bookings/confirm-payment', {
+              bookingId: booking.id,
+              razorpayPaymentId: response.razorpay_payment_id,
+              razorpayOrderId: response.razorpay_order_id,
+              razorpaySignature: response.razorpay_signature,
             });
-
-            if (verification.verified) {
-              // Notify external backend (best-effort)
-              try {
-                await api.post('/bookings/confirm-payment', {
-                  bookingId: booking.id,
-                  razorpayPaymentId: response.razorpay_payment_id,
-                  razorpayOrderId: response.razorpay_order_id,
-                  razorpaySignature: response.razorpay_signature,
-                });
-              } catch {
-                // External backend verification may fail (different key_secret),
-                // but payment is already verified locally
-              }
-              setBookingData({ ...booking, confirmed: true, ...verification });
-              setStep(4);
-            } else {
-              alert('Payment verification failed. Please contact support at +91-91188-82242.');
-            }
+            setBookingData({ ...booking, confirmed: true });
+            setPaymentLoading(false);
+            setStep(4);
           } catch {
+            setPaymentLoading(false);
             alert('Payment verification failed. Please contact support at +91-91188-82242.');
           }
         },
@@ -201,8 +233,13 @@ export default function BookingPage() {
         throw new Error('Payment gateway failed to load. Please refresh the page or try a different browser.');
       }
       const rzp = new (window as any).Razorpay(options);
+      rzp.on('payment.failed', (response: any) => {
+        setPaymentLoading(false);
+        const desc = response.error?.description || 'Something went wrong.';
+        const code = response.error?.code ? ` (${response.error.code})` : '';
+        alert(`Payment failed${code}: ${desc}\nPlease try again or contact support at +91-91188-82242.`);
+      });
       rzp.open();
-      setPaymentLoading(false);
     } catch (err: any) {
       alert(err.message || 'Booking failed. Please try again.');
       setPaymentLoading(false);
@@ -212,7 +249,7 @@ export default function BookingPage() {
   const selectedCottageData = cottages.find((c) => c.id === selectedCottage);
   const nights = checkIn && checkOut ? calculateNights(new Date(checkIn), new Date(checkOut)) : 0;
   const subtotal = selectedCottageData ? selectedCottageData.pricePerNight * nights : 0;
-  const extraGuests = Math.max(0, adults + children - 2);
+  const extraGuests = Math.max(0, adults + children - (selectedCottageData?.capacity || 2));
   const extraGuestCharges = extraGuests * 1500 * nights;
   const discountAmount = isValid ? Math.min(discountType === 'PERCENTAGE' ? Math.round(subtotal * discount / 100) : discount, subtotal + extraGuestCharges) : 0;
   const taxes = Math.round((subtotal + extraGuestCharges - discountAmount) * 0.12);
@@ -232,7 +269,7 @@ export default function BookingPage() {
             </TextReveal>
           </ScrollReveal>
 
-          <div className="mt-10 mb-8" role="progressbar" aria-valuenow={step} aria-valuemin={1} aria-valuemax={4} aria-label={`Step ${step} of 4: ${stepLabels[step - 1]}`}>
+          <div className="mt-10 mb-8">
             <div className="flex items-center gap-2">
               {[1, 2, 3, 4].map((s) => (
                 <div key={s} className="flex-1 flex flex-col items-center">
@@ -285,7 +322,7 @@ export default function BookingPage() {
                             <label className="vintage-label">Check-in Date *</label>
                             <div className="relative">
                               <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gold-400" />
-                              <Input type="date" value={checkIn} onChange={(e) => { setCheckIn(e.target.value); setDateError(''); if (checkOut && new Date(checkOut) <= new Date(e.target.value)) { setCheckOut(''); setDateError('Check-out must be after check-in'); } }} min={getToday()} className="pl-10" />
+                              <Input type="date" value={checkIn} onChange={(e) => handleCheckInChange(e.target.value)} min={getToday()} className="pl-10" />
                             </div>
                           </div>
                           <div>
@@ -313,28 +350,76 @@ export default function BookingPage() {
                     exit={{ opacity: 0, x: 20 }}
                   >
                     <h2 className="font-serif text-2xl text-foreground mb-6">Select a Cottage</h2>
-                    <div className="grid md:grid-cols-2 gap-6">
+                    {cottages.length === 0 ? (
+                      <div className="text-center py-12">
+                        <Home className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                        <p className="text-foreground font-medium mb-1">No cottages available</p>
+                        <p className="text-muted-foreground text-sm mb-4">There are no cottages available for your selected dates. Try different dates.</p>
+                        <Button variant="secondary" onClick={() => setStep(1)}>
+                          <ArrowLeft className="w-4 h-4 mr-2" /> Change Dates
+                        </Button>
+                      </div>
+                    ) : (
+                    <div className="space-y-6">
                       {cottages.map((cottage) => {
                         const isAvailable = (cottage as any).isAvailable !== false;
+                        let images: string[] = [];
+                        try { images = typeof cottage.images === 'string' ? JSON.parse(cottage.images) : (cottage.images || []); } catch { images = []; }
+                        const imageUrl = images.length > 0 ? images[0] : `https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&q=80`;
+                        let amenitiesList: string[] = [];
+                        try { amenitiesList = typeof cottage.amenities === 'string' ? JSON.parse(cottage.amenities) : (cottage.amenities || []); } catch { amenitiesList = []; }
                         return (
                           <motion.button
                             key={cottage.id}
                             onClick={() => { setSelectedCottage(cottage.id); setStep(3); }}
                             disabled={!isAvailable}
-                            className={`vintage-card p-6 text-left transition-all ${
+                            className={`vintage-card overflow-hidden text-left transition-all w-full ${
                               !isAvailable ? 'opacity-40 cursor-not-allowed' : 'hover:border-gold-400 cursor-pointer'
                             } ${selectedCottage === cottage.id ? 'border-gold-500 ring-2 ring-gold-500/20' : ''}`}
                             whileHover={isAvailable ? { y: -2 } : {}}
                           >
-                            <h3 className="font-serif text-lg text-foreground mb-1">{cottage.name}</h3>
-                            <p className="text-sm text-muted-foreground mb-3 line-clamp-2">{cottage.shortDesc || cottage.description}</p>
-                            <span className="text-gold-600 font-semibold">{formatPrice(cottage.pricePerNight)}<span className="text-gold-400 font-normal text-xs">/night</span></span>
-                            {!isAvailable && <span className="block text-red-500 text-xs mt-2">Not available for selected dates</span>}
+                            <div className="md:flex">
+                              <div className="md:w-48 md:flex-shrink-0 aspect-[4/3] md:aspect-auto overflow-hidden bg-gold-50">
+                                <img src={imageUrl} alt={cottage.name} className="w-full h-full object-cover" loading="lazy" />
+                              </div>
+                              <div className="p-5 flex-1">
+                                <div className="flex items-start justify-between gap-3 mb-2">
+                                  <div>
+                                    {cottage.category && <span className="text-xs text-gold-600 bg-gold-50 px-2 py-0.5 rounded-full font-medium">{cottage.category}</span>}
+                                    <h3 className="font-serif text-xl text-foreground mt-1">{cottage.name}</h3>
+                                  </div>
+                                  <div className="text-right flex-shrink-0">
+                                    <span className="text-gold-600 font-bold text-lg">{formatPrice(cottage.pricePerNight)}</span>
+                                    <span className="text-gold-400 text-xs block">/night</span>
+                                  </div>
+                                </div>
+                                <p className="text-sm text-muted-foreground mb-3 leading-relaxed">{cottage.shortDesc || cottage.description}</p>
+                                <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground mb-3">
+                                  <span className="flex items-center gap-1"><Users className="w-3 h-3" /> {cottage.capacity} guests</span>
+                                  <span className="flex items-center gap-1"><Home className="w-3 h-3" /> {cottage.bedrooms} BR</span>
+                                  <span className="flex items-center gap-1"><Home className="w-3 h-3" /> {cottage.bathrooms} bath</span>
+                                  {cottage.size && <span className="flex items-center gap-1">{cottage.size} sqft</span>}
+                                </div>
+                                {amenitiesList.length > 0 && (
+                                  <div className="flex flex-wrap gap-1.5 mb-3">
+                                    {amenitiesList.slice(0, 5).map((a: string) => (
+                                      <span key={a} className="text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full capitalize">{a}</span>
+                                    ))}
+                                    {amenitiesList.length > 5 && <span className="text-xs text-muted-foreground">+{amenitiesList.length - 5} more</span>}
+                                  </div>
+                                )}
+                                <div className="flex items-center justify-between">
+                                  <button type="button" onClick={(e) => { e.stopPropagation(); setDetailCottage(cottage); }} className="text-xs text-primary font-medium hover:underline">View Details</button>
+                                  {!isAvailable && <span className="text-red-500 text-xs font-medium">Not available for selected dates</span>}
+                                </div>
+                              </div>
+                            </div>
                           </motion.button>
                         );
                       })}
                     </div>
-                    <Button variant="secondary" onClick={() => setStep(1)} className="mt-6">
+                    )}
+                    <Button variant="secondary" onClick={() => { setSelectedCottage(''); setStep(1); }} className="mt-6">
                       <ArrowLeft className="w-4 h-4 mr-2" /> Back
                     </Button>
                   </motion.div>
@@ -370,34 +455,43 @@ export default function BookingPage() {
                             <label className="vintage-label">Full Name *</label>
                             <Input value={guestName} onChange={(e) => setGuestName(e.target.value)} placeholder="As on ID proof" />
                           </div>
-                          <div className="grid grid-cols-2 gap-4">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
                               <label className="vintage-label">Email</label>
                               <Input type="email" value={guestEmail} onChange={(e) => setGuestEmail(e.target.value)} placeholder="email@example.com" />
                             </div>
                             <div>
                               <label className="vintage-label">Phone *</label>
-                              <Input 
-                                type="tel" 
-                                value={guestPhone} 
-                                onChange={(e) => {
-                                  const value = e.target.value.replace(/[^\d+\-\s]/g, '');
-                                  setGuestPhone(value);
-                                }} 
-                                placeholder="+91 99999 99999" 
+                              <PhoneInput
+                                country={nationality.toLowerCase()}
+                                value={guestPhone}
+                                onChange={(phone) => setGuestPhone(phone)}
+                                inputProps={{ className: 'flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2' }}
+                                containerClass="!w-full"
+                                inputClass="!w-full !h-10 !text-sm"
+                                buttonClass="!border-input !bg-background"
                               />
                             </div>
                           </div>
                           <div>
-                            <label className="vintage-label">Nationality *</label>
+                            <label className="vintage-label">Country *</label>
                             <div className="relative">
                               <select
                                 value={nationality}
-                                onChange={(e) => setNationality(e.target.value)}
+                                onChange={(e) => {
+              setNationality(e.target.value);
+              setIdProofNumber('');
+              if (e.target.value !== 'IN') {
+                                    setIdProofType('Passport');
+                                  } else {
+                                    setIdProofType('');
+                                  }
+                                }}
                                 className="vintage-input appearance-none pr-10"
                               >
-                                <option value="Indian">Indian</option>
-                                <option value="Foreign">Foreign National</option>
+                                {countries.map((c) => (
+                                  <option key={c.code} value={c.code}>{c.flag} {c.name}</option>
+                                ))}
                               </select>
                               <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gold-400 pointer-events-none" />
                             </div>
@@ -405,7 +499,7 @@ export default function BookingPage() {
 
                           <div className="border-t border-border pt-4">
                             <h3 className="font-medium text-foreground mb-3 text-sm">ID Proof *</h3>
-                            <div className="grid grid-cols-2 gap-4">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                               <div>
                                 <label className="vintage-label">ID Type</label>
                                 <div className="relative">
@@ -413,9 +507,10 @@ export default function BookingPage() {
                                     value={idProofType}
                                     onChange={(e) => setIdProofType(e.target.value)}
                                     className="vintage-input appearance-none pr-10"
+                                    disabled={nationality !== 'IN'}
                                   >
                                     <option value="">Select ID type</option>
-                                    {idProofTypes.map((type) => (
+                                    {(nationality === 'IN' ? indianIdProofTypes : foreignIdProofTypes).map((type) => (
                                       <option key={type} value={type}>{type}</option>
                                     ))}
                                   </select>
@@ -436,28 +531,32 @@ export default function BookingPage() {
                                 <label className="vintage-label">Street Address</label>
                                 <Input value={address} onChange={(e) => setAddress(e.target.value)} placeholder="House/Flat no, Street, Locality" />
                               </div>
-                              <div className="grid grid-cols-3 gap-3">
+                              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                                 <div>
                                   <label className="vintage-label">City</label>
                                   <Input value={city} onChange={(e) => setCity(e.target.value)} placeholder="City" />
                                 </div>
                                 <div>
-                                  <label className="vintage-label">State</label>
-                                  <div className="relative">
-                                    <select
-                                      value={state}
-                                      onChange={(e) => setState(e.target.value)}
-                                      className="vintage-input appearance-none pr-10"
-                                    >
-                                      <option value="">Select State</option>
-                                      {indianStates.map(s => <option key={s} value={s}>{s}</option>)}
-                                    </select>
-                                    <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gold-400 pointer-events-none" />
-                                  </div>
+                                  <label className="vintage-label">{nationality === 'IN' ? 'State' : 'State / Region'}</label>
+                                  {nationality === 'IN' ? (
+                                    <div className="relative">
+                                      <select
+                                        value={state}
+                                        onChange={(e) => setState(e.target.value)}
+                                        className="vintage-input appearance-none pr-10"
+                                      >
+                                        <option value="">Select State</option>
+                                        {indianStates.map(s => <option key={s} value={s}>{s}</option>)}
+                                      </select>
+                                      <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gold-400 pointer-events-none" />
+                                    </div>
+                                  ) : (
+                                    <Input value={state} onChange={(e) => setState(e.target.value)} placeholder="State or region" />
+                                  )}
                                 </div>
                                 <div>
-                                  <label className="vintage-label">Pincode</label>
-                                  <Input value={pincode} onChange={(e) => { const v = e.target.value.replace(/\D/g, '').slice(0, 6); setPincode(v); }} placeholder="000000" maxLength={6} />
+                                  <label className="vintage-label">Postcode/Zipcode</label>
+                                  <Input value={pincode} onChange={(e) => setPincode(nationality === 'IN' ? e.target.value.replace(/\D/g, '').slice(0, 6) : e.target.value)} placeholder={nationality === 'IN' ? '000000' : 'Postcode/Zipcode'} maxLength={nationality === 'IN' ? 6 : 20} />
                                 </div>
                               </div>
                             </div>
@@ -466,11 +565,11 @@ export default function BookingPage() {
                           <div className="grid grid-cols-2 gap-4">
                             <div>
                               <label className="vintage-label">Adults (max {selectedCottageData?.capacity || 4})</label>
-                              <Input type="number" min={1} max={selectedCottageData?.capacity || 4} value={adults} onChange={(e) => { const v = parseInt(e.target.value) || 1; setAdults(Math.min(v, selectedCottageData?.capacity || 4)); }} />
+                              <Input type="number" min={1} max={selectedCottageData?.capacity || 4} value={adults} onChange={(e) => { const v = parseInt(e.target.value); if (!isNaN(v)) setAdults(Math.max(1, Math.min(v, selectedCottageData?.capacity || 4))); }} />
                             </div>
                             <div>
                               <label className="vintage-label">Children</label>
-                              <Input type="number" min={0} max={10} value={children} onChange={(e) => setChildren(parseInt(e.target.value) || 0)} />
+                              <Input type="number" min={0} max={10} value={children} onChange={(e) => { const v = parseInt(e.target.value); if (!isNaN(v)) setChildren(Math.max(0, Math.min(v, 10))); }} />
                             </div>
                           </div>
                           <div>
@@ -534,6 +633,13 @@ export default function BookingPage() {
                               {paymentLoading ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Processing...</> : `Pay ${formatPrice(totalAmount)}`}
                             </Button>
                           </div>
+                          {formErrors.length > 0 && (
+                            <div className="mt-4 p-3 rounded-lg bg-red-50 border border-red-200">
+                              {formErrors.map((err, i) => (
+                                <p key={i} className="text-red-600 text-xs">{err}</p>
+                              ))}
+                            </div>
+                          )}
                         </div>
                       </div>
                     </ScrollReveal>
@@ -558,7 +664,7 @@ export default function BookingPage() {
                         </motion.div>
                         <h2 className="font-serif text-3xl text-foreground mb-4">Booking Confirmed!</h2>
                         <p className="text-muted-foreground mb-6">
-                          Thank you! Your booking has been confirmed. A confirmation email has been sent to {guestEmail || 'your email'}.
+                          Thank you! Your booking has been confirmed.{guestEmail ? ` A confirmation email has been sent to ${guestEmail}.` : ' Please check your email for confirmation details.'}
                         </p>
                         <div className="bg-gold-50 rounded-xl p-6 mb-8 text-left">
                           <p className="text-sm text-muted-foreground mb-1">Booking Reference</p>
@@ -575,9 +681,12 @@ export default function BookingPage() {
                           </div>
                         </div>
                         <p className="text-xs text-muted-foreground mb-6">
-                          WhatsApp confirmation sent to +91-91188-82242 and email to vedararetreat@gmail.com
+                          A confirmation has been sent to your phone and email.
                         </p>
-                        <Button variant="primary" onClick={() => router.push('/')}>Back to Home</Button>
+                        <div className="flex gap-3 justify-center">
+                          <Button variant="primary" onClick={() => router.push('/')}>Back to Home</Button>
+                          <Button variant="secondary" onClick={() => router.push('/my-bookings')}>View My Bookings</Button>
+                        </div>
                       </div>
                     </ScrollReveal>
                   </motion.div>
@@ -665,6 +774,84 @@ export default function BookingPage() {
           </div>
         </div>
       </section>
+
+      {detailCottage && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={() => setDetailCottage(null)}>
+          <div className="absolute inset-0 bg-black/50" />
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            className="relative bg-white rounded-2xl max-w-2xl w-full max-h-[85vh] overflow-y-auto shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {(() => {
+              let images: string[] = [];
+              try { images = typeof detailCottage.images === 'string' ? JSON.parse(detailCottage.images) : (detailCottage.images || []); } catch { images = []; }
+              const imageUrl = images.length > 0 ? images[0] : `https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=800&q=80`;
+              let amenitiesList: string[] = [];
+              try { amenitiesList = typeof detailCottage.amenities === 'string' ? JSON.parse(detailCottage.amenities) : (detailCottage.amenities || []); } catch { amenitiesList = []; }
+              return (
+                <>
+                  <div className="aspect-[2/1] overflow-hidden rounded-t-2xl">
+                    <img src={imageUrl} alt={detailCottage.name} className="w-full h-full object-cover" />
+                  </div>
+                  <div className="p-6">
+                    <div className="flex items-start justify-between mb-4">
+                      <div>
+                        {detailCottage.category && <span className="text-xs text-gold-600 bg-gold-50 px-2 py-0.5 rounded-full font-medium">{detailCottage.category}</span>}
+                        <h2 className="font-serif text-2xl text-foreground mt-1">{detailCottage.name}</h2>
+                      </div>
+                      <button onClick={() => setDetailCottage(null)} className="text-muted-foreground hover:text-foreground p-1">&times;</button>
+                    </div>
+                    <div className="flex items-baseline gap-2 mb-4">
+                      <span className="text-gold-600 font-bold text-xl">{formatPrice(detailCottage.pricePerNight)}</span>
+                      <span className="text-muted-foreground text-sm">/night</span>
+                    </div>
+                    <p className="text-muted-foreground leading-relaxed mb-4">{detailCottage.description}</p>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+                      <div className="vintage-card p-3 text-center">
+                        <Users className="w-4 h-4 text-gold-500 mx-auto mb-1" />
+                        <p className="text-xs text-muted-foreground">Guests</p>
+                        <p className="text-sm font-medium text-foreground">{detailCottage.capacity}</p>
+                      </div>
+                      <div className="vintage-card p-3 text-center">
+                        <Home className="w-4 h-4 text-gold-500 mx-auto mb-1" />
+                        <p className="text-xs text-muted-foreground">Bedrooms</p>
+                        <p className="text-sm font-medium text-foreground">{detailCottage.bedrooms}</p>
+                      </div>
+                      <div className="vintage-card p-3 text-center">
+                        <Home className="w-4 h-4 text-gold-500 mx-auto mb-1" />
+                        <p className="text-xs text-muted-foreground">Bathrooms</p>
+                        <p className="text-sm font-medium text-foreground">{detailCottage.bathrooms}</p>
+                      </div>
+                      {detailCottage.size && (
+                        <div className="vintage-card p-3 text-center">
+                          <p className="text-xs text-muted-foreground">Size</p>
+                          <p className="text-sm font-medium text-foreground">{detailCottage.size} sqft</p>
+                        </div>
+                      )}
+                    </div>
+                    {amenitiesList.length > 0 && (
+                      <div className="mb-4">
+                        <h4 className="text-sm font-medium text-foreground mb-2">Amenities</h4>
+                        <div className="flex flex-wrap gap-1.5">
+                          {amenitiesList.map((a: string) => (
+                            <span key={a} className="text-xs bg-slate-100 text-slate-600 px-2 py-1 rounded-full capitalize">{a}</span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                    <Button variant="primary" size="lg" className="w-full" onClick={() => { setSelectedCottage(detailCottage.id); setDetailCottage(null); setStep(3); }}>
+                      Select This Cottage <ArrowRight className="w-4 h-4 ml-2" />
+                    </Button>
+                  </div>
+                </>
+              );
+            })()}
+          </motion.div>
+        </div>
+      )}
     </>
   );
 }
