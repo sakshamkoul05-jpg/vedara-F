@@ -121,8 +121,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="geo.position" content="31.4875;77.5410" />
         <meta name="ICBM" content="31.4875, 77.5410" />
         <script src="https://checkout.razorpay.com/v1/checkout.js" async></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem('vd_theme');var d=t==='dark'||(t!=='light'&&window.matchMedia('(prefers-color-scheme: dark)').matches);if(d){document.documentElement.classList.add('dark');document.documentElement.style.colorScheme='dark'}}catch(e){}})()`,
+          }}
+        />
       </head>
       <body className={`min-h-screen bg-background text-foreground font-sans antialiased ${cormorantGaramond.variable} ${inter.variable}`}>
+        <a href="#main-content" className="skip-link">Skip to main content</a>
         <ClientBody>{children}</ClientBody>
       </body>
     </html>

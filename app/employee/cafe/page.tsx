@@ -110,12 +110,12 @@ export default function EmployeeCafePage() {
   };
 
   return (
-    <div className="min-h-screen bg-alabaster pt-20">
+    <div className="min-h-screen bg-alabaster dark:bg-[#0F1115] pt-20">
       <div className="vintage-container py-8">
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h1 className="font-serif text-2xl text-foreground">Cafe Management</h1>
-            <p className="text-muted-foreground text-sm">{user?.name} • Cafe Staff</p>
+            <h1 className="font-serif text-2xl text-foreground dark:text-[#F5F5F5]">Cafe Management</h1>
+            <p className="text-muted-foreground dark:text-[#C9CDD3] text-sm">{user?.name} • Cafe Staff</p>
           </div>
           <div className="flex gap-3">
             <Button variant="secondary" size="sm" onClick={() => router.push('/employee/dashboard')}>Dashboard</Button>
@@ -133,7 +133,7 @@ export default function EmployeeCafePage() {
               key={t.id}
               onClick={() => setTab(t.id)}
               className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all ${
-                tab === t.id ? 'bg-gold-600 text-alabaster' : 'bg-gold-50 text-charcoal/70'
+                tab === t.id ? 'bg-gold-600 text-alabaster' : 'bg-gold-50 dark:bg-[#1D232B] text-charcoal/70 dark:text-[#C9CDD3]'
               }`}
             >
               <t.icon className="w-4 h-4 inline mr-1.5" /> {t.label}
@@ -143,33 +143,33 @@ export default function EmployeeCafePage() {
 
         {tab === 'orders' && (
           <div className="space-y-4">
-            <h2 className="font-serif text-lg text-foreground mb-4">Kitchen Display - Pending Orders</h2>
+            <h2 className="font-serif text-lg text-foreground dark:text-[#F5F5F5] mb-4">Kitchen Display - Pending Orders</h2>
             {orders.length === 0 ? (
               <p className="text-muted-foreground text-center py-12">No pending orders</p>
             ) : (
               <div className="grid md:grid-cols-2 gap-4">
                 {orders.map((order: any) => (
                   <ScrollReveal key={order.id}>
-                    <div className="vintage-card p-5 border-l-4 border-l-clay-500">
+                    <div className="vintage-card dark:bg-[#161A20] dark:border-white/10 p-5 border-l-4 border-l-clay-500">
                       <div className="flex justify-between items-start mb-3">
                         <div>
-                          <span className="text-xs text-muted-foreground">Order #{order.orderRef}</span>
-                          <h3 className="font-medium text-foreground">Table {order.tableNumber}</h3>
-                          {order.guestName && <p className="text-xs text-muted-foreground">{order.guestName}</p>}
+                          <span className="text-xs text-muted-foreground dark:text-[#C9CDD3]">Order #{order.orderRef}</span>
+                          <h3 className="font-medium text-foreground dark:text-[#F5F5F5]">Table {order.tableNumber}</h3>
+                          {order.guestName && <p className="text-xs text-muted-foreground dark:text-[#C9CDD3]">{order.guestName}</p>}
                         </div>
                         <span className={`px-3 py-1 rounded-full text-xs font-medium ${
                           order.status === 'PENDING' ? 'bg-gold-100 text-clay-700 animate-pulse' : 'bg-gold-100 text-forest-700'
                         }`}>{order.status}</span>
                       </div>
-                      <div className="space-y-1 mb-4 bg-earth-50 rounded-xl p-3">
+                      <div className="space-y-1 mb-4 bg-earth-50 dark:bg-[#1D232B] rounded-xl p-3">
                         {order.items?.map((item: any) => (
                           <div key={item.id} className="flex justify-between text-sm">
-                            <span className="text-foreground">{item.quantity}x {item.item?.name}</span>
-                            <span className="text-muted-foreground">{formatPrice(item.totalPrice)}</span>
+                            <span className="text-foreground dark:text-[#F5F5F5]">{item.quantity}x {item.item?.name}</span>
+                            <span className="text-muted-foreground dark:text-[#C9CDD3]">{formatPrice(item.totalPrice)}</span>
                           </div>
                         ))}
                       </div>
-                      <p className="text-lg font-bold text-foreground mb-3">Total: {formatPrice(order.totalAmount)}</p>
+                      <p className="text-lg font-bold text-foreground dark:text-[#F5F5F5] mb-3">Total: {formatPrice(order.totalAmount)}</p>
                       <div className="flex gap-2">
                         {order.status === 'PENDING' && (
                           <Button variant="primary" size="sm" onClick={() => handleStatusUpdate(order.id, 'PREPARING')}>
@@ -186,7 +186,7 @@ export default function EmployeeCafePage() {
                         </Button>
                       </div>
                       {order.notes && (
-                        <p className="text-xs text-muted-foreground mt-2 italic">Note: {order.notes}</p>
+                        <p className="text-xs text-muted-foreground dark:text-[#C9CDD3] mt-2 italic">Note: {order.notes}</p>
                       )}
                     </div>
                   </ScrollReveal>
@@ -200,7 +200,7 @@ export default function EmployeeCafePage() {
           <div>
             <div className="flex gap-4 mb-6">
               <div className="relative flex-1">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground dark:text-[#C9CDD3]" />
                 <input
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
@@ -212,14 +212,14 @@ export default function EmployeeCafePage() {
 
             <div className="grid md:grid-cols-2 gap-8">
               <div>
-                <h3 className="font-serif text-lg text-foreground mb-4">Menu Inventory</h3>
+                <h3 className="font-serif text-lg text-foreground dark:text-[#F5F5F5] mb-4">Menu Inventory</h3>
                 {menu.map((cat: any) => (
                   <div key={cat.id} className="mb-6">
                     <h4 className="font-medium text-gold-600 text-sm uppercase tracking-wide mb-2">{cat.name}</h4>
                     {cat.items
                       .filter((i: any) => !search || i.name.toLowerCase().includes(search.toLowerCase()))
                       .map((item: any) => (
-                        <div key={item.id} className="flex items-center gap-2 py-2 border-b border-border/50">
+                          <div key={item.id} className="flex items-center gap-2 py-2 border-b border-border/50 dark:border-white/10">
                           <button
                             onClick={() => handleToggleAvailability(item.id, item.isAvailable)}
                             disabled={togglingId === item.id}
@@ -237,7 +237,7 @@ export default function EmployeeCafePage() {
                             )}
                           </button>
                           <div className="flex-1 min-w-0">
-                            <p className={`text-sm ${item.isAvailable ? 'text-foreground' : 'text-muted-foreground line-through'}`}>
+                            <p className={`text-sm ${item.isAvailable ? 'text-foreground dark:text-[#F5F5F5]' : 'text-muted-foreground dark:text-[#C9CDD3] line-through'}`}>
                               {item.name}
                             </p>
                           </div>
@@ -248,7 +248,7 @@ export default function EmployeeCafePage() {
                                   type="number"
                                   value={priceInput}
                                   onChange={(e) => setPriceInput(e.target.value)}
-                                  className="w-20 px-2 py-1 text-xs rounded border border-border bg-background"
+                                  className="w-20 px-2 py-1 text-xs rounded border border-border dark:border-white/10 bg-background dark:bg-[#1D232B]"
                                   autoFocus
                                   onKeyDown={(e) => { if (e.key === 'Enter') handleSavePrice(item.id); if (e.key === 'Escape') setEditingPrice(null); }}
                                 />
@@ -261,7 +261,7 @@ export default function EmployeeCafePage() {
                               </div>
                             ) : (
                               <>
-                                <span className={`text-xs font-medium ${item.isAvailable ? 'text-foreground' : 'text-muted-foreground'}`}>
+                                <span className={`text-xs font-medium ${item.isAvailable ? 'text-foreground dark:text-[#F5F5F5]' : 'text-muted-foreground dark:text-[#C9CDD3]'}`}>
                                   {formatPrice(item.price)}
                                 </span>
                                 <button onClick={() => { setEditingPrice(item.id); setPriceInput(String(item.price)); }} className="p-1 text-muted-foreground hover:text-gold-600">
@@ -277,8 +277,8 @@ export default function EmployeeCafePage() {
               </div>
 
               <div>
-                <div className="vintage-card p-6 sticky top-24">
-                  <h3 className="font-serif text-lg text-foreground mb-4">Add Menu Item</h3>
+                <div className="vintage-card dark:bg-[#161A20] dark:border-white/10 p-6 sticky top-24">
+                  <h3 className="font-serif text-lg text-foreground dark:text-[#F5F5F5] mb-4">Add Menu Item</h3>
                   <div className="space-y-3">
                     <div>
                       <label className="vintage-label">Category</label>
@@ -305,7 +305,7 @@ export default function EmployeeCafePage() {
                       <label className="vintage-label">Price (₹)</label>
                       <Input type="number" value={newItem.price} onChange={(e) => setNewItem({ ...newItem, price: e.target.value })} placeholder="299" />
                     </div>
-                    <label className="flex items-center gap-2 text-sm text-foreground">
+                    <label className="flex items-center gap-2 text-sm text-foreground dark:text-[#F5F5F5]">
                       <input type="checkbox" checked={newItem.isVegetarian} onChange={(e) => setNewItem({ ...newItem, isVegetarian: e.target.checked })} className="rounded" />
                       Vegetarian
                     </label>
@@ -329,26 +329,26 @@ export default function EmployeeCafePage() {
               <div className="space-y-8">
                 {/* Summary Cards */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="vintage-card p-6">
-                    <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">Today's Sales</p>
-                    <p className="text-3xl font-bold text-foreground">
+                  <div className="vintage-card dark:bg-[#161A20] dark:border-white/10 p-6">
+                    <p className="text-xs text-muted-foreground dark:text-[#C9CDD3] uppercase tracking-wider mb-1">Today's Sales</p>
+                    <p className="text-3xl font-bold text-foreground dark:text-[#F5F5F5]">
                       {dailySales ? formatPrice(dailySales.total) : '₹0'}
                     </p>
-                    <p className="text-xs text-muted-foreground mt-1">{dailySales?.count || 0} orders completed</p>
+                    <p className="text-xs text-muted-foreground dark:text-[#C9CDD3] mt-1">{dailySales?.count || 0} orders completed</p>
                   </div>
-                  <div className="vintage-card p-6">
-                    <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">This Month</p>
-                    <p className="text-3xl font-bold text-foreground">
+                  <div className="vintage-card dark:bg-[#161A20] dark:border-white/10 p-6">
+                    <p className="text-xs text-muted-foreground dark:text-[#C9CDD3] uppercase tracking-wider mb-1">This Month</p>
+                    <p className="text-3xl font-bold text-foreground dark:text-[#F5F5F5]">
                       {monthlySales ? formatPrice(monthlySales.total) : '₹0'}
                     </p>
-                    <p className="text-xs text-muted-foreground mt-1">{monthlySales?.count || 0} orders</p>
+                    <p className="text-xs text-muted-foreground dark:text-[#C9CDD3] mt-1">{monthlySales?.count || 0} orders</p>
                   </div>
                 </div>
 
                 {/* Sales Chart */}
                 {salesChart.length > 0 && (
-                  <div className="vintage-card p-6">
-                    <h3 className="font-serif text-lg text-foreground mb-4">Last 7 Days</h3>
+                  <div className="vintage-card dark:bg-[#161A20] dark:border-white/10 p-6">
+                    <h3 className="font-serif text-lg text-foreground dark:text-[#F5F5F5] mb-4">Last 7 Days</h3>
                     <div className="flex items-end gap-2 h-32">
                       {salesChart.map((day: any) => {
                         const max = Math.max(...salesChart.map(d => d.total), 1);
@@ -371,20 +371,20 @@ export default function EmployeeCafePage() {
                 )}
 
                 {/* Top Selling Items */}
-                <div className="vintage-card p-6">
-                  <h3 className="font-serif text-lg text-foreground mb-4">Top 10 Selling Items</h3>
+                <div className="vintage-card dark:bg-[#161A20] dark:border-white/10 p-6">
+                  <h3 className="font-serif text-lg text-foreground dark:text-[#F5F5F5] mb-4">Top 10 Selling Items</h3>
                   {topItems.length === 0 ? (
-                    <p className="text-muted-foreground text-sm">No sales data yet</p>
+                    <p className="text-muted-foreground dark:text-[#C9CDD3] text-sm">No sales data yet</p>
                   ) : (
                     <div className="space-y-3">
                       {topItems.map((item: any, i: number) => (
                         <div key={item.itemId} className="flex items-center gap-4">
                           <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
-                            i < 3 ? 'bg-amber-100 text-amber-700' : 'bg-gold-50 text-charcoal/70'
+                            i < 3 ? 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300' : 'bg-gold-50 dark:bg-[#1D232B] text-charcoal/70 dark:text-[#C9CDD3]'
                           }`}>{i + 1}</span>
                           <div className="flex-1">
-                            <p className="text-sm text-foreground">{item.name}</p>
-                            <p className="text-xs text-muted-foreground">{formatPrice(item.price)} each</p>
+                            <p className="text-sm text-foreground dark:text-[#F5F5F5]">{item.name}</p>
+                            <p className="text-xs text-muted-foreground dark:text-[#C9CDD3]">{formatPrice(item.price)} each</p>
                           </div>
                           <span className="text-sm font-semibold text-gold-600">{item.totalSold} sold</span>
                         </div>

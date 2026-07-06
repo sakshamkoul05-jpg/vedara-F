@@ -22,7 +22,7 @@ const policySections = [
           <div className="overflow-x-auto">
             <table className="w-full text-sm border-collapse">
               <thead>
-                <tr className="bg-gold-50">
+                <tr className="bg-gold-50 dark:bg-[#1D232B]">
                   <th className="p-2.5 text-left border border-border text-muted-foreground font-medium">Cancellation Timeline</th>
                   <th className="p-2.5 text-left border border-border text-muted-foreground font-medium">Refund Applicable</th>
                 </tr>
@@ -40,7 +40,7 @@ const policySections = [
           <div className="overflow-x-auto">
             <table className="w-full text-sm border-collapse">
               <thead>
-                <tr className="bg-gold-50">
+                <tr className="bg-gold-50 dark:bg-[#1D232B]">
                   <th className="p-2.5 text-left border border-border text-muted-foreground font-medium">Cancellation Timeline</th>
                   <th className="p-2.5 text-left border border-border text-muted-foreground font-medium">Refund Applicable</th>
                 </tr>
@@ -178,7 +178,7 @@ export default function PoliciesPage() {
 
   return (
     <>
-      <section className="pt-32 pb-20 bg-alabaster">
+      <section className="pt-32 pb-20 bg-alabaster dark:bg-[#0F1115]">
         <div className="vintage-container">
           <BackButton />
           <ScrollReveal>

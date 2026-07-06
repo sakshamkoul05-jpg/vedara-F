@@ -75,7 +75,7 @@ export default function AboutPage() {
       </section>
 
       {/* Quotation under Hero */}
-      <section className="py-20 md:py-28 bg-slate-50 dark:bg-vedara-950/50">
+      <section className="py-20 md:py-28 bg-slate-50 dark:bg-[#0F1115]">
         <div className="vintage-container">
           <ScrollReveal>
             <div className="max-w-3xl mx-auto text-center">
@@ -115,7 +115,7 @@ export default function AboutPage() {
         </section>
 
         {/* The Three Pillars */}
-        <section className="section-padding bg-slate-50 dark:bg-vedara-950/30">
+        <section className="section-padding bg-slate-50 dark:bg-[#0F1115]">
           <div className="vintage-container">
             <ScrollReveal>
               <div className="text-center max-w-3xl mx-auto mb-16">
@@ -192,7 +192,7 @@ export default function AboutPage() {
       </section>
 
       {/* Experiences */}
-      <section className="section-padding bg-slate-50 dark:bg-vedara-950/30">
+      <section className="section-padding bg-slate-50 dark:bg-[#0F1115]">
         <div className="vintage-container">
           <ScrollReveal>
             <div className="text-center max-w-3xl mx-auto mb-16">
@@ -252,7 +252,7 @@ export default function AboutPage() {
       </section>
 
       {/* Getting Here */}
-      <section className="section-padding bg-slate-50">
+      <section className="section-padding bg-slate-50 dark:bg-[#0F1115]">
         <div className="vintage-container">
           <ScrollReveal>
             <div className="text-center max-w-3xl mx-auto mb-16">
@@ -312,7 +312,7 @@ export default function AboutPage() {
       </section>
 
       {/* Attractions */}
-      <section className="section-padding bg-slate-50 dark:bg-vedara-950/30">
+      <section className="section-padding bg-slate-50 dark:bg-[#0F1115]">
         <div className="vintage-container">
           <ScrollReveal>
             <div className="text-center max-w-3xl mx-auto mb-16">
@@ -355,7 +355,7 @@ export default function AboutPage() {
       </section>
 
       {/* Philosophy */}
-      <section className="section-padding bg-slate-50">
+      <section className="section-padding bg-slate-50 dark:bg-[#0F1115]">
         <div className="vintage-container">
           <ScrollReveal>
             <div className="text-center max-w-3xl mx-auto mb-16">

@@ -48,11 +48,11 @@ export function AdminSidebar({ isOpen, onClose }: { isOpen?: boolean; onClose?: 
         />
       )}
       <aside className={cn(
-        "fixed left-0 top-0 bottom-0 z-40 flex w-60 flex-col glass-card-light border-r border-border rounded-none transition-transform duration-300",
+        "fixed left-0 top-0 bottom-0 z-40 flex w-60 flex-col glass-card-light dark:bg-[#161A20] border-r border-border dark:border-white/10 rounded-none transition-transform duration-300",
         "lg:translate-x-0",
         isOpen ? "translate-x-0" : "-translate-x-full"
       )}>
-      <div className="flex items-center gap-3 px-5 py-5 border-b border-border">
+      <div className="flex items-center gap-3 px-5 py-5 border-b border-border dark:border-white/10">
         <div className="w-9 h-9 rounded-full overflow-hidden flex-shrink-0">
           <Image
             src="/images/vedara-logo.jpeg"
@@ -63,8 +63,8 @@ export function AdminSidebar({ isOpen, onClose }: { isOpen?: boolean; onClose?: 
           />
         </div>
         <div className="min-w-0">
-          <h2 className="font-serif text-sm font-semibold text-foreground leading-tight truncate">The Vedara</h2>
-          <p className="text-[10px] text-muted-foreground uppercase tracking-wider">Admin Panel</p>
+          <h2 className="font-serif text-sm font-semibold text-foreground dark:text-[#F5F5F5] leading-tight truncate">The Vedara</h2>
+          <p className="text-[10px] text-muted-foreground dark:text-[#C9CDD3] uppercase tracking-wider">Admin Panel</p>
         </div>
       </div>
 
@@ -80,7 +80,7 @@ export function AdminSidebar({ isOpen, onClose }: { isOpen?: boolean; onClose?: 
                 'flex items-center gap-3 rounded-xl px-3 py-2.5 text-[13px] font-medium transition-all duration-200',
                 active
                   ? 'bg-gold-600 text-white shadow-md'
-                  : 'text-foreground/70 hover:bg-muted hover:text-foreground'
+                  : 'text-foreground/70 dark:text-[#C9CDD3] hover:bg-muted dark:hover:bg-[#1D232B] hover:text-foreground dark:hover:text-[#F5F5F5]'
               )}
             >
               <Icon className="w-4 h-4 shrink-0" />
@@ -90,14 +90,14 @@ export function AdminSidebar({ isOpen, onClose }: { isOpen?: boolean; onClose?: 
         })}
       </nav>
 
-      <div className="border-t border-border px-3 py-3">
+      <div className="border-t border-border dark:border-white/10 px-3 py-3">
         <div className="flex items-center gap-3 px-3 py-2.5 mb-2">
-          <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center text-primary text-xs font-bold flex-shrink-0">
+          <div className="w-8 h-8 rounded-full bg-muted dark:bg-[#1D232B] flex items-center justify-center text-primary text-xs font-bold flex-shrink-0">
             {user?.name?.charAt(0) || 'A'}
           </div>
           <div className="min-w-0 flex-1">
-            <p className="text-sm font-medium text-foreground truncate leading-tight">{user?.name || 'Admin'}</p>
-            <p className="text-[10px] text-muted-foreground uppercase tracking-wider">{user?.role?.replace(/_/g, ' ') || 'Admin'}</p>
+            <p className="text-sm font-medium text-foreground dark:text-[#F5F5F5] truncate leading-tight">{user?.name || 'Admin'}</p>
+            <p className="text-[10px] text-muted-foreground dark:text-[#C9CDD3] uppercase tracking-wider">{user?.role?.replace(/_/g, ' ') || 'Admin'}</p>
           </div>
         </div>
         <button

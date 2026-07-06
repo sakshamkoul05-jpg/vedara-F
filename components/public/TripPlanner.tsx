@@ -207,6 +207,7 @@ export function TripPlanner() {
         whileTap={{ scale: 0.95 }}
         onClick={() => setIsOpen(true)}
         className="fixed bottom-6 right-6 z-50 rounded-full px-5 py-3 flex items-center gap-2 shadow-xl cursor-pointer transition-all bg-gold-600 text-white hover:bg-gold-700 border-0"
+        aria-label="Open AI Trip Planner"
       >
         <Sparkles className="w-4 h-4" />
         <span className="text-sm font-medium">AI Trip Planner</span>
@@ -228,7 +229,7 @@ export function TripPlanner() {
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               transition={{ type: 'spring', damping: 25, stiffness: 300 }}
               className="relative w-full max-w-2xl max-h-[85vh] overflow-y-auto rounded-3xl"
-              style={{ background: '#1C2B3A', border: '1px solid rgba(255,255,255,0.08)', boxShadow: '0 8px 32px rgba(0,0,0,0.25)' }}
+              style={{ background: '#0F1115', border: '1px solid rgba(255,255,255,0.06)', boxShadow: '0 8px 32px rgba(0,0,0,0.4)' }}
             >
               <div className="sticky top-0 z-10 flex items-center justify-between p-6 pb-4" style={{ borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
                 <div className="flex items-center gap-3">
@@ -240,7 +241,7 @@ export function TripPlanner() {
                     <p style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.5)' }}>Personalized itineraries for The Vedara</p>
                   </div>
                 </div>
-                <button onClick={() => setIsOpen(false)} style={{ color: 'rgba(255,255,255,0.5)' }} className="hover:text-white transition-colors">
+                <button onClick={() => setIsOpen(false)} style={{ color: 'rgba(255,255,255,0.5)' }} className="hover:text-white transition-colors" aria-label="Close trip planner">
                   <X style={{ width: '1.25rem', height: '1.25rem' }} />
                 </button>
               </div>

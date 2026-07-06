@@ -277,7 +277,10 @@ export default function CottageBySlugPage() {
               <div className="sticky top-28">
                 <ScrollReveal direction="right">
                   <div className="vintage-card p-6 md:p-8">
-                    <h3 className="font-serif text-xl text-foreground mb-6">Book Your Stay</h3>
+                    <h3 className="font-serif text-xl text-foreground mb-2">Book Your Stay</h3>
+                    <p className="text-xs text-gold-600 dark:text-gold-400 mb-6 flex items-center gap-1">
+                      <Coffee className="w-3 h-3" /> Sumptuous complimentary breakfast included with every stay
+                    </p>
                     <div className="space-y-4">
                       <div>
                         <label className="vintage-label">Check-in</label>

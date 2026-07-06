@@ -18,7 +18,7 @@ import {
   Percent, Tag, Loader2, CreditCard, Sparkles, Gift, ChevronDown, Users
 } from 'lucide-react';
 
-const idProofTypes = ['Aadhaar Card', 'PAN Card', 'Passport', 'Driving License'];
+const idProofTypes = ['Aadhaar Card', 'Passport', 'Driving License'];
 
 const indianStates = [
   'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh', 'Goa', 'Gujarat',
@@ -222,7 +222,7 @@ export default function BookingPage() {
 
   return (
     <>
-      <section className="pt-32 pb-12 bg-alabaster">
+      <section className="pt-32 pb-12 bg-alabaster dark:bg-[#0F1115]">
         <div className="vintage-container">
           <BackButton />
           <ScrollReveal>
@@ -232,7 +232,7 @@ export default function BookingPage() {
             </TextReveal>
           </ScrollReveal>
 
-          <div className="mt-10 mb-8">
+          <div className="mt-10 mb-8" role="progressbar" aria-valuenow={step} aria-valuemin={1} aria-valuemax={4} aria-label={`Step ${step} of 4: ${stepLabels[step - 1]}`}>
             <div className="flex items-center gap-2">
               {[1, 2, 3, 4].map((s) => (
                 <div key={s} className="flex-1 flex flex-col items-center">
@@ -601,6 +601,11 @@ export default function BookingPage() {
                               <p className="font-medium text-foreground">{selectedCottageData.name}</p>
                               <p className="text-xs text-muted-foreground">{formatPrice(selectedCottageData.pricePerNight)} / night</p>
                             </div>
+                          </div>
+                        )}
+                        {selectedCottageData && (
+                          <div className="bg-gold-50 dark:bg-gold-900/20 rounded-lg px-3 py-2 mb-1">
+                            <p className="text-xs text-gold-700 dark:text-gold-400 font-medium">Complimentary breakfast included with every stay</p>
                           </div>
                         )}
                         {checkIn && checkOut && (

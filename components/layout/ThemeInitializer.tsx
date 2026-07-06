@@ -2,13 +2,16 @@
 
 import { useEffect } from 'react';
 import { useAuthStore } from '@/store/auth';
+import { useThemeStore } from '@/store/theme';
 
 export function ThemeInitializer() {
-  const hydrate = useAuthStore((s) => s.hydrate);
+  const hydrateAuth = useAuthStore((s) => s.hydrate);
+  const hydrateTheme = useThemeStore((s) => s.hydrate);
 
   useEffect(() => {
-    hydrate();
-  }, [hydrate]);
+    hydrateTheme();
+    hydrateAuth();
+  }, [hydrateTheme, hydrateAuth]);
 
   return null;
 }

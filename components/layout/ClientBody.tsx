@@ -64,7 +64,7 @@ export function ClientBody({ children }: { children: React.ReactNode }) {
       <ParallaxCursor />
       <RevealOnScroll />
       <Header />
-      <main>{children}</main>
+      <main id="main-content">{children}</main>
       <Footer />
       <ChatBot />
       {aiPlannerEnabled && <TripPlanner />}

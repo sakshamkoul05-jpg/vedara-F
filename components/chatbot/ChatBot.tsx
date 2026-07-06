@@ -2,11 +2,32 @@
 
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MessageCircle, X, Send, Bot, Phone, MessageCircleMore } from 'lucide-react';
+import { MessageCircle, X, Send, Bot, Phone, PhoneOff, MessageCircleMore, Clock } from 'lucide-react';
 import { endpoints } from '@/lib/api';
 import { io, Socket } from 'socket.io-client';
 
 const SOCKET_URL = process.env.NEXT_PUBLIC_API_URL?.replace('/api', '') || 'http://localhost:5000';
+
+const SUPPORT_HOURS = { start: 8, end: 22.5 }; // 8:00 AM to 10:30 PM
+
+function isWithinSupportHours(): boolean {
+  const now = new Date();
+  const ist = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
+  const hours = ist.getHours() + ist.getMinutes() / 60;
+  return hours >= SUPPORT_HOURS.start && hours < SUPPORT_HOURS.end;
+}
+
+function getNextSupportTime(): string {
+  const now = new Date();
+  const ist = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
+  const hours = ist.getHours() + ist.getMinutes() / 60;
+  if (hours < SUPPORT_HOURS.start) {
+    return `Today at 8:00 AM`;
+  }
+  const tomorrow = new Date(ist);
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  return `Tomorrow at 8:00 AM`;
+}
 
 interface Message {
   role: 'user' | 'assistant' | 'live-user' | 'live-admin';
@@ -93,6 +114,13 @@ export function ChatBot() {
   }, [input, isLoading, mode, socket, conversationId, messages, guestName]);
 
   const startLiveChat = () => {
+    if (!isWithinSupportHours()) {
+      setMessages(prev => [...prev, {
+        role: 'assistant',
+        content: `Live support is currently unavailable. Our team is available ${getNextSupportTime()}. You can continue chatting with our AI assistant, or call us at +91-91188-82242.`
+      }]);
+      return;
+    }
     setMode('name-prompt');
   };
 
@@ -163,7 +191,7 @@ export function ChatBot() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className="fixed bottom-24 left-4 right-4 sm:left-6 sm:right-auto z-50 w-auto sm:w-96 h-[500px] max-h-[calc(100dvh-140px)] bg-alabaster rounded-2xl shadow-2xl border border-gold-200 flex flex-col overflow-hidden"
+            className="fixed bottom-24 left-4 right-4 sm:left-6 sm:right-auto z-50 w-auto sm:w-96 h-[500px] max-h-[calc(100dvh-140px)] bg-alabaster dark:bg-[#161A20] rounded-2xl shadow-2xl border border-gold-200 dark:border-white/10 flex flex-col overflow-hidden"
           >
             <div className="bg-gold-600 p-4 flex items-center justify-between">
               <div className="flex items-center gap-2">
@@ -180,15 +208,16 @@ export function ChatBot() {
                 {mode === 'live' && (
                   <button
                     onClick={handleCloseLiveChat}
-                    className="text-alabaster hover:text-alabaster p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center text-xs bg-red-500/20 rounded-full"
+                    className="text-alabaster hover:text-white p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center text-xs bg-red-500/20 hover:bg-red-500/30 rounded-full transition-colors"
                     title="End live chat"
+                    aria-label="End live chat"
                   >
-                    <X className="w-4 h-4" />
+                    <PhoneOff className="w-4 h-4" />
                   </button>
                 )}
                 <button
                   onClick={() => { setIsOpen(false); if (socket) { socket.close(); setSocket(null); } setMode('ai'); setConversationId(null); }}
-                  className="text-alabaster hover:text-alabaster transition-transform hover:rotate-90 p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center"
+                  className="text-alabaster hover:text-white transition-all hover:rotate-90 p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-full hover:bg-white/10"
                   aria-label="Close chatbot"
                 >
                   <X className="w-5 h-5" />
@@ -197,17 +226,18 @@ export function ChatBot() {
             </div>
 
             {mode !== 'live' && mode !== 'name-prompt' && (
-              <div className="bg-gold-700/10 px-4 py-2 flex gap-2 overflow-x-auto">
-                <button onClick={() => handleQuickAction('Show me cottages')} className="text-xs bg-gold-50 px-3 py-2.5 min-h-[44px] rounded-full whitespace-nowrap border border-gold-200 text-vedara-900 hover:bg-gold-600 hover:text-alabaster hover:border-gold-600 transition-colors">
+              <div className="bg-gold-700/10 dark:bg-white/5 px-4 py-2 flex gap-2 overflow-x-auto">
+                <button onClick={() => handleQuickAction('Show me cottages')} className="text-xs bg-gold-50 dark:bg-white/5 px-3 py-2.5 min-h-[44px] rounded-full whitespace-nowrap border border-gold-200 dark:border-white/10 text-vedara-900 dark:text-white/80 hover:bg-gold-600 hover:text-alabaster hover:border-gold-600 transition-colors">
                   Cottages
                 </button>
-                <button onClick={() => handleQuickAction('Café menu')} className="text-xs bg-gold-50 px-3 py-2.5 min-h-[44px] rounded-full whitespace-nowrap border border-gold-200 text-vedara-900 hover:bg-gold-600 hover:text-alabaster hover:border-gold-600 transition-colors">
+                <button onClick={() => handleQuickAction('Café menu')} className="text-xs bg-gold-50 dark:bg-white/5 px-3 py-2.5 min-h-[44px] rounded-full whitespace-nowrap border border-gold-200 dark:border-white/10 text-vedara-900 dark:text-white/80 hover:bg-gold-600 hover:text-alabaster hover:border-gold-600 transition-colors">
                   Café Menu
                 </button>
-                <button onClick={() => handleQuickAction('Booking info')} className="text-xs bg-gold-50 px-3 py-2.5 min-h-[44px] rounded-full whitespace-nowrap border border-gold-200 text-vedara-900 hover:bg-gold-600 hover:text-alabaster hover:border-gold-600 transition-colors">
+                <button onClick={() => handleQuickAction('Booking info')} className="text-xs bg-gold-50 dark:bg-white/5 px-3 py-2.5 min-h-[44px] rounded-full whitespace-nowrap border border-gold-200 dark:border-white/10 text-vedara-900 dark:text-white/80 hover:bg-gold-600 hover:text-alabaster hover:border-gold-600 transition-colors">
                   Booking
                 </button>
-                <button onClick={() => handleQuickAction('Live Support')} className="text-xs bg-gold-50 px-3 py-2.5 min-h-[44px] rounded-full whitespace-nowrap border border-gold-200 text-vedara-900 hover:bg-gold-600 hover:text-alabaster hover:border-gold-600 transition-colors">
+                <button onClick={() => handleQuickAction('Live Support')} className="text-xs bg-gold-50 dark:bg-white/5 px-3 py-2.5 min-h-[44px] rounded-full whitespace-nowrap border border-gold-200 dark:border-white/10 text-vedara-900 dark:text-white/80 hover:bg-gold-600 hover:text-alabaster hover:border-gold-600 transition-colors flex items-center gap-1.5">
+                  {isWithinSupportHours() ? <MessageCircleMore className="w-3 h-3" /> : <Clock className="w-3 h-3" />}
                   Live Support
                 </button>
               </div>
@@ -226,7 +256,7 @@ export function ChatBot() {
                     onChange={(e) => setGuestName(e.target.value)}
                     onKeyDown={(e) => e.key === 'Enter' && submitName()}
                     placeholder="Your name"
-                    className="w-full rounded-xl border border-border bg-alabaster px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-gold-500"
+                    className="w-full rounded-xl border border-border dark:border-white/10 bg-alabaster dark:bg-[#1D232B] px-4 py-2.5 text-sm text-foreground dark:text-white placeholder:text-muted-foreground focus:outline-none focus:border-gold-500"
                     autoFocus
                   />
                   <div className="flex gap-2">
@@ -243,8 +273,8 @@ export function ChatBot() {
                       msg.role === 'user' || msg.role === 'live-user'
                         ? 'bg-gold-600 text-alabaster rounded-br-sm'
                         : msg.role === 'live-admin'
-                        ? 'bg-gold-100 text-vedara-900 rounded-bl-sm'
-                        : 'bg-gold-50 text-vedara-900 rounded-bl-sm'
+                        ? 'bg-gold-100 dark:bg-white/10 text-vedara-900 dark:text-white/90 rounded-bl-sm'
+                        : 'bg-gold-50 dark:bg-white/5 text-vedara-900 dark:text-white/80 rounded-bl-sm'
                     }`}>
                       {msg.senderName && (msg.role === 'live-admin' || msg.role === 'live-user') && (
                         <div className="text-xs opacity-70 mb-0.5">{msg.senderName}</div>
@@ -255,7 +285,7 @@ export function ChatBot() {
                 ))}
                 {isLoading && (
                   <div className="flex justify-start">
-                    <div className="bg-gold-50 rounded-2xl rounded-bl-sm px-4 py-2.5">
+                    <div className="bg-gold-50 dark:bg-white/5 rounded-2xl rounded-bl-sm px-4 py-2.5">
                       <div className="flex gap-1">
                         <span className="w-2 h-2 bg-gold-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
                         <span className="w-2 h-2 bg-gold-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
@@ -269,14 +299,14 @@ export function ChatBot() {
             )}
 
             {mode !== 'name-prompt' && (
-              <div className="p-3 border-t border-gold-200">
+              <div className="p-3 border-t border-gold-200 dark:border-white/10">
                 <div className="flex gap-2">
                   <input
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     onKeyDown={(e) => e.key === 'Enter' && handleSend()}
                     placeholder={mode === 'live' ? 'Type your message...' : 'Ask me anything...'}
-                    className="flex-1 rounded-xl border border-gold-200 bg-alabaster px-3 py-3 min-h-[44px] text-sm text-vedara-900 placeholder:text-charcoal/50 focus:outline-none focus:border-gold-500"
+                    className="flex-1 rounded-xl border border-gold-200 dark:border-white/10 bg-alabaster dark:bg-[#1D232B] px-3 py-3 min-h-[44px] text-sm text-vedara-900 dark:text-white placeholder:text-charcoal/50 dark:placeholder:text-white/30 focus:outline-none focus:border-gold-500 dark:focus:border-gold-500"
                   />
                   <button
                     onClick={handleSend}
@@ -306,7 +336,7 @@ function Button({ variant, size, className, onClick, disabled, children }: {
 }) {
   const base = variant === 'primary'
     ? 'bg-gold-600 text-alabaster hover:bg-gold-700'
-    : 'bg-gold-50 text-foreground hover:bg-gold-100';
+    : 'bg-gold-50 dark:bg-white/5 text-foreground dark:text-white/80 hover:bg-gold-100 dark:hover:bg-white/10';
   return (
     <button
       onClick={onClick}

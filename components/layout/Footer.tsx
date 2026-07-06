@@ -1,19 +1,30 @@
 'use client';
 
 import Link from 'next/link';
-import { Mountain, Mail, Phone, MapPin, Facebook, Instagram } from 'lucide-react';
+import Image from 'next/image';
+import { Mail, Phone, MapPin, Facebook, Instagram } from 'lucide-react';
 
 export function Footer() {
   return (
-    <footer className="bg-[#1C2B3A] text-white border-t border-white/5 relative overflow-hidden">
+    <footer className="bg-[#1C2B3A] dark:bg-[#0A0C10] text-white border-t border-white/5 relative overflow-hidden">
       <div className="absolute inset-0 liquid-gradient opacity-10 pointer-events-none" />
       <div className="vintage-container py-16 md:py-20">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8">
           <div className="lg:col-span-2">
-            <Link href="/" className="flex items-center gap-2 mb-4">
-              <Mountain className="w-6 h-6 text-gold-400" />
-              <span className="font-serif text-xl font-bold text-white break-words">The Vedara</span>
-              <span className="font-serif text-sm font-normal text-white/70 block sm:hidden">Himalayan Boutique Retreat</span>
+            <Link href="/" className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0 ring-1 ring-white/10">
+                <Image
+                  src="/images/vedara-logo.jpeg"
+                  alt="The Vedara"
+                  width={60}
+                  height={60}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div>
+                <span className="font-serif text-xl font-bold text-white break-words">The Vedara</span>
+                <span className="font-serif text-xs font-normal text-white/50 block">Himalayan Boutique Retreat</span>
+              </div>
             </Link>
 
             <div className="space-y-3 text-sm">
@@ -31,7 +42,7 @@ export function Footer() {
 
           <div>
             <h4 className="font-serif text-gold-400 font-semibold mb-4">Explore</h4>
-            <ul className="space-y-1">
+            <ul className="space-y-1" aria-label="Explore links">
               <li><Link href="/about"  className="text-sm text-white/70 hover:text-white transition-colors duration-500 py-2 inline-block min-h-[44px]">About Us</Link></li>
               <li><Link href="/cottages"  className="text-sm text-white/70 hover:text-white transition-colors duration-500 py-2 inline-block min-h-[44px]">Our Stays</Link></li>
               <li><Link href="/cafe"  className="text-sm text-white/70 hover:text-white transition-colors duration-500 py-2 inline-block min-h-[44px]">Café Charade</Link></li>
@@ -42,7 +53,7 @@ export function Footer() {
 
           <div>
             <h4 className="font-serif text-gold-400 font-semibold mb-4">Support</h4>
-            <ul className="space-y-1">
+            <ul className="space-y-1" aria-label="Support links">
               <li><Link href="/contact"  className="text-sm text-white/70 hover:text-white transition-colors duration-500 py-2 inline-block min-h-[44px]">Contact Us</Link></li>
               <li><Link href="/my-bookings"  className="text-sm text-white/70 hover:text-white transition-colors duration-500 py-2 inline-block min-h-[44px]">My Bookings</Link></li>
               <li><Link href="/policies"  className="text-sm text-white/70 hover:text-white transition-colors duration-500 py-2 inline-block min-h-[44px]">Policies</Link></li>

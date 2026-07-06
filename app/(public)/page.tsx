@@ -25,9 +25,12 @@ const cottages = [
 ];
 
 const testimonials = [
-  { name: 'Ananya & Rohit', content: 'Monal Haven was everything we dreamed of. Waking up to the mist over the mountains, the jacuzzi under the stars : pure magic.', rating: 5, location: 'Mumbai, India' },
-  { name: 'Daniel Park', content: 'I wrote half my manuscript sitting on the balcony at Whistling Thrush. The staff was incredibly thoughtful.', rating: 5, location: 'Seoul, South Korea' },
-  { name: 'Emily & James', content: 'Koklass Cove was perfection. The attic yoga balcony, the sweeping views : we felt like we were floating above the world.', rating: 5, location: 'Melbourne, Australia' },
+  { name: 'Ananya & Rohit', content: 'Monal Haven was everything we dreamed of. Waking up to the mist over the mountains, the jacuzzi under the stars — pure magic.', rating: 5, location: 'Mumbai, India' },
+  { name: 'Daniel Park', content: 'I wrote half my manuscript sitting on the balcony at Whistling Thrush. The staff was incredibly thoughtful and the café is a gem.', rating: 5, location: 'Seoul, South Korea' },
+  { name: 'Emily & James', content: 'Koklass Cove was perfection. The attic yoga balcony, the sweeping views — we felt like we were floating above the world.', rating: 5, location: 'Melbourne, Australia' },
+  { name: 'Priya Sharma', content: 'The Vedara is not just a stay, it is an experience. The warmth of the staff, the untouched beauty of Jibhi, and the soulful café made this trip unforgettable.', rating: 5, location: 'Delhi, India' },
+  { name: 'Marcus & Lisa', content: 'We came for two nights and stayed for five. The mountains call you back. Café Charade became our second home.', rating: 5, location: 'Berlin, Germany' },
+  { name: 'Arjun Mehta', content: 'Perfect escape from city life. The bonfire nights, the star gazing, the quiet mornings — The Vedara captures the essence of Himalayan hospitality.', rating: 5, location: 'Bangalore, India' },
 ];
 
 const experiences = [
@@ -148,7 +151,7 @@ export default function HomePage() {
              animate={{ opacity: 1, y: 0 }}
              transition={{ delay: 1.3, duration: 0.8 }}
            >
-             <Link href="/booking" className="vintage-button bg-white/90 text-[#1C2B3A] hover:bg-white px-10 py-4 text-base inline-flex items-center justify-center shadow-lg btn-fill-slide">
+              <Link href="/booking" className="vintage-button bg-white/90 dark:bg-white/10 text-[#1C2B3A] dark:text-white hover:bg-white dark:hover:bg-white/20 px-10 py-4 text-base inline-flex items-center justify-center shadow-lg btn-fill-slide">
                Book Your Stay <ArrowRight className="w-4 h-4 ml-2" />
              </Link>
            </motion.div>
@@ -179,7 +182,7 @@ export default function HomePage() {
       </section>
 
       {/* Welcome */}
-      <section id="welcome" className="relative py-28 md:py-36 overflow-hidden bg-[#1C2B3A]">
+      <section id="welcome" className="relative py-28 md:py-36 overflow-hidden bg-[#1C2B3A] dark:bg-[#0A0C10]">
         <div className="absolute inset-0 opacity-5" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1585409677983-0f6c41ca9c3b?w=1920&q=80)', backgroundSize: 'cover' }} />
         <div className="relative z-10 vintage-container">
           <div className="grid md:grid-cols-2 gap-12 items-center">
@@ -233,7 +236,7 @@ export default function HomePage() {
             <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-6">
               {cottages.filter(c => c.category === 'Premium Duplex Family Suite').map((cottage, i) => (
                 <ScrollReveal key={cottage.name} delay={i * 0.08} direction="up" distance={40}>
-                  <article className="group bg-white rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-500 h-full flex flex-col">
+                  <article className="group bg-white dark:bg-[#161A20] rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-500 h-full flex flex-col">
                     <div className="aspect-[4/3] overflow-hidden bg-sand-200">
                       <img src={`https://images.unsplash.com/photo-${['1504384308090-c894fdcc538d', '1554118811-1e0d58224f24', '1506905925346-21bda4d32df4'][i]}?w=600&q=80`} alt={cottage.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                     </div>
@@ -264,7 +267,7 @@ export default function HomePage() {
             <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-6">
               {cottages.filter(c => c.category === 'Intimate Mountain View Suite').map((cottage, i) => (
                 <ScrollReveal key={cottage.name} delay={i * 0.08} direction="up" distance={40}>
-                  <article className="group bg-white rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-500 h-full flex flex-col">
+                  <article className="group bg-white dark:bg-[#161A20] rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-500 h-full flex flex-col">
                     <div className="aspect-[4/3] overflow-hidden bg-sand-200">
                       <img src={`https://images.unsplash.com/photo-${['1476514525535-07fb3b4ae5f1', '1519681393784-d120267933ba', '1469476568026-46a7f7b2f9c2'][i]}?w=600&q=80`} alt={cottage.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                     </div>
@@ -295,7 +298,7 @@ export default function HomePage() {
             <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-6">
               {cottages.filter(c => c.category === 'Cozy Alpine Studio').map((cottage, i) => (
                 <ScrollReveal key={cottage.name} delay={i * 0.08} direction="up" distance={40}>
-                  <article className="group bg-white rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-500 h-full flex flex-col">
+                  <article className="group bg-white dark:bg-[#161A20] rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-500 h-full flex flex-col">
                     <div className="aspect-[4/3] overflow-hidden bg-sand-200">
                       <img src={`https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&q=80`} alt={cottage.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                     </div>
@@ -326,7 +329,7 @@ export default function HomePage() {
       </section>
 
       {/* Experiences */}
-      <section id="experiences" className="relative py-28 md:py-36 overflow-hidden bg-[#1C2B3A]">
+      <section id="experiences" className="relative py-28 md:py-36 overflow-hidden bg-[#1C2B3A] dark:bg-[#0A0C10]">
         <div className="absolute inset-0 opacity-5" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1920&q=80)', backgroundSize: 'cover' }} />
         <div className="absolute inset-0 liquid-gradient opacity-30" />
         <div className="relative z-10 vintage-container">
@@ -354,7 +357,7 @@ export default function HomePage() {
       </section>
 
       {/* Café */}
-      <section className="relative py-28 md:py-36 overflow-hidden bg-white">
+      <section className="relative py-28 md:py-36 overflow-hidden bg-white dark:bg-[#0F1115]">
         <div className="relative z-10 vintage-container">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <ScrollReveal direction="left">
@@ -396,36 +399,32 @@ export default function HomePage() {
       </section>
 
       {/* Testimonials */}
-      <section className="section-padding bg-slate-50">
+      <section className="section-padding bg-slate-50 dark:bg-[#0F1115]">
         <div className="vintage-container">
           <ScrollReveal>
             <div className="text-center max-w-3xl mx-auto mb-16">
               <p className="text-primary text-sm tracking-[0.2em] uppercase mb-4 font-sans">Testimonials</p>
               <h2 className="section-title mb-6">Voices from the Mountains</h2>
+              <p className="section-subtitle">Hear from guests who have experienced the magic of The Vedara</p>
             </div>
           </ScrollReveal>
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {testimonials.map((t, i) => (
-              <ScrollReveal key={t.name} delay={i * 0.12} direction="up" distance={40}>
+              <ScrollReveal key={t.name} delay={i * 0.08} direction="up" distance={30}>
                 <motion.article
-                  className="bg-white rounded-2xl p-7 relative overflow-hidden h-[260px] flex flex-col"
-                  whileHover={{ y: -4, boxShadow: '0 20px 40px rgba(0,0,0,0.06)' }}
-                  transition={{ duration: 0.5 }}
+                  className="bg-white dark:bg-[#161A20] rounded-2xl p-7 relative overflow-hidden flex flex-col hover-lift"
+                  whileHover={{ y: -4 }}
+                  transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
                 >
-                  <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-primary/8 to-transparent rounded-bl-full" />
-                  <div className="flex gap-1 mb-4 flex-shrink-0">
+                  <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-primary/8 to-transparent dark:from-primary/5 rounded-bl-full" />
+                  <div className="flex gap-1 mb-4 flex-shrink-0" aria-label={`${t.rating} out of 5 stars`}>
                     {Array.from({ length: t.rating }).map((_, idx) => (
-                      <motion.div
-                        key={idx}
-                        initial={{ opacity: 0, scale: 0 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: idx * 0.1 + t.rating * 0.1 }}
-                      >
-                        <Star className="w-4 h-4 fill-gold-400 text-gold-400" />
-                      </motion.div>
+                      <Star key={idx} className="w-4 h-4 fill-gold-400 text-gold-400" />
                     ))}
                   </div>
-                  <p className="text-muted-foreground text-sm leading-relaxed mb-5 italic flex-1 line-clamp-4">&ldquo;{t.content}&rdquo;</p>
+                  <blockquote className="text-muted-foreground text-sm leading-relaxed mb-5 italic flex-1 line-clamp-4">
+                    &ldquo;{t.content}&rdquo;
+                  </blockquote>
                   <div className="border-t border-border/30 pt-4 flex-shrink-0">
                     <p className="font-serif text-foreground font-medium text-sm">{t.name}</p>
                     <p className="text-xs text-muted-foreground/70">{t.location}</p>
@@ -450,7 +449,7 @@ export default function HomePage() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {nearbyAttractions.map((place, i) => (
               <ScrollReveal key={place.name} delay={i * 0.1} direction="up" distance={40}>
-                <article className="bg-white rounded-2xl p-5 flex items-start gap-4 group hover:border-primary/30 transition-all duration-500 h-[100px]">
+                <article className="bg-white dark:bg-[#161A20] rounded-2xl p-5 flex items-start gap-4 group hover:border-primary/30 transition-all duration-500 h-[100px]">
                   <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/20 transition-colors duration-500">
                     <place.icon className="w-5 h-5 text-primary" />
                   </div>
@@ -477,7 +476,7 @@ export default function HomePage() {
           </ScrollReveal>
           <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
             <ScrollReveal delay={0.1} direction="up" distance={40}>
-              <article className="bg-white rounded-2xl p-7 text-center h-[240px] flex flex-col items-center justify-center">
+              <article className="bg-white dark:bg-[#161A20] rounded-2xl p-7 text-center h-[240px] flex flex-col items-center justify-center">
                 <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mb-4 flex-shrink-0">
                   <MapPin className="w-7 h-7 text-primary" />
                 </div>
@@ -486,7 +485,7 @@ export default function HomePage() {
               </article>
             </ScrollReveal>
             <ScrollReveal delay={0.2} direction="up" distance={40}>
-              <article className="bg-white rounded-2xl p-7 text-center h-[240px] flex flex-col items-center justify-center">
+              <article className="bg-white dark:bg-[#161A20] rounded-2xl p-7 text-center h-[240px] flex flex-col items-center justify-center">
                 <div className="w-14 h-14 rounded-2xl bg-[#9B8EA0]/10 flex items-center justify-center mb-4 flex-shrink-0">
                   <MapPin className="w-7 h-7 text-[#9B8EA0]" />
                 </div>
@@ -495,7 +494,7 @@ export default function HomePage() {
               </article>
             </ScrollReveal>
             <ScrollReveal delay={0.3} direction="up" distance={40}>
-              <article className="bg-white rounded-2xl p-7 text-center h-[240px] flex flex-col items-center justify-center">
+              <article className="bg-white dark:bg-[#161A20] rounded-2xl p-7 text-center h-[240px] flex flex-col items-center justify-center">
                 <div className="w-14 h-14 rounded-2xl bg-gold-400/10 flex items-center justify-center mb-4 flex-shrink-0">
                   <MapPin className="w-7 h-7 text-gold-500" />
                 </div>
@@ -508,7 +507,7 @@ export default function HomePage() {
       </section>
 
       {/* CTA */}
-      <section className="py-20 md:py-28 bg-[#1C2B3A] relative overflow-hidden">
+      <section className="py-20 md:py-28 bg-[#1C2B3A] dark:bg-[#0A0C10] relative overflow-hidden">
         <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1585409677983-0f6c41ca9c3b?w=1920&q=80)', backgroundSize: 'cover' }} />
         <div className="absolute inset-0 liquid-gradient opacity-20" />
         <div className="relative z-10 vintage-container text-center">
