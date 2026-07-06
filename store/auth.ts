@@ -12,6 +12,34 @@ interface AuthState {
   hydrate: () => void;
 }
 
+function sanitizeToken(token: string): string {
+  return token.replace(/[<>"'`;]/g, '');
+}
+
+function setSecureCookie(name: string, value: string, maxAge: number) {
+  const isSecure = typeof window !== 'undefined' && window.location.protocol === 'https:';
+  const parts = [
+    `${name}=${encodeURIComponent(value)}`,
+    'path=/',
+    `max-age=${maxAge}`,
+    'SameSite=Lax',
+  ];
+  if (isSecure) parts.push('Secure');
+  document.cookie = parts.join('; ');
+}
+
+function clearCookie(name: string) {
+  const isSecure = typeof window !== 'undefined' && window.location.protocol === 'https:';
+  const parts = [
+    `${name}=`,
+    'path=/',
+    'max-age=0',
+    'SameSite=Lax',
+  ];
+  if (isSecure) parts.push('Secure');
+  document.cookie = parts.join('; ');
+}
+
 export const useAuthStore = create<AuthState>((set) => ({
   user: null,
   token: null,
@@ -19,10 +47,10 @@ export const useAuthStore = create<AuthState>((set) => ({
   hydrated: false,
   setAuth: (user, token) => {
     if (typeof window !== 'undefined') {
-      localStorage.setItem('vd_token', token);
+      const safeToken = sanitizeToken(token);
+      localStorage.setItem('vd_token', safeToken);
       localStorage.setItem('vd_user', JSON.stringify(user));
-      const isSecure = window.location.protocol === 'https:';
-      document.cookie = `vd_token=${token}; path=/; max-age=604800; SameSite=Lax${isSecure ? '; Secure' : ''}`;
+      setSecureCookie('vd_token', safeToken, 604800);
     }
     set({ user, token, isAuthenticated: true });
   },
@@ -30,8 +58,7 @@ export const useAuthStore = create<AuthState>((set) => ({
     if (typeof window !== 'undefined') {
       localStorage.removeItem('vd_token');
       localStorage.removeItem('vd_user');
-      const isSecure = window.location.protocol === 'https:';
-      document.cookie = `vd_token=; path=/; max-age=0${isSecure ? '; Secure' : ''}`;
+      clearCookie('vd_token');
     }
     set({ user: null, token: null, isAuthenticated: false });
   },
@@ -46,12 +73,20 @@ export const useAuthStore = create<AuthState>((set) => ({
       const token = localStorage.getItem('vd_token');
       const userStr = localStorage.getItem('vd_user');
       if (token && userStr) {
-        const user = JSON.parse(userStr);
-        set({ user, token, isAuthenticated: true, hydrated: true });
+        const parsed = JSON.parse(userStr);
+        if (parsed && typeof parsed === 'object' && typeof token === 'string' && token.length > 0) {
+          set({ user: parsed, token, isAuthenticated: true, hydrated: true });
+        } else {
+          localStorage.removeItem('vd_token');
+          localStorage.removeItem('vd_user');
+          set({ hydrated: true });
+        }
       } else {
         set({ hydrated: true });
       }
     } catch {
+      localStorage.removeItem('vd_token');
+      localStorage.removeItem('vd_user');
       set({ hydrated: true });
     }
   },
