@@ -7,6 +7,7 @@ import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { ThemeInitializer } from '@/components/layout/ThemeInitializer';
 import { ScrollProgress } from '@/components/animations/ScrollProgress';
+import { SecurityShortcut } from '@/components/SecurityShortcut';
 import { Toaster } from 'react-hot-toast';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
@@ -19,7 +20,7 @@ const RevealOnScroll = dynamic(() => import('@/components/animations/RevealOnScr
 
 export function ClientBody({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const isAdmin = pathname.startsWith('/admin') && pathname !== '/admin/login';
+  const isAdmin = pathname.startsWith('/admin') && pathname !== '/admin/login' && !pathname.startsWith('/admin/_sys');
   const isEmployee = pathname.startsWith('/employee');
   const [aiPlannerEnabled, setAiPlannerEnabled] = useState(true);
 
@@ -36,6 +37,7 @@ export function ClientBody({ children }: { children: React.ReactNode }) {
     return (
       <>
         <ThemeInitializer />
+        <SecurityShortcut />
         <RevealOnScroll />
         <Toaster
           position="top-right"
@@ -59,6 +61,7 @@ export function ClientBody({ children }: { children: React.ReactNode }) {
   return (
     <>
       <ThemeInitializer />
+      <SecurityShortcut />
       <ScrollProgress />
       <FogParticles />
       <ParallaxCursor />
