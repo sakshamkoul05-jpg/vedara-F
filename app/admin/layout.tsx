@@ -11,7 +11,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const router = useRouter();
   const pathname = usePathname();
   const isLoginPage = pathname === '/admin/login';
-  const isSystemPage = pathname.startsWith('/admin/_sys');
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => { hydrate(); }, [hydrate]);
@@ -26,7 +25,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   if (!hydrated) return null;
   if (isLoginPage) return <>{children}</>;
   if (!token) return null;
-  if (isSystemPage) return <>{children}</>;
 
   return (
     <div className="flex min-h-screen bg-earth-50">

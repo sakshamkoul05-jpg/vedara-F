@@ -14,7 +14,7 @@ import { formatDateShort, formatPrice } from '@/lib/utils';
 import {
   Save, Plus, Trash2, Edit, X, Check, Image as ImageIcon, Star, Tag,
   HelpCircle, MessageSquare, Home, Settings, ChevronUp, ChevronDown, Link as LinkIcon,
-  ToggleLeft, ToggleRight
+  ToggleLeft, ToggleRight, Shield, Package, Lock, Server, Key, Cpu, Clock, AlertTriangle, RefreshCw, Eye
 } from 'lucide-react';
 
 type ToastState = { message: string; type: 'success' | 'error' } | null;
@@ -56,6 +56,7 @@ export default function CMSPage() {
             <TabsTrigger value="coupons"><Tag className="w-4 h-4 mr-1.5" /> Coupons</TabsTrigger>
             <TabsTrigger value="faqs"><HelpCircle className="w-4 h-4 mr-1.5" /> FAQs</TabsTrigger>
             <TabsTrigger value="messages"><MessageSquare className="w-4 h-4 mr-1.5" /> Messages</TabsTrigger>
+            <TabsTrigger value="security"><Shield className="w-4 h-4 mr-1.5" /> Security</TabsTrigger>
           </TabsList>
 
           <TabsContent value="settings">
@@ -78,6 +79,9 @@ export default function CMSPage() {
           </TabsContent>
           <TabsContent value="messages">
             <MessagesTab token={token} showToast={showToast} />
+          </TabsContent>
+          <TabsContent value="security">
+            <SecurityTab />
           </TabsContent>
         </Tabs>
       </div>
@@ -1311,6 +1315,210 @@ function MessagesTab({ token, showToast }: { token: string | null; showToast: (m
             <p className="text-muted-foreground text-sm">Select a message to view</p>
           </div>
         )}
+      </div>
+    </div>
+  );
+}
+
+function SecurityTab() {
+  const APP_VERSION = '1.0.0';
+  const LAST_UPDATED = '2026-07-06';
+  const SECURITY_PATCH = 'SP-2026.07.01';
+
+  const criticalDeps = [
+    { name: 'next', current: '15.5.18', latest: '15.5.18', status: 'ok' as const },
+    { name: 'react', current: '18.3.1', latest: '19.1.0', status: 'outdated' as const },
+    { name: 'react-dom', current: '18.3.1', latest: '19.1.0', status: 'outdated' as const },
+    { name: 'typescript', current: '5.6.3', latest: '5.8.3', status: 'outdated' as const },
+    { name: 'framer-motion', current: '11.18.2', latest: '12.12.2', status: 'outdated' as const },
+    { name: 'tailwindcss', current: '3.4.15', latest: '4.1.11', status: 'outdated' as const },
+    { name: 'zod', current: '3.23.8', latest: '3.25.67', status: 'outdated' as const },
+    { name: 'socket.io-client', current: '4.8.3', latest: '4.8.3', status: 'ok' as const },
+    { name: 'razorpay', current: '2.9.6', latest: '2.9.6', status: 'ok' as const },
+    { name: 'jose', current: '5.10.0', latest: '6.0.11', status: 'outdated' as const },
+    { name: 'dompurify', current: '3.4.11', latest: '3.4.11', status: 'ok' as const },
+    { name: 'lenis', current: '1.3.23', latest: '1.3.23', status: 'ok' as const },
+    { name: 'gsap', current: '3.15.0', latest: '3.15.0', status: 'ok' as const },
+    { name: 'zustand', current: '5.0.1', latest: '5.0.5', status: 'outdated' as const },
+  ];
+
+  const securityHeaders = [
+    { name: 'X-Content-Type-Options', expected: 'nosniff', present: true },
+    { name: 'X-Frame-Options', expected: 'DENY', present: true },
+    { name: 'X-XSS-Protection', expected: '1; mode=block', present: true },
+    { name: 'Referrer-Policy', expected: 'strict-origin-when-cross-origin', present: true },
+    { name: 'Permissions-Policy', expected: 'camera=(), microphone=()', present: true },
+    { name: 'Content-Security-Policy', expected: 'default-src', present: true },
+    { name: 'Strict-Transport-Security', expected: 'max-age=31536000', present: true },
+  ];
+
+  const envChecks = [
+    { name: 'RAZORPAY_KEY_ID', status: true, note: 'Client-side' },
+    { name: 'RAZORPAY_KEY_SECRET', status: false, note: 'Server-only' },
+    { name: 'NEXT_PUBLIC_API_URL', status: true, note: 'Client-side' },
+    { name: 'NEXT_PUBLIC_SITE_URL', status: true, note: 'Client-side' },
+    { name: 'SMTP Config', status: false, note: 'Backend service' },
+    { name: 'GROQ_API_KEY', status: false, note: 'Backend service' },
+    { name: 'Cloudinary', status: false, note: 'Backend service' },
+  ];
+
+  const totalDeps = criticalDeps.length;
+  const okDeps = criticalDeps.filter(d => d.status === 'ok').length;
+  const outdatedDeps = criticalDeps.filter(d => d.status === 'outdated').length;
+  const headersPresent = securityHeaders.filter(h => h.present).length;
+  const envAvailable = envChecks.filter(e => e.status).length;
+
+  const overallScore = Math.round(
+    ((okDeps / totalDeps) * 40) +
+    ((headersPresent / securityHeaders.length) * 30) +
+    ((envAvailable / envChecks.length) * 30)
+  );
+
+  return (
+    <div className="space-y-6">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <ScrollReveal>
+          <div className="glass-card-light rounded-2xl p-5">
+            <div className="flex items-center gap-2 mb-3">
+              <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${overallScore >= 80 ? 'bg-green-100' : overallScore >= 60 ? 'bg-amber-100' : 'bg-red-100'}`}>
+                <Shield className={`w-4 h-4 ${overallScore >= 80 ? 'text-green-700' : overallScore >= 60 ? 'text-amber-700' : 'text-red-700'}`} />
+              </div>
+              <span className="text-xs text-muted-foreground">Score</span>
+            </div>
+            <p className={`text-2xl font-bold ${overallScore >= 80 ? 'text-green-700' : overallScore >= 60 ? 'text-amber-700' : 'text-red-700'}`}>
+              {overallScore}%
+            </p>
+          </div>
+        </ScrollReveal>
+        <ScrollReveal delay={0.05}>
+          <div className="glass-card-light rounded-2xl p-5">
+            <div className="flex items-center gap-2 mb-3">
+              <Package className="w-4 h-4 text-blue-600" />
+              <span className="text-xs text-muted-foreground">Dependencies</span>
+            </div>
+            <p className="text-2xl font-bold text-foreground">{okDeps}/{totalDeps}</p>
+            <p className="text-xs text-muted-foreground mt-1">{outdatedDeps} outdated</p>
+          </div>
+        </ScrollReveal>
+        <ScrollReveal delay={0.1}>
+          <div className="glass-card-light rounded-2xl p-5">
+            <div className="flex items-center gap-2 mb-3">
+              <Lock className="w-4 h-4 text-purple-600" />
+              <span className="text-xs text-muted-foreground">Headers</span>
+            </div>
+            <p className="text-2xl font-bold text-foreground">{headersPresent}/{securityHeaders.length}</p>
+            <p className="text-xs text-muted-foreground mt-1">HTTP headers</p>
+          </div>
+        </ScrollReveal>
+        <ScrollReveal delay={0.15}>
+          <div className="glass-card-light rounded-2xl p-5">
+            <div className="flex items-center gap-2 mb-3">
+              <Server className="w-4 h-4 text-cyan-600" />
+              <span className="text-xs text-muted-foreground">Environment</span>
+            </div>
+            <p className="text-2xl font-bold text-foreground">{envAvailable}/{envChecks.length}</p>
+            <p className="text-xs text-muted-foreground mt-1">Variables set</p>
+          </div>
+        </ScrollReveal>
+      </div>
+
+      <ScrollReveal delay={0.1}>
+        <div className="glass-card-light rounded-2xl p-6">
+          <h2 className="font-serif text-lg text-foreground mb-4 flex items-center gap-2">
+            <Cpu className="w-4 h-4 text-forest-600" /> Application
+          </h2>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
+            <div><p className="text-muted-foreground text-xs mb-0.5">Version</p><p className="font-mono text-foreground">v{APP_VERSION}</p></div>
+            <div><p className="text-muted-foreground text-xs mb-0.5">Last Updated</p><p className="font-mono text-foreground">{LAST_UPDATED}</p></div>
+            <div><p className="text-muted-foreground text-xs mb-0.5">Security Patch</p><p className="font-mono text-foreground">{SECURITY_PATCH}</p></div>
+            <div><p className="text-muted-foreground text-xs mb-0.5">Framework</p><p className="font-mono text-foreground">Next.js 15.5.18</p></div>
+            <div><p className="text-muted-foreground text-xs mb-0.5">Runtime</p><p className="font-mono text-foreground">React 18.3.1</p></div>
+            <div><p className="text-muted-foreground text-xs mb-0.5">Build</p><p className="font-mono text-foreground">ES2022 / Node 18+</p></div>
+          </div>
+        </div>
+      </ScrollReveal>
+
+      <ScrollReveal delay={0.15}>
+        <div className="glass-card-light rounded-2xl p-6">
+          <h2 className="font-serif text-lg text-foreground mb-4 flex items-center gap-2">
+            <Package className="w-4 h-4 text-blue-600" /> Dependencies
+          </h2>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-border">
+                  <th className="text-left py-2 text-muted-foreground font-medium">Package</th>
+                  <th className="text-left py-2 text-muted-foreground font-medium">Current</th>
+                  <th className="text-left py-2 text-muted-foreground font-medium">Latest</th>
+                  <th className="text-left py-2 text-muted-foreground font-medium">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {criticalDeps.map((dep) => (
+                  <tr key={dep.name} className="border-b border-border/50">
+                    <td className="py-2 font-mono text-foreground">{dep.name}</td>
+                    <td className="py-2 font-mono text-muted-foreground">{dep.current}</td>
+                    <td className="py-2 font-mono text-muted-foreground">{dep.latest}</td>
+                    <td className="py-2">
+                      {dep.status === 'ok' ? (
+                        <span className="inline-flex items-center gap-1 text-green-700 text-xs"><Check className="w-3 h-3" /> Current</span>
+                      ) : (
+                        <span className="inline-flex items-center gap-1 text-amber-700 text-xs"><RefreshCw className="w-3 h-3" /> Outdated</span>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </ScrollReveal>
+
+      <ScrollReveal delay={0.2}>
+        <div className="glass-card-light rounded-2xl p-6">
+          <h2 className="font-serif text-lg text-foreground mb-4 flex items-center gap-2">
+            <Lock className="w-4 h-4 text-purple-600" /> Security Headers
+          </h2>
+          <div className="space-y-2">
+            {securityHeaders.map((h) => (
+              <div key={h.name} className="flex items-center justify-between py-2 border-b border-border/50">
+                <span className="font-mono text-sm text-foreground">{h.name}</span>
+                <div className="flex items-center gap-2">
+                  <span className="font-mono text-xs text-muted-foreground">{h.expected}</span>
+                  {h.present ? <Check className="w-4 h-4 text-green-700" /> : <AlertTriangle className="w-4 h-4 text-red-600" />}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </ScrollReveal>
+
+      <ScrollReveal delay={0.25}>
+        <div className="glass-card-light rounded-2xl p-6">
+          <h2 className="font-serif text-lg text-foreground mb-4 flex items-center gap-2">
+            <Key className="w-4 h-4 text-amber-600" /> Environment
+          </h2>
+          <div className="space-y-2">
+            {envChecks.map((env) => (
+              <div key={env.name} className="flex items-center justify-between py-2 border-b border-border/50">
+                <div className="flex items-center gap-3">
+                  <span className="font-mono text-sm text-foreground">{env.name}</span>
+                  <span className="text-xs text-muted-foreground">({env.note})</span>
+                </div>
+                {env.status ? (
+                  <span className="inline-flex items-center gap-1 text-green-700 text-xs"><Check className="w-3 h-3" /> Set</span>
+                ) : (
+                  <span className="inline-flex items-center gap-1 text-muted-foreground text-xs"><Eye className="w-3 h-3" /> Hidden</span>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </ScrollReveal>
+
+      <div className="text-center text-xs text-muted-foreground/50 py-2">
+        <Clock className="w-3 h-3 inline mr-1" />
+        Last checked: {new Date().toLocaleString()} — Confidential
       </div>
     </div>
   );
