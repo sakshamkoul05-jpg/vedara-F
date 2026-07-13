@@ -98,11 +98,11 @@ export function Header() {
           </nav>
 
           {/* Actions — extreme right */}
-            <div className="hidden md:flex items-center gap-3">
+            <div className="hidden md:flex items-center gap-2">
             <a
               href="mailto:vedararetreat@gmail.com"
               className={cn(
-                'p-1.5 rounded-lg transition-all duration-500',
+                'p-2.5 rounded-lg transition-all duration-500 min-w-[44px] min-h-[44px] flex items-center justify-center',
                 isTransparent
                   ? 'text-white/60 hover:text-white'
                   : 'text-muted-foreground hover:text-primary'
@@ -116,7 +116,7 @@ export function Header() {
               target="_blank"
               rel="noopener noreferrer"
               className={cn(
-                'p-1.5 rounded-lg transition-all duration-500',
+                'p-2.5 rounded-lg transition-all duration-500 min-w-[44px] min-h-[44px] flex items-center justify-center',
                 isTransparent
                   ? 'text-white/60 hover:text-white'
                   : 'text-muted-foreground hover:text-primary'
@@ -130,7 +130,7 @@ export function Header() {
               target="_blank"
               rel="noopener noreferrer"
               className={cn(
-                'p-1.5 rounded-lg transition-all duration-500',
+                'p-2.5 rounded-lg transition-all duration-500 min-w-[44px] min-h-[44px] flex items-center justify-center',
                 isTransparent
                   ? 'text-white/60 hover:text-white'
                   : 'text-muted-foreground hover:text-primary'
@@ -145,7 +145,7 @@ export function Header() {
             <button
               onClick={toggle}
               className={cn(
-                'p-1.5 rounded-lg transition-all duration-500',
+                'p-2.5 rounded-lg transition-all duration-500 min-w-[44px] min-h-[44px] flex items-center justify-center',
                 isTransparent
                   ? 'text-white/60 hover:text-white'
                   : 'text-muted-foreground hover:text-primary'
@@ -185,7 +185,7 @@ export function Header() {
             </button>
             <button
               onClick={() => setIsMobileOpen(!isMobileOpen)}
-              className={cn('p-2', isTransparent ? 'text-white' : 'text-vedara-900')}
+              className={cn('p-3 min-w-[44px] min-h-[44px] flex items-center justify-center', isTransparent ? 'text-white' : 'text-vedara-900')}
               aria-label={isMobileOpen ? 'Close menu' : 'Open menu'}
             >
               {isMobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}

@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
-import { ArrowRight, Users, Bed, Bath, Maximize, Loader2, XCircle, CheckCircle } from 'lucide-react';
+import { ArrowRight, Users, Bed, Bath, Maximize, Loader2, XCircle, CheckCircle, Home } from 'lucide-react';
 import { ScrollReveal } from '@/components/animations/ScrollReveal';
 import { TextReveal } from '@/components/animations/TextReveal';
 import { BackButton } from '@/components/layout/BackButton';
@@ -316,6 +316,13 @@ export default function CottagesPage() {
                       </ScrollReveal>
                     )})}
                   </div>
+                </div>
+              )}
+              {cottages.length === 0 && (
+                <div className="text-center py-20">
+                  <Home className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                  <p className="text-foreground font-medium text-lg">No cottages available</p>
+                  <p className="text-muted-foreground text-sm mt-1">Please try different dates or contact us directly at +91-91188-82242.</p>
                 </div>
               )}
             </>

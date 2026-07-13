@@ -512,14 +512,14 @@ export default function CafePage() {
                                       <div className="flex items-center gap-2 bg-gray-100 dark:bg-[#1D232B] rounded-full px-2 py-1">
                                         <button
                                           onClick={() => { if (qty === 1) removeItem(cartItem!.itemId); else updateQuantity(cartItem!.itemId, qty - 1); }}
-                                          className="w-6 h-6 rounded-full bg-vedara-900 text-white flex items-center justify-center hover:bg-vedara-900/80 transition-colors"
+                                          className="w-8 h-8 rounded-full bg-vedara-900 text-white flex items-center justify-center hover:bg-vedara-900/80 transition-colors"
                                         >
                                           <Minus className="w-3 h-3" />
                                         </button>
                                         <span className="text-sm font-semibold text-gray-900 dark:text-[#F5F5F5] min-w-[20px] text-center">{qty}</span>
                                         <button
                                           onClick={() => handleAddToCart(item, localId)}
-                                          className="w-6 h-6 rounded-full bg-vedara-900 text-white flex items-center justify-center hover:bg-vedara-900/80 transition-colors"
+                                          className="w-8 h-8 rounded-full bg-vedara-900 text-white flex items-center justify-center hover:bg-vedara-900/80 transition-colors"
                                         >
                                           <Plus className="w-3 h-3" />
                                         </button>
@@ -618,14 +618,14 @@ export default function CafePage() {
                                   <div className="flex items-center gap-2 bg-gray-100 dark:bg-[#1D232B] rounded-full px-2 py-1">
                                     <button
                                       onClick={() => { if (qty === 1) removeItem(cartItem!.itemId); else updateQuantity(cartItem!.itemId, qty - 1); }}
-                                      className="w-6 h-6 rounded-full bg-vedara-900 text-white flex items-center justify-center hover:bg-vedara-900/80 transition-colors"
+                                      className="w-8 h-8 rounded-full bg-vedara-900 text-white flex items-center justify-center hover:bg-vedara-900/80 transition-colors"
                                     >
                                       <Minus className="w-3 h-3" />
                                     </button>
                                     <span className="text-sm font-semibold text-gray-900 dark:text-[#F5F5F5] min-w-[20px] text-center">{qty}</span>
                                     <button
                                       onClick={() => handleAddToCart(item, localId)}
-                                      className="w-6 h-6 rounded-full bg-vedara-900 text-white flex items-center justify-center hover:bg-vedara-900/80 transition-colors"
+                                      className="w-8 h-8 rounded-full bg-vedara-900 text-white flex items-center justify-center hover:bg-vedara-900/80 transition-colors"
                                     >
                                       <Plus className="w-3 h-3" />
                                     </button>
