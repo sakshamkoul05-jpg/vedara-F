@@ -52,6 +52,7 @@ export function Header() {
     >
       <div className="vintage-container">
         <div className="flex items-center justify-between h-16 md:h-20">
+          {/* Logo — extreme left */}
           <Link href="/" className="flex items-center gap-3 flex-shrink-0">
             <div className={cn(
               'w-12 h-12 md:w-14 md:h-14 rounded-full overflow-hidden flex-shrink-0 transition-all shadow-sm',
@@ -68,7 +69,8 @@ export function Header() {
             </div>
           </Link>
 
-          <nav className="hidden lg:flex items-center gap-7">
+          {/* Nav — absolute center */}
+          <nav className="hidden lg:flex items-center gap-7 absolute left-1/2 -translate-x-1/2">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
@@ -95,6 +97,7 @@ export function Header() {
             ))}
           </nav>
 
+          {/* Actions — extreme right */}
             <div className="hidden md:flex items-center gap-3">
             <a
               href="mailto:vedararetreat@gmail.com"
