@@ -24,6 +24,14 @@
     --input: 30 10% 87%;
     --ring: 150 25% 20%;
     --radius: 0.5rem;
+
+    --clr-surface: #FFFFFF;
+    --clr-stone: rgba(74, 85, 104, 0.12);
+    --clr-saffron: #C9943A;
+    --clr-cedar: #2F5D44;
+    --clr-text: #1C2B3A;
+    --clr-text-muted: rgba(28, 43, 58, 0.5);
+    --font-display: 'Cormorant Garamond', Georgia, serif;
   }
 
   .dark {
@@ -46,6 +54,14 @@
     --border: 220 12% 18%;
     --input: 220 12% 18%;
     --ring: 33 45% 65%;
+
+    --clr-surface: hsl(220, 25%, 10%);
+    --clr-stone: rgba(255, 255, 255, 0.12);
+    --clr-saffron: #C9943A;
+    --clr-cedar: #6E9A77;
+    --clr-text: #F5F5F5;
+    --clr-text-muted: rgba(245, 245, 245, 0.65);
+    --font-display: 'Cormorant Garamond', Georgia, serif;
   }
 
   .dark body {
