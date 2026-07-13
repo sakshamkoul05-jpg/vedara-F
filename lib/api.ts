@@ -54,20 +54,6 @@ export const api = {
 
   delete: <T = any>(endpoint: string, token?: string | null) =>
     request<T>(endpoint, { method: 'DELETE', token: token || undefined }),
-
-  /** Local Razorpay endpoints (handled by this Next.js app) */
-  local: {
-    createOrder: (data: { amount: number; currency?: string; receipt?: string }) =>
-      fetch('/api/payments/create-order', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      }).then(async (r) => { const d = await r.json(); if (!r.ok) throw new Error(d.error || 'Failed to create order'); return d; }),
-    verify: (data: { razorpay_order_id: string; razorpay_payment_id: string; razorpay_signature: string }) =>
-      fetch('/api/payments/verify', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      }).then(async (r) => { const d = await r.json(); if (!r.ok) throw new Error(d.error || 'Verification failed'); return d; }),
-  },
 };
 
 export const endpoints = {
@@ -93,10 +79,6 @@ export const endpoints = {
     },
     list: (token: string | null) => api.get('/bookings/all', token),
     cancel: (id: string, token: string | null) => api.post(`/bookings/${id}/cancel`, {}, token),
-  },
-  payments: {
-    createOrder: (data: any) => api.post('/payments/create-order', data),
-    verify: (data: any) => api.post('/payments/verify', data),
   },
   cafe: {
     menu: (staff = false) => api.get(`/cafe/menu${staff ? '?staff=true' : ''}`),

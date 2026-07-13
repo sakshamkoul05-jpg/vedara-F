@@ -7,8 +7,9 @@ import { motion } from 'framer-motion';
 import {
   ArrowLeft, Users, Bed, Bath, Maximize, Check, Wifi, Flame,
   Snowflake, Coffee, Tv, Wind, Warehouse, TreePine, Mountain,
-  Calendar
+  Calendar, Plus
 } from 'lucide-react';
+import * as Accordion from '@radix-ui/react-accordion';
 import { ScrollReveal } from '@/components/animations/ScrollReveal';
 import { Badge } from '@/components/ui/badge';
 import { FormattedText } from '@/components/ui/formatted-text';
@@ -173,24 +174,19 @@ export default function CottageBySlugPage() {
               <ScrollReveal>
                 <div>
                   <h3 className="font-serif text-xl text-foreground mb-5">Amenities</h3>
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                  <div className="flex flex-wrap gap-2.5">
                     {amenitiesList.map((amenity) => {
                       const Icon = amenityIcons[amenity.toLowerCase()] || Check;
                       return (
-                        <div key={amenity} className="vintage-card p-3.5 flex items-center gap-3">
-                          <div className="w-9 h-9 rounded-lg bg-gold-100 flex items-center justify-center flex-shrink-0">
-                            <Icon className="w-4 h-4 text-gold-600 dark:text-gold-400" />
-                          </div>
-                          <span className="text-sm text-foreground capitalize">{amenity}</span>
-                        </div>
+                        <span key={amenity} className="inline-flex items-center gap-2 px-3.5 py-2 rounded-full bg-gold-100 dark:bg-vedara-900/40 text-foreground text-sm">
+                          <Icon className="w-4 h-4 text-gold-600 dark:text-gold-400" />
+                          <span className="capitalize">{amenity}</span>
+                        </span>
                       );
                     })}
-                    <div className="vintage-card p-3.5 flex items-center gap-3 bg-red-50 border border-red-100">
-                      <div className="w-9 h-9 rounded-lg bg-red-100 flex items-center justify-center flex-shrink-0">
-                        <Flame className="w-4 h-4 text-red-500" />
-                      </div>
-                      <span className="text-sm text-red-700 font-medium">Cooking not allowed</span>
-                    </div>
+                    <span className="inline-flex items-center gap-2 px-3.5 py-2 rounded-full bg-red-50 border border-red-100 text-red-700 text-sm font-medium">
+                      <Flame className="w-4 h-4 text-red-500" /> Cooking not allowed
+                    </span>
                   </div>
                 </div>
               </ScrollReveal>
@@ -272,6 +268,53 @@ export default function CottageBySlugPage() {
                   </div>
                 </ScrollReveal>
               )}
+
+              <ScrollReveal>
+                <div>
+                  <h3 className="font-serif text-xl text-foreground mb-5">Good to Know</h3>
+                  <Accordion.Root type="single" collapsible className="space-y-3">
+                    {[
+                      {
+                        value: 'checkin',
+                        title: 'Check-in & Check-out',
+                        body: 'Check-in is from 1:00 PM and check-out is by 11:00 AM. Our reception is staffed daily from 8:00 AM to 10:30 PM — if you expect to arrive later, let us know and we will arrange a warm welcome.',
+                      },
+                      {
+                        value: 'cancellation',
+                        title: 'Cancellation Policy',
+                        body: 'Free cancellation 15+ days before arrival (90% refund). 8–15 days before: 50% refund. Less than 7 days: no refund. Peak season requires 21+ days notice for a 50% refund.',
+                      },
+                      {
+                        value: 'taxes',
+                        title: 'Taxes & Extras',
+                        body: 'All cottage rates are exclusive of applicable taxes (12% GST added at checkout). An extra guest charge of ₹1,500 per night applies beyond two guests, and a room heater is available at ₹600/night.',
+                      },
+                      {
+                        value: 'pets',
+                        title: 'Pets & Quiet Hours',
+                        body: 'Pets are not allowed at the retreat. Out of respect for fellow guests, quiet hours are observed from 11:00 PM to 7:00 AM.',
+                      },
+                      {
+                        value: 'id',
+                        title: 'ID Proof',
+                        body: 'A valid ID proof is required at check-in — Aadhaar, Passport or Driving Licence for Indian nationals, and a Passport for foreign nationals.',
+                      },
+                    ].map((item) => (
+                      <Accordion.Item key={item.value} value={item.value} className="vintage-card overflow-hidden">
+                        <Accordion.Header>
+                          <Accordion.Trigger className="group w-full flex items-center justify-between px-5 py-4 text-left font-medium text-foreground">
+                            {item.title}
+                            <Plus className="w-4 h-4 text-gold-500 transition-transform duration-300 group-data-[state=open]:rotate-45" />
+                          </Accordion.Trigger>
+                        </Accordion.Header>
+                        <Accordion.Content className="px-5 pb-5 text-sm text-muted-foreground leading-relaxed">
+                          {item.body}
+                        </Accordion.Content>
+                      </Accordion.Item>
+                    ))}
+                  </Accordion.Root>
+                </div>
+              </ScrollReveal>
             </div>
 
             <div className="lg:col-span-2">
