@@ -102,7 +102,7 @@ export default function CottagesPage() {
       <section className="section-padding pt-8">
         <div className="vintage-container">
           {loading ? (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {[1, 2, 3, 4, 5, 6].map((i) => (
                 <div key={i} className="vintage-card animate-pulse">
                   <div className="aspect-[4/3] bg-gold-100 dark:bg-vedara-900/50 rounded-t-2xl" />
@@ -137,14 +137,14 @@ export default function CottagesPage() {
                       <p className="text-muted-foreground text-sm max-w-2xl">Perfect for families, groups of four, or couples seeking expansive structural luxury. These multi-level chalets feature signature wooden attic layouts, dual balconies, and private soaking experiences.</p>
                     </div>
                   </ScrollReveal>
-                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {cottages.filter((c: any) => c.category === 'Premium Duplex Family Suite').map((cottage: any, i) => {
                       const slug = cottage.slug || cottage.name.toLowerCase().replace(/\s+/g, '-');
                       const available = availabilityChecked ? cottage.isAvailable : true;
                       return (
                       <ScrollReveal key={cottage.id} delay={i * 0.1}>
                         <Link href={`/cottages/slug/${slug}`} className="group block">
-                          <div className={`vintage-card overflow-hidden ${availabilityChecked && !available ? 'opacity-50' : ''}`}>
+                          <div className={`vintage-card overflow-hidden h-full ${availabilityChecked && !available ? 'opacity-50' : ''}`}>
                             <div className="aspect-[4/3] overflow-hidden bg-gold-50 dark:bg-vedara-900/30 relative">
                               {availabilityChecked && !available && (
                                 <div className="absolute inset-0 bg-black/40 z-10 flex items-center justify-center">
@@ -201,14 +201,14 @@ export default function CottagesPage() {
                       <p className="text-muted-foreground text-sm max-w-2xl">Tailor-made for couples, solo adventurers, and remote professionals. These elegant 270 sq. ft. single-level sanctuaries offer premium warmth, dedicated workspace/dining seating layouts, and a front-row seat to the Jibhi valley vistas.</p>
                     </div>
                   </ScrollReveal>
-                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {cottages.filter((c: any) => c.category === 'Intimate Mountain View Suite').map((cottage: any, i) => {
                       const slug = cottage.slug || cottage.name.toLowerCase().replace(/\s+/g, '-');
                       const available = availabilityChecked ? cottage.isAvailable : true;
                       return (
                       <ScrollReveal key={cottage.id} delay={i * 0.1}>
                         <Link href={`/cottages/slug/${slug}`} className="group block">
-                          <div className={`vintage-card overflow-hidden ${availabilityChecked && !available ? 'opacity-50' : ''}`}>
+                          <div className={`vintage-card overflow-hidden h-full ${availabilityChecked && !available ? 'opacity-50' : ''}`}>
                             <div className="aspect-[4/3] overflow-hidden bg-gold-50 dark:bg-vedara-900/30 relative">
                               {availabilityChecked && !available && (
                                 <div className="absolute inset-0 bg-black/40 z-10 flex items-center justify-center">
@@ -265,14 +265,14 @@ export default function CottagesPage() {
                       <p className="text-muted-foreground text-sm max-w-2xl">Thoughtfully tailored minimalist escapes optimized for solo travelers, remote writers, digital nomads, or simple comfort. These rooms pack rich warmth and structural utility into a smartly integrated design.</p>
                     </div>
                   </ScrollReveal>
-                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {cottages.filter((c: any) => c.category === 'Cozy Alpine Studio').map((cottage: any, i) => {
                       const slug = cottage.slug || cottage.name.toLowerCase().replace(/\s+/g, '-');
                       const available = availabilityChecked ? cottage.isAvailable : true;
                       return (
                       <ScrollReveal key={cottage.id} delay={i * 0.1}>
                         <Link href={`/cottages/slug/${slug}`} className="group block">
-                          <div className={`vintage-card overflow-hidden ${availabilityChecked && !available ? 'opacity-50' : ''}`}>
+                          <div className={`vintage-card overflow-hidden h-full ${availabilityChecked && !available ? 'opacity-50' : ''}`}>
                             <div className="aspect-[4/3] overflow-hidden bg-gold-50 dark:bg-vedara-900/30 relative">
                               {availabilityChecked && !available && (
                                 <div className="absolute inset-0 bg-black/40 z-10 flex items-center justify-center">

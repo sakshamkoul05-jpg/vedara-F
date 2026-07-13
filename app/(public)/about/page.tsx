@@ -241,7 +241,7 @@ export default function AboutPage() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {amenities.map((a, i) => (
               <ScrollReveal key={a.label} delay={i * 0.08}>
-                <article className="glass-card-light rounded-2xl p-5 flex items-start gap-4 transition-smooth">
+                <article className="glass-card-light rounded-2xl p-5 flex items-start gap-4 transition-smooth h-full">
                   <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
                     <a.icon className="w-5 h-5 text-primary" />
                   </div>
@@ -274,7 +274,7 @@ export default function AboutPage() {
           </ScrollReveal>
           <div className="grid md:grid-cols-3 gap-6">
             <ScrollReveal delay={0.1}>
-              <div className="rounded-2xl p-6 text-center font-sans border border-white/8 transition-smooth" style={{ background: 'rgba(255,255,255,0.05)' }}>
+              <div className="rounded-2xl p-6 text-center font-sans border border-white/8 transition-smooth h-full" style={{ background: 'rgba(255,255,255,0.05)' }}>
                 <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-gold-500/25 to-gold-500/10 flex items-center justify-center mx-auto mb-4">
                   <svg className="w-7 h-7 text-gold-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 21a9 9 0 100-18 9 9 0 000 18z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 7v4l2 2" /></svg>
                 </div>
@@ -285,7 +285,7 @@ export default function AboutPage() {
               </div>
             </ScrollReveal>
             <ScrollReveal delay={0.2}>
-              <div className="rounded-2xl p-6 text-center font-sans border border-white/8 transition-smooth" style={{ background: 'rgba(255,255,255,0.05)' }}>
+              <div className="rounded-2xl p-6 text-center font-sans border border-white/8 transition-smooth h-full" style={{ background: 'rgba(255,255,255,0.05)' }}>
                 <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-gold-500/25 to-gold-500/10 flex items-center justify-center mx-auto mb-4">
                   <svg className="w-7 h-7 text-gold-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
                 </div>
@@ -296,7 +296,7 @@ export default function AboutPage() {
               </div>
             </ScrollReveal>
             <ScrollReveal delay={0.3}>
-              <div className="rounded-2xl p-6 text-center font-sans border border-white/8 transition-smooth" style={{ background: 'rgba(255,255,255,0.05)' }}>
+              <div className="rounded-2xl p-6 text-center font-sans border border-white/8 transition-smooth h-full" style={{ background: 'rgba(255,255,255,0.05)' }}>
                 <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-gold-500/25 to-gold-500/10 flex items-center justify-center mx-auto mb-4">
                   <svg className="w-7 h-7 text-gold-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
                 </div>
@@ -335,7 +335,7 @@ export default function AboutPage() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
             {attractions.map((place, i) => (
               <ScrollReveal key={place.name} delay={i * 0.1}>
-                <div className="group glass-card-light rounded-2xl overflow-hidden transition-smooth">
+                <div className="group glass-card-light rounded-2xl overflow-hidden transition-smooth h-full flex flex-col">
                   <div className="aspect-[16/10] overflow-hidden">
                     <ImageReveal
                       src={place.image}
@@ -377,7 +377,7 @@ export default function AboutPage() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {values.map((v, i) => (
               <ScrollReveal key={v.title} delay={i * 0.1}>
-                <article className="rounded-2xl p-6 text-center border border-white/8 transition-smooth" style={{ background: 'rgba(255,255,255,0.05)' }}>
+                <article className="rounded-2xl p-6 text-center border border-white/8 transition-smooth h-full" style={{ background: 'rgba(255,255,255,0.05)' }}>
                   <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary/25 to-primary/10 flex items-center justify-center mx-auto mb-4">
                     <v.icon className="w-6 h-6 text-primary" />
                   </div>

@@ -326,10 +326,10 @@ export default function HomePage() {
                 <h3 className="font-serif text-xl text-foreground">Premium Duplex Family Suites</h3>
               </div>
             </ScrollReveal>
-            <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-6">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {cottages.filter(c => c.category === 'Premium Duplex Family Suite').map((cottage, i) => (
                 <ScrollReveal key={cottage.name} delay={i * 0.08} direction="up" distance={40}>
-                  <article className="group bg-white rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-500 reveal h-full flex flex-col">
+                  <article className="group bg-white dark:bg-[#161A20] rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-500 reveal h-full flex flex-col border border-border/50">
                     <div className="aspect-[4/3] overflow-hidden bg-sand-200">
                       <img src={`https://images.unsplash.com/photo-${['1504384308090-c894fdcc538d', '1554118811-1e0d58224f24', '1506905925346-21bda4d32df4'][i]}?w=600&q=80`} alt={`${cottage.name} - premium duplex suite at The Vedara`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                     </div>
@@ -357,10 +357,10 @@ export default function HomePage() {
                 <h3 className="font-serif text-xl text-foreground">Intimate Mountain View Suites</h3>
               </div>
             </ScrollReveal>
-            <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-6">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {cottages.filter(c => c.category === 'Intimate Mountain View Suite').map((cottage, i) => (
                 <ScrollReveal key={cottage.name} delay={i * 0.08} direction="up" distance={40}>
-                  <article className="group bg-white rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-500 reveal h-full flex flex-col">
+                  <article className="group bg-white dark:bg-[#161A20] rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-500 reveal h-full flex flex-col border border-border/50">
                     <div className="aspect-[4/3] overflow-hidden bg-sand-200">
                       <img src={`https://images.unsplash.com/photo-${['1476514525535-07fb3b4ae5f1', '1519681393784-d120267933ba', '1469476568026-46a7f7b2f9c2'][i]}?w=600&q=80`} alt={`${cottage.name} - intimate mountain view suite at The Vedara`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                     </div>
@@ -388,10 +388,10 @@ export default function HomePage() {
                 <h3 className="font-serif text-xl text-foreground">Cozy Alpine Studio</h3>
               </div>
             </ScrollReveal>
-            <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-6">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {cottages.filter(c => c.category === 'Cozy Alpine Studio').map((cottage, i) => (
                 <ScrollReveal key={cottage.name} delay={i * 0.08} direction="up" distance={40}>
-                  <article className="group bg-white rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-500 reveal h-full flex flex-col">
+                  <article className="group bg-white dark:bg-[#161A20] rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-500 reveal h-full flex flex-col border border-border/50">
                     <div className="aspect-[4/3] overflow-hidden bg-sand-200">
                       <img src={`https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&q=80`} alt={`${cottage.name} - cozy alpine studio at The Vedara`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                     </div>
@@ -436,7 +436,7 @@ export default function HomePage() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
               {experiences.map((exp, i) => (
                   <ScrollReveal key={exp.title} delay={i * 0.08} direction="up" distance={40}>
-                    <article className="group rounded-2xl overflow-hidden transition-all duration-500 font-sans border border-white/8 hover:shadow-xl hover:-translate-y-1 hover:scale-[1.02] reveal" style={{ background: 'rgba(255,255,255,0.05)' }}>
+                    <article className="group rounded-2xl overflow-hidden transition-all duration-500 font-sans border border-white/8 hover:shadow-xl hover:-translate-y-1 hover:scale-[1.02] reveal h-full" style={{ background: 'rgba(255,255,255,0.05)' }}>
                       <div className="aspect-[16/10] overflow-hidden relative">
                         <img src={exp.image} alt={exp.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy" />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
@@ -508,7 +508,7 @@ export default function HomePage() {
             {testimonials.map((t, i) => (
               <ScrollReveal key={t.name} delay={i * 0.12} direction="up" distance={40}>
                 <motion.article
-                  className="bg-white rounded-2xl p-7 relative overflow-hidden reveal"
+                  className="bg-white dark:bg-[#161A20] rounded-2xl p-7 relative overflow-hidden reveal h-full border border-border/50"
                   whileHover={{ y: -4, boxShadow: '0 20px 40px rgba(0,0,0,0.06)' }}
                   transition={{ duration: 0.5 }}
                 >
@@ -554,7 +554,7 @@ export default function HomePage() {
                   href={`https://www.google.com/maps/search/${place.mapQuery}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block bg-white rounded-2xl p-5 flex items-start gap-4 group hover:border-primary/30 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 reveal"
+                  className="block bg-white dark:bg-[#161A20] rounded-2xl p-5 flex items-start gap-4 group hover:border-primary/30 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 reveal h-full border border-border/50"
                 >
                   <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/20 transition-colors duration-300">
                     <place.icon className="w-5 h-5 text-primary" />
@@ -592,7 +592,7 @@ export default function HomePage() {
           </ScrollReveal>
           <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
             <ScrollReveal delay={0.1} direction="up" distance={40}>
-              <article className="bg-white rounded-2xl p-7 text-center reveal">
+              <article className="bg-white dark:bg-[#161A20] rounded-2xl p-7 text-center reveal h-full border border-border/50">
                 <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
                   <MapPin className="w-7 h-7 text-primary" />
                 </div>
@@ -601,7 +601,7 @@ export default function HomePage() {
               </article>
             </ScrollReveal>
             <ScrollReveal delay={0.2} direction="up" distance={40}>
-              <article className="bg-white rounded-2xl p-7 text-center reveal">
+              <article className="bg-white dark:bg-[#161A20] rounded-2xl p-7 text-center reveal h-full border border-border/50">
                 <div className="w-14 h-14 rounded-2xl bg-[#9B8EA0]/10 flex items-center justify-center mx-auto mb-4">
                   <MapPin className="w-7 h-7 text-[#9B8EA0]" />
                 </div>
@@ -610,7 +610,7 @@ export default function HomePage() {
               </article>
             </ScrollReveal>
             <ScrollReveal delay={0.3} direction="up" distance={40}>
-              <article className="bg-white rounded-2xl p-7 text-center reveal">
+              <article className="bg-white dark:bg-[#161A20] rounded-2xl p-7 text-center reveal h-full border border-border/50">
                 <div className="w-14 h-14 rounded-2xl bg-gold-400/10 flex items-center justify-center mx-auto mb-4">
                   <MapPin className="w-7 h-7 text-gold-500" />
                 </div>
