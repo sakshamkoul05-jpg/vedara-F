@@ -186,7 +186,7 @@ export default function HomePage() {
           </motion.span>
           <TextReveal
             as="h1"
-            className="display text-5xl md:text-6xl lg:text-7xl text-white leading-[1.05] mb-5 tracking-[0.08em]"
+            className="display text-4xl md:text-5xl lg:text-6xl text-white leading-[1.05] mb-5 tracking-[0.08em]"
             delay={0.5}
           >
             THE VEDARA
@@ -212,7 +212,7 @@ export default function HomePage() {
              animate={{ opacity: 1, y: 0 }}
              transition={{ delay: 1.3, duration: 0.8 }}
            >
-             <Link href="/booking" className="vintage-button bg-gold-600 text-white hover:bg-gold-700 px-10 py-4 text-base font-semibold inline-flex items-center justify-center shadow-glow hover:-translate-y-0.5 btn-fill-slide btn-fill-light hover:text-[#1C2B3A]">
+             <Link href="/booking" className="vintage-button bg-gold-600 text-white hover:bg-gold-700 px-12 py-4 text-base md:text-lg font-semibold inline-flex items-center justify-center shadow-glow ring-2 ring-gold-300/40 hover:ring-gold-300/70 hover:-translate-y-0.5 btn-fill-slide btn-fill-light hover:text-[#1C2B3A]">
                 Book Your Stay <ArrowRight className="w-4 h-4 ml-2" />
               </Link>
            </motion.div>

@@ -53,7 +53,7 @@ export function Header() {
       <div className="px-4 sm:px-6 lg:px-8 w-full">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo — extreme left */}
-          <Link href="/" className="flex items-center gap-3 flex-shrink-0 -ml-4 sm:-ml-6 lg:-ml-8 pl-4 sm:pl-6 lg:pl-8">
+            <Link href="/" className="flex items-center gap-3 flex-shrink-0 self-center">
             <div className={cn(
               'w-12 h-12 md:w-14 md:h-14 rounded-full overflow-hidden flex-shrink-0 transition-all shadow-sm',
               isTransparent ? 'ring-2 ring-white/20' : 'ring-1 ring-border'
