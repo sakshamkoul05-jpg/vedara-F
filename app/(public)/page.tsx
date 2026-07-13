@@ -329,7 +329,7 @@ export default function HomePage() {
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {cottages.filter(c => c.category === 'Premium Duplex Family Suite').map((cottage, i) => (
                 <ScrollReveal key={cottage.name} delay={i * 0.08} direction="up" distance={40}>
-                  <article className="group bg-white dark:bg-[#161A20] rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-500 reveal h-full flex flex-col border border-border/50">
+                  <article className="group bg-white dark:bg-[#1B1814] rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-500 reveal h-full flex flex-col border border-border/50">
                     <div className="aspect-[4/3] overflow-hidden bg-sand-200">
                       <img src={`https://images.unsplash.com/photo-${['1504384308090-c894fdcc538d', '1554118811-1e0d58224f24', '1506905925346-21bda4d32df4'][i]}?w=600&q=80`} alt={`${cottage.name} - premium duplex suite at The Vedara`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                     </div>
@@ -360,7 +360,7 @@ export default function HomePage() {
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {cottages.filter(c => c.category === 'Intimate Mountain View Suite').map((cottage, i) => (
                 <ScrollReveal key={cottage.name} delay={i * 0.08} direction="up" distance={40}>
-                  <article className="group bg-white dark:bg-[#161A20] rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-500 reveal h-full flex flex-col border border-border/50">
+                  <article className="group bg-white dark:bg-[#1B1814] rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-500 reveal h-full flex flex-col border border-border/50">
                     <div className="aspect-[4/3] overflow-hidden bg-sand-200">
                       <img src={`https://images.unsplash.com/photo-${['1476514525535-07fb3b4ae5f1', '1519681393784-d120267933ba', '1469476568026-46a7f7b2f9c2'][i]}?w=600&q=80`} alt={`${cottage.name} - intimate mountain view suite at The Vedara`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                     </div>
@@ -391,7 +391,7 @@ export default function HomePage() {
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {cottages.filter(c => c.category === 'Cozy Alpine Studio').map((cottage, i) => (
                 <ScrollReveal key={cottage.name} delay={i * 0.08} direction="up" distance={40}>
-                  <article className="group bg-white dark:bg-[#161A20] rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-500 reveal h-full flex flex-col border border-border/50">
+                  <article className="group bg-white dark:bg-[#1B1814] rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-500 reveal h-full flex flex-col border border-border/50">
                     <div className="aspect-[4/3] overflow-hidden bg-sand-200">
                       <img src={`https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&q=80`} alt={`${cottage.name} - cozy alpine studio at The Vedara`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                     </div>
@@ -496,7 +496,7 @@ export default function HomePage() {
       </section>
 
       {/* Testimonials */}
-      <section className="section-padding bg-slate-50 dark:bg-[#0F1115]">
+      <section className="section-padding bg-slate-50 dark:bg-[#13110E]">
         <div className="vintage-container">
           <ScrollReveal>
             <div className="text-center max-w-3xl mx-auto mb-16">
@@ -508,7 +508,7 @@ export default function HomePage() {
             {testimonials.map((t, i) => (
               <ScrollReveal key={t.name} delay={i * 0.12} direction="up" distance={40}>
                 <motion.article
-                  className="bg-white dark:bg-[#161A20] rounded-2xl p-7 relative overflow-hidden reveal h-full border border-border/50"
+                  className="bg-white dark:bg-[#1B1814] rounded-2xl p-7 relative overflow-hidden reveal h-full border border-border/50"
                   whileHover={{ y: -4, boxShadow: '0 20px 40px rgba(0,0,0,0.06)' }}
                   transition={{ duration: 0.5 }}
                 >
@@ -554,7 +554,7 @@ export default function HomePage() {
                   href={`https://www.google.com/maps/search/${place.mapQuery}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block bg-white dark:bg-[#161A20] rounded-2xl p-5 flex items-start gap-4 group hover:border-primary/30 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 reveal h-full border border-border/50"
+                  className="block bg-white dark:bg-[#1B1814] rounded-2xl p-5 flex items-start gap-4 group hover:border-primary/30 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 reveal h-full border border-border/50"
                 >
                   <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/20 transition-colors duration-300">
                     <place.icon className="w-5 h-5 text-primary" />
@@ -581,7 +581,7 @@ export default function HomePage() {
       </section>
 
       {/* How to Reach */}
-      <section id="how-to-reach" className="section-padding bg-slate-50 dark:bg-[#0F1115]">
+      <section id="how-to-reach" className="section-padding bg-slate-50 dark:bg-[#13110E]">
         <div className="vintage-container">
           <ScrollReveal>
             <div className="text-center max-w-3xl mx-auto mb-16">
@@ -592,7 +592,7 @@ export default function HomePage() {
           </ScrollReveal>
           <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
             <ScrollReveal delay={0.1} direction="up" distance={40}>
-              <article className="bg-white dark:bg-[#161A20] rounded-2xl p-7 text-center reveal h-full border border-border/50">
+              <article className="bg-white dark:bg-[#1B1814] rounded-2xl p-7 text-center reveal h-full border border-border/50">
                 <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
                   <MapPin className="w-7 h-7 text-primary" />
                 </div>
@@ -601,7 +601,7 @@ export default function HomePage() {
               </article>
             </ScrollReveal>
             <ScrollReveal delay={0.2} direction="up" distance={40}>
-              <article className="bg-white dark:bg-[#161A20] rounded-2xl p-7 text-center reveal h-full border border-border/50">
+              <article className="bg-white dark:bg-[#1B1814] rounded-2xl p-7 text-center reveal h-full border border-border/50">
                 <div className="w-14 h-14 rounded-2xl bg-[#9B8EA0]/10 flex items-center justify-center mx-auto mb-4">
                   <MapPin className="w-7 h-7 text-[#9B8EA0]" />
                 </div>
@@ -610,7 +610,7 @@ export default function HomePage() {
               </article>
             </ScrollReveal>
             <ScrollReveal delay={0.3} direction="up" distance={40}>
-              <article className="bg-white dark:bg-[#161A20] rounded-2xl p-7 text-center reveal h-full border border-border/50">
+              <article className="bg-white dark:bg-[#1B1814] rounded-2xl p-7 text-center reveal h-full border border-border/50">
                 <div className="w-14 h-14 rounded-2xl bg-gold-400/10 flex items-center justify-center mx-auto mb-4">
                   <MapPin className="w-7 h-7 text-gold-500" />
                 </div>
@@ -621,7 +621,7 @@ export default function HomePage() {
           </div>
 
           <div className="mt-8 grid sm:grid-cols-2 gap-4 max-w-2xl mx-auto">
-            <div className="bg-white dark:bg-[#161A20] rounded-xl p-4 flex items-center gap-3 border border-border/50">
+            <div className="bg-white dark:bg-[#1B1814] rounded-xl p-4 flex items-center gap-3 border border-border/50">
               <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
                 <MapPin className="w-5 h-5 text-primary" />
               </div>
@@ -630,7 +630,7 @@ export default function HomePage() {
                 <p className="text-sm font-medium text-foreground">Ghiyagi Bus Stop</p>
               </div>
             </div>
-            <div className="bg-white dark:bg-[#161A20] rounded-xl p-4 flex items-center gap-3 border border-border/50">
+            <div className="bg-white dark:bg-[#1B1814] rounded-xl p-4 flex items-center gap-3 border border-border/50">
               <div className="w-10 h-10 rounded-lg bg-gold-100 dark:bg-gold-800/30 flex items-center justify-center flex-shrink-0">
                 <MapPin className="w-5 h-5 text-gold-600" />
               </div>

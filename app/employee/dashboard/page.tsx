@@ -93,7 +93,7 @@ export default function EmployeeDashboardPage() {
   };
 
   return (
-    <div className="min-h-screen bg-alabaster dark:bg-[#0F1115] pt-24">
+    <div className="min-h-screen bg-alabaster dark:bg-[#13110E] pt-24">
       <div className="vintage-container py-6">
         {/* Top Bar */}
         <div className="flex items-center justify-between mb-8">
@@ -102,7 +102,7 @@ export default function EmployeeDashboardPage() {
               <User className="w-5 h-5 text-alabaster" />
             </div>
             <div>
-              <h1 className="font-serif text-xl text-foreground dark:text-[#F5F5F5] leading-tight">{user?.name}</h1>
+              <h1 className="font-serif text-xl text-foreground dark:text-[#EFE9DE] leading-tight">{user?.name}</h1>
               <Badge variant="secondary" size="sm" className="mt-0.5">
                 {user?.role?.replace('_', ' ')}
               </Badge>
@@ -126,7 +126,7 @@ export default function EmployeeDashboardPage() {
 className={`px-5 py-2 rounded-full text-sm font-sans font-medium transition-all duration-300 ${
                tab === 'bookings'
                  ? 'bg-gold-600 text-alabaster shadow-md'
-                 : 'bg-gold-50 dark:bg-[#1D232B] text-charcoal/70 dark:text-[#C9CDD3] hover:bg-gold-100'
+                 : 'bg-gold-50 dark:bg-[#221E18] text-charcoal/70 dark:text-[#A89C8B] hover:bg-gold-100'
              }`}
            >
              <Calendar className="w-4 h-4 inline mr-1.5 -mt-0.5" />
@@ -137,7 +137,7 @@ className={`px-5 py-2 rounded-full text-sm font-sans font-medium transition-all 
               className={`px-5 py-2 rounded-full text-sm font-sans font-medium transition-all duration-300 ${
                 tab === 'orders'
                   ? 'bg-gold-600 text-alabaster shadow-md'
-                  : 'bg-gold-50 dark:bg-[#1D232B] text-charcoal/70 dark:text-[#C9CDD3] hover:bg-gold-100'
+                  : 'bg-gold-50 dark:bg-[#221E18] text-charcoal/70 dark:text-[#A89C8B] hover:bg-gold-100'
               }`}
           >
             <Coffee className="w-4 h-4 inline mr-1.5 -mt-0.5" />
@@ -150,7 +150,7 @@ className={`px-5 py-2 rounded-full text-sm font-sans font-medium transition-all 
           <div>
             <div className="flex items-center gap-2 mb-5">
               <ClipboardList className="w-5 h-5 text-gold-600" />
-              <h2 className="font-serif text-lg text-foreground dark:text-[#F5F5F5]">Today&apos;s Bookings</h2>
+              <h2 className="font-serif text-lg text-foreground dark:text-[#EFE9DE]">Today&apos;s Bookings</h2>
             </div>
             {loading ? (
               <div className="flex justify-center py-12">
@@ -165,26 +165,26 @@ className={`px-5 py-2 rounded-full text-sm font-sans font-medium transition-all 
               <div className="space-y-4">
                 {bookings.map((booking: any, i: number) => (
                   <ScrollReveal key={booking.id} delay={i * 0.05}>
-                    <div className="backdrop-blur bg-white/60/60 dark:bg-[#161A20] border border-white/20 dark:border-white/10 rounded-xl p-5 shadow-sm hover:shadow-md transition-all duration-300 font-sans">
+                    <div className="backdrop-blur bg-white/60/60 dark:bg-[#1B1814] border border-white/20 dark:border-white/10 rounded-xl p-5 shadow-sm hover:shadow-md transition-all duration-300 font-sans">
                       <div className="flex items-start justify-between">
                         <div className="space-y-1.5 flex-1 min-w-0">
                           <div className="flex items-center gap-2">
-                            <span className="font-medium text-foreground dark:text-[#F5F5F5] text-sm truncate">
+                            <span className="font-medium text-foreground dark:text-[#EFE9DE] text-sm truncate">
                               {booking.guest?.name}
                             </span>
                             <Badge variant={statusBadgeVariant[booking.status] || 'default'} size="sm">
                               {booking.status}
                             </Badge>
                           </div>
-                          <p className="text-xs text-muted-foreground dark:text-[#C9CDD3] flex items-center gap-1.5">
+                          <p className="text-xs text-muted-foreground dark:text-[#A89C8B] flex items-center gap-1.5">
                             <UtensilsCrossed className="w-3 h-3" />
                             {booking.cottage?.name}
                           </p>
-                          <p className="text-xs text-muted-foreground dark:text-[#C9CDD3] flex items-center gap-1.5">
+                          <p className="text-xs text-muted-foreground dark:text-[#A89C8B] flex items-center gap-1.5">
                             <Clock className="w-3 h-3" />
                             {formatDateShort(booking.checkIn)} - {formatDateShort(booking.checkOut)}
                           </p>
-                          <p className="text-xs text-muted-foreground dark:text-[#C9CDD3]">
+                          <p className="text-xs text-muted-foreground dark:text-[#A89C8B]">
                             {booking.adults} adults{booking.children ? `, ${booking.children} children` : ''} · {booking.bookingRef}
                           </p>
                         </div>
@@ -221,7 +221,7 @@ className={`px-5 py-2 rounded-full text-sm font-sans font-medium transition-all 
           <div>
             <div className="flex items-center gap-2 mb-5">
               <UtensilsCrossed className="w-5 h-5 text-gold-600" />
-              <h2 className="font-serif text-lg text-foreground dark:text-[#F5F5F5]">Order Queue</h2>
+              <h2 className="font-serif text-lg text-foreground dark:text-[#EFE9DE]">Order Queue</h2>
             </div>
             {loading ? (
               <div className="flex justify-center py-12">
@@ -236,11 +236,11 @@ className={`px-5 py-2 rounded-full text-sm font-sans font-medium transition-all 
               <div className="space-y-4">
                 {orders.map((order: any, i: number) => (
                   <ScrollReveal key={order.id} delay={i * 0.05} direction="left">
-                    <div className="backdrop-blur bg-white/60/60 dark:bg-[#161A20] border border-white/20 dark:border-white/10 rounded-xl p-5 shadow-sm hover:shadow-md transition-all duration-300 font-sans">
+                    <div className="backdrop-blur bg-white/60/60 dark:bg-[#1B1814] border border-white/20 dark:border-white/10 rounded-xl p-5 shadow-sm hover:shadow-md transition-all duration-300 font-sans">
                       <div className="flex items-start justify-between mb-4">
                         <div>
                           <div className="flex items-center gap-2 mb-1">
-                            <span className="font-medium text-foreground dark:text-[#F5F5F5] text-sm">Table {order.tableNumber}</span>
+                            <span className="font-medium text-foreground dark:text-[#EFE9DE] text-sm">Table {order.tableNumber}</span>
                             <Badge variant={statusBadgeVariant[order.status] || 'warning'} size="sm">
                               {order.status === 'PREPARING' ? (
                                 <Loader2 className="w-3 h-3 mr-1 animate-spin inline" />
@@ -252,9 +252,9 @@ className={`px-5 py-2 rounded-full text-sm font-sans font-medium transition-all 
                               {order.status}
                             </Badge>
                           </div>
-                          <p className="text-xs text-muted-foreground dark:text-[#C9CDD3]">{order.orderRef}</p>
+                          <p className="text-xs text-muted-foreground dark:text-[#A89C8B]">{order.orderRef}</p>
                           {order.guestName && (
-                            <p className="text-xs text-muted-foreground dark:text-[#C9CDD3] mt-0.5">{order.guestName}</p>
+                            <p className="text-xs text-muted-foreground dark:text-[#A89C8B] mt-0.5">{order.guestName}</p>
                           )}
                         </div>
                         <p className="text-sm font-semibold text-gold-600">{formatPrice(order.totalAmount)}</p>
@@ -263,7 +263,7 @@ className={`px-5 py-2 rounded-full text-sm font-sans font-medium transition-all 
                       {/* Order Items */}
                       <div className="space-y-1.5 mb-4 pb-4 border-b border-earth-100 dark:border-white/10">
                         {order.items?.map((item: any) => (
-                          <div key={item.id} className="flex justify-between text-xs text-muted-foreground dark:text-[#C9CDD3]">
+                          <div key={item.id} className="flex justify-between text-xs text-muted-foreground dark:text-[#A89C8B]">
                             <span>{item.quantity}x {item.item?.name}</span>
                             <span>{formatPrice(item.totalPrice)}</span>
                           </div>

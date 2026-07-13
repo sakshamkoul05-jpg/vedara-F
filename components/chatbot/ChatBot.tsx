@@ -191,7 +191,7 @@ export function ChatBot() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className="fixed bottom-24 left-4 right-4 sm:left-6 sm:right-auto z-50 w-auto sm:w-96 h-[500px] max-h-[calc(100dvh-140px)] bg-alabaster dark:bg-[#161A20] rounded-2xl shadow-2xl border border-gold-200 dark:border-white/10 flex flex-col overflow-hidden"
+            className="fixed bottom-24 left-4 right-4 sm:left-6 sm:right-auto z-50 w-auto sm:w-96 h-[500px] max-h-[calc(100dvh-140px)] bg-alabaster dark:bg-[#1B1814] rounded-2xl shadow-2xl border border-gold-200 dark:border-white/10 flex flex-col overflow-hidden"
           >
             <div className="bg-gold-600 p-4 flex items-center justify-between">
               <div className="flex items-center gap-2">
@@ -256,7 +256,7 @@ export function ChatBot() {
                     onChange={(e) => setGuestName(e.target.value)}
                     onKeyDown={(e) => e.key === 'Enter' && submitName()}
                     placeholder="Your name"
-                    className="w-full rounded-xl border border-border dark:border-white/10 bg-alabaster dark:bg-[#1D232B] px-4 py-2.5 text-sm text-foreground dark:text-white placeholder:text-muted-foreground focus:outline-none focus:border-gold-500"
+                    className="w-full rounded-xl border border-border dark:border-white/10 bg-alabaster dark:bg-[#221E18] px-4 py-2.5 text-sm text-foreground dark:text-white placeholder:text-muted-foreground focus:outline-none focus:border-gold-500"
                     autoFocus
                   />
                   <div className="flex gap-2">
@@ -306,7 +306,7 @@ export function ChatBot() {
                     onChange={(e) => setInput(e.target.value)}
                     onKeyDown={(e) => e.key === 'Enter' && handleSend()}
                     placeholder={mode === 'live' ? 'Type your message...' : 'Ask me anything...'}
-                    className="flex-1 rounded-xl border border-gold-200 dark:border-white/10 bg-alabaster dark:bg-[#1D232B] px-3 py-3 min-h-[44px] text-sm text-vedara-900 dark:text-white placeholder:text-charcoal/50 dark:placeholder:text-white/30 focus:outline-none focus:border-gold-500 dark:focus:border-gold-500"
+                    className="flex-1 rounded-xl border border-gold-200 dark:border-white/10 bg-alabaster dark:bg-[#221E18] px-3 py-3 min-h-[44px] text-sm text-vedara-900 dark:text-white placeholder:text-charcoal/50 dark:placeholder:text-white/30 focus:outline-none focus:border-gold-500 dark:focus:border-gold-500"
                   />
                   <button
                     onClick={handleSend}

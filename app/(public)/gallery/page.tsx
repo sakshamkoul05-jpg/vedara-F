@@ -46,7 +46,7 @@ export default function GalleryPage() {
 
   return (
     <>
-      <section className="pt-32 pb-20 bg-alabaster dark:bg-[#0F1115]">
+      <section className="pt-32 pb-20 bg-alabaster dark:bg-[#13110E]">
         <div className="vintage-container">
           <ScrollReveal>
             <p className="text-gold-500 text-sm tracking-[0.2em] uppercase mb-4 font-sans">Gallery</p>
@@ -57,7 +57,7 @@ export default function GalleryPage() {
         </div>
       </section>
 
-      <section className="pb-20 dark:bg-[#0F1115]">
+      <section className="pb-20 dark:bg-[#13110E]">
         <div className="vintage-container">
           <ScrollReveal>
             <div className="flex gap-3 mb-10 overflow-x-auto pb-2 justify-center">
@@ -68,7 +68,7 @@ export default function GalleryPage() {
                   className={`px-5 py-2.5 rounded-full text-sm font-medium capitalize transition-all whitespace-nowrap ${
                     filter === cat
                       ? 'bg-gold-600 text-alabaster shadow-md'
-                      : 'bg-gold-50 dark:bg-[#1D232B] text-charcoal/70 dark:text-[#C9CDD3] hover:bg-gold-100 dark:hover:bg-[#1D232B]/80'
+                      : 'bg-gold-50 dark:bg-[#221E18] text-charcoal/70 dark:text-[#A89C8B] hover:bg-gold-100 dark:hover:bg-[#221E18]/80'
                   }`}
                   whileTap={{ scale: 0.95 }}
                   layout
@@ -101,7 +101,7 @@ export default function GalleryPage() {
                 <ScrollReveal key={item.id} delay={i * 0.03}>
                   <motion.button
                     onClick={() => setSelectedImage(item.id)}
-                    className="group relative w-full rounded-xl overflow-hidden bg-gold-100 dark:bg-[#1D232B] break-inside-avoid"
+                    className="group relative w-full rounded-xl overflow-hidden bg-gold-100 dark:bg-[#221E18] break-inside-avoid"
                     style={{ aspectRatio: i % 3 === 1 ? '4/5' : '4/3' }}
                     whileHover={{ scale: 1.02 }}
                     transition={{ duration: 0.3 }}

@@ -35,37 +35,37 @@
   }
 
   .dark {
-    --background: 220 30% 6%;
-    --foreground: 30 10% 92%;
-    --card: 220 25% 10%;
-    --card-foreground: 30 10% 92%;
-    --popover: 220 25% 10%;
-    --popover-foreground: 30 10% 92%;
-    --primary: 33 45% 65%;
-    --primary-foreground: 220 30% 6%;
-    --secondary: 33 38% 55%;
-    --secondary-foreground: 220 30% 6%;
-    --muted: 220 15% 14%;
-    --muted-foreground: 30 8% 65%;
-    --accent: 33 45% 65%;
-    --accent-foreground: 220 30% 6%;
-    --destructive: 5 60% 40%;
+    --background: 36 16% 7%;
+    --foreground: 39 22% 90%;
+    --card: 34 16% 10%;
+    --card-foreground: 39 22% 90%;
+    --popover: 34 16% 10%;
+    --popover-foreground: 39 22% 90%;
+    --primary: 36 42% 62%;
+    --primary-foreground: 36 20% 8%;
+    --secondary: 34 28% 36%;
+    --secondary-foreground: 39 22% 90%;
+    --muted: 36 16% 12%;
+    --muted-foreground: 38 12% 66%;
+    --accent: 36 42% 62%;
+    --accent-foreground: 36 20% 8%;
+    --destructive: 5 55% 48%;
     --destructive-foreground: 0 0% 100%;
-    --border: 220 12% 18%;
-    --input: 220 12% 18%;
-    --ring: 33 45% 65%;
+    --border: 37 15% 18%;
+    --input: 37 15% 18%;
+    --ring: 36 42% 62%;
 
-    --clr-surface: hsl(220, 25%, 10%);
-    --clr-stone: rgba(255, 255, 255, 0.12);
-    --clr-saffron: #C9943A;
-    --clr-cedar: #6E9A77;
-    --clr-text: #F5F5F5;
-    --clr-text-muted: rgba(245, 245, 245, 0.65);
+    --clr-surface: #1B1814;
+    --clr-stone: rgba(255, 245, 230, 0.12);
+    --clr-saffron: #D9A85A;
+    --clr-cedar: #7FB295;
+    --clr-text: #EFE9DE;
+    --clr-text-muted: rgba(239, 233, 222, 0.66);
     --font-display: 'Cormorant Garamond', Georgia, serif;
   }
 
   .dark body {
-    background-color: hsl(220, 30%, 6%);
+    background-color: #13110E;
   }
 
   .dark .section-padding {
@@ -73,41 +73,41 @@
   }
 
   .dark [class*="bg-white"] {
-    background-color: hsl(220, 25%, 10%) !important;
+    background-color: #1B1814 !important;
   }
 
   .dark [class*="bg-[#F5F2EE]"] {
-    background-color: hsl(220, 25%, 10%) !important;
+    background-color: #1B1814 !important;
   }
 
   .dark [class*="bg-[#F5F2EE]/"] {
-    background-color: hsl(220, 25%, 10%) !important;
+    background-color: #1B1814 !important;
   }
 
   .dark [class*="bg-slate-50"] {
-    background-color: hsl(220, 20%, 10%) !important;
+    background-color: #13110E !important;
   }
 
   .dark [class*="bg-sand-"] {
-    background-color: hsl(220, 20%, 12%) !important;
+    background-color: #221E18 !important;
   }
 
   .dark [class*="text-foreground"]:not([class*="text-white"]) {
-    color: hsl(30, 10%, 92%) !important;
+    color: #EFE9DE !important;
   }
 
   .dark [class*="text-[#1C2B3A]"] {
-    color: hsl(30, 10%, 92%) !important;
+    color: #EFE9DE !important;
   }
 
   .dark [class*="border-border"] {
-    border-color: hsl(220, 12%, 18%) !important;
+    border-color: #332E26 !important;
   }
 
   .dark [class*="shadow-lg"],
   .dark [class*="shadow-xl"],
   .dark [class*="shadow-2xl"] {
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
+    box-shadow: 0 10px 34px rgba(0, 0, 0, 0.5) !important;
   }
 }
 

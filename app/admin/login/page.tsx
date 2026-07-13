@@ -47,7 +47,7 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex bg-alabaster dark:bg-[#0F1115]">
+    <div className="min-h-screen flex bg-alabaster dark:bg-[#13110E]">
       <div className="hidden lg:flex lg:w-1/2 bg-forest-700 relative overflow-hidden items-center justify-center">
         <div className="absolute inset-0 bg-gradient-to-br from-forest-800 to-forest-600" />
         <div className="absolute inset-0 opacity-5" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=60)', backgroundSize: 'cover' }} />
@@ -85,7 +85,7 @@ export default function AdminLoginPage() {
             <p className="text-sm text-muted-foreground">Sign in to manage your property</p>
           </div>
 
-          <div className="flex gap-1.5 mb-8 bg-gold-50 dark:bg-[#1D232B] rounded-xl p-1">
+          <div className="flex gap-1.5 mb-8 bg-gold-50 dark:bg-[#221E18] rounded-xl p-1">
             {portalTabs.map((t) => {
               const Icon = t.icon;
               return (
@@ -94,8 +94,8 @@ export default function AdminLoginPage() {
                   onClick={() => setPortal(t.id)}
                   className={`flex-1 flex flex-col items-center gap-1 py-2.5 px-2 rounded-lg text-xs transition-all ${
                     portal === t.id
-                      ? 'bg-white dark:bg-[#161A20] text-forest-700 shadow-sm font-medium'
-                      : 'text-muted-foreground hover:text-foreground dark:text-[#C9CDD3]'
+                      ? 'bg-white dark:bg-[#1B1814] text-forest-700 shadow-sm font-medium'
+                      : 'text-muted-foreground hover:text-foreground dark:text-[#A89C8B]'
                   }`}
                 >
                   <Icon className="w-4 h-4" />
@@ -117,38 +117,38 @@ export default function AdminLoginPage() {
             )}
 
             <div>
-              <label className="block text-sm font-medium text-foreground dark:text-[#F5F5F5] mb-1.5">Email</label>
+              <label className="block text-sm font-medium text-foreground dark:text-[#EFE9DE] mb-1.5">Email</label>
               <div className="relative">
-                <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground dark:text-[#C9CDD3]" />
+                <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground dark:text-[#A89C8B]" />
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
                   placeholder={portal === 'admin' ? 'admin@vedara.com' : portal === 'cafe' ? 'cafe@vedara.com' : 'staff@vedara.com'}
-                  className="w-full pl-10 pr-4 py-2.5 glass-input rounded-lg text-foreground dark:text-[#F5F5F5] placeholder-muted-foreground dark:placeholder-[#C9CDD3] dark:bg-[#1D232B] dark:border-white/10 text-sm focus:outline-none"
+                  className="w-full pl-10 pr-4 py-2.5 glass-input rounded-lg text-foreground dark:text-[#EFE9DE] placeholder-muted-foreground dark:placeholder-[#A89C8B] dark:bg-[#221E18] dark:border-white/10 text-sm focus:outline-none"
                 />
               </div>
             </div>
 
             <div>
               <div className="flex items-center justify-between mb-1.5">
-                <label className="block text-sm font-medium text-foreground dark:text-[#F5F5F5]">Password</label>
+                <label className="block text-sm font-medium text-foreground dark:text-[#EFE9DE]">Password</label>
               </div>
               <div className="relative">
-                <KeyRound className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground dark:text-[#C9CDD3]" />
+                <KeyRound className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground dark:text-[#A89C8B]" />
                 <input
                   type={showPassword ? 'text' : 'password'}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
                   placeholder="Enter password"
-                  className="w-full pl-10 pr-10 py-2.5 glass-input rounded-lg text-foreground dark:text-[#F5F5F5] placeholder-muted-foreground dark:placeholder-[#C9CDD3] dark:bg-[#1D232B] dark:border-white/10 text-sm focus:outline-none"
+                  className="w-full pl-10 pr-10 py-2.5 glass-input rounded-lg text-foreground dark:text-[#EFE9DE] placeholder-muted-foreground dark:placeholder-[#A89C8B] dark:bg-[#221E18] dark:border-white/10 text-sm focus:outline-none"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground dark:text-[#C9CDD3] hover:text-foreground transition-colors"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground dark:text-[#A89C8B] hover:text-foreground transition-colors"
                 >
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>

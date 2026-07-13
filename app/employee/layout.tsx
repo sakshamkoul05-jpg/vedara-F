@@ -31,8 +31,8 @@ export default function EmployeeLayout({ children }: { children: React.ReactNode
   if (!hydrated || !token) return null;
 
   return (
-    <div className="min-h-screen bg-earth-50 dark:bg-[#0F1115]">
-      <header className="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-[#161A20] border-b border-gold-200 dark:border-white/10">
+    <div className="min-h-screen bg-earth-50 dark:bg-[#13110E]">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-[#1B1814] border-b border-gold-200 dark:border-white/10">
         <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-6">
             <Link href="/employee/dashboard" className="flex items-center gap-2.5">
@@ -46,8 +46,8 @@ export default function EmployeeLayout({ children }: { children: React.ReactNode
                 />
               </div>
               <div className="hidden sm:block">
-                <span className="font-serif text-sm font-semibold text-foreground dark:text-[#F5F5F5] leading-tight block">The Vedara</span>
-                <span className="text-[10px] text-muted-foreground dark:text-[#C9CDD3] uppercase tracking-wider">Staff Portal</span>
+                <span className="font-serif text-sm font-semibold text-foreground dark:text-[#EFE9DE] leading-tight block">The Vedara</span>
+                <span className="text-[10px] text-muted-foreground dark:text-[#A89C8B] uppercase tracking-wider">Staff Portal</span>
               </div>
             </Link>
             <div className="h-6 w-px bg-gold-100 hidden sm:block" />
@@ -61,8 +61,8 @@ export default function EmployeeLayout({ children }: { children: React.ReactNode
                     className={cn(
                       'flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-[13px] font-medium transition-colors',
                       pathname === item.href
-                        ? 'bg-gold-50 dark:bg-[#1D232B] text-forest-700'
-                        : 'text-earth-500 dark:text-[#C9CDD3] hover:text-foreground hover:bg-earth-50 dark:hover:bg-[#1D232B]'
+                        ? 'bg-gold-50 dark:bg-[#221E18] text-forest-700'
+                        : 'text-earth-500 dark:text-[#A89C8B] hover:text-foreground hover:bg-earth-50 dark:hover:bg-[#221E18]'
                     )}
                   >
                     <Icon className="w-3.5 h-3.5" />
@@ -74,12 +74,12 @@ export default function EmployeeLayout({ children }: { children: React.ReactNode
           </div>
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded-full bg-gold-100 dark:bg-[#1D232B] flex items-center justify-center text-forest-700 text-[10px] font-bold flex-shrink-0">
+              <div className="w-7 h-7 rounded-full bg-gold-100 dark:bg-[#221E18] flex items-center justify-center text-forest-700 text-[10px] font-bold flex-shrink-0">
                 {user?.name?.charAt(0) || 'S'}
               </div>
               <div className="hidden sm:block">
-                <p className="text-xs font-medium text-foreground dark:text-[#F5F5F5] leading-tight">{user?.name}</p>
-                <p className="text-[10px] text-muted-foreground dark:text-[#C9CDD3]">{user?.role?.replace(/_/g, ' ')}</p>
+                <p className="text-xs font-medium text-foreground dark:text-[#EFE9DE] leading-tight">{user?.name}</p>
+                <p className="text-[10px] text-muted-foreground dark:text-[#A89C8B]">{user?.role?.replace(/_/g, ' ')}</p>
               </div>
             </div>
             <div className="h-6 w-px bg-gold-100" />
