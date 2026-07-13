@@ -24,15 +24,15 @@ const generatedPlans: Record<string, TripPlan> = {
     description: 'A 3-night curated journey for couples seeking intimacy, luxury, and mountain magic.',
     itinerary: [
       {
-        day: 'Day 1 - Arrival & Settle In',
+        day: 'Day 1 – Arrival & Settle In',
         activities: [
-          { time: '2:00 PM', activity: 'Check into Monal Haven with private jacuzzi', icon: Mountain },
+          { time: '1:00 PM', activity: 'Check into Monal Haven with private jacuzzi', icon: Mountain },
           { time: '4:00 PM', activity: 'Welcome tea at Café Charade with valley views', icon: Coffee },
           { time: '7:00 PM', activity: 'Private bonfire dinner under the stars', icon: Star },
         ],
       },
       {
-        day: 'Day 2 - Explore & Connect',
+        day: 'Day 2 – Explore & Connect',
         activities: [
           { time: '7:00 AM', activity: 'Sunrise yoga on the attic balcony', icon: Compass },
           { time: '10:00 AM', activity: 'Guided walk to Jibhi Waterfall (4 km)', icon: TreePine },
@@ -41,7 +41,7 @@ const generatedPlans: Record<string, TripPlan> = {
         ],
       },
       {
-        day: 'Day 3 - Adventure & Farewell',
+        day: 'Day 3 – Adventure & Farewell',
         activities: [
           { time: '6:30 AM', activity: 'Lambhari Top sunrise trek (8 km)', icon: Mountain },
           { time: '1:00 PM', activity: 'Packed lunch at Serolsar Lake', icon: TreePine },
@@ -51,7 +51,7 @@ const generatedPlans: Record<string, TripPlan> = {
     ],
     tips: [
       'Request a cottage with a private jacuzzi for the ultimate experience.',
-      'Carry warm layers for evening bonfires, mountain nights are cool.',
+      'Carry warm layers for evening bonfires – mountain nights are cool.',
       'Book Café Charade\'s candlelit dinner at least a day in advance.',
     ],
   },
@@ -60,15 +60,15 @@ const generatedPlans: Record<string, TripPlan> = {
     description: 'A 4-night thrill-packed itinerary for adventure enthusiasts and nature lovers.',
     itinerary: [
       {
-        day: 'Day 1 - Arrival & Acclimatize',
+        day: 'Day 1 – Arrival & Acclimatize',
         activities: [
-          { time: '2:00 PM', activity: 'Check in and acclimatize to the altitude', icon: Mountain },
+          { time: '1:00 PM', activity: 'Check in and acclimatize to the altitude', icon: Mountain },
           { time: '4:00 PM', activity: 'Short nature trail around Ghiyagi village', icon: TreePine },
           { time: '7:00 PM', activity: 'Bonfire briefing for upcoming treks', icon: Star },
         ],
       },
       {
-        day: 'Day 2 - Jalori Pass Expedition',
+        day: 'Day 2 – Jalori Pass Expedition',
         activities: [
           { time: '5:00 AM', activity: 'Early start for Jalori Pass (10 km drive + trek)', icon: Mountain },
           { time: '10:00 AM', activity: 'Summit views and photography', icon: Compass },
@@ -76,7 +76,7 @@ const generatedPlans: Record<string, TripPlan> = {
         ],
       },
       {
-        day: 'Day 3 - Serolsar Lake Trek',
+        day: 'Day 3 – Serolsar Lake Trek',
         activities: [
           { time: '6:00 AM', activity: 'Trek to Serolsar Lake through ancient oak forests', icon: TreePine },
           { time: '11:00 AM', activity: 'Lake-side picnic and bird watching', icon: Star },
@@ -84,7 +84,7 @@ const generatedPlans: Record<string, TripPlan> = {
         ],
       },
       {
-        day: 'Day 4 - Great Himalayan NP',
+        day: 'Day 4 – Great Himalayan NP',
         activities: [
           { time: '7:00 AM', activity: 'Day trek to Great Himalayan National Park', icon: TreePine },
           { time: '1:00 PM', activity: 'Wildlife spotting and packed lunch', icon: Compass },
@@ -95,7 +95,7 @@ const generatedPlans: Record<string, TripPlan> = {
     tips: [
       'Start treks early to avoid afternoon clouds and maximize visibility.',
       'Carry at least 2 liters of water per person for each trek.',
-      'Trekking poles are available at the property, ask at reception.',
+      'Trekking poles are available at the property – ask at reception.',
     ],
   },
   family: {
@@ -103,15 +103,15 @@ const generatedPlans: Record<string, TripPlan> = {
     description: 'A 3-night wholesome getaway designed for families with kids and elderly members.',
     itinerary: [
       {
-        day: 'Day 1 - Arrive & Settle',
+        day: 'Day 1 – Arrive & Settle',
         activities: [
-          { time: '2:00 PM', activity: 'Check into Koklass Cove (largest family suite)', icon: Mountain },
-          { time: '3:30 PM', activity: 'Kids Zone: supervised nature crafts and games', icon: Users },
+          { time: '1:00 PM', activity: 'Check into Koklass Cove (largest family suite)', icon: Mountain },
+          { time: '3:30 PM', activity: 'Kids Zone – supervised nature crafts and games', icon: Users },
           { time: '6:00 PM', activity: 'Family bonfire with storytelling', icon: Star },
         ],
       },
       {
-        day: 'Day 2 - Explore Together',
+        day: 'Day 2 – Explore Together',
         activities: [
           { time: '8:00 AM', activity: 'Leisurely breakfast at Café Charade', icon: Coffee },
           { time: '10:00 AM', activity: 'Visit Jibhi Waterfall (easy 4 km walk)', icon: TreePine },
@@ -120,7 +120,7 @@ const generatedPlans: Record<string, TripPlan> = {
         ],
       },
       {
-        day: 'Day 3 - Adventure Day',
+        day: 'Day 3 – Adventure Day',
         activities: [
           { time: '8:00 AM', activity: 'Guided nature walk with bird identification', icon: Compass },
           { time: '11:00 AM', activity: 'Kids Zone outdoor treasure hunt', icon: Star },
@@ -129,7 +129,7 @@ const generatedPlans: Record<string, TripPlan> = {
       },
     ],
     tips: [
-      'Koklass Cove has the most space for families, two balconies and a jacuzzi.',
+      'Koklass Cove has the most space for families – two balconies and a jacuzzi.',
       'Kids Zone is supervised from 10 AM to 4 PM daily.',
       'Carry sunscreen and hats for little ones during outdoor activities.',
     ],
@@ -139,15 +139,15 @@ const generatedPlans: Record<string, TripPlan> = {
     description: 'A 4-night restorative journey for those seeking inner peace and rejuvenation.',
     itinerary: [
       {
-        day: 'Day 1 - Arrival & Grounding',
+        day: 'Day 1 – Arrival & Grounding',
         activities: [
-          { time: '2:00 PM', activity: 'Check in and settle into your cottage', icon: Mountain },
+          { time: '1:00 PM', activity: 'Check in and settle into your cottage', icon: Mountain },
           { time: '4:00 PM', activity: 'Guided breathing session on the balcony', icon: Compass },
           { time: '6:30 PM', activity: 'Herbal tea ceremony at Café Charade', icon: Coffee },
         ],
       },
       {
-        day: 'Day 2 - Deep Immersion',
+        day: 'Day 2 – Deep Immersion',
         activities: [
           { time: '6:00 AM', activity: 'Sunrise meditation at Lambhari Top viewpoint', icon: Star },
           { time: '9:00 AM', activity: 'Farm-to-table breakfast preparation', icon: TreePine },
@@ -156,7 +156,7 @@ const generatedPlans: Record<string, TripPlan> = {
         ],
       },
       {
-        day: 'Day 3 - Reflection',
+        day: 'Day 3 – Reflection',
         activities: [
           { time: '7:00 AM', activity: 'Yoga and journaling by the stream', icon: Compass },
           { time: '11:00 AM', activity: 'Solo trek to Serolsar Lake for reflection', icon: Mountain },
@@ -164,7 +164,7 @@ const generatedPlans: Record<string, TripPlan> = {
         ],
       },
       {
-        day: 'Day 4 - Departure',
+        day: 'Day 4 – Departure',
         activities: [
           { time: '6:30 AM', activity: 'Final sunrise meditation', icon: Star },
           { time: '9:00 AM', activity: 'Wellness journaling and intention setting', icon: Compass },
@@ -175,7 +175,7 @@ const generatedPlans: Record<string, TripPlan> = {
     tips: [
       'Bring comfortable clothing for yoga and meditation sessions.',
       'Request a quiet cottage away from common areas for deeper rest.',
-      'Digital detox recommended, leave devices in the cottage safe.',
+      'Digital detox recommended – leave devices in the cottage safe.',
     ],
   },
 };
@@ -207,7 +207,6 @@ export function TripPlanner() {
         whileTap={{ scale: 0.95 }}
         onClick={() => setIsOpen(true)}
         className="fixed bottom-6 right-6 z-50 rounded-full px-5 py-3 flex items-center gap-2 shadow-xl cursor-pointer transition-all bg-gold-600 text-white hover:bg-gold-700 border-0"
-        aria-label="Open AI Trip Planner"
       >
         <Sparkles className="w-4 h-4" />
         <span className="text-sm font-medium">AI Trip Planner</span>
@@ -229,7 +228,7 @@ export function TripPlanner() {
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               transition={{ type: 'spring', damping: 25, stiffness: 300 }}
               className="relative w-full max-w-2xl max-h-[85vh] overflow-y-auto rounded-3xl"
-              style={{ background: '#0F1115', border: '1px solid rgba(255,255,255,0.06)', boxShadow: '0 8px 32px rgba(0,0,0,0.4)' }}
+              style={{ background: '#1C2B3A', border: '1px solid rgba(255,255,255,0.08)', boxShadow: '0 8px 32px rgba(0,0,0,0.25)' }}
             >
               <div className="sticky top-0 z-10 flex items-center justify-between p-6 pb-4" style={{ borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
                 <div className="flex items-center gap-3">
@@ -241,7 +240,7 @@ export function TripPlanner() {
                     <p style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.5)' }}>Personalized itineraries for The Vedara</p>
                   </div>
                 </div>
-                <button onClick={() => setIsOpen(false)} style={{ color: 'rgba(255,255,255,0.5)' }} className="hover:text-white transition-colors" aria-label="Close trip planner">
+                <button onClick={() => setIsOpen(false)} style={{ color: 'rgba(255,255,255,0.5)' }} className="hover:text-white transition-colors">
                   <X style={{ width: '1.25rem', height: '1.25rem' }} />
                 </button>
               </div>

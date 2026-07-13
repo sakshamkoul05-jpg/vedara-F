@@ -8,18 +8,18 @@ import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/compone
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 
 const galleryItems = [
-  { id: 1, category: 'cottages', caption: 'Morning mist over The Pine Perch', image: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=800&q=80', span: 'row-span-1' },
-  { id: 2, category: 'cafe', caption: 'The Forest Pantry at golden hour', image: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=80', span: 'row-span-2' },
-  { id: 3, category: 'views', caption: 'Valley panorama from Ridge View', image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80', span: 'row-span-1' },
-  { id: 4, category: 'cottages', caption: 'Cedar Nook garden in bloom', image: 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=800&q=80', span: 'row-span-1' },
-  { id: 5, category: 'cafe', caption: 'Hand-poured coffee ceremony', image: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800&q=80', span: 'row-span-1' },
-  { id: 6, category: 'views', caption: 'Starry night over the mountains', image: 'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=800&q=80', span: 'row-span-1' },
-  { id: 7, category: 'cottages', caption: 'Maple Suite wraparound veranda', image: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800&q=80', span: 'row-span-2' },
-  { id: 8, category: 'cafe', caption: 'Wood-fired hearth kitchen', image: 'https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=800&q=80', span: 'row-span-1' },
-  { id: 9, category: 'views', caption: 'Autumn colors along the trail', image: 'https://images.unsplash.com/photo-1469476568026-46a7f7b2f9c2?w=800&q=80', span: 'row-span-1' },
-  { id: 10, category: 'cottages', caption: 'Ridge View infinity tub under stars', image: 'https://images.unsplash.com/photo-1470770903676-69b98201ea17?w=800&q=80', span: 'row-span-1' },
-  { id: 11, category: 'cafe', caption: 'Fresh mountain bakes display', image: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=800&q=80', span: 'row-span-1' },
-  { id: 12, category: 'views', caption: 'Sunrise over the Himalayan range', image: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&q=80', span: 'row-span-1' },
+  { id: 1, category: 'cottages', caption: 'Morning mist over The Pine Perch', image: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=800&q=80', span: 'row-span-1', alt: 'Cozy wooden cottage surrounded by morning mist in the Himalayas at The Vedara' },
+  { id: 2, category: 'cafe', caption: 'The Forest Pantry at golden hour', image: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=80', span: 'row-span-2', alt: 'Cafe Charade dining area bathed in warm golden hour sunlight' },
+  { id: 3, category: 'views', caption: 'Valley panorama from Ridge View', image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80', span: 'row-span-1', alt: 'Panoramic view of the Jibhi valley from The Vedara retreat' },
+  { id: 4, category: 'cottages', caption: 'Cedar Nook garden in bloom', image: 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=800&q=80', span: 'row-span-1', alt: 'Cottage garden with blooming flowers and cedar trees at The Vedara' },
+  { id: 5, category: 'cafe', caption: 'Hand-poured coffee ceremony', image: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800&q=80', span: 'row-span-1', alt: 'Barista preparing hand-poured artisan coffee at Cafe Charade' },
+  { id: 6, category: 'views', caption: 'Starry night over the mountains', image: 'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=800&q=80', span: 'row-span-1', alt: 'Brilliant starry night sky over the Himalayan mountain range' },
+  { id: 7, category: 'cottages', caption: 'Maple Suite wraparound veranda', image: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800&q=80', span: 'row-span-2', alt: 'Cottage veranda with mountain views at sunset in The Vedara' },
+  { id: 8, category: 'cafe', caption: 'Wood-fired hearth kitchen', image: 'https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=800&q=80', span: 'row-span-1', alt: 'Wood-fired kitchen at Cafe Charade preparing fresh meals' },
+  { id: 9, category: 'views', caption: 'Autumn colors along the trail', image: 'https://images.unsplash.com/photo-1469476568026-46a7f7b2f9c2?w=800&q=80', span: 'row-span-1', alt: 'Forest trail with vibrant autumn colors near The Vedara retreat' },
+  { id: 10, category: 'cottages', caption: 'Ridge View infinity tub under stars', image: 'https://images.unsplash.com/photo-1470770903676-69b98201ea17?w=800&q=80', span: 'row-span-1', alt: 'Outdoor bathtub with starlit mountain views at The Vedara' },
+  { id: 11, category: 'cafe', caption: 'Fresh mountain bakes display', image: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=800&q=80', span: 'row-span-1', alt: 'Display of freshly baked mountain breads and pastries at the cafe' },
+  { id: 12, category: 'views', caption: 'Sunrise over the Himalayan range', image: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&q=80', span: 'row-span-1', alt: 'Golden sunrise illuminating the snow-capped Himalayan mountain range' },
 ];
 
 const categories = ['all', 'cottages', 'cafe', 'views'];
@@ -108,7 +108,7 @@ export default function GalleryPage() {
                   >
                     <img
                       src={item.image}
-                      alt={item.caption}
+                      alt={item.alt || item.caption}
                       className="absolute inset-0 w-full h-full object-cover"
                       loading="lazy"
                     />
@@ -134,7 +134,7 @@ export default function GalleryPage() {
               {selectedItem && (
                 <img
                   src={selectedItem.image}
-                  alt={selectedItem.caption}
+                  alt={selectedItem.alt || selectedItem.caption}
                   className="w-full h-full object-contain"
                 />
               )}

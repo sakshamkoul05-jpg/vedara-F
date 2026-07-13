@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useState } from 'react';
 import { BackButton } from '@/components/layout/BackButton';
@@ -57,7 +57,7 @@ export default function ContactPage() {
                   </div>
                 ) : (
                   <form onSubmit={handleSubmit} className="space-y-4">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-2 gap-4">
                       <div>
                         <label className="vintage-label">Name *</label>
                         <Input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required />
@@ -124,7 +124,7 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <h3 className="font-medium text-foreground">Address</h3>
-                      <p className="text-muted-foreground text-sm">Ghiyagi, Jibhi, Himachal Pradesh - 175123</p>
+                      <p className="text-muted-foreground text-sm">Ghiyagi, Jibhi, Himachal Pradesh – 175123</p>
                     </div>
                   </div>
                 </div>
@@ -135,11 +135,11 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <h3 className="font-medium text-foreground">Reception Hours</h3>
-                      <p className="text-muted-foreground text-sm">Daily: 8:00 AM - 11:00 PM</p>
+                      <p className="text-muted-foreground text-sm">Daily: 8:00 AM – 10:30 PM</p>
                       <h3 className="font-medium text-foreground mt-2">Café Charade</h3>
-                      <p className="text-muted-foreground text-sm">Breakfast: 7:30 AM - 10:00 AM</p>
-                      <p className="text-muted-foreground text-sm">Lunch: 12:00 PM - 3:30 PM</p>
-                      <p className="text-muted-foreground text-sm">Dinner: 7:00 PM - 10:00 PM</p>
+                      <p className="text-muted-foreground text-sm">Breakfast: 7:30 AM – 10:00 AM</p>
+                      <p className="text-muted-foreground text-sm">Lunch: 12:00 PM – 3:30 PM</p>
+                      <p className="text-muted-foreground text-sm">Dinner: 7:00 PM – 10:00 PM</p>
                     </div>
                   </div>
                 </div>

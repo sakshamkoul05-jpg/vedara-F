@@ -150,7 +150,7 @@ export default function CottageBySlugPage() {
                   selectedImage === i ? 'border-gold-500 ring-2 ring-gold-500/30' : 'border-transparent opacity-70 hover:opacity-100'
                 }`}
               >
-                <img src={img} alt={`${cottage.name} view ${i + 1}`} className="w-full h-full object-cover" />
+                <img src={img} alt={`${cottage.name} - photo ${i + 1} of cottage interior and surroundings`} className="w-full h-full object-cover" />
               </button>
             ))}
           </div>
@@ -340,6 +340,7 @@ export default function CottageBySlugPage() {
                               <span className="font-serif text-lg text-foreground">Total</span>
                               <span className="font-bold text-lg text-gold-600 dark:text-gold-400">{formatPrice(totalAmount)}</span>
                             </div>
+                            <p className="text-[10px] text-muted-foreground text-right">Prices exclusive of applicable taxes (12% GST at checkout)</p>
                           </div>
 
                           <Link

@@ -1,17 +1,32 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useAuthStore } from '@/store/auth';
 import { useThemeStore } from '@/store/theme';
+import { useAuthStore } from '@/store/auth';
 
 export function ThemeInitializer() {
-  const hydrateAuth = useAuthStore((s) => s.hydrate);
-  const hydrateTheme = useThemeStore((s) => s.hydrate);
+  const { setTheme } = useThemeStore();
+  const hydrate = useAuthStore((s) => s.hydrate);
 
   useEffect(() => {
-    hydrateTheme();
-    hydrateAuth();
-  }, [hydrateTheme, hydrateAuth]);
+    const stored = localStorage.getItem('vd_theme') as 'light' | 'dark' | 'system' | null;
+    if (stored) {
+      setTheme(stored);
+    } else {
+      setTheme('system');
+    }
+
+    const mql = window.matchMedia('(prefers-color-scheme: dark)');
+    const handler = () => {
+      const current = localStorage.getItem('vd_theme') as 'light' | 'dark' | 'system' | null;
+      if (current === 'system' || !current) {
+        setTheme('system');
+      }
+    };
+    mql.addEventListener('change', handler);
+    hydrate();
+    return () => mql.removeEventListener('change', handler);
+  }, [setTheme, hydrate]);
 
   return null;
 }
