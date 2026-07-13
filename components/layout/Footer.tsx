@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { Mail, Phone, MapPin, Facebook, Instagram, ExternalLink } from 'lucide-react';
+import { FooterMap } from '@/components/layout/FooterMap';
 
 export function Footer() {
   return (
@@ -31,16 +32,7 @@ export function Footer() {
             </div>
 
             <div className="mt-6 rounded-xl overflow-hidden border border-white/10 w-full max-w-md">
-              <iframe
-                src="https://maps.google.com/maps?q=Ghiyagi%2C+Jibhi%2C+Himachal+Pradesh&output=embed"
-                width="100%"
-                height="160"
-                style={{ border: 0 }}
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                title="The Vedara Retreat location on Google Maps"
-              />
+              <FooterMap />
               <div className="flex gap-2 p-3 bg-white/5">
                 <a
                   href="https://maps.google.com/maps?q=Ghiyagi+Jibhi+Himachal+Pradesh"
