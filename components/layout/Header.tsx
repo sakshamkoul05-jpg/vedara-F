@@ -44,10 +44,10 @@ export function Header() {
       className={cn(
         'fixed top-0 left-0 right-0 z-50 transition-all duration-500',
         isScrolled
-          ? 'bg-white/95 border-b border-border/50 shadow-[0_1px_3px_rgba(28,43,58,0.03)]'
+          ? 'bg-white/95 dark:bg-charcoal/95 border-b border-border/50 shadow-[0_1px_3px_rgba(28,43,58,0.03)]'
           : isTransparent
             ? 'bg-transparent'
-            : 'bg-[#F5F2EE]'
+            : 'bg-alabaster dark:bg-charcoal'
       )}
     >
       <div className="vintage-container">
@@ -89,7 +89,7 @@ export function Header() {
                     layoutId="nav-indicator"
                     className={cn(
                       'absolute -bottom-1 left-0 right-0 h-0.5 rounded-full',
-                      isTransparent             ? 'bg-[#F5F2EE]' : 'bg-primary'
+                      isTransparent             ? 'bg-alabaster' : 'bg-primary'
                     )}
                   />
                 )}
@@ -208,7 +208,7 @@ export function Header() {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              className="md:hidden bg-[#F5F2EE] dark:bg-[#1C2B3A] border-t border-border relative z-50"
+              className="md:hidden bg-alabaster dark:bg-charcoal border-t border-border relative z-50"
             >
               <nav className="vintage-container py-6 space-y-4">
                 {navLinks.map((link) => (

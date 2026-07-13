@@ -275,7 +275,7 @@ export default function HomePage() {
       </section>
 
       {/* Welcome */}
-      <section id="welcome" className="relative py-28 md:py-36 overflow-hidden bg-[#1C2B3A]">
+      <section id="welcome" className="relative py-28 md:py-36 overflow-hidden bg-charcoal">
         <div className="absolute inset-0 opacity-5" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1585409677983-0f6c41ca9c3b?w=1920&q=80)', backgroundSize: 'cover' }} />
         <div className="relative z-10 vintage-container">
           <div className="grid md:grid-cols-2 gap-12 items-center">
@@ -422,7 +422,7 @@ export default function HomePage() {
       </section>
 
       {/* Experiences */}
-      <section id="experiences" className="relative py-28 md:py-36 overflow-hidden bg-[#1C2B3A]">
+      <section id="experiences" className="relative py-28 md:py-36 overflow-hidden bg-charcoal">
         <div className="absolute inset-0 opacity-5" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1920&q=80)', backgroundSize: 'cover' }} />
         <div className="absolute inset-0 liquid-gradient opacity-30" />
         <div className="relative z-10 vintage-container">
@@ -453,7 +453,7 @@ export default function HomePage() {
       </section>
 
       {/* Café */}
-      <section className="relative py-28 md:py-36 overflow-hidden bg-[#1C2B3A]">
+      <section className="relative py-28 md:py-36 overflow-hidden bg-charcoal">
         <div className="relative z-10 vintage-container">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <ScrollReveal direction="left">
@@ -496,7 +496,7 @@ export default function HomePage() {
       </section>
 
       {/* Testimonials */}
-      <section className="section-padding bg-slate-50">
+      <section className="section-padding bg-slate-50 dark:bg-[#0F1115]">
         <div className="vintage-container">
           <ScrollReveal>
             <div className="text-center max-w-3xl mx-auto mb-16">
@@ -581,7 +581,7 @@ export default function HomePage() {
       </section>
 
       {/* How to Reach */}
-      <section id="how-to-reach" className="section-padding bg-slate-50">
+      <section id="how-to-reach" className="section-padding bg-slate-50 dark:bg-[#0F1115]">
         <div className="vintage-container">
           <ScrollReveal>
             <div className="text-center max-w-3xl mx-auto mb-16">
@@ -621,7 +621,7 @@ export default function HomePage() {
           </div>
 
           <div className="mt-8 grid sm:grid-cols-2 gap-4 max-w-2xl mx-auto">
-            <div className="bg-white rounded-xl p-4 flex items-center gap-3">
+            <div className="bg-white dark:bg-[#161A20] rounded-xl p-4 flex items-center gap-3 border border-border/50">
               <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
                 <MapPin className="w-5 h-5 text-primary" />
               </div>
@@ -630,8 +630,8 @@ export default function HomePage() {
                 <p className="text-sm font-medium text-foreground">Ghiyagi Bus Stop</p>
               </div>
             </div>
-            <div className="bg-white rounded-xl p-4 flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-gold-100 flex items-center justify-center flex-shrink-0">
+            <div className="bg-white dark:bg-[#161A20] rounded-xl p-4 flex items-center gap-3 border border-border/50">
+              <div className="w-10 h-10 rounded-lg bg-gold-100 dark:bg-gold-800/30 flex items-center justify-center flex-shrink-0">
                 <MapPin className="w-5 h-5 text-gold-600" />
               </div>
               <div>
@@ -644,7 +644,7 @@ export default function HomePage() {
       </section>
 
       {/* CTA */}
-      <section className="py-20 md:py-28 bg-[#1C2B3A] relative overflow-hidden">
+      <section className="py-20 md:py-28 bg-charcoal relative overflow-hidden">
         <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1585409677983-0f6c41ca9c3b?w=1920&q=80)', backgroundSize: 'cover' }} />
         <div className="absolute inset-0 liquid-gradient opacity-20" />
         <div className="relative z-10 vintage-container text-center">

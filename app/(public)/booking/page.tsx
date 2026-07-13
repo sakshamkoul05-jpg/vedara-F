@@ -69,6 +69,7 @@ export default function BookingPage() {
   const [paymentLoading, setPaymentLoading] = useState(false);
   const [dateError, setDateError] = useState('');
   const [couponInput, setCouponInput] = useState('');
+  const [formErrors, setFormErrors] = useState<Record<string, string>>({});
 
   const { code, discount, discountType, isValid, error, loading: couponLoading, setCode, validateCoupon, removeCoupon } = useCouponStore();
 
@@ -119,46 +120,35 @@ export default function BookingPage() {
       setStep(2);
     } catch (err: any) {
       console.error('Availability check failed:', err);
-      alert(`Failed to check availability: ${err?.message || 'Unknown error'}`);
+      setFormErrors({ general: `Failed to check availability: ${err?.message || 'Unknown error'}` });
     } finally {
       setStepLoading(false);
     }
   };
 
   const handleCreateBooking = async () => {
-    if (!selectedCottage || !guestName.trim() || !guestPhone) {
-      alert('Please fill in all required fields (Name and Phone)');
-      return;
+    const errors: Record<string, string> = {};
+    if (!guestName.trim()) errors.guestName = 'Name is required';
+    else if (guestName.trim().length < 2) errors.guestName = 'Name must be at least 2 characters';
+    else if (/\d/.test(guestName)) errors.guestName = 'Name should not contain numbers';
+    if (!guestPhone) errors.guestPhone = 'Phone is required';
+    if (guestEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(guestEmail)) errors.guestEmail = 'Invalid email address';
+    if (!idProofType) errors.idProofType = 'ID type is required';
+    if (!idProofNumber.trim()) errors.idProofNumber = 'ID number is required';
+    else {
+      const idValidation = idProofValidation[idProofType];
+      if (idValidation && !idValidation.pattern.test(idProofNumber.trim())) {
+        errors.idProofNumber = idValidation.message;
+      }
     }
-    if (guestName.trim().length < 2) {
-      alert('Name must be at least 2 characters');
-      return;
-    }
-    if (/\d/.test(guestName)) {
-      alert('Name should not contain numbers');
-      return;
-    }
-    if (guestEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(guestEmail)) {
-      alert('Please enter a valid email address');
-      return;
-    }
-    if (!idProofType || !idProofNumber.trim()) {
-      alert('Please provide ID proof details');
-      return;
-    }
-    const idValidation = idProofValidation[idProofType];
-    if (idValidation && !idValidation.pattern.test(idProofNumber.trim())) {
-      alert(idValidation.message);
-      return;
-    }
-    if (!address.trim() || !city.trim() || !state.trim() || !pincode.trim()) {
-      alert('Please provide your complete address');
-      return;
-    }
-    if (nationality === 'IN' && !/^\d{6}$/.test(pincode)) {
-      alert('Pincode must be exactly 6 digits');
-      return;
-    }
+    if (!address.trim()) errors.address = 'Address is required';
+    if (!city.trim()) errors.city = 'City is required';
+    if (!state.trim()) errors.state = 'State is required';
+    if (!pincode.trim()) errors.pincode = 'Pincode is required';
+    else if (nationality === 'IN' && !/^\d{6}$/.test(pincode)) errors.pincode = 'Pincode must be 6 digits';
+
+    setFormErrors(errors);
+    if (Object.keys(errors).length > 0) return;
     setPaymentLoading(true);
     try {
       const fullAddress = `${address}, ${city}, ${state} - ${pincode}`;
@@ -193,7 +183,7 @@ export default function BookingPage() {
             setBookingData({ ...booking, confirmed: true });
             setStep(4);
           } catch {
-            alert('Payment verification failed. Please contact support at +91-91188-82242.');
+            setFormErrors({ general: 'Payment verification failed. Please contact support at +91-91188-82242.' });
           }
         },
         prefill: { name: guestName, email: guestEmail, contact: guestPhone },
@@ -210,7 +200,7 @@ export default function BookingPage() {
       rzp.open();
       setPaymentLoading(false);
     } catch (err: any) {
-      alert(err.message || 'Booking failed. Please try again.');
+      setFormErrors({ general: err.message || 'Booking failed. Please try again.' });
       setPaymentLoading(false);
     }
   };
@@ -262,7 +252,7 @@ export default function BookingPage() {
                 <div
                   key={s}
                   className={`flex-1 h-1 rounded-full transition-all duration-500 ${
-                    step > s ? 'bg-gold-600' : step === s ? 'bg-gold-400' : 'bg-gold-100'
+                    step > s ? 'bg-gold-600' : step === s ? 'bg-gold-400' : 'bg-gold-100 dark:bg-gold-800/30'
                   }`}
                 />
               ))}
@@ -357,11 +347,17 @@ export default function BookingPage() {
                       <div className="max-w-2xl">
                         <h2 className="font-serif text-2xl text-foreground mb-6">Guest Details</h2>
 
+                        {formErrors.general && (
+                          <div className="bg-red-50 border border-red-200 rounded-lg p-3 mb-4 text-red-700 text-sm">
+                            {formErrors.general}
+                          </div>
+                        )}
+
                         {selectedCottageData && (
                           <motion.div
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
-                            className="bg-gold-50 rounded-xl p-4 mb-6"
+                            className="bg-gold-50 dark:bg-gold-900/20 rounded-xl p-4 mb-6"
                           >
                             <div className="flex items-center gap-3 mb-2">
                               <Home className="w-4 h-4 text-gold-500" />
@@ -377,24 +373,34 @@ export default function BookingPage() {
                             <Input value={guestName} onChange={(e) => {
                               const val = e.target.value;
                               if (!/\d/.test(val)) setGuestName(val);
-                            }} placeholder="As on ID proof" />
+                              if (formErrors.guestName) setFormErrors(prev => { const n = { ...prev }; delete n.guestName; return n; });
+                            }} placeholder="As on ID proof" className={formErrors.guestName ? 'border-red-500' : ''} />
+                            {formErrors.guestName && <p className="text-red-500 text-xs mt-1">{formErrors.guestName}</p>}
                           </div>
                           <div className="grid grid-cols-2 gap-4">
                             <div>
                               <label className="vintage-label">Email</label>
-                              <Input type="email" value={guestEmail} onChange={(e) => setGuestEmail(e.target.value)} placeholder="email@example.com" />
+                              <Input type="email" value={guestEmail} onChange={(e) => {
+                                setGuestEmail(e.target.value);
+                                if (formErrors.guestEmail) setFormErrors(prev => { const n = { ...prev }; delete n.guestEmail; return n; });
+                              }} placeholder="email@example.com" className={formErrors.guestEmail ? 'border-red-500' : ''} />
+                              {formErrors.guestEmail && <p className="text-red-500 text-xs mt-1">{formErrors.guestEmail}</p>}
                             </div>
                             <div>
                               <label className="vintage-label">Phone *</label>
                               <PhoneInput
                                 country={nationality.toLowerCase()}
                                 value={guestPhone}
-                                onChange={(phone) => setGuestPhone(phone)}
+                                onChange={(phone) => {
+                                  setGuestPhone(phone);
+                                  if (formErrors.guestPhone) setFormErrors(prev => { const n = { ...prev }; delete n.guestPhone; return n; });
+                                }}
                                 inputProps={{ className: 'flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2' }}
                                 containerClass="!w-full"
-                                inputClass="!w-full !h-10 !text-sm"
+                                inputClass={`!w-full !h-10 !text-sm ${formErrors.guestPhone ? '!border-red-500' : ''}`}
                                 buttonClass="!border-input !bg-background"
                               />
+                              {formErrors.guestPhone && <p className="text-red-500 text-xs mt-1">{formErrors.guestPhone}</p>}
                             </div>
                           </div>
                           <div>
@@ -428,8 +434,11 @@ export default function BookingPage() {
                                 <div className="relative">
                                   <select
                                     value={idProofType}
-                                    onChange={(e) => setIdProofType(e.target.value)}
-                                    className="vintage-input appearance-none pr-10"
+                                    onChange={(e) => {
+                                      setIdProofType(e.target.value);
+                                      if (formErrors.idProofType) setFormErrors(prev => { const n = { ...prev }; delete n.idProofType; return n; });
+                                    }}
+                                    className={`vintage-input appearance-none pr-10 ${formErrors.idProofType ? 'border-red-500' : ''}`}
                                     disabled={nationality !== 'IN'}
                                   >
                                     <option value="">Select ID type</option>
@@ -439,6 +448,7 @@ export default function BookingPage() {
                                   </select>
                                   <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gold-400 pointer-events-none" />
                                 </div>
+                                {formErrors.idProofType && <p className="text-red-500 text-xs mt-1">{formErrors.idProofType}</p>}
                               </div>
                               <div>
                                 <label className="vintage-label">ID Number</label>
@@ -456,11 +466,14 @@ export default function BookingPage() {
                                     } else if (!rules) {
                                       setIdProofNumber(val);
                                     }
+                                    if (formErrors.idProofNumber) setFormErrors(prev => { const n = { ...prev }; delete n.idProofNumber; return n; });
                                   }}
                                   placeholder={idProofValidation[idProofType]?.message || 'Enter ID number'}
                                   maxLength={idProofValidation[idProofType]?.maxLength || 20}
                                   disabled={!idProofType}
+                                  className={formErrors.idProofNumber ? 'border-red-500' : ''}
                                 />
+                                {formErrors.idProofNumber && <p className="text-red-500 text-xs mt-1">{formErrors.idProofNumber}</p>}
                               </div>
                             </div>
                           </div>
@@ -470,12 +483,20 @@ export default function BookingPage() {
                             <div className="space-y-3">
                               <div>
                                 <label className="vintage-label">Street Address</label>
-                                <Input value={address} onChange={(e) => setAddress(e.target.value)} placeholder="House/Flat no, Street, Locality" />
+                                <Input value={address} onChange={(e) => {
+                                  setAddress(e.target.value);
+                                  if (formErrors.address) setFormErrors(prev => { const n = { ...prev }; delete n.address; return n; });
+                                }} placeholder="House/Flat no, Street, Locality" className={formErrors.address ? 'border-red-500' : ''} />
+                                {formErrors.address && <p className="text-red-500 text-xs mt-1">{formErrors.address}</p>}
                               </div>
                               <div className="grid grid-cols-3 gap-3">
                                 <div>
                                   <label className="vintage-label">City</label>
-                                  <Input value={city} onChange={(e) => setCity(e.target.value)} placeholder="City" />
+                                  <Input value={city} onChange={(e) => {
+                                    setCity(e.target.value);
+                                    if (formErrors.city) setFormErrors(prev => { const n = { ...prev }; delete n.city; return n; });
+                                  }} placeholder="City" className={formErrors.city ? 'border-red-500' : ''} />
+                                  {formErrors.city && <p className="text-red-500 text-xs mt-1">{formErrors.city}</p>}
                                 </div>
                                 <div>
                                   <label className="vintage-label">{nationality === 'IN' ? 'State' : 'State / Region'}</label>
@@ -483,8 +504,11 @@ export default function BookingPage() {
                                     <div className="relative">
                                       <select
                                         value={state}
-                                        onChange={(e) => setState(e.target.value)}
-                                        className="vintage-input appearance-none pr-10"
+                                        onChange={(e) => {
+                                          setState(e.target.value);
+                                          if (formErrors.state) setFormErrors(prev => { const n = { ...prev }; delete n.state; return n; });
+                                        }}
+                                        className={`vintage-input appearance-none pr-10 ${formErrors.state ? 'border-red-500' : ''}`}
                                       >
                                         <option value="">Select State</option>
                                         {indianStates.map(s => <option key={s} value={s}>{s}</option>)}
@@ -492,8 +516,12 @@ export default function BookingPage() {
                                       <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gold-400 pointer-events-none" />
                                     </div>
                                   ) : (
-                                    <Input value={state} onChange={(e) => setState(e.target.value)} placeholder="State or region" />
+                                    <Input value={state} onChange={(e) => {
+                                      setState(e.target.value);
+                                      if (formErrors.state) setFormErrors(prev => { const n = { ...prev }; delete n.state; return n; });
+                                    }} placeholder="State or region" className={formErrors.state ? 'border-red-500' : ''} />
                                   )}
+                                  {formErrors.state && <p className="text-red-500 text-xs mt-1">{formErrors.state}</p>}
                                 </div>
                                 <div>
                                   <label className="vintage-label">{nationality === 'IN' ? 'Pincode' : 'Postal Code'}</label>
@@ -504,7 +532,9 @@ export default function BookingPage() {
                                     } else {
                                       setPincode(e.target.value);
                                     }
-                                  }} placeholder={nationality === 'IN' ? '6-digit pincode' : 'Postal code'} maxLength={nationality === 'IN' ? 6 : 20} />
+                                    if (formErrors.pincode) setFormErrors(prev => { const n = { ...prev }; delete n.pincode; return n; });
+                                  }} placeholder={nationality === 'IN' ? '6-digit pincode' : 'Postal code'} maxLength={nationality === 'IN' ? 6 : 20} className={formErrors.pincode ? 'border-red-500' : ''} />
+                                  {formErrors.pincode && <p className="text-red-500 text-xs mt-1">{formErrors.pincode}</p>}
                                 </div>
                               </div>
                             </div>
@@ -615,7 +645,7 @@ export default function BookingPage() {
                           initial={{ scale: 0 }}
                           animate={{ scale: 1 }}
                           transition={{ type: 'spring', stiffness: 200, damping: 15 }}
-                          className="w-16 h-16 rounded-full bg-gold-100 flex items-center justify-center mx-auto mb-6"
+                          className="w-16 h-16 rounded-full bg-gold-100 dark:bg-gold-800/30 flex items-center justify-center mx-auto mb-6"
                         >
                           <Check className="w-8 h-8 text-gold-600" />
                         </motion.div>
@@ -623,7 +653,7 @@ export default function BookingPage() {
                         <p className="text-muted-foreground mb-6">
                           Thank you! Your booking has been confirmed. A confirmation email has been sent to {guestEmail || 'your email'}.
                         </p>
-                        <div className="bg-gold-50 rounded-xl p-6 mb-8 text-left">
+                        <div className="bg-gold-50 dark:bg-gold-900/20 rounded-xl p-6 mb-8 text-left">
                           <p className="text-sm text-muted-foreground mb-1">Booking Reference</p>
                           <p className="font-mono font-bold text-foreground text-lg">{bookingData?.bookingRef}</p>
                           <div className="border-t border-border mt-4 pt-4 space-y-1 text-sm">
@@ -657,7 +687,7 @@ export default function BookingPage() {
                       <div className="space-y-3 text-sm">
                         {selectedCottageData && (
                           <div className="flex items-center gap-3 pb-3 border-b border-border">
-                            <div className="w-10 h-10 rounded-lg bg-gold-50 flex items-center justify-center">
+                            <div className="w-10 h-10 rounded-lg bg-gold-50 dark:bg-gold-900/20 flex items-center justify-center">
                               <Home className="w-4 h-4 text-gold-500" />
                             </div>
                             <div>
@@ -668,7 +698,7 @@ export default function BookingPage() {
                         )}
                         {checkIn && checkOut && (
                           <div className="flex items-center gap-3 pb-3 border-b border-border">
-                            <div className="w-10 h-10 rounded-lg bg-gold-50 flex items-center justify-center">
+                            <div className="w-10 h-10 rounded-lg bg-gold-50 dark:bg-gold-900/20 flex items-center justify-center">
                               <Calendar className="w-4 h-4 text-gold-500" />
                             </div>
                             <div>
