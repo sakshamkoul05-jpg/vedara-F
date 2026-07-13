@@ -32,7 +32,7 @@ export function Footer() {
 
             <div className="mt-6 rounded-xl overflow-hidden border border-white/10 w-full max-w-md">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3397.5!2d77.35!3d31.55!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zQ2hpYmFqIEhpYWNoYWwgUHJhZGVzaA!5e0!3m2!1sen!2sin!4v1"
+                src="https://maps.google.com/maps?q=Ghiyagi%2C+Jibhi%2C+Himachal+Pradesh&output=embed"
                 width="100%"
                 height="160"
                 style={{ border: 0 }}

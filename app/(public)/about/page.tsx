@@ -117,7 +117,7 @@ export default function AboutPage() {
         </section>
 
         {/* The Three Pillars */}
-        <section className="section-padding bg-slate-50 dark:bg-vedara-950/30">
+        <section className="section-padding bg-earth-50 dark:bg-[#13110E]">
           <div className="vintage-container">
             <ScrollReveal>
               <div className="text-center max-w-3xl mx-auto mb-16">
@@ -160,11 +160,11 @@ export default function AboutPage() {
               </ScrollReveal>
 
               <ScrollReveal delay={0.3} direction="up">
-                <article className="group glass-card-light rounded-2xl overflow-hidden hover:border-primary/30 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 h-full flex flex-col">
-                  <div className="h-1.5 bg-gradient-to-r from-[#9B8EA0]/40 to-[#9B8EA0]/10" />
-                  <div className="p-8 md:p-10 flex flex-col flex-1">
-                    <div className="w-12 h-12 rounded-xl bg-[#9B8EA0]/10 flex items-center justify-center mb-5 group-hover:bg-[#9B8EA0]/20 transition-all duration-300">
-                      <Compass className="w-6 h-6 text-[#9B8EA0]" />
+                <article className="group glass-card-light rounded-2xl overflow-hidden hover:border-clay-500/40 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 h-full flex flex-col">
+                  <div className="h-1.5 bg-gradient-to-r from-clay-500/40 to-clay-500/10" />
+                  <div className="p-8 md:p-10 flex flex-col flex-1 border-t border-border/50">
+                    <div className="w-12 h-12 rounded-xl bg-clay-500/10 flex items-center justify-center mb-5 group-hover:bg-clay-500/20 transition-all duration-300">
+                      <Compass className="w-6 h-6 text-clay-600" />
                     </div>
                     <h3 className="font-serif text-xl text-foreground mb-3">The Mindfulness</h3>
                     <p className="text-muted-foreground leading-relaxed text-sm">
@@ -203,7 +203,7 @@ export default function AboutPage() {
       </section>
 
       {/* Experiences */}
-      <section className="section-padding bg-slate-50 dark:bg-vedara-950/30">
+        <section className="section-padding bg-earth-50 dark:bg-[#13110E]">
         <div className="vintage-container">
           <ScrollReveal>
             <div className="text-center max-w-3xl mx-auto mb-16">
@@ -326,7 +326,7 @@ export default function AboutPage() {
       </section>
 
       {/* Attractions */}
-      <section className="section-padding bg-slate-50 dark:bg-vedara-950/30">
+        <section className="section-padding bg-earth-50 dark:bg-[#13110E]">
         <div className="vintage-container">
           <ScrollReveal>
             <div className="text-center max-w-3xl mx-auto mb-16">
