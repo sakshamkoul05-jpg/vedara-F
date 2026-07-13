@@ -24,6 +24,13 @@ import 'react-phone-input-2/lib/style.css';
 const indianIdProofTypes = ['Aadhaar Card', 'PAN Card', 'Passport', 'Driving License'];
 const foreignIdProofTypes = ['Passport'];
 
+const idProofValidation: Record<string, { pattern: RegExp; message: string; maxLength: number }> = {
+  'Aadhaar Card': { pattern: /^\d{12}$/, message: 'Aadhaar must be exactly 12 digits', maxLength: 12 },
+  'PAN Card': { pattern: /^[A-Z]{5}\d{4}[A-Z]$/, message: 'PAN must be 5 letters + 4 digits + 1 letter (e.g., ABCDE1234F)', maxLength: 10 },
+  'Passport': { pattern: /^[A-Z]\d{7,8}$/i, message: 'Passport must be 1 letter + 7-8 digits (e.g., A1234567)', maxLength: 9 },
+  'Driving License': { pattern: /^[A-Z]{2}\d{2}[\s-]?\d{4}[\s-]?\d{7}$/i, message: 'Invalid Driving License format', maxLength: 16 },
+};
+
 const indianStates = [
   'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh', 'Goa', 'Gujarat',
   'Haryana', 'Himachal Pradesh', 'Jharkhand', 'Karnataka', 'Kerala', 'Madhya Pradesh',
@@ -119,20 +126,37 @@ export default function BookingPage() {
   };
 
   const handleCreateBooking = async () => {
-    if (!selectedCottage || !guestName || !guestPhone) {
+    if (!selectedCottage || !guestName.trim() || !guestPhone) {
       alert('Please fill in all required fields (Name and Phone)');
+      return;
+    }
+    if (guestName.trim().length < 2) {
+      alert('Name must be at least 2 characters');
+      return;
+    }
+    if (/\d/.test(guestName)) {
+      alert('Name should not contain numbers');
       return;
     }
     if (guestEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(guestEmail)) {
       alert('Please enter a valid email address');
       return;
     }
-    if (!idProofType || !idProofNumber) {
+    if (!idProofType || !idProofNumber.trim()) {
       alert('Please provide ID proof details');
       return;
     }
-    if (!address || !city || !state || !pincode) {
+    const idValidation = idProofValidation[idProofType];
+    if (idValidation && !idValidation.pattern.test(idProofNumber.trim())) {
+      alert(idValidation.message);
+      return;
+    }
+    if (!address.trim() || !city.trim() || !state.trim() || !pincode.trim()) {
       alert('Please provide your complete address');
+      return;
+    }
+    if (nationality === 'IN' && !/^\d{6}$/.test(pincode)) {
+      alert('Pincode must be exactly 6 digits');
       return;
     }
     setPaymentLoading(true);
@@ -350,7 +374,10 @@ export default function BookingPage() {
                         <div className="space-y-4">
                           <div>
                             <label className="vintage-label">Full Name *</label>
-                            <Input value={guestName} onChange={(e) => setGuestName(e.target.value)} placeholder="As on ID proof" />
+                            <Input value={guestName} onChange={(e) => {
+                              const val = e.target.value;
+                              if (!/\d/.test(val)) setGuestName(val);
+                            }} placeholder="As on ID proof" />
                           </div>
                           <div className="grid grid-cols-2 gap-4">
                             <div>
@@ -415,7 +442,25 @@ export default function BookingPage() {
                               </div>
                               <div>
                                 <label className="vintage-label">ID Number</label>
-                                <Input value={idProofNumber} onChange={(e) => setIdProofNumber(e.target.value)} placeholder="Enter ID number" />
+                                <Input
+                                  value={idProofNumber}
+                                  onChange={(e) => {
+                                    const val = e.target.value;
+                                    const rules = idProofValidation[idProofType];
+                                    if (rules && val.length <= rules.maxLength) {
+                                      if (idProofType === 'Aadhaar Card' || idProofType === 'PAN Card' || idProofType === 'Passport') {
+                                        setIdProofNumber(val.toUpperCase().replace(/\s/g, ''));
+                                      } else {
+                                        setIdProofNumber(val.toUpperCase());
+                                      }
+                                    } else if (!rules) {
+                                      setIdProofNumber(val);
+                                    }
+                                  }}
+                                  placeholder={idProofValidation[idProofType]?.message || 'Enter ID number'}
+                                  maxLength={idProofValidation[idProofType]?.maxLength || 20}
+                                  disabled={!idProofType}
+                                />
                               </div>
                             </div>
                           </div>
@@ -452,7 +497,14 @@ export default function BookingPage() {
                                 </div>
                                 <div>
                                   <label className="vintage-label">{nationality === 'IN' ? 'Pincode' : 'Postal Code'}</label>
-                                  <Input value={pincode} onChange={(e) => setPincode(nationality === 'IN' ? e.target.value.replace(/\D/g, '').slice(0, 6) : e.target.value)} placeholder={nationality === 'IN' ? '000000' : 'Postal code'} maxLength={nationality === 'IN' ? 6 : 20} />
+                                  <Input value={pincode} onChange={(e) => {
+                                    if (nationality === 'IN') {
+                                      const val = e.target.value.replace(/\D/g, '').slice(0, 6);
+                                      setPincode(val);
+                                    } else {
+                                      setPincode(e.target.value);
+                                    }
+                                  }} placeholder={nationality === 'IN' ? '6-digit pincode' : 'Postal code'} maxLength={nationality === 'IN' ? 6 : 20} />
                                 </div>
                               </div>
                             </div>
