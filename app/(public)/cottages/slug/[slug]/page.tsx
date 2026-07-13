@@ -119,6 +119,7 @@ export default function CottageBySlugPage() {
               src={images[selectedImage]}
               alt={cottage.name}
               className="absolute inset-0 w-full h-full object-cover"
+              fetchPriority="high"
               initial={{ scale: 1.1 }}
               animate={{ scale: 1 }}
               transition={{ duration: 1.2, ease: [0.25, 0.1, 0.25, 1] }}

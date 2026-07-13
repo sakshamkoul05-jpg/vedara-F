@@ -2,6 +2,9 @@ node_modules/
 .next/
 .env
 .env.local
+.env*.local
 *.log
+*.tsbuildinfo
+.eslintcache
 .DS_Store
 .vercel
