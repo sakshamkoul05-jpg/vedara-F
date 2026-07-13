@@ -17,11 +17,20 @@ function loadGoogleMaps(): Promise<void> {
   if (scriptPromise) return scriptPromise;
 
   scriptPromise = new Promise<void>((resolve, reject) => {
+    w.gm_authFailure = () =>
+      reject(new Error('Google Maps auth failed: check the API key and its referrer restrictions'));
+
     const existing = document.getElementById('google-maps-script');
+    const onReady = () => {
+      if (w.google?.maps) resolve();
+      else reject(new Error('Google Maps failed to initialize'));
+    };
     if (existing) {
       if (w.google?.maps) return resolve();
-      existing.addEventListener('load', () => resolve());
-      existing.addEventListener('error', () => reject(new Error('Google Maps failed to load')));
+      existing.addEventListener('load', onReady);
+      existing.addEventListener('error', () =>
+        reject(new Error('Google Maps script blocked (network or CSP)'))
+      );
       return;
     }
     const script = document.createElement('script');
@@ -29,8 +38,8 @@ function loadGoogleMaps(): Promise<void> {
     script.src = `https://maps.googleapis.com/maps/api/js?key=${MAPS_API_KEY}&libraries=places`;
     script.async = true;
     script.defer = true;
-    script.onload = () => resolve();
-    script.onerror = () => reject(new Error('Google Maps failed to load'));
+    script.onload = onReady;
+    script.onerror = () => reject(new Error('Google Maps script blocked (network or CSP)'));
     document.head.appendChild(script);
   });
 
@@ -63,10 +72,11 @@ export function FooterMap() {
           title: 'The Vedara – Himalayan Boutique Retreat',
         });
       })
-      .catch(() => {
+      .catch((err) => {
+        console.error('[FooterMap]', err);
         if (ref.current) {
           ref.current.innerHTML =
-            '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#9ca3af;font-size:12px">Map unavailable</div>';
+            '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#9ca3af;font-size:12px;text-align:center;padding:0 8px">Map unavailable</div>';
         }
       });
 

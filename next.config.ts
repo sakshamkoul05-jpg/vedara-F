@@ -2,12 +2,12 @@ import type { NextConfig } from 'next';
 
 const ContentSecurityPolicy = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://checkout.razorpay.com https://fonts.googleapis.com",
+  "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://checkout.razorpay.com https://fonts.googleapis.com https://maps.googleapis.com",
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
   "font-src 'self' https://fonts.gstatic.com",
   "img-src 'self' data: blob: https: http:",
   "media-src 'self' https:",
-  "connect-src 'self' https://vedara-backend-production.up.railway.app wss://vedara-backend-production.up.railway.app https://vedara-b-production.up.railway.app wss://vedara-b-production.up.railway.app",
+  "connect-src 'self' https://vedara-backend-production.up.railway.app wss://vedara-backend-production.up.railway.app https://vedara-b-production.up.railway.app wss://vedara-b-production.up.railway.app https://maps.googleapis.com https://maps.gstatic.com",
   "frame-src 'self' https://checkout.razorpay.com",
   "object-src 'none'",
   "base-uri 'self'",
