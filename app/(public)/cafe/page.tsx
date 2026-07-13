@@ -397,21 +397,33 @@ export default function CafePage() {
                 />
               </div>
             </div>
-            <div className="flex gap-2 pb-3 overflow-x-auto" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-              {menuData.map(cat => (
-                <button
-                  key={cat.id}
-                  onClick={() => { setActiveCategory(cat.id); setSearchQuery(''); }}
-                  className={`shrink-0 flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-medium transition-all duration-200 ${
-                    activeCategory === cat.id
-                      ? 'bg-vedara-900 text-white shadow-md'
-                      : 'bg-gray-100 dark:bg-[#1D232B] text-gray-600 dark:text-[#C9CDD3] hover:bg-gray-200 dark:hover:bg-[#1D232B]/80'
-                  }`}
-                >
-                  <cat.icon className="w-3.5 h-3.5" />
-                  {cat.title}
-                </button>
-              ))}
+            <div className="relative">
+              <div
+                ref={(el) => {
+                  if (el) {
+                    const activeBtn = el.querySelector('[data-active="true"]');
+                    if (activeBtn) activeBtn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+                  }
+                }}
+                className="flex gap-2 pb-3 overflow-x-auto" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+              >
+                {menuData.map(cat => (
+                  <button
+                    key={cat.id}
+                    data-active={activeCategory === cat.id}
+                    onClick={() => { setActiveCategory(cat.id); setSearchQuery(''); }}
+                    className={`shrink-0 flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-medium transition-all duration-200 ${
+                      activeCategory === cat.id
+                        ? 'bg-vedara-900 text-white shadow-md'
+                        : 'bg-gray-100 dark:bg-[#1D232B] text-gray-600 dark:text-[#C9CDD3] hover:bg-gray-200 dark:hover:bg-[#1D232B]/80'
+                    }`}
+                  >
+                    <cat.icon className="w-3.5 h-3.5" />
+                    {cat.title}
+                  </button>
+                ))}
+              </div>
+              <div className="absolute right-0 top-0 bottom-3 w-8 bg-gradient-to-l from-white dark:from-[#0F1115] to-transparent pointer-events-none" />
             </div>
           </div>
         </nav>

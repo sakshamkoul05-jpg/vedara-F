@@ -109,8 +109,22 @@ export default function GalleryPage() {
                     <img
                       src={item.image}
                       alt={item.alt || item.caption}
-                      className="absolute inset-0 w-full h-full object-cover"
+                      className="absolute inset-0 w-full h-full object-cover animate-pulse"
                       loading="lazy"
+                      width={400}
+                      height={i % 3 === 1 ? 500 : 300}
+                      onLoad={(e) => (e.target as HTMLImageElement).classList.remove('animate-pulse')}
+                      onError={(e) => {
+                        const el = e.target as HTMLImageElement;
+                        el.style.display = 'none';
+                        const parent = el.parentElement;
+                        if (parent && !parent.querySelector('.gallery-error-fallback')) {
+                          const fallback = document.createElement('div');
+                          fallback.className = 'gallery-error-fallback absolute inset-0 flex flex-col items-center justify-center text-muted-foreground';
+                          fallback.innerHTML = '<svg class="w-8 h-8 mb-2 opacity-50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg><span class="text-xs">Image unavailable</span>';
+                          parent.appendChild(fallback);
+                        }
+                      }}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                     <div className="absolute bottom-0 left-0 right-0 p-4 translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-500">
