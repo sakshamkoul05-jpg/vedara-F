@@ -42,14 +42,14 @@ const attractions = [
 ];
 
 const activities = [
-  { icon: Flame, title: 'Bonfire Nights', desc: 'Evening bonfires under the starlit Himalayan sky.' },
-  { icon: Music, title: 'Music Nights', desc: 'Live acoustic sessions featuring local artists.' },
-  { icon: TreePine, title: 'Nature Walks', desc: 'Guided walks through cedar and pine forests.' },
-  { icon: Star, title: 'Star Gazing', desc: 'Unpolluted night skies perfect for astronomy.' },
-  { icon: Coffee, title: 'Café Evenings', desc: 'Warm beverages and conversations by the stream.' },
-  { icon: Mountain, title: 'Lambhari Top Trek', desc: 'Guided sunrise trek to panoramic summit views.' },
-  { icon: Compass, title: 'Great Himalayan NP', desc: 'Day trek to the UNESCO World Heritage site.' },
-  { icon: Gamepad2, title: 'Kids Arena', desc: 'Dedicated play zone with nature crafts, outdoor games, and supervised adventures for young explorers.' },
+  { icon: Flame, title: 'Bonfire Nights', desc: 'Evening bonfires under the starlit Himalayan sky.', image: 'https://images.unsplash.com/photo-1574336310290-8f545d91cd5f?w=600&q=80' },
+  { icon: Music, title: 'Music Nights', desc: 'Live acoustic sessions featuring local artists.', image: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=600&q=80' },
+  { icon: TreePine, title: 'Nature Walks', desc: 'Guided walks through cedar and pine forests.', image: 'https://images.unsplash.com/photo-1448375240586-882707db888b?w=600&q=80' },
+  { icon: Star, title: 'Star Gazing', desc: 'Unpolluted night skies perfect for astronomy.', image: 'https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=600&q=80' },
+  { icon: Coffee, title: 'Café Evenings', desc: 'Warm beverages and conversations by the stream.', image: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600&q=80' },
+  { icon: Mountain, title: 'Lambhari Top Trek', desc: 'Guided sunrise trek to panoramic summit views.', image: 'https://images.unsplash.com/photo-1585409677983-0f6c41ca9c3b?w=600&q=80' },
+  { icon: Compass, title: 'Great Himalayan NP', desc: 'Day trek to the UNESCO World Heritage site.', image: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600&q=80' },
+  { icon: Gamepad2, title: 'Kids Arena', desc: 'Dedicated play zone with nature crafts, outdoor games, and supervised adventures for young explorers.', image: 'https://images.unsplash.com/photo-1596464716127-f2a82984de30?w=600&q=80' },
 ];
 
 export default function AboutPage() {
@@ -215,12 +215,15 @@ export default function AboutPage() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
             {activities.map((act, i) => (
               <ScrollReveal key={act.title} delay={i * 0.1}>
-                <article className="group glass-card-light rounded-2xl p-6 text-center transition-smooth h-full flex flex-col justify-center">
-                  <div className="w-14 h-14 rounded-full bg-gradient-to-br from-primary/15 to-primary/5 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-smooth">
-                    <act.icon className="w-7 h-7 text-primary" />
+                <article className="group rounded-2xl overflow-hidden transition-all duration-500 font-sans border border-border/50 bg-card dark:bg-vedara-900/50 hover:shadow-xl hover:-translate-y-1 hover:scale-[1.02] reveal h-full">
+                  <div className="aspect-[16/10] overflow-hidden relative">
+                    <img src={act.image} alt={act.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                    <div className="absolute bottom-0 left-0 right-0 p-4">
+                      <h3 className="font-serif text-lg text-white mb-1">{act.title}</h3>
+                      <p className="text-white/70 text-xs leading-relaxed">{act.desc}</p>
+                    </div>
                   </div>
-                  <h3 className="font-serif text-lg text-foreground mb-2">{act.title}</h3>
-                  <p className="text-muted-foreground text-sm leading-relaxed">{act.desc}</p>
                 </article>
               </ScrollReveal>
             ))}

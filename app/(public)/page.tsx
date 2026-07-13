@@ -33,10 +33,10 @@ const testimonials = [
 ];
 
 const experiences = [
-  { icon: Sparkles, title: 'Bonfire Nights', desc: 'Cozy evenings with music, stories and starlit skies', image: 'https://images.unsplash.com/photo-1543459176-442727156fc3?w=600&q=80' },
+  { icon: Sparkles, title: 'Bonfire Nights', desc: 'Cozy evenings with music, stories and starlit skies', image: 'https://images.unsplash.com/photo-1574336310290-8f545d91cd5f?w=600&q=80' },
   { icon: Trees, title: 'Nature Walks', desc: 'Guided forest trails to waterfalls and viewpoints', image: 'https://images.unsplash.com/photo-1448375240586-882707db888b?w=600&q=80' },
   { icon: Coffee, title: 'Café Experience', desc: 'Fresh local cuisine and artisan coffee', image: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600&q=80' },
-  { icon: Moon, title: 'Mountain Mornings', desc: 'Peaceful sunrise views over the Himalayas', image: 'https://images.unsplash.com/photo-1470770903676-69b98201ea17?w=600&q=80' },
+  { icon: Moon, title: 'Mountain Mornings', desc: 'Peaceful sunrise views over the Himalayas', image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80' },
   { icon: Music, title: 'Music Nights', desc: 'Live acoustic sessions with local artists', image: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=600&q=80' },
   { icon: MapPin, title: 'Lambhari Top Trek', desc: 'Panoramic Himalayan summit views', image: 'https://images.unsplash.com/photo-1585409677983-0f6c41ca9c3b?w=600&q=80' },
   { icon: TreePine, title: 'Great Himalayan NP', desc: 'UNESCO wilderness guided adventure', image: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600&q=80' },
