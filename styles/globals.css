@@ -461,7 +461,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: currentColor;
+  background: var(--btn-fill, #1C2B3A);
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
@@ -472,8 +472,13 @@
   transform: scaleX(1);
 }
 
-.btn-fill-slide:hover {
-  color: #1C2B3A;
+/* Fill colour variants — pair with a contrasting hover:text-* on the button */
+.btn-fill-light {
+  --btn-fill: #ffffff;
+}
+
+.btn-fill-dark {
+  --btn-fill: #1C2B3A;
 }
 
 .btn-bottom-fill {
