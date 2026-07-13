@@ -128,7 +128,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body className={`min-h-screen bg-background text-foreground font-sans antialiased ${cormorantGaramond.variable} ${inter.variable}`}>
-        <a href="#main-content" className="skip-link">Skip to main content</a>
         <ClientBody>{children}</ClientBody>
       </body>
     </html>
