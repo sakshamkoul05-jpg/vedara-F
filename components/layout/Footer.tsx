@@ -6,7 +6,7 @@ import { Mail, Phone, MapPin, Facebook, Instagram, ExternalLink } from 'lucide-r
 
 export function Footer() {
   return (
-    <footer className="bg-charcoal text-white border-t border-white/5 relative overflow-hidden">
+    <footer className="section-dark text-white border-t border-white/5 relative overflow-hidden">
       <div className="absolute inset-0 liquid-gradient opacity-10 pointer-events-none" />
       <div className="vintage-container py-16 md:py-20">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8">

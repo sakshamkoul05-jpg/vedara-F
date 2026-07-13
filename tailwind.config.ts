@@ -76,6 +76,16 @@ const config: Config = {
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)',
+        xl: '1.1rem',
+        '2xl': '1.4rem',
+        '3xl': '1.8rem',
+      },
+      boxShadow: {
+        soft: '0 1px 2px rgba(28,43,58,0.04), 0 6px 18px -8px rgba(28,43,58,0.10)',
+        card: '0 2px 4px rgba(28,43,58,0.04), 0 14px 34px -12px rgba(28,43,58,0.14)',
+        float: '0 10px 26px -8px rgba(28,43,58,0.18), 0 3px 8px rgba(28,43,58,0.06)',
+        'float-lg': '0 22px 50px -14px rgba(28,43,58,0.24), 0 8px 18px -8px rgba(28,43,58,0.10)',
+        glow: '0 8px 30px -10px rgba(196,164,122,0.55)',
       },
       animation: {
         'fade-in': 'fadeIn 1s ease-out',

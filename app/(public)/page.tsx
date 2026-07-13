@@ -170,10 +170,23 @@ export default function HomePage() {
           }}
         />
 
+        {/* Cinematic warm scrim for legibility */}
+        <div className="absolute inset-0 z-[11] pointer-events-none bg-gradient-to-b from-[#0E0A06]/45 via-[#0E0A06]/10 to-[#0E0A06]/75" />
+
         <div className="relative z-20 text-center px-4 max-w-4xl">
+          <motion.span
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3, duration: 0.8 }}
+            className="inline-flex items-center gap-3 mb-5 text-[0.7rem] font-sans font-semibold uppercase tracking-[0.3em] text-gold-300/90"
+          >
+            <span className="h-px w-8 bg-gold-300/60" />
+            Jibhi · Himachal Pradesh
+            <span className="h-px w-8 bg-gold-300/60" />
+          </motion.span>
           <TextReveal
             as="h1"
-            className="text-4xl md:text-5xl lg:text-6xl font-serif text-white leading-tight mb-3 tracking-widest"
+            className="display text-5xl md:text-6xl lg:text-7xl text-white leading-[1.05] mb-5 tracking-[0.08em]"
             delay={0.5}
           >
             THE VEDARA
@@ -182,7 +195,7 @@ export default function HomePage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.8, duration: 0.8 }}
-            className="text-gold-400 text-lg md:text-xl max-w-2xl mx-auto mb-6 font-serif tracking-wide"
+            className="text-gold-300 text-lg md:text-xl max-w-2xl mx-auto mb-6 font-serif tracking-wide"
           >
             A Himalayan Boutique Retreat
           </motion.p>
@@ -190,7 +203,7 @@ export default function HomePage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1, duration: 0.8 }}
-            className="text-white/75 text-sm md:text-base max-w-xl mx-auto mb-8 font-sans"
+            className="text-white/80 text-sm md:text-base max-w-xl mx-auto mb-8 font-sans leading-relaxed"
           >
             Handcrafted sanctuaries, a soulful café, and a slow-living mountain escape crafted for those who seek stillness.
           </motion.p>
@@ -199,7 +212,7 @@ export default function HomePage() {
              animate={{ opacity: 1, y: 0 }}
              transition={{ delay: 1.3, duration: 0.8 }}
            >
-             <Link href="/booking" className="vintage-button bg-gold-600 text-white hover:bg-gold-700 px-10 py-4 text-base font-semibold inline-flex items-center justify-center shadow-lg btn-fill-slide">
+             <Link href="/booking" className="vintage-button bg-gold-600 text-white hover:bg-gold-700 px-10 py-4 text-base font-semibold inline-flex items-center justify-center shadow-glow hover:-translate-y-0.5 btn-fill-slide">
                 Book Your Stay <ArrowRight className="w-4 h-4 ml-2" />
               </Link>
            </motion.div>
@@ -275,13 +288,13 @@ export default function HomePage() {
       </section>
 
       {/* Welcome */}
-      <section id="welcome" className="relative py-28 md:py-36 overflow-hidden bg-charcoal">
+      <section id="welcome" className="relative py-28 md:py-36 overflow-hidden section-dark">
         <div className="absolute inset-0 opacity-5" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1585409677983-0f6c41ca9c3b?w=1920&q=80)', backgroundSize: 'cover' }} />
         <div className="relative z-10 vintage-container">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <ScrollReveal direction="left">
               <div>
-                <p className="text-gold-400 text-sm tracking-[0.2em] uppercase mb-4 font-sans">Welcome to The Vedara</p>
+                <p className="eyebrow mb-4">Welcome to The Vedara</p>
                 <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-white mb-6">A Story Rooted in the Mountains</h2>
                 <p className="text-white/80 text-lg leading-relaxed mb-6">
                   Nestled in the serene village of Ghiyagi, within the untouched landscapes of Jibhi, The Vedara was born from a simple belief – that the most profound luxury is found in stillness, connection, and the raw beauty of the Himalayas.
@@ -311,7 +324,7 @@ export default function HomePage() {
         <div className="relative z-10 vintage-container">
           <ScrollReveal>
             <div className="text-center max-w-3xl mx-auto mb-16">
-              <p className="text-primary text-sm tracking-[0.2em] uppercase mb-4 font-sans">Our Cottages</p>
+              <p className="eyebrow-center mb-4">Our Cottages</p>
               <h2 className="section-title mb-6">6 Cozy Cottages & 1 Alpine Studio</h2>
               <p className="section-subtitle">
                 Each cottage is a world unto itself – named after the birds of the valley and crafted with local materials, premium furnishings, and unobstructed mountain views.
@@ -329,7 +342,7 @@ export default function HomePage() {
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {cottages.filter(c => c.category === 'Premium Duplex Family Suite').map((cottage, i) => (
                 <ScrollReveal key={cottage.name} delay={i * 0.08} direction="up" distance={40}>
-                  <article className="group bg-white dark:bg-[#1B1814] rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-500 reveal h-full flex flex-col border border-border/50">
+                    <article className="group vintage-card overflow-hidden reveal h-full flex flex-col">
                     <div className="aspect-[4/3] overflow-hidden bg-sand-200">
                       <img src={`https://images.unsplash.com/photo-${['1504384308090-c894fdcc538d', '1554118811-1e0d58224f24', '1506905925346-21bda4d32df4'][i]}?w=600&q=80`} alt={`${cottage.name} - premium duplex suite at The Vedara`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                     </div>
@@ -360,7 +373,7 @@ export default function HomePage() {
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {cottages.filter(c => c.category === 'Intimate Mountain View Suite').map((cottage, i) => (
                 <ScrollReveal key={cottage.name} delay={i * 0.08} direction="up" distance={40}>
-                  <article className="group bg-white dark:bg-[#1B1814] rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-500 reveal h-full flex flex-col border border-border/50">
+                    <article className="group vintage-card overflow-hidden reveal h-full flex flex-col">
                     <div className="aspect-[4/3] overflow-hidden bg-sand-200">
                       <img src={`https://images.unsplash.com/photo-${['1476514525535-07fb3b4ae5f1', '1519681393784-d120267933ba', '1469476568026-46a7f7b2f9c2'][i]}?w=600&q=80`} alt={`${cottage.name} - intimate mountain view suite at The Vedara`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                     </div>
@@ -391,7 +404,7 @@ export default function HomePage() {
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {cottages.filter(c => c.category === 'Cozy Alpine Studio').map((cottage, i) => (
                 <ScrollReveal key={cottage.name} delay={i * 0.08} direction="up" distance={40}>
-                  <article className="group bg-white dark:bg-[#1B1814] rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-500 reveal h-full flex flex-col border border-border/50">
+                    <article className="group vintage-card overflow-hidden reveal h-full flex flex-col">
                     <div className="aspect-[4/3] overflow-hidden bg-sand-200">
                       <img src={`https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&q=80`} alt={`${cottage.name} - cozy alpine studio at The Vedara`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                     </div>
@@ -422,13 +435,13 @@ export default function HomePage() {
       </section>
 
       {/* Experiences */}
-      <section id="experiences" className="relative py-28 md:py-36 overflow-hidden bg-charcoal">
+      <section id="experiences" className="relative py-28 md:py-36 overflow-hidden section-dark">
         <div className="absolute inset-0 opacity-5" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1920&q=80)', backgroundSize: 'cover' }} />
         <div className="absolute inset-0 liquid-gradient opacity-30" />
         <div className="relative z-10 vintage-container">
           <ScrollReveal>
             <div className="text-center max-w-3xl mx-auto mb-16">
-              <p className="text-gold-400 text-sm tracking-[0.2em] uppercase mb-4 font-sans">Experiences</p>
+              <p className="eyebrow mb-4">Experiences</p>
               <h2 className="font-serif text-4xl md:text-5xl text-white mb-6">Moments That Stay With You</h2>
               <p className="text-white/70 text-lg">Beyond the cottages, a world of experiences awaits – each designed to bring you closer to the mountains and to yourself.</p>
             </div>
@@ -453,12 +466,12 @@ export default function HomePage() {
       </section>
 
       {/* Café */}
-      <section className="relative py-28 md:py-36 overflow-hidden bg-charcoal">
+      <section className="relative py-28 md:py-36 overflow-hidden section-dark">
         <div className="relative z-10 vintage-container">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <ScrollReveal direction="left">
               <div>
-                <p className="text-gold-400 text-sm tracking-[0.2em] uppercase mb-4 font-sans">Our Café</p>
+                <p className="eyebrow mb-4">Our Café</p>
                 <h2 className="font-serif text-4xl md:text-5xl text-white mb-6">Café Charade</h2>
                 <p className="text-white/80 text-lg leading-relaxed mb-4">
                   Nestled beside a whispering stream, Café Charade serves handcrafted coffee, wood-fired meals, and mountain-fresh bakes.
@@ -500,15 +513,15 @@ export default function HomePage() {
         <div className="vintage-container">
           <ScrollReveal>
             <div className="text-center max-w-3xl mx-auto mb-16">
-              <p className="text-primary text-sm tracking-[0.2em] uppercase mb-4 font-sans">Testimonials</p>
+              <p className="eyebrow-center mb-4">Testimonials</p>
               <h2 className="section-title mb-6">Voices from the Mountains</h2>
             </div>
           </ScrollReveal>
           <div className="grid md:grid-cols-3 gap-6">
             {testimonials.map((t, i) => (
               <ScrollReveal key={t.name} delay={i * 0.12} direction="up" distance={40}>
-                <motion.article
-                  className="bg-white dark:bg-[#1B1814] rounded-2xl p-7 relative overflow-hidden reveal h-full border border-border/50"
+                  <motion.article
+                    className="vintage-card p-7 relative overflow-hidden reveal h-full"
                   whileHover={{ y: -4, boxShadow: '0 20px 40px rgba(0,0,0,0.06)' }}
                   transition={{ duration: 0.5 }}
                 >
@@ -542,7 +555,7 @@ export default function HomePage() {
         <div className="relative z-10 vintage-container">
           <ScrollReveal>
             <div className="text-center max-w-3xl mx-auto mb-16">
-              <p className="text-primary text-sm tracking-[0.2em] uppercase mb-4 font-sans">Explore Nearby</p>
+              <p className="eyebrow-center mb-4">Explore Nearby</p>
               <h2 className="section-title mb-6">Discover the Valley</h2>
               <p className="section-subtitle">The Vedara is your gateway to the raw beauty of Jibhi and beyond</p>
             </div>
@@ -554,7 +567,7 @@ export default function HomePage() {
                   href={`https://www.google.com/maps/search/${place.mapQuery}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block bg-white dark:bg-[#1B1814] rounded-2xl p-5 flex items-start gap-4 group hover:border-primary/30 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 reveal h-full border border-border/50"
+                  className="block vintage-card p-5 flex items-start gap-4 group hover:border-primary/30 transition-all duration-300 reveal h-full"
                 >
                   <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/20 transition-colors duration-300">
                     <place.icon className="w-5 h-5 text-primary" />
@@ -585,14 +598,14 @@ export default function HomePage() {
         <div className="vintage-container">
           <ScrollReveal>
             <div className="text-center max-w-3xl mx-auto mb-16">
-              <p className="text-primary text-sm tracking-[0.2em] uppercase mb-4 font-sans">Getting Here</p>
+              <p className="eyebrow-center mb-4">Getting Here</p>
               <h2 className="section-title mb-6">How to Reach The Vedara</h2>
               <p className="section-subtitle">Your journey to Ghiyagi, Jibhi, begins here</p>
             </div>
           </ScrollReveal>
           <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
             <ScrollReveal delay={0.1} direction="up" distance={40}>
-              <article className="bg-white dark:bg-[#1B1814] rounded-2xl p-7 text-center reveal h-full border border-border/50">
+              <article className="vintage-card p-7 text-center reveal h-full">
                 <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
                   <MapPin className="w-7 h-7 text-primary" />
                 </div>
@@ -601,7 +614,7 @@ export default function HomePage() {
               </article>
             </ScrollReveal>
             <ScrollReveal delay={0.2} direction="up" distance={40}>
-              <article className="bg-white dark:bg-[#1B1814] rounded-2xl p-7 text-center reveal h-full border border-border/50">
+              <article className="vintage-card p-7 text-center reveal h-full">
                 <div className="w-14 h-14 rounded-2xl bg-[#9B8EA0]/10 flex items-center justify-center mx-auto mb-4">
                   <MapPin className="w-7 h-7 text-[#9B8EA0]" />
                 </div>
@@ -610,7 +623,7 @@ export default function HomePage() {
               </article>
             </ScrollReveal>
             <ScrollReveal delay={0.3} direction="up" distance={40}>
-              <article className="bg-white dark:bg-[#1B1814] rounded-2xl p-7 text-center reveal h-full border border-border/50">
+              <article className="vintage-card p-7 text-center reveal h-full">
                 <div className="w-14 h-14 rounded-2xl bg-gold-400/10 flex items-center justify-center mx-auto mb-4">
                   <MapPin className="w-7 h-7 text-gold-500" />
                 </div>
@@ -621,7 +634,7 @@ export default function HomePage() {
           </div>
 
           <div className="mt-8 grid sm:grid-cols-2 gap-4 max-w-2xl mx-auto">
-            <div className="bg-white dark:bg-[#1B1814] rounded-xl p-4 flex items-center gap-3 border border-border/50">
+              <div className="vintage-card rounded-xl p-4 flex items-center gap-3">
               <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
                 <MapPin className="w-5 h-5 text-primary" />
               </div>
@@ -630,7 +643,7 @@ export default function HomePage() {
                 <p className="text-sm font-medium text-foreground">Ghiyagi Bus Stop</p>
               </div>
             </div>
-            <div className="bg-white dark:bg-[#1B1814] rounded-xl p-4 flex items-center gap-3 border border-border/50">
+              <div className="vintage-card rounded-xl p-4 flex items-center gap-3">
               <div className="w-10 h-10 rounded-lg bg-gold-100 dark:bg-gold-800/30 flex items-center justify-center flex-shrink-0">
                 <MapPin className="w-5 h-5 text-gold-600" />
               </div>
@@ -644,7 +657,7 @@ export default function HomePage() {
       </section>
 
       {/* CTA */}
-      <section className="py-20 md:py-28 bg-charcoal relative overflow-hidden">
+      <section className="py-20 md:py-28 section-dark relative overflow-hidden">
         <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1585409677983-0f6c41ca9c3b?w=1920&q=80)', backgroundSize: 'cover' }} />
         <div className="absolute inset-0 liquid-gradient opacity-20" />
         <div className="relative z-10 vintage-container text-center">

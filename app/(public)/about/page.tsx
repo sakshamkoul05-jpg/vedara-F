@@ -56,7 +56,7 @@ export default function AboutPage() {
   return (
     <>
       {/* Hero Hook */}
-      <section className="relative min-h-[90vh] flex items-center justify-center bg-charcoal overflow-hidden">
+      <section className="relative min-h-[90vh] flex items-center justify-center section-dark overflow-hidden">
         <div className="absolute inset-0 bg-[url('/images/hero-bg.jpg')] bg-cover bg-center opacity-40" />
         <div className="absolute inset-0 bg-gradient-to-b from-[#1C2B3A]/60 via-[#1C2B3A]/40 to-[#1C2B3A]/80" />
         <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
@@ -266,7 +266,7 @@ export default function AboutPage() {
       </section>
 
       {/* Getting Here */}
-      <section className="section-padding bg-charcoal">
+      <section className="section-padding section-dark">
         <div className="vintage-container">
           <ScrollReveal>
             <div className="text-center max-w-3xl mx-auto mb-16">
@@ -369,7 +369,7 @@ export default function AboutPage() {
       </section>
 
       {/* Philosophy */}
-      <section className="section-padding bg-charcoal">
+      <section className="section-padding section-dark">
         <div className="vintage-container">
           <ScrollReveal>
             <div className="text-center max-w-3xl mx-auto mb-16">

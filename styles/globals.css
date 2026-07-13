@@ -20,10 +20,10 @@
     --accent-foreground: 210 28% 17%;
     --destructive: 5 60% 50%;
     --destructive-foreground: 0 0% 100%;
-    --border: 30 10% 87%;
-    --input: 30 10% 87%;
+    --border: 30 12% 86%;
+    --input: 30 12% 86%;
     --ring: 150 25% 20%;
-    --radius: 0.5rem;
+    --radius: 0.75rem;
 
     --clr-surface: #FFFFFF;
     --clr-stone: rgba(74, 85, 104, 0.12);
@@ -109,6 +109,22 @@
   .dark [class*="shadow-2xl"] {
     box-shadow: 0 10px 34px rgba(0, 0, 0, 0.5) !important;
   }
+
+  .dark [class*="shadow-soft"] {
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.35), 0 6px 18px -8px rgba(0, 0, 0, 0.5) !important;
+  }
+
+  .dark [class*="shadow-card"] {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3), 0 16px 38px -14px rgba(0, 0, 0, 0.55) !important;
+  }
+
+  .dark [class*="shadow-float"]:not([class*="shadow-float-lg"]) {
+    box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.6), 0 3px 8px rgba(0, 0, 0, 0.4) !important;
+  }
+
+  .dark [class*="shadow-float-lg"] {
+    box-shadow: 0 26px 56px -16px rgba(0, 0, 0, 0.7), 0 8px 18px -8px rgba(0, 0, 0, 0.45) !important;
+  }
 }
 
 @layer base {
@@ -127,6 +143,12 @@
 
   h1, h2, h3, h4, h5 {
     @apply font-serif;
+    font-feature-settings: 'liga' 1, 'dlig' 1, 'onum' 1;
+    text-wrap: balance;
+  }
+
+  .font-serif {
+    font-feature-settings: 'liga' 1, 'dlig' 1, 'onum' 1;
   }
 
   ::selection {
@@ -150,23 +172,81 @@
   }
 
   .vintage-card {
-    @apply bg-card dark:bg-vedara-900/50 border border-border/50 rounded-xl shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300;
+    @apply bg-card dark:bg-[#1B1814] border border-border/60 rounded-2xl shadow-card hover:shadow-float hover:-translate-y-1 transition-all duration-300;
+  }
+
+  .dark .vintage-card {
+    border-color: rgba(255, 245, 230, 0.10);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3), 0 16px 38px -14px rgba(0, 0, 0, 0.55);
+  }
+
+  .dark .vintage-card:hover {
+    box-shadow: 0 26px 54px -16px rgba(0, 0, 0, 0.65);
+    border-color: rgba(217, 168, 90, 0.28);
+  }
+
+  /* Editorial eyebrow — the small uppercase label used above every section title */
+  .eyebrow {
+    @apply inline-flex items-center gap-2 text-[0.7rem] font-sans font-semibold uppercase tracking-[0.24em] text-primary/80 dark:text-gold-400/90;
+  }
+
+  .eyebrow::before {
+    content: '';
+    @apply inline-block h-px w-6 bg-primary/50 dark:bg-gold-400/50;
+  }
+
+  .eyebrow-center {
+    @apply justify-center;
+  }
+
+  .eyebrow-center::before {
+    display: none;
+  }
+
+  /* Large display heading with optical balance */
+  .display {
+    @apply font-serif font-medium tracking-tight text-balance;
+  }
+
+  /* Warm charcoal panel used for the alternating dark sections */
+  .section-dark {
+    position: relative;
+    background-color: #1C2B3A;
+    background-image:
+      radial-gradient(58% 48% at 82% 6%, rgba(217, 168, 90, 0.13), transparent 60%),
+      radial-gradient(50% 56% at 8% 100%, rgba(127, 178, 149, 0.10), transparent 62%),
+      linear-gradient(180deg, rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0));
+  }
+
+  .dark .section-dark {
+    background-color: #181A1E;
+    background-image:
+      radial-gradient(58% 48% at 82% 6%, rgba(217, 168, 90, 0.10), transparent 60%),
+      radial-gradient(50% 56% at 8% 100%, rgba(127, 178, 149, 0.08), transparent 62%);
+  }
+
+  .section-dark .eyebrow {
+    @apply text-gold-400/90;
+  }
+
+  .section-dark .eyebrow::before {
+    @apply bg-gold-400/50;
   }
 
   .vintage-button {
-    @apply inline-flex items-center justify-center rounded-lg px-6 py-3 font-sans text-sm font-medium transition-all duration-300;
+    @apply inline-flex items-center justify-center rounded-xl px-6 py-3 font-sans text-sm font-medium transition-all duration-300;
   }
 
   .vintage-button-primary {
-    @apply vintage-button bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm hover:shadow-md;
+    @apply vintage-button bg-primary text-primary-foreground hover:bg-primary/90 font-semibold shadow-soft hover:shadow-float hover:-translate-y-0.5;
   }
 
   .vintage-button-secondary {
-    @apply vintage-button bg-accent text-accent-foreground hover:bg-accent/90 shadow-sm;
+    @apply vintage-button bg-accent text-accent-foreground hover:bg-accent/90 font-semibold shadow-soft;
   }
 
   .vintage-button-outline {
-    @apply vintage-button border border-border text-foreground hover:bg-muted/50;
+    @apply vintage-button border border-border text-foreground hover:bg-muted/50 hover:-translate-y-0.5 hover:shadow-soft;
   }
 
   .vintage-input {
