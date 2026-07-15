@@ -51,7 +51,12 @@ export default function BookingPage() {
   const [selectedCottage, setSelectedCottage] = useState<string>(searchParams.get('cottageId') || '');
   const [adults, setAdults] = useState(parseInt(searchParams.get('adults') || '2'));
   const [children, setChildren] = useState(parseInt(searchParams.get('children') || '0'));
-  const [nationality, setNationality] = useState(searchParams.get('nationality') || 'Indian');
+  const [nationality, setNationality] = useState(
+    (() => {
+      const n = searchParams.get('nationality');
+      return n && /^[A-Z]{2}$/.test(n) ? n : 'IN';
+    })()
+  );
   const [guestName, setGuestName] = useState('');
   const [guestEmail, setGuestEmail] = useState('');
   const [guestPhone, setGuestPhone] = useState('');
@@ -544,14 +549,21 @@ export default function BookingPage() {
 
                           <div className="grid grid-cols-2 gap-4">
                             <div>
-                              <label className="vintage-label">Adults (max {selectedCottageData?.capacity || 4})</label>
+                              <label className="vintage-label">
+                                Adults
+                                {selectedCottageData && (
+                                  <span className="font-normal normal-case text-muted-foreground">
+                                    {' '}(base {selectedCottageData.capacity}, extra guests +{formatPrice(cottageExtraGuestCharge)}/night each)
+                                  </span>
+                                )}
+                              </label>
                               <select
                                 value={adults}
                                 onChange={(e) => setAdults(parseInt(e.target.value))}
                                 className="vintage-input"
                               >
-                                {Array.from({ length: selectedCottageData?.capacity || 4 }, (_, i) => i + 1).map(n => (
-                                  <option key={n} value={n}>{n}</option>
+                                {Array.from({ length: (selectedCottageData?.capacity || 4) + 4 }, (_, i) => i + 1).map(n => (
+                                  <option key={n} value={n}>{n}{n > (selectedCottageData?.capacity || 4) ? ' (extra)' : ''}</option>
                                 ))}
                               </select>
                             </div>
