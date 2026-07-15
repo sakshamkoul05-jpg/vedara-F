@@ -329,7 +329,7 @@ export default function CottageBySlugPage() {
                       <div>
                         <label className="vintage-label">Check-in</label>
                         <div className="relative">
-                          <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gold-400" />
+                          <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gold-400 pointer-events-none" />
                           <input
                             type="date"
                             value={checkIn}
@@ -347,7 +347,7 @@ export default function CottageBySlugPage() {
                       <div>
                         <label className="vintage-label">Check-out</label>
                         <div className="relative">
-                          <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gold-400" />
+                          <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gold-400 pointer-events-none" />
                           <input
                             type="date"
                             value={checkOut}

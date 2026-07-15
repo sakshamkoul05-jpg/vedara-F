@@ -287,14 +287,14 @@ export default function BookingPage() {
                           <div>
                             <label className="vintage-label">Check-in Date *</label>
                             <div className="relative">
-                              <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gold-400" />
+                              <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gold-400 pointer-events-none" />
                               <Input type="date" value={checkIn} onChange={(e) => { setCheckIn(e.target.value); setDateError(''); if (checkOut && new Date(checkOut) <= new Date(e.target.value)) { setCheckOut(''); setDateError('Check-out must be after check-in'); } }} min={getToday()} className="pl-10" />
                             </div>
                           </div>
                           <div>
                             <label className="vintage-label">Check-out Date *</label>
                             <div className="relative">
-                              <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gold-400" />
+                              <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gold-400 pointer-events-none" />
                               <Input type="date" value={checkOut} onChange={(e) => handleCheckOutChange(e.target.value)} min={checkIn || new Date().toISOString().split('T')[0]} className="pl-10" />
                           {dateError && <p className="text-red-500 text-xs mt-1">{dateError}</p>}
                             </div>
