@@ -131,6 +131,26 @@ export default function BookingPage() {
     }
   };
 
+  const loadRazorpayScript = (): Promise<boolean> => {
+    return new Promise((resolve) => {
+      if (typeof window !== 'undefined' && (window as any).Razorpay) {
+        resolve(true);
+        return;
+      }
+      const existing = document.querySelector('script[src="https://checkout.razorpay.com/v1/checkout.js"]');
+      if (existing) {
+        existing.addEventListener('load', () => resolve(true));
+        existing.addEventListener('error', () => resolve(false));
+        return;
+      }
+      const script = document.createElement('script');
+      script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+      script.onload = () => resolve(true);
+      script.onerror = () => resolve(false);
+      document.head.appendChild(script);
+    });
+  };
+
   const handleCreateBooking = async () => {
     const errors: Record<string, string> = {};
     if (!guestName.trim()) errors.guestName = 'Name is required';
@@ -170,8 +190,18 @@ export default function BookingPage() {
 
       const { booking, razorpayOrder } = res.data;
 
+      const razorpayKey = process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID;
+      if (!razorpayKey) {
+        throw new Error('Payment configuration is missing. Please contact support.');
+      }
+
+      const scriptLoaded = await loadRazorpayScript();
+      if (!scriptLoaded) {
+        throw new Error('Payment gateway failed to load. Please check your internet connection and try again.');
+      }
+
       const options = {
-        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+        key: razorpayKey,
         amount: razorpayOrder.amount,
         currency: razorpayOrder.currency,
         name: 'The Vedara',
@@ -198,10 +228,11 @@ export default function BookingPage() {
         },
       };
 
-      if (typeof (window as any).Razorpay === 'undefined') {
-        throw new Error('Payment gateway failed to load. Please refresh the page or try a different browser.');
-      }
       const rzp = new (window as any).Razorpay(options);
+      rzp.on('payment.failed', (response: any) => {
+        setFormErrors({ general: `Payment failed: ${response?.error?.description || 'Unknown error'}. Please try again.` });
+        setPaymentLoading(false);
+      });
       rzp.open();
       setPaymentLoading(false);
     } catch (err: any) {
@@ -465,7 +496,9 @@ export default function BookingPage() {
                                     const val = e.target.value;
                                     const rules = idProofValidation[idProofType];
                                     if (rules && val.length <= rules.maxLength) {
-                                      if (idProofType === 'Aadhaar Card' || idProofType === 'PAN Card' || idProofType === 'Passport') {
+                                      if (idProofType === 'Aadhaar Card') {
+                                        setIdProofNumber(val.replace(/\D/g, '').slice(0, 12));
+                                      } else if (idProofType === 'PAN Card' || idProofType === 'Passport') {
                                         setIdProofNumber(val.toUpperCase().replace(/\s/g, ''));
                                       } else {
                                         setIdProofNumber(val.toUpperCase());
