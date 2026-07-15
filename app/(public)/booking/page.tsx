@@ -210,7 +210,8 @@ export default function BookingPage() {
   const subtotal = selectedCottageData ? selectedCottageData.pricePerNight * nights : 0;
   const cottageCapacity = selectedCottageData?.capacity ?? 2;
   const extraGuests = Math.max(0, adults + children - cottageCapacity);
-  const extraGuestCharges = extraGuests * 1500 * nights;
+  const cottageExtraGuestCharge = selectedCottageData?.extraGuestCharge ?? 1500;
+  const extraGuestCharges = extraGuests * cottageExtraGuestCharge * nights;
   const discountAmount = isValid ? Math.min(discountType === 'PERCENTAGE' ? Math.round(subtotal * discount / 100) : discount, subtotal + extraGuestCharges) : 0;
   const taxes = Math.round((subtotal + extraGuestCharges - discountAmount) * 0.12);
   const totalAmount = subtotal + extraGuestCharges - discountAmount + taxes;
@@ -718,7 +719,7 @@ export default function BookingPage() {
                             {extraGuests > 0 && (
                               <div className="flex justify-between text-amber-600">
                                 <span className="flex items-center gap-1">
-                                  <Users className="w-3 h-3" /> Extra Guest ({extraGuests} × ₹1,500 × {nights} {nights === 1 ? 'night' : 'nights'})
+                                  <Users className="w-3 h-3" /> Extra Guest ({extraGuests} × {formatPrice(cottageExtraGuestCharge)} × {nights} {nights === 1 ? 'night' : 'nights'})
                                 </span>
                                 <span>+{formatPrice(extraGuestCharges)}</span>
                               </div>
