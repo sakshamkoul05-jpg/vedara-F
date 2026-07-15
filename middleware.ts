@@ -3,8 +3,15 @@ import type { NextRequest } from 'next/server';
 import { jwtVerify } from 'jose';
 
 const JWT_SECRET = new TextEncoder().encode(
-  process.env.JWT_SECRET || (process.env.NODE_ENV === 'production' ? '' : 'dev-jwt-secret')
+  process.env.JWT_SECRET || 'dev-jwt-secret'
 );
+
+if (process.env.NODE_ENV === 'production' && !process.env.JWT_SECRET) {
+  console.warn(
+    '[middleware] JWT_SECRET is not set. It MUST match the backend JWT_SECRET, ' +
+    'otherwise admin/employee sessions will fail to verify. Set JWT_SECRET on the frontend deployment.'
+  );
+}
 
 export async function middleware(request: NextRequest) {
   const token = request.cookies.get('vd_token')?.value;

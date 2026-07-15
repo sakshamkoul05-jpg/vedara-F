@@ -208,7 +208,8 @@ export default function BookingPage() {
   const selectedCottageData = cottages.find((c) => c.id === selectedCottage);
   const nights = checkIn && checkOut ? calculateNights(new Date(checkIn), new Date(checkOut)) : 0;
   const subtotal = selectedCottageData ? selectedCottageData.pricePerNight * nights : 0;
-  const extraGuests = Math.max(0, adults + children - 2);
+  const cottageCapacity = selectedCottageData?.capacity ?? 2;
+  const extraGuests = Math.max(0, adults + children - cottageCapacity);
   const extraGuestCharges = extraGuests * 1500 * nights;
   const discountAmount = isValid ? Math.min(discountType === 'PERCENTAGE' ? Math.round(subtotal * discount / 100) : discount, subtotal + extraGuestCharges) : 0;
   const taxes = Math.round((subtotal + extraGuestCharges - discountAmount) * 0.12);

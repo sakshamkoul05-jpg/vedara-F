@@ -8,7 +8,7 @@ type RequestOptions = {
   token?: string;
 };
 
-async function request<T = any>(endpoint: string, options: RequestOptions = {}): Promise<T> {
+async function request<T = any>(endpoint: string, options: RequestOptions = {}, _retried = false): Promise<T> {
   const { method = 'GET', body, headers = {}, token } = options;
 
   const config: RequestInit = {
@@ -33,6 +33,15 @@ async function request<T = any>(endpoint: string, options: RequestOptions = {}):
   } else {
     const text = await response.text();
     data = { error: text || 'API request failed' };
+  }
+
+  if (response.status === 401 && !_retried) {
+    try {
+      await fetch(`${API_URL}/auth/refresh`, { method: 'POST', credentials: 'include' });
+      return request<T>(endpoint, options, true);
+    } catch {
+      // refresh failed, surface original error
+    }
   }
 
   if (!response.ok) {
