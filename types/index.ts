@@ -8,6 +8,7 @@ export interface Cottage {
   pricePerNight: number;
   heaterCharge: number;
   capacity: number;
+  extraGuestCharge: number;
   bedrooms: number;
   bathrooms: number;
   size?: number;
