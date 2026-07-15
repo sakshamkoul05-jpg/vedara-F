@@ -266,7 +266,7 @@ function CottagesTab({ token, showToast }: { token: string | null; showToast: (m
   const [createDialogOpen, setCreateDialogOpen] = useState(false);
   const [newCottage, setNewCottage] = useState({
     name: '', slug: '', description: '', shortDesc: '', pricePerNight: 0,
-    capacity: 2, bedrooms: 1, bathrooms: 1, category: '', amenities: [] as string[],
+    capacity: 2, extraGuestCharge: 1500, bedrooms: 1, bathrooms: 1, category: '', amenities: [] as string[],
     images: [] as string[], sortOrder: 0,
   });
 
@@ -314,6 +314,7 @@ function CottagesTab({ token, showToast }: { token: string | null; showToast: (m
         images: Array.isArray(editingCottage.images) ? editingCottage.images : [],
         pricePerNight: Number(editingCottage.pricePerNight) || 0,
         capacity: Number(editingCottage.capacity) || 2,
+        extraGuestCharge: Number(editingCottage.extraGuestCharge) || 1500,
         bedrooms: Number(editingCottage.bedrooms) || 1,
         bathrooms: Number(editingCottage.bathrooms) || 1,
         size: editingCottage.size ? Number(editingCottage.size) : null,
@@ -344,7 +345,7 @@ function CottagesTab({ token, showToast }: { token: string | null; showToast: (m
       setCreateDialogOpen(false);
       setNewCottage({
         name: '', slug: '', description: '', shortDesc: '', pricePerNight: 0,
-        capacity: 2, bedrooms: 1, bathrooms: 1, category: '', amenities: [],
+        capacity: 2, extraGuestCharge: 1500, bedrooms: 1, bathrooms: 1, category: '', amenities: [],
         images: [], sortOrder: 0,
       });
       loadCottages();
@@ -468,6 +469,11 @@ function CottagesTab({ token, showToast }: { token: string | null; showToast: (m
                 <Input type="number" value={editingCottage.capacity} onChange={(e) => setEditingCottage({ ...editingCottage, capacity: Number(e.target.value) })} />
               </div>
               <div>
+                <label className="vintage-label">Extra Guest Charge (₹/night)</label>
+                <Input type="number" value={editingCottage.extraGuestCharge ?? 1500} onChange={(e) => setEditingCottage({ ...editingCottage, extraGuestCharge: Number(e.target.value) })} />
+                <p className="text-xs text-muted-foreground">Charged per guest per night beyond capacity.</p>
+              </div>
+              <div>
                 <label className="vintage-label">Bedrooms</label>
                 <Input type="number" value={editingCottage.bedrooms} onChange={(e) => setEditingCottage({ ...editingCottage, bedrooms: Number(e.target.value) })} />
               </div>
@@ -559,6 +565,11 @@ function CottagesTab({ token, showToast }: { token: string | null; showToast: (m
             <div>
               <label className="vintage-label">Capacity</label>
               <Input type="number" value={newCottage.capacity} onChange={(e) => setNewCottage({ ...newCottage, capacity: Number(e.target.value) })} />
+            </div>
+            <div>
+              <label className="vintage-label">Extra Guest Charge (₹/night)</label>
+              <Input type="number" value={newCottage.extraGuestCharge || ''} onChange={(e) => setNewCottage({ ...newCottage, extraGuestCharge: Number(e.target.value) })} />
+              <p className="text-xs text-muted-foreground">Charged per guest per night beyond capacity.</p>
             </div>
             <div>
               <label className="vintage-label">Bedrooms</label>
