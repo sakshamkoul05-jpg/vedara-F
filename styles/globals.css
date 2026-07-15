@@ -100,6 +100,17 @@
     color: #EFE9DE !important;
   }
 
+  /* Custom dark-navy text tokens (vedara-900 / charcoal) are invisible on dark
+     backgrounds when used without an explicit dark: variant. Flip them to the
+     light text colour so prices, icons and links stay readable. */
+  .dark [class*="text-vedara-900"]:not([class*="dark:text"]) {
+    color: #EFE9DE !important;
+  }
+
+  .dark [class*="text-charcoal"]:not([class*="dark:text"]) {
+    color: #EFE9DE !important;
+  }
+
   .dark [class*="border-border"] {
     border-color: #332E26 !important;
   }
