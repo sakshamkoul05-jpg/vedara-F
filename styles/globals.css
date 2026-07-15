@@ -92,6 +92,26 @@
     background-color: #221E18 !important;
   }
 
+  /* Light custom background tokens that have no explicit dark: variant would
+     stay light in dark mode while text-foreground flips to light — making
+     headings/text invisible (e.g. the cottages "stays" hero on bg-alabaster).
+     Darken them, but skip elements that already set their own dark:bg. */
+  .dark [class*="bg-alabaster"]:not([class*="dark:bg"]) {
+    background-color: #1B1814 !important;
+  }
+
+  .dark [class*="bg-gold-50"]:not([class*="dark:bg"]) {
+    background-color: #1B1814 !important;
+  }
+
+  .dark [class*="bg-earth-50"]:not([class*="dark:bg"]) {
+    background-color: #1B1814 !important;
+  }
+
+  .dark [class*="bg-cream-50"]:not([class*="dark:bg"]) {
+    background-color: #1B1814 !important;
+  }
+
   .dark [class*="text-foreground"]:not([class*="text-white"]) {
     color: #EFE9DE !important;
   }
