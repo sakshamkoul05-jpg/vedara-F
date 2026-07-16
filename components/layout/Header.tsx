@@ -54,10 +54,7 @@ export function Header() {
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo — extreme left */}
             <Link href="/" className="flex items-center gap-3 flex-shrink-0 self-center">
-            <div className={cn(
-              'h-9 md:h-11 w-auto rounded-xl overflow-hidden flex-shrink-0 transition-all bg-white/40 dark:bg-white/10 backdrop-blur-sm p-1',
-              isTransparent ? 'ring-2 ring-white/20' : 'ring-1 ring-border'
-            )}>
+            <div className="h-9 md:h-11 w-auto flex-shrink-0">
               <Image
                 src="/images/vedara-logo.jpeg"
                 alt="The Vedara"

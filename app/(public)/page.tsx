@@ -213,7 +213,7 @@ export default function HomePage() {
              animate={{ opacity: 1, y: 0 }}
              transition={{ delay: 1.3, duration: 0.8 }}
            >
-             <Link href="/booking" className="vintage-button bg-[#2E5A3E] text-white hover:bg-[#234A32] px-12 py-4 text-base md:text-lg font-semibold inline-flex items-center justify-center shadow-glow ring-2 ring-gold-300/40 hover:ring-gold-300/70 hover:-translate-y-0.5 btn-fill-slide btn-fill-light hover:text-white">
+             <Link href="/booking" className="vintage-button bg-[#2E5A3E] text-white hover:bg-white hover:text-[#2E5A3E] px-12 py-4 text-base md:text-lg font-semibold inline-flex items-center justify-center shadow-glow ring-2 ring-gold-300/40 hover:ring-gold-300/70 hover:-translate-y-0.5 transition-all duration-300">
                 Book Your Stay <ArrowRight className="w-4 h-4 ml-2" />
               </Link>
            </motion.div>
@@ -678,7 +678,7 @@ export default function HomePage() {
               Book your mountain story today. Early check-in and late check-out are subject to availability and prior confirmation.
             </p>
             <MagneticButton>
-              <Link href="/booking" className="vintage-button bg-white/90 text-[#140D07] hover:bg-white px-10 py-4 text-base inline-block shadow-xl btn-fill-slide btn-fill-dark hover:text-white">
+              <Link href="/booking" className="vintage-button bg-white/90 text-[#140D07] hover:bg-[#140D07] hover:text-white px-10 py-4 text-base inline-block shadow-xl transition-all duration-300">
                 Begin Your Journey <Sparkles className="w-4 h-4 ml-2" />
               </Link>
             </MagneticButton>
