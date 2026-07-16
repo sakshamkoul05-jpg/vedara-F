@@ -54,13 +54,13 @@ export function Header() {
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo — extreme left */}
             <Link href="/" className="flex items-center gap-3 flex-shrink-0 self-center">
-            <div className="h-9 md:h-11 w-auto flex-shrink-0">
+            <div className="h-9 md:h-11 w-9 md:w-11 rounded-full overflow-hidden flex-shrink-0">
               <Image
                 src="/images/vedara-logo.jpeg"
                 alt="The Vedara"
                 width={132}
                 height={52}
-                className="h-full w-auto object-contain"
+                className="w-full h-full object-cover"
                 priority
               />
             </div>

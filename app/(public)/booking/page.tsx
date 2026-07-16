@@ -21,12 +21,11 @@ import { countries } from '@/lib/countries';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 
-const indianIdProofTypes = ['Aadhaar Card', 'PAN Card', 'Passport', 'Driving License'];
+const indianIdProofTypes = ['Aadhaar Card', 'Passport', 'Driving License'];
 const foreignIdProofTypes = ['Passport'];
 
 const idProofValidation: Record<string, { pattern: RegExp; message: string; maxLength: number }> = {
   'Aadhaar Card': { pattern: /^\d{12}$/, message: 'Aadhaar must be exactly 12 digits', maxLength: 12 },
-  'PAN Card': { pattern: /^[A-Z]{5}\d{4}[A-Z]$/, message: 'PAN must be 5 letters + 4 digits + 1 letter (e.g., ABCDE1234F)', maxLength: 10 },
   'Passport': { pattern: /^[A-Z]\d{7,8}$/i, message: 'Passport must be 1 letter + 7-8 digits (e.g., A1234567)', maxLength: 9 },
   'Driving License': { pattern: /^[A-Z]{2}\d{2}[\s-]?\d{4}[\s-]?\d{7}$/i, message: 'Invalid Driving License format', maxLength: 16 },
 };
@@ -539,15 +538,15 @@ export default function BookingPage() {
                                   onChange={(e) => {
                                     const val = e.target.value;
                                     const rules = idProofValidation[idProofType];
-                                    if (rules && val.length <= rules.maxLength) {
-                                      if (idProofType === 'Aadhaar Card') {
-                                        setIdProofNumber(val.replace(/\D/g, '').slice(0, 12));
-                                      } else if (idProofType === 'PAN Card' || idProofType === 'Passport') {
-                                        setIdProofNumber(val.toUpperCase().replace(/\s/g, ''));
-                                      } else {
-                                        setIdProofNumber(val.toUpperCase());
-                                      }
-                                    } else if (!rules) {
+                                    if (idProofType === 'Aadhaar Card') {
+                                      setIdProofNumber(val.replace(/\D/g, '').slice(0, 12));
+                                    } else if (idProofType === 'Passport') {
+                                      setIdProofNumber(val.replace(/[^A-Za-z0-9]/g, '').toUpperCase().slice(0, 9));
+                                    } else if (idProofType === 'Driving License') {
+                                      setIdProofNumber(val.replace(/[^A-Za-z0-9\s-]/g, '').toUpperCase().slice(0, 16));
+                                    } else if (rules) {
+                                      setIdProofNumber(val.toUpperCase().slice(0, rules.maxLength));
+                                    } else {
                                       setIdProofNumber(val);
                                     }
                                     if (formErrors.idProofNumber) setFormErrors(prev => { const n = { ...prev }; delete n.idProofNumber; return n; });
