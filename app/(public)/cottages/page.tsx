@@ -105,11 +105,11 @@ export default function CottagesPage() {
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {[1, 2, 3, 4, 5, 6].map((i) => (
                 <div key={i} className="vintage-card animate-pulse">
-                  <div className="aspect-[4/3] bg-gold-100 dark:bg-vedara-900/50 rounded-t-2xl" />
+                  <div className="aspect-[4/3] bg-gold-100 dark:bg-[#231B12]/50 rounded-t-2xl" />
                   <div className="p-6 space-y-3">
-                    <div className="h-5 bg-gold-100 dark:bg-vedara-900/50 rounded w-2/3" />
-                    <div className="h-4 bg-gold-100 dark:bg-vedara-900/50 rounded w-full" />
-                    <div className="h-4 bg-gold-100 dark:bg-vedara-900/50 rounded w-3/4" />
+                    <div className="h-5 bg-gold-100 dark:bg-[#231B12]/50 rounded w-2/3" />
+                    <div className="h-4 bg-gold-100 dark:bg-[#231B12]/50 rounded w-full" />
+                    <div className="h-4 bg-gold-100 dark:bg-[#231B12]/50 rounded w-3/4" />
                   </div>
                 </div>
               ))}
@@ -145,7 +145,7 @@ export default function CottagesPage() {
                       <ScrollReveal key={cottage.id} delay={i * 0.1}>
                         <Link href={`/cottages/slug/${slug}`} className="group block">
                           <div className={`vintage-card overflow-hidden h-full ${availabilityChecked && !available ? 'opacity-50' : ''}`}>
-                            <div className="aspect-[4/3] overflow-hidden bg-gold-50 dark:bg-vedara-900/30 relative">
+                            <div className="aspect-[4/3] overflow-hidden bg-gold-50 dark:bg-[#231B12]/30 relative">
                               {availabilityChecked && !available && (
                                 <div className="absolute inset-0 bg-black/40 z-10 flex items-center justify-center">
                                   <span className="bg-vedara-900/80 text-alabaster px-4 py-2 rounded-full text-sm font-medium">Not available</span>
@@ -209,7 +209,7 @@ export default function CottagesPage() {
                       <ScrollReveal key={cottage.id} delay={i * 0.1}>
                         <Link href={`/cottages/slug/${slug}`} className="group block">
                           <div className={`vintage-card overflow-hidden h-full ${availabilityChecked && !available ? 'opacity-50' : ''}`}>
-                            <div className="aspect-[4/3] overflow-hidden bg-gold-50 dark:bg-vedara-900/30 relative">
+                            <div className="aspect-[4/3] overflow-hidden bg-gold-50 dark:bg-[#231B12]/30 relative">
                               {availabilityChecked && !available && (
                                 <div className="absolute inset-0 bg-black/40 z-10 flex items-center justify-center">
                                   <span className="bg-vedara-900/80 text-alabaster px-4 py-2 rounded-full text-sm font-medium">Not available</span>
@@ -273,7 +273,7 @@ export default function CottagesPage() {
                       <ScrollReveal key={cottage.id} delay={i * 0.1}>
                         <Link href={`/cottages/slug/${slug}`} className="group block">
                           <div className={`vintage-card overflow-hidden h-full ${availabilityChecked && !available ? 'opacity-50' : ''}`}>
-                            <div className="aspect-[4/3] overflow-hidden bg-gold-50 dark:bg-vedara-900/30 relative">
+                            <div className="aspect-[4/3] overflow-hidden bg-gold-50 dark:bg-[#231B12]/30 relative">
                               {availabilityChecked && !available && (
                                 <div className="absolute inset-0 bg-black/40 z-10 flex items-center justify-center">
                                   <span className="bg-vedara-900/80 text-alabaster px-4 py-2 rounded-full text-sm font-medium">Not available</span>

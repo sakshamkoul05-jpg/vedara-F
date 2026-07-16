@@ -44,10 +44,10 @@ export function Header() {
       className={cn(
         'fixed top-0 left-0 right-0 z-50 transition-all duration-500',
         isScrolled
-          ? 'bg-white/95 dark:bg-charcoal/95 border-b border-border/50 shadow-[0_1px_3px_rgba(28,43,58,0.03)]'
+          ? 'bg-white/90 glass-nav border-b border-[#E2B364]/15'
           : isTransparent
             ? 'bg-transparent'
-            : 'bg-alabaster dark:bg-charcoal'
+            : 'bg-alabaster glass-nav'
       )}
     >
       <div className="px-4 sm:px-6 lg:px-8 w-full">
@@ -55,15 +55,15 @@ export function Header() {
           {/* Logo — extreme left */}
             <Link href="/" className="flex items-center gap-3 flex-shrink-0 self-center">
             <div className={cn(
-              'w-12 h-12 md:w-14 md:h-14 rounded-full overflow-hidden flex-shrink-0 transition-all shadow-sm',
+              'h-9 md:h-11 w-auto rounded-xl overflow-hidden flex-shrink-0 transition-all bg-white/40 dark:bg-white/10 backdrop-blur-sm p-1',
               isTransparent ? 'ring-2 ring-white/20' : 'ring-1 ring-border'
             )}>
               <Image
                 src="/images/vedara-logo.jpeg"
                 alt="The Vedara"
-                width={80}
-                height={80}
-                className="w-full h-full object-cover"
+                width={132}
+                height={52}
+                className="h-full w-auto object-contain"
                 priority
               />
             </div>
@@ -208,7 +208,7 @@ export function Header() {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              className="md:hidden bg-alabaster dark:bg-charcoal border-t border-border relative z-50"
+              className="md:hidden bg-alabaster dark:bg-[#1A130B] border-t border-border relative z-50"
             >
               <nav className="vintage-container py-6 space-y-4">
                 {navLinks.map((link) => (

@@ -82,21 +82,21 @@ export default function CottageDetailPage() {
     return (
       <div className="pt-32 vintage-container pb-20">
         <div className="animate-pulse space-y-8">
-          <div className="h-6 bg-gold-100 dark:bg-vedara-900/50 rounded w-1/4" />
-          <div className="aspect-[2/1] bg-gold-100 dark:bg-vedara-900/50 rounded-2xl" />
+          <div className="h-6 bg-gold-100 dark:bg-[#231B12]/50 rounded w-1/4" />
+          <div className="aspect-[2/1] bg-gold-100 dark:bg-[#231B12]/50 rounded-2xl" />
           <div className="flex gap-2">
-            {[1,2,3,4].map((i) => <div key={i} className="w-20 h-16 bg-gold-100 dark:bg-vedara-900/50 rounded-lg" />)}
+            {[1,2,3,4].map((i) => <div key={i} className="w-20 h-16 bg-gold-100 dark:bg-[#231B12]/50 rounded-lg" />)}
           </div>
           <div className="grid lg:grid-cols-2 gap-10">
             <div className="space-y-4">
-              <div className="h-8 bg-gold-100 dark:bg-vedara-900/50 rounded w-2/3" />
-              <div className="h-4 bg-gold-100 dark:bg-vedara-900/50 rounded w-1/4" />
-              <div className="h-20 bg-gold-100 dark:bg-vedara-900/50 rounded w-full" />
+              <div className="h-8 bg-gold-100 dark:bg-[#231B12]/50 rounded w-2/3" />
+              <div className="h-4 bg-gold-100 dark:bg-[#231B12]/50 rounded w-1/4" />
+              <div className="h-20 bg-gold-100 dark:bg-[#231B12]/50 rounded w-full" />
             </div>
             <div className="space-y-4">
-              <div className="h-6 bg-gold-100 dark:bg-vedara-900/50 rounded w-1/3" />
+              <div className="h-6 bg-gold-100 dark:bg-[#231B12]/50 rounded w-1/3" />
               <div className="grid grid-cols-2 gap-3">
-                {[1,2,3,4].map((i) => <div key={i} className="h-12 bg-gold-100 dark:bg-vedara-900/50 rounded-xl" />)}
+                {[1,2,3,4].map((i) => <div key={i} className="h-12 bg-gold-100 dark:bg-[#231B12]/50 rounded-xl" />)}
               </div>
             </div>
           </div>
@@ -263,7 +263,7 @@ export default function CottageDetailPage() {
                     <div className="overflow-x-auto">
                       <table className="w-full text-sm border-collapse">
                         <thead>
-                          <tr className="bg-gold-50 dark:bg-vedara-900/30">
+                          <tr className="bg-gold-50 dark:bg-[#231B12]/30">
                             <th className="p-3 text-left border border-border text-muted-foreground font-medium">Season</th>
                             <th className="p-3 text-left border border-border text-muted-foreground font-medium">Price / Night</th>
                             <th className="p-3 text-left border border-border text-muted-foreground font-medium">Min Stay</th>
@@ -342,7 +342,7 @@ export default function CottageDetailPage() {
                           animate={{ opacity: 1, height: 'auto' }}
                           className="space-y-3 pt-2"
                         >
-                          <div className="bg-gold-50 dark:bg-vedara-900/30 rounded-xl p-4 space-y-2">
+                          <div className="bg-gold-50 dark:bg-[#231B12]/30 rounded-xl p-4 space-y-2">
                             <div className="flex justify-between text-sm">
                               <span className="text-muted-foreground">{formatPrice(effectivePrice)} × {nights} {nights === 1 ? 'night' : 'nights'}</span>
                               <span className="text-foreground font-medium">{formatPrice(effectivePrice * nights)}</span>

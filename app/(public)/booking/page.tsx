@@ -829,7 +829,7 @@ export default function BookingPage() {
                               <span className="font-serif text-lg text-foreground">Total</span>
                               <span className="font-bold text-lg text-gold-600">{formatPrice(totalAmount)}</span>
                             </div>
-                            <p className="text-[10px] text-muted-foreground text-right">Prices inclusive of applicable taxes (12% GST)</p>
+                            <p className="text-[10px] text-muted-foreground text-right">All rates are exclusive of applicable taxes (12% GST added at checkout)</p>
                           </div>
                         )}
 

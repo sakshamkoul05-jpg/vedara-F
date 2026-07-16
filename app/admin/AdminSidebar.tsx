@@ -48,7 +48,7 @@ export function AdminSidebar({ isOpen, onClose }: { isOpen?: boolean; onClose?: 
         />
       )}
       <aside className={cn(
-        "fixed left-0 top-0 bottom-0 z-40 flex w-60 flex-col glass-card-light dark:bg-[#1B1814] border-r border-border dark:border-white/10 rounded-none transition-transform duration-300",
+        "fixed left-0 top-0 bottom-0 z-40 flex w-60 flex-col glass-card-light dark:bg-[#231B12] border-r border-border dark:border-white/10 rounded-none transition-transform duration-300",
         "lg:translate-x-0",
         isOpen ? "translate-x-0" : "-translate-x-full"
       )}>
@@ -63,8 +63,8 @@ export function AdminSidebar({ isOpen, onClose }: { isOpen?: boolean; onClose?: 
           />
         </div>
         <div className="min-w-0">
-          <h2 className="font-serif text-sm font-semibold text-foreground dark:text-[#EFE9DE] leading-tight truncate">The Vedara</h2>
-          <p className="text-[10px] text-muted-foreground dark:text-[#A89C8B] uppercase tracking-wider">Admin Panel</p>
+          <h2 className="font-serif text-sm font-semibold text-foreground dark:text-[#F3ECDA] leading-tight truncate">The Vedara</h2>
+          <p className="text-[10px] text-muted-foreground dark:text-[#B8A385] uppercase tracking-wider">Admin Panel</p>
         </div>
       </div>
 
@@ -80,7 +80,7 @@ export function AdminSidebar({ isOpen, onClose }: { isOpen?: boolean; onClose?: 
                 'flex items-center gap-3 rounded-xl px-3 py-2.5 text-[13px] font-medium transition-all duration-200',
                 active
                   ? 'bg-gold-600 text-white shadow-md'
-                  : 'text-foreground/70 dark:text-[#A89C8B] hover:bg-muted dark:hover:bg-[#221E18] hover:text-foreground dark:hover:text-[#EFE9DE]'
+                  : 'text-foreground/70 dark:text-[#B8A385] hover:bg-muted dark:hover:bg-[#2E2519] hover:text-foreground dark:hover:text-[#F3ECDA]'
               )}
             >
               <Icon className="w-4 h-4 shrink-0" />
@@ -92,12 +92,12 @@ export function AdminSidebar({ isOpen, onClose }: { isOpen?: boolean; onClose?: 
 
       <div className="border-t border-border dark:border-white/10 px-3 py-3">
         <div className="flex items-center gap-3 px-3 py-2.5 mb-2">
-          <div className="w-8 h-8 rounded-full bg-muted dark:bg-[#221E18] flex items-center justify-center text-primary text-xs font-bold flex-shrink-0">
+          <div className="w-8 h-8 rounded-full bg-muted dark:bg-[#2E2519] flex items-center justify-center text-primary text-xs font-bold flex-shrink-0">
             {user?.name?.charAt(0) || 'A'}
           </div>
           <div className="min-w-0 flex-1">
-            <p className="text-sm font-medium text-foreground dark:text-[#EFE9DE] truncate leading-tight">{user?.name || 'Admin'}</p>
-            <p className="text-[10px] text-muted-foreground dark:text-[#A89C8B] uppercase tracking-wider">{user?.role?.replace(/_/g, ' ') || 'Admin'}</p>
+            <p className="text-sm font-medium text-foreground dark:text-[#F3ECDA] truncate leading-tight">{user?.name || 'Admin'}</p>
+            <p className="text-[10px] text-muted-foreground dark:text-[#B8A385] uppercase tracking-wider">{user?.role?.replace(/_/g, ' ') || 'Admin'}</p>
           </div>
         </div>
         <button

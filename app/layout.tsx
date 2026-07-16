@@ -20,7 +20,7 @@ export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   maximumScale: 5,
-  themeColor: '#1C2B3A',
+  themeColor: '#140D07',
 };
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://vedara.com';

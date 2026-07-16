@@ -35,37 +35,44 @@
   }
 
   .dark {
-    --background: 36 16% 7%;
-    --foreground: 39 22% 90%;
-    --card: 34 16% 10%;
-    --card-foreground: 39 22% 90%;
-    --popover: 34 16% 10%;
-    --popover-foreground: 39 22% 90%;
-    --primary: 36 42% 62%;
+    --background: 28 48% 5%;
+    --foreground: 43 51% 90%;
+    --card: 32 32% 10%;
+    --card-foreground: 43 51% 90%;
+    --popover: 32 32% 10%;
+    --popover-foreground: 43 51% 90%;
+    --primary: 38 68% 64%;
     --primary-foreground: 36 20% 8%;
-    --secondary: 34 28% 36%;
-    --secondary-foreground: 39 22% 90%;
-    --muted: 36 16% 12%;
-    --muted-foreground: 38 12% 66%;
-    --accent: 36 42% 62%;
+    --secondary: 34 28% 16%;
+    --secondary-foreground: 43 51% 90%;
+    --muted: 34 30% 14%;
+    --muted-foreground: 35 26% 62%;
+    --accent: 38 68% 64%;
     --accent-foreground: 36 20% 8%;
     --destructive: 5 55% 48%;
     --destructive-foreground: 0 0% 100%;
-    --border: 37 15% 18%;
-    --input: 37 15% 18%;
-    --ring: 36 42% 62%;
+    --border: 34 28% 14%;
+    --input: 34 28% 14%;
+    --ring: 38 68% 64%;
 
-    --clr-surface: #1B1814;
-    --clr-stone: rgba(255, 245, 230, 0.12);
-    --clr-saffron: #D9A85A;
+    --clr-surface: #231B12;
+    --clr-stone: rgba(244, 236, 218, 0.12);
+    --clr-saffron: #E2B364;
     --clr-cedar: #7FB295;
-    --clr-text: #EFE9DE;
-    --clr-text-muted: rgba(239, 233, 222, 0.66);
+    --clr-text: #F3ECDA;
+    --clr-text-muted: rgba(184, 163, 133, 0.7);
     --font-display: 'Cormorant Garamond', Georgia, serif;
   }
 
   .dark body {
-    background-color: #13110E;
+    background-color: #140D07;
+    background-image:
+      radial-gradient(70rem 55rem at 12% -8%, rgba(226, 179, 100, 0.14), transparent 58%),
+      radial-gradient(60rem 50rem at 92% 2%, rgba(127, 178, 149, 0.12), transparent 55%),
+      radial-gradient(55rem 45rem at 50% 112%, rgba(226, 179, 100, 0.10), transparent 60%);
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
   }
 
   .dark .section-padding {
@@ -73,23 +80,28 @@
   }
 
   .dark [class*="bg-white"] {
-    background-color: #1B1814 !important;
+    background-color: #231B12 !important;
   }
 
   .dark [class*="bg-[#F5F2EE]"] {
-    background-color: #1B1814 !important;
+    background-color: #231B12 !important;
   }
 
   .dark [class*="bg-[#F5F2EE]/"] {
-    background-color: #1B1814 !important;
+    background-color: #231B12 !important;
   }
 
   .dark [class*="bg-slate-50"] {
-    background-color: #13110E !important;
+    background-color: #140D07 !important;
+  }
+
+  /* Let the ambient body glow show through full-width dark sections/wrappers */
+  .dark [class*="bg-[#140D07]"] {
+    background-color: transparent !important;
   }
 
   .dark [class*="bg-sand-"] {
-    background-color: #221E18 !important;
+    background-color: #2E2519 !important;
   }
 
   /* Light custom background tokens that have no explicit dark: variant would
@@ -97,42 +109,42 @@
      headings/text invisible (e.g. the cottages "stays" hero on bg-alabaster).
      Darken them, but skip elements that already set their own dark:bg. */
   .dark [class*="bg-alabaster"]:not([class*="dark:bg"]) {
-    background-color: #1B1814 !important;
+    background-color: #231B12 !important;
   }
 
   .dark [class*="bg-gold-50"]:not([class*="dark:bg"]) {
-    background-color: #1B1814 !important;
+    background-color: #231B12 !important;
   }
 
   .dark [class*="bg-earth-50"]:not([class*="dark:bg"]) {
-    background-color: #1B1814 !important;
+    background-color: #231B12 !important;
   }
 
   .dark [class*="bg-cream-50"]:not([class*="dark:bg"]) {
-    background-color: #1B1814 !important;
+    background-color: #231B12 !important;
   }
 
   .dark [class*="text-foreground"]:not([class*="text-white"]) {
-    color: #EFE9DE !important;
+    color: #F3ECDA !important;
   }
 
   .dark [class*="text-[#1C2B3A]"] {
-    color: #EFE9DE !important;
+    color: #F3ECDA !important;
   }
 
   /* Custom dark-navy text tokens (vedara-900 / charcoal) are invisible on dark
      backgrounds when used without an explicit dark: variant. Flip them to the
      light text colour so prices, icons and links stay readable. */
   .dark [class*="text-vedara-900"]:not([class*="dark:text"]) {
-    color: #EFE9DE !important;
+    color: #F3ECDA !important;
   }
 
   .dark [class*="text-charcoal"]:not([class*="dark:text"]) {
-    color: #EFE9DE !important;
+    color: #F3ECDA !important;
   }
 
   .dark [class*="border-border"] {
-    border-color: #332E26 !important;
+    border-color: #2E2519 !important;
   }
 
   .dark [class*="shadow-lg"],
@@ -203,17 +215,26 @@
   }
 
   .vintage-card {
-    @apply bg-card dark:bg-[#1B1814] border border-border/60 rounded-2xl shadow-card hover:shadow-float hover:-translate-y-1 hover:scale-[1.015] transition-all duration-300;
+    @apply bg-card dark:bg-[#231B12] border border-border/60 rounded-2xl shadow-card hover:shadow-float hover:-translate-y-1 hover:scale-[1.015] transition-all duration-300;
   }
 
   .dark .vintage-card {
-    border-color: rgba(255, 245, 230, 0.10);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3), 0 16px 38px -14px rgba(0, 0, 0, 0.55);
+    background: rgba(35, 27, 18, 0.72) !important;
+    backdrop-filter: blur(12px) saturate(140%);
+    -webkit-backdrop-filter: blur(12px) saturate(140%);
+    border-color: rgba(226, 179, 100, 0.16);
+    box-shadow:
+      0 1px 0 rgba(255, 245, 230, 0.05) inset,
+      0 16px 40px -18px rgba(0, 0, 0, 0.6);
   }
 
   .dark .vintage-card:hover {
-    box-shadow: 0 26px 54px -16px rgba(0, 0, 0, 0.65);
-    border-color: rgba(217, 168, 90, 0.28);
+    background: rgba(40, 31, 20, 0.82) !important;
+    border-color: rgba(226, 179, 100, 0.40);
+    box-shadow:
+      0 1px 0 rgba(255, 245, 230, 0.08) inset,
+      0 24px 56px -20px rgba(226, 179, 100, 0.28),
+      0 0 0 1px rgba(226, 179, 100, 0.12);
   }
 
   /* Editorial eyebrow — the small uppercase label used above every section title */
@@ -250,10 +271,11 @@
   }
 
   .dark .section-dark {
-    background-color: #181A1E;
+    background-color: transparent;
     background-image:
-      radial-gradient(58% 48% at 82% 6%, rgba(217, 168, 90, 0.10), transparent 60%),
-      radial-gradient(50% 56% at 8% 100%, rgba(127, 178, 149, 0.08), transparent 62%);
+      radial-gradient(60% 50% at 82% 4%, rgba(226, 179, 100, 0.12), transparent 60%),
+      radial-gradient(52% 58% at 6% 100%, rgba(127, 178, 149, 0.10), transparent 62%),
+      linear-gradient(180deg, rgba(20, 13, 7, 0.35), rgba(20, 13, 7, 0.15));
   }
 
   .section-dark .eyebrow {
@@ -281,7 +303,7 @@
   }
 
   .vintage-input {
-    @apply w-full rounded-lg border border-border bg-white dark:bg-vedara-900 px-4 py-3 font-sans text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/15 transition-all;
+    @apply w-full rounded-lg border border-border bg-white dark:bg-[#231B12] px-4 py-3 font-sans text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/15 transition-all;
   }
 
   /* Mobile: >=16px font-size prevents Android/iOS auto-zoom on focus.
@@ -320,8 +342,10 @@
   }
 
   .dark .glass {
-    background: rgba(28, 43, 58, 0.8);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(35, 27, 18, 0.8);
+    border: 1px solid rgba(226, 179, 100, 0.12);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
   }
 
   .glass-card {
@@ -331,8 +355,10 @@
   }
 
   .dark .glass-card {
-    background: rgba(28, 43, 58, 0.7);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(35, 27, 18, 0.7);
+    border: 1px solid rgba(226, 179, 100, 0.12);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
   }
 
   .glass-card-light {
@@ -342,8 +368,10 @@
   }
 
   .dark .glass-card-light {
-    background: rgba(28, 43, 58, 0.6);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(35, 27, 18, 0.55);
+    border: 1px solid rgba(226, 179, 100, 0.10);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
   }
 
   .glass-dark {
@@ -351,6 +379,20 @@
     border: 1px solid rgba(255, 255, 255, 0.08);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
     color: white;
+  }
+
+  .dark .glass-nav {
+    background: rgba(20, 13, 7, 0.82);
+    border-bottom: 1px solid rgba(226, 179, 100, 0.16);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .dark .glass-dark {
+    background: rgba(35, 27, 18, 0.92);
+    border: 1px solid rgba(226, 179, 100, 0.14);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+    color: #F3ECDA;
   }
 
   .glass-button {

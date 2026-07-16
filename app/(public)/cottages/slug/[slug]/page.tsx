@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import {
   ArrowLeft, Users, Bed, Bath, Maximize, Check, Wifi, Flame,
@@ -62,21 +63,21 @@ export default function CottageBySlugPage() {
     return (
       <div className="pt-32 vintage-container pb-20">
         <div className="animate-pulse space-y-8">
-          <div className="h-6 bg-gold-100 dark:bg-vedara-900/50 rounded w-1/4" />
-          <div className="aspect-[2/1] bg-gold-100 dark:bg-vedara-900/50 rounded-2xl" />
+          <div className="h-6 bg-gold-100 dark:bg-[#231B12]/50 rounded w-1/4" />
+          <div className="aspect-[2/1] bg-gold-100 dark:bg-[#231B12]/50 rounded-2xl" />
           <div className="flex gap-2">
-            {[1,2,3,4].map((i) => <div key={i} className="w-20 h-16 bg-gold-100 dark:bg-vedara-900/50 rounded-lg" />)}
+            {[1,2,3,4].map((i) => <div key={i} className="w-20 h-16 bg-gold-100 dark:bg-[#231B12]/50 rounded-lg" />)}
           </div>
           <div className="grid lg:grid-cols-2 gap-10">
             <div className="space-y-4">
-              <div className="h-8 bg-gold-100 dark:bg-vedara-900/50 rounded w-2/3" />
-              <div className="h-4 bg-gold-100 dark:bg-vedara-900/50 rounded w-1/4" />
-              <div className="h-20 bg-gold-100 dark:bg-vedara-900/50 rounded w-full" />
+              <div className="h-8 bg-gold-100 dark:bg-[#231B12]/50 rounded w-2/3" />
+              <div className="h-4 bg-gold-100 dark:bg-[#231B12]/50 rounded w-1/4" />
+              <div className="h-20 bg-gold-100 dark:bg-[#231B12]/50 rounded w-full" />
             </div>
             <div className="space-y-4">
-              <div className="h-6 bg-gold-100 dark:bg-vedara-900/50 rounded w-1/3" />
+              <div className="h-6 bg-gold-100 dark:bg-[#231B12]/50 rounded w-1/3" />
               <div className="grid grid-cols-2 gap-3">
-                {[1,2,3,4].map((i) => <div key={i} className="h-12 bg-gold-100 dark:bg-vedara-900/50 rounded-xl" />)}
+                {[1,2,3,4].map((i) => <div key={i} className="h-12 bg-gold-100 dark:bg-[#231B12]/50 rounded-xl" />)}
               </div>
             </div>
           </div>
@@ -89,7 +90,7 @@ export default function CottageBySlugPage() {
     return (
       <div className="pt-32 vintage-container pb-20 text-center">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-          <Mountain className="w-16 h-16 text-gold-300 mx-auto mb-6" />
+          <Image src="/images/vedara-logo.jpeg" alt="The Vedara" width={96} height={96} className="w-20 h-20 object-contain mx-auto mb-6 rounded-xl" />
           <h1 className="section-title mb-4">Cottage Not Found</h1>
           <p className="text-muted-foreground mb-8">The cottage you are looking for does not exist or has been removed.</p>
           <Link href="/cottages" className="vintage-button-primary text-base px-8 py-4">
@@ -178,7 +179,7 @@ export default function CottageBySlugPage() {
                     {amenitiesList.map((amenity) => {
                       const Icon = amenityIcons[amenity.toLowerCase()] || Check;
                       return (
-                        <span key={amenity} className="inline-flex items-center gap-2 px-3.5 py-2 rounded-full bg-gold-100 dark:bg-vedara-900/40 text-foreground text-sm">
+                        <span key={amenity} className="inline-flex items-center gap-2 px-3.5 py-2 rounded-full bg-gold-100 dark:bg-[#231B12]/40 text-foreground text-sm">
                           <Icon className="w-4 h-4 text-gold-600 dark:text-gold-400" />
                           <span className="capitalize">{amenity}</span>
                         </span>
@@ -243,7 +244,7 @@ export default function CottageBySlugPage() {
                     <div className="overflow-x-auto">
                       <table className="w-full text-sm border-collapse">
                         <thead>
-                          <tr className="bg-gold-50 dark:bg-vedara-900/30">
+                          <tr className="bg-gold-50 dark:bg-[#231B12]/30">
                             <th className="p-3 text-left border border-border text-muted-foreground font-medium">Season</th>
                             <th className="p-3 text-left border border-border text-muted-foreground font-medium">Price / Night</th>
                             <th className="p-3 text-left border border-border text-muted-foreground font-medium">Min Stay</th>
@@ -369,7 +370,7 @@ export default function CottageBySlugPage() {
                           animate={{ opacity: 1, height: 'auto' }}
                           className="space-y-3 pt-2"
                         >
-                          <div className="bg-gold-50 dark:bg-vedara-900/30 rounded-xl p-4 space-y-2">
+                          <div className="bg-gold-50 dark:bg-[#231B12]/30 rounded-xl p-4 space-y-2">
                             <div className="flex justify-between text-sm">
                               <span className="text-muted-foreground">{formatPrice(effectivePrice)} × {nights} {nights === 1 ? 'night' : 'nights'}</span>
                               <span className="text-foreground font-medium">{formatPrice(effectivePrice * nights)}</span>

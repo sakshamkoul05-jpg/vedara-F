@@ -13,9 +13,20 @@ export default function ContactPage() {
   const [form, setForm] = useState({ name: '', email: '', phone: '', subject: '', message: '' });
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState<{ email?: string; phone?: string }>({});
+
+  const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const phoneRe = /^(?:\+91|0)?[6-9]\d{9}$/;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const next: { email?: string; phone?: string } = {};
+    if (!emailRe.test(form.email)) next.email = 'Please enter a valid email address.';
+    if (form.phone && !phoneRe.test(form.phone.replace(/[\s-]/g, ''))) {
+      next.phone = 'Enter a valid 10-digit Indian mobile number.';
+    }
+    setErrors(next);
+    if (Object.keys(next).length > 0) return;
     setLoading(true);
     try {
       await endpoints.contact.submit(form);
@@ -65,12 +76,14 @@ export default function ContactPage() {
                       <div>
                         <label className="vintage-label">Email *</label>
                         <Input type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} required />
+                        {errors.email && <p className="text-xs text-destructive mt-1">{errors.email}</p>}
                       </div>
                     </div>
-                    <div>
-                      <label className="vintage-label">Phone</label>
-                      <Input type="tel" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value.replace(/[^\d+\-\s]/g, '') })} placeholder="+91 99999 99999" />
-                    </div>
+                      <div>
+                        <label className="vintage-label">Phone</label>
+                        <Input type="tel" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value.replace(/[^\d+\-\s]/g, '') })} placeholder="+91 99999 99999" />
+                        {errors.phone && <p className="text-xs text-destructive mt-1">{errors.phone}</p>}
+                      </div>
                     <div>
                       <label className="vintage-label">Subject *</label>
                       <Input value={form.subject} onChange={(e) => setForm({ ...form, subject: e.target.value })} required />

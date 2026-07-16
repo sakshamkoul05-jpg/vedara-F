@@ -14,6 +14,7 @@ import { HeroCarousel } from '@/components/home/HeroCarousel';
 import { PackageBanner } from '@/components/public/PackageBanner';
 import { WeatherWidget } from '@/components/public/WeatherWidget';
 import { AvailabilityHeatmap } from '@/components/public/AvailabilityHeatmap';
+import { AiTimings } from '@/components/ai/AiTimings';
 import { getToday } from '@/lib/utils';
 
 const cottages = [
@@ -75,7 +76,7 @@ export default function HomePage() {
         radial-gradient(
           circle 220px at ${x}px ${y}px,
           transparent 0%,
-          rgba(28, 43, 58, 0.7) 100%
+          rgba(20, 13, 7, 0.7) 100%
         )
       `;
     };
@@ -85,7 +86,7 @@ export default function HomePage() {
         radial-gradient(
           circle 220px at 50% 50%,
           transparent 0%,
-          rgba(28, 43, 58, 0.7) 100%
+          rgba(20, 13, 7, 0.7) 100%
         )
       `;
     };
@@ -151,7 +152,7 @@ export default function HomePage() {
   return (
     <>
       <WaterRipple />
-      <MountainSpotlight selector="#hero" radius={220} color="rgba(28, 43, 58, 0.7)" />
+      <MountainSpotlight selector="#hero" radius={220} color="rgba(20, 13, 7, 0.7)" />
       
       {/* Hero */}
       <section id="hero" ref={heroRef} className="relative h-screen flex items-center justify-center overflow-hidden" data-spotlight>
@@ -159,14 +160,14 @@ export default function HomePage() {
         <div data-parallax="0.05" className="absolute inset-0 bg-cover bg-center scale-110" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1585409677983-0f6c41ca9c3b?w=1920&q=80)' }} />
         <div data-parallax="0.15" className="absolute inset-0 bg-cover bg-center opacity-60 mix-blend-overlay" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&q=80)' }} />
         <div data-parallax="0.3" className="absolute inset-0 bg-cover bg-center opacity-30 mix-blend-soft-light" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1920&q=80)' }} />
-        <div data-parallax="0.5" className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-[#1C2B3A]/80 to-transparent" />
+        <div data-parallax="0.5" className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-[#140D07]/80 to-transparent" />
 
         {/* Spotlight Overlay */}
         <div
           ref={spotlightRef}
           className="absolute inset-0 z-10 pointer-events-none transition-none"
           style={{
-            background: 'radial-gradient(circle 220px at 50% 50%, transparent 0%, rgba(28, 43, 58, 0.7) 100%)',
+            background: 'radial-gradient(circle 220px at 50% 50%, transparent 0%, rgba(20, 13, 7, 0.7) 100%)',
           }}
         />
 
@@ -186,7 +187,7 @@ export default function HomePage() {
           </motion.span>
           <TextReveal
             as="h1"
-            className="display text-4xl md:text-5xl lg:text-6xl text-white leading-[1.05] mb-5 tracking-[0.08em]"
+            className="display text-3xl md:text-4xl lg:text-5xl text-white leading-[1.05] mb-5 tracking-[0.08em]"
             delay={0.5}
           >
             THE VEDARA
@@ -212,7 +213,7 @@ export default function HomePage() {
              animate={{ opacity: 1, y: 0 }}
              transition={{ delay: 1.3, duration: 0.8 }}
            >
-             <Link href="/booking" className="vintage-button bg-gold-600 text-white hover:bg-gold-700 px-12 py-4 text-base md:text-lg font-semibold inline-flex items-center justify-center shadow-glow ring-2 ring-gold-300/40 hover:ring-gold-300/70 hover:-translate-y-0.5 btn-fill-slide btn-fill-light hover:text-[#1C2B3A]">
+             <Link href="/booking" className="vintage-button bg-[#2E5A3E] text-white hover:bg-[#234A32] px-12 py-4 text-base md:text-lg font-semibold inline-flex items-center justify-center shadow-glow ring-2 ring-gold-300/40 hover:ring-gold-300/70 hover:-translate-y-0.5 btn-fill-slide btn-fill-light hover:text-white">
                 Book Your Stay <ArrowRight className="w-4 h-4 ml-2" />
               </Link>
            </motion.div>
@@ -239,7 +240,7 @@ export default function HomePage() {
       <section id="booking-bar" className="relative z-30 mb-12 px-4">
         <div className="vintage-container max-w-6xl">
           <div className="grid md:grid-cols-3 gap-4">
-            <div style={{ gridColumn: 'span 2 / span 2', background: 'var(--clr-surface)', borderRadius: '16px', padding: '20px 24px', boxShadow: '0 4px 24px rgba(28,43,58,0.12)', border: '1px solid var(--clr-stone)' }} className="md:col-span-2">
+            <div style={{ gridColumn: 'span 2 / span 2', background: 'var(--clr-surface)', borderRadius: '16px', padding: '20px 24px', boxShadow: '0 4px 24px rgba(20,13,7,0.12)', border: '1px solid var(--clr-stone)' }} className="md:col-span-2">
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3 items-end mb-3">
                 <div>
                   <label className="vintage-label">Check In</label>
@@ -288,7 +289,7 @@ export default function HomePage() {
       </section>
 
       {/* Welcome */}
-      <section id="welcome" className="relative py-28 md:py-36 overflow-hidden section-dark">
+      <section id="welcome" className="relative py-16 md:py-20 overflow-hidden section-dark">
         <div className="absolute inset-0 opacity-5" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1585409677983-0f6c41ca9c3b?w=1920&q=80)', backgroundSize: 'cover' }} />
         <div className="relative z-10 vintage-container">
           <div className="grid md:grid-cols-2 gap-12 items-center">
@@ -323,7 +324,7 @@ export default function HomePage() {
       <section className="section-padding bg-background frosted-section">
         <div className="relative z-10 vintage-container">
           <ScrollReveal>
-            <div className="text-center max-w-3xl mx-auto mb-16">
+            <div className="text-center max-w-3xl mx-auto mb-10">
               <p className="eyebrow-center mb-4">Our Cottages</p>
               <h2 className="section-title mb-6">6 Cozy Cottages & 1 Alpine Studio</h2>
               <p className="section-subtitle">
@@ -397,7 +398,7 @@ export default function HomePage() {
           <div className="mb-12">
             <ScrollReveal>
               <div className="mb-6">
-                <p className="text-gold-500 text-xs tracking-[0.2em] uppercase mb-1 font-sans">Cottage 6</p>
+                <p className="text-gold-500 text-xs tracking-[0.2em] uppercase mb-1 font-sans">Cottage 7</p>
                 <h3 className="font-serif text-xl text-foreground">Cozy Alpine Studio</h3>
               </div>
             </ScrollReveal>
@@ -435,12 +436,12 @@ export default function HomePage() {
       </section>
 
       {/* Experiences */}
-      <section id="experiences" className="relative py-28 md:py-36 overflow-hidden section-dark">
+      <section id="experiences" className="relative py-16 md:py-20 overflow-hidden section-dark">
         <div className="absolute inset-0 opacity-5" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1920&q=80)', backgroundSize: 'cover' }} />
         <div className="absolute inset-0 liquid-gradient opacity-30" />
         <div className="relative z-10 vintage-container">
           <ScrollReveal>
-            <div className="text-center max-w-3xl mx-auto mb-16">
+            <div className="text-center max-w-3xl mx-auto mb-10">
               <p className="eyebrow mb-4">Experiences</p>
               <h2 className="font-serif text-4xl md:text-5xl text-white mb-6">Moments That Stay With You</h2>
               <p className="text-white/70 text-lg">Beyond the cottages, a world of experiences awaits – each designed to bring you closer to the mountains and to yourself.</p>
@@ -457,16 +458,26 @@ export default function HomePage() {
                           <h3 className="font-serif text-lg text-white mb-1">{exp.title}</h3>
                           <p className="text-white/70 text-xs leading-relaxed">{exp.desc}</p>
                         </div>
-                      </div>
-                    </article>
-                  </ScrollReveal>
+                  </div>
+                   </article>
+               </ScrollReveal>
                 ))}
+          </div>
+          <div className="text-center mt-10">
+            <Link href="/gallery" className="vintage-button-secondary text-sm px-7 py-3">View the Gallery</Link>
           </div>
         </div>
       </section>
 
+      {/* AI Concierge — timings widget */}
+      <section className="relative py-16 md:py-20 overflow-hidden section-dark">
+        <div className="relative z-10 vintage-container">
+          <AiTimings />
+        </div>
+      </section>
+
       {/* Café */}
-      <section className="relative py-28 md:py-36 overflow-hidden section-dark">
+      <section className="relative py-16 md:py-20 overflow-hidden section-dark">
         <div className="relative z-10 vintage-container">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <ScrollReveal direction="left">
@@ -509,10 +520,10 @@ export default function HomePage() {
       </section>
 
       {/* Testimonials */}
-      <section className="section-padding bg-slate-50 dark:bg-[#13110E]">
+      <section className="section-padding bg-slate-50 dark:bg-[#140D07]">
         <div className="vintage-container">
           <ScrollReveal>
-            <div className="text-center max-w-3xl mx-auto mb-16">
+            <div className="text-center max-w-3xl mx-auto mb-10">
               <p className="eyebrow-center mb-4">Testimonials</p>
               <h2 className="section-title mb-6">Voices from the Mountains</h2>
             </div>
@@ -554,7 +565,7 @@ export default function HomePage() {
       <section className="section-padding bg-background frosted-section">
         <div className="relative z-10 vintage-container">
           <ScrollReveal>
-            <div className="text-center max-w-3xl mx-auto mb-16">
+            <div className="text-center max-w-3xl mx-auto mb-10">
               <p className="eyebrow-center mb-4">Explore Nearby</p>
               <h2 className="section-title mb-6">Discover the Valley</h2>
               <p className="section-subtitle">The Vedara is your gateway to the raw beauty of Jibhi and beyond</p>
@@ -594,10 +605,10 @@ export default function HomePage() {
       </section>
 
       {/* How to Reach */}
-      <section id="how-to-reach" className="section-padding bg-slate-50 dark:bg-[#13110E]">
+      <section id="how-to-reach" className="section-padding bg-slate-50 dark:bg-[#140D07]">
         <div className="vintage-container">
           <ScrollReveal>
-            <div className="text-center max-w-3xl mx-auto mb-16">
+            <div className="text-center max-w-3xl mx-auto mb-10">
               <p className="eyebrow-center mb-4">Getting Here</p>
               <h2 className="section-title mb-6">How to Reach The Vedara</h2>
               <p className="section-subtitle">Your journey to Ghiyagi, Jibhi, begins here</p>
@@ -657,7 +668,7 @@ export default function HomePage() {
       </section>
 
       {/* CTA */}
-      <section className="py-20 md:py-28 section-dark relative overflow-hidden">
+      <section className="py-16 md:py-20 section-dark relative overflow-hidden">
         <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1585409677983-0f6c41ca9c3b?w=1920&q=80)', backgroundSize: 'cover' }} />
         <div className="absolute inset-0 liquid-gradient opacity-20" />
         <div className="relative z-10 vintage-container text-center">
@@ -667,7 +678,7 @@ export default function HomePage() {
               Book your mountain story today. Early check-in and late check-out are subject to availability and prior confirmation.
             </p>
             <MagneticButton>
-              <Link href="/booking" className="vintage-button bg-white/90 text-[#1C2B3A] hover:bg-white px-10 py-4 text-base inline-block shadow-xl btn-fill-slide btn-fill-dark hover:text-white">
+              <Link href="/booking" className="vintage-button bg-white/90 text-[#140D07] hover:bg-white px-10 py-4 text-base inline-block shadow-xl btn-fill-slide btn-fill-dark hover:text-white">
                 Begin Your Journey <Sparkles className="w-4 h-4 ml-2" />
               </Link>
             </MagneticButton>

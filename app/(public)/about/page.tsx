@@ -58,7 +58,7 @@ export default function AboutPage() {
       {/* Hero Hook */}
       <section className="relative min-h-[90vh] flex items-center justify-center section-dark overflow-hidden">
         <div className="absolute inset-0 bg-[url('/images/hero-bg.jpg')] bg-cover bg-center opacity-40" />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#1C2B3A]/60 via-[#1C2B3A]/40 to-[#1C2B3A]/80" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#140D07]/60 via-[#140D07]/40 to-[#140D07]/80" />
         <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
           <ScrollReveal>
             <p className="text-gold-400 text-sm tracking-[0.25em] uppercase mb-6 font-sans">The Vedara – Himalayan Boutique Retreat</p>
@@ -117,7 +117,7 @@ export default function AboutPage() {
         </section>
 
         {/* The Three Pillars */}
-        <section className="section-padding bg-earth-50 dark:bg-[#13110E]">
+        <section className="section-padding bg-earth-50 dark:bg-[#140D07]">
           <div className="vintage-container">
             <ScrollReveal>
               <div className="text-center max-w-3xl mx-auto mb-16">
@@ -203,7 +203,7 @@ export default function AboutPage() {
       </section>
 
       {/* Experiences */}
-        <section className="section-padding bg-earth-50 dark:bg-[#13110E]">
+        <section className="section-padding bg-earth-50 dark:bg-[#140D07]">
         <div className="vintage-container">
           <ScrollReveal>
             <div className="text-center max-w-3xl mx-auto mb-16">
@@ -215,7 +215,7 @@ export default function AboutPage() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
             {activities.map((act, i) => (
               <ScrollReveal key={act.title} delay={i * 0.1}>
-                <article className="group rounded-2xl overflow-hidden transition-all duration-500 font-sans border border-border/50 bg-card dark:bg-vedara-900/50 hover:shadow-xl hover:-translate-y-1 hover:scale-[1.02] reveal h-full">
+                <article className="group rounded-2xl overflow-hidden transition-all duration-500 font-sans border border-border/50 bg-card dark:bg-[#231B12]/50 hover:shadow-xl hover:-translate-y-1 hover:scale-[1.02] reveal h-full">
                   <div className="aspect-[16/10] overflow-hidden relative">
                     <img src={act.image} alt={act.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
@@ -326,7 +326,7 @@ export default function AboutPage() {
       </section>
 
       {/* Attractions */}
-        <section className="section-padding bg-earth-50 dark:bg-[#13110E]">
+        <section className="section-padding bg-earth-50 dark:bg-[#140D07]">
         <div className="vintage-container">
           <ScrollReveal>
             <div className="text-center max-w-3xl mx-auto mb-16">
