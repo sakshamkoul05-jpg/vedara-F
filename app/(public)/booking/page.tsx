@@ -241,6 +241,19 @@ export default function BookingPage() {
     }
   };
 
+  const parseField = (v: any): string[] => {
+    if (Array.isArray(v)) return v;
+    if (typeof v === 'string' && v.trim().length > 0) {
+      try {
+        const parsed = JSON.parse(v);
+        return Array.isArray(parsed) ? parsed : [v];
+      } catch {
+        return [v];
+      }
+    }
+    return [];
+  };
+
   const selectedCottageData = cottages.find((c) => c.id === selectedCottage);
   const nights = checkIn && checkOut ? calculateNights(new Date(checkIn), new Date(checkOut)) : 0;
   const subtotal = selectedCottageData ? selectedCottageData.pricePerNight * nights : 0;
@@ -350,19 +363,50 @@ export default function BookingPage() {
                     <div className="grid md:grid-cols-2 gap-6">
                       {cottages.map((cottage) => {
                         const isAvailable = (cottage as any).isAvailable !== false;
+                        const imgs = parseField(cottage.images);
+                        const img = imgs[0] || '';
+                        const amenities = parseField(cottage.amenities);
                         return (
                           <motion.button
                             key={cottage.id}
                             onClick={() => { setSelectedCottage(cottage.id); setStep(3); }}
                             disabled={!isAvailable}
-                            className={`vintage-card p-6 text-left transition-all ${
+                            className={`vintage-card p-6 overflow-hidden text-left transition-all ${
                               !isAvailable ? 'opacity-40 cursor-not-allowed' : 'hover:border-gold-400 cursor-pointer'
                             } ${selectedCottage === cottage.id ? 'border-gold-500 ring-2 ring-gold-500/20' : ''}`}
                             whileHover={isAvailable ? { y: -2 } : {}}
                           >
-                            <h3 className="font-serif text-lg text-foreground mb-1">{cottage.name}</h3>
+                            {img && (
+                              <div className="relative h-44 rounded-lg overflow-hidden mb-4">
+                                <img src={img} alt={`${cottage.name} cottage at The Vedara`} className="w-full h-full object-cover" />
+                                {cottage.category && (
+                                  <span className="absolute top-2.5 left-2.5 px-2.5 py-1 rounded-full bg-white/90 text-[10px] font-sans uppercase tracking-wider text-gold-600">
+                                    {cottage.category}
+                                  </span>
+                                )}
+                              </div>
+                            )}
+                            <div className="flex items-start justify-between gap-3 mb-1">
+                              <h3 className="font-serif text-lg text-foreground">{cottage.name}</h3>
+                              <span className="text-gold-600 font-semibold whitespace-nowrap">{formatPrice(cottage.pricePerNight)}<span className="text-gold-400 font-normal text-xs">/night</span></span>
+                            </div>
+                            {(cottage.capacity || cottage.bedrooms || cottage.bathrooms || cottage.size) && (
+                              <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground mb-3">
+                                {cottage.capacity ? <span>{cottage.capacity} Guests</span> : null}
+                                {cottage.bedrooms ? <span>{cottage.bedrooms} {cottage.bedrooms > 1 ? 'Bedrooms' : 'Bedroom'}</span> : null}
+                                {cottage.bathrooms ? <span>{cottage.bathrooms} {cottage.bathrooms > 1 ? 'Bathrooms' : 'Bathroom'}</span> : null}
+                                {cottage.size ? <span>{cottage.size} sqft</span> : null}
+                              </div>
+                            )}
                             <p className="text-sm text-muted-foreground mb-3 line-clamp-2">{cottage.shortDesc || cottage.description}</p>
-                            <span className="text-gold-600 font-semibold">{formatPrice(cottage.pricePerNight)}<span className="text-gold-400 font-normal text-xs">/night</span></span>
+                            {amenities.length > 0 && (
+                              <div className="flex flex-wrap gap-1.5">
+                                {amenities.slice(0, 4).map((a: string, i: number) => (
+                                  <span key={i} className="px-2 py-0.5 rounded-full bg-gold-50 text-gold-600 text-[10px] font-medium">{a}</span>
+                                ))}
+                                {amenities.length > 4 && <span className="px-2 py-0.5 text-[10px] text-muted-foreground">+{amenities.length - 4} more</span>}
+                              </div>
+                            )}
                             {!isAvailable && <span className="block text-red-500 text-xs mt-2">Not available for selected dates</span>}
                           </motion.button>
                         );
