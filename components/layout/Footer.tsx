@@ -2,8 +2,10 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
+import dynamic from 'next/dynamic';
 import { Mail, Phone, MapPin, Facebook, Instagram, ExternalLink } from 'lucide-react';
-import { FooterMap } from '@/components/layout/FooterMap';
+
+const FooterMap = dynamic(() => import('@/components/layout/FooterMap').then(m => m.FooterMap), { ssr: false });
 
 export function Footer() {
   return (
