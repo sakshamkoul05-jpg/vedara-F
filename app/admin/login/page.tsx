@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { useAuthStore } from '@/store/auth';
 import { endpoints } from '@/lib/api';
-import { User, KeyRound, ArrowRight, Eye, EyeOff, Shield, Coffee, Users, X, Mountain } from 'lucide-react';
+import { User, KeyRound, ArrowRight, Eye, EyeOff, Shield, Coffee, Users, X } from 'lucide-react';
 
 const portalTabs = [
   { id: 'admin', label: 'Admin', icon: Shield, desc: 'Full CMS & analytics' },
@@ -30,8 +30,13 @@ export default function AdminLoginPage() {
     setLoading(true);
     try {
       const res = await endpoints.auth.login(email, password);
-      setAuth(res.data.user, res.data.accessToken);
-      document.cookie = `vd_token=${res.data.accessToken}; path=/; max-age=604800; SameSite=Lax`;
+      const loginData = res.data || res;
+      const token = loginData.accessToken || loginData.token;
+      if (!loginData.user || !token) {
+        throw new Error('Invalid login response — please check your credentials or contact support.');
+      }
+      setAuth(loginData.user, token);
+      document.cookie = `vd_token=${token}; path=/; max-age=604800; SameSite=Lax`;
       if (portal === 'admin') {
         router.push('/admin/dashboard');
       } else if (portal === 'cafe') {
@@ -52,7 +57,7 @@ export default function AdminLoginPage() {
         <div className="absolute inset-0 bg-gradient-to-br from-forest-800 to-forest-600" />
         <div className="absolute inset-0 opacity-5" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=60)', backgroundSize: 'cover' }} />
         <div className="relative z-10 px-16 text-center">
-          <Mountain className="w-16 h-16 text-alabaster/30 mx-auto mb-8" />
+          <Image src="/images/vedara-logo.jpeg" alt="Vedara" width={80} height={80} className="mx-auto mb-8 rounded-lg opacity-70" />
           <h1 className="font-serif text-4xl text-alabaster mb-4 leading-tight">The Vedara</h1>
           <p className="text-alabaster/60 text-lg font-light">Himalayan Boutique Retreat</p>
           <div className="mt-12 flex items-center justify-center gap-8 text-alabaster/40 text-xs tracking-widest uppercase">
@@ -71,8 +76,8 @@ export default function AdminLoginPage() {
           className="w-full max-w-sm"
         >
           <div className="lg:hidden flex items-center gap-3 mb-10">
-            <div className="w-10 h-10 rounded-full bg-gold-600 flex items-center justify-center">
-              <Mountain className="w-5 h-5 text-alabaster" />
+            <div className="w-10 h-10 rounded-full bg-gold-600 flex items-center justify-center overflow-hidden">
+              <Image src="/images/vedara-logo.jpeg" alt="Vedara" width={24} height={24} className="opacity-90" />
             </div>
             <div>
               <h1 className="font-serif text-lg font-semibold text-foreground">The Vedara</h1>
