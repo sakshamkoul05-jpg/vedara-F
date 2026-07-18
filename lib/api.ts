@@ -29,7 +29,8 @@ async function request<T = any>(endpoint: string, options: RequestOptions = {}, 
   const contentType = response.headers.get('content-type') || '';
   let data: any;
   if (contentType.includes('application/json')) {
-    data = await response.json();
+    const text = await response.text();
+    data = text ? JSON.parse(text) : {};
   } else {
     const text = await response.text();
     data = { error: text || 'API request failed' };
