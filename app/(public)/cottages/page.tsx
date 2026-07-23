@@ -8,6 +8,7 @@ import { TextReveal } from '@/components/animations/TextReveal';
 import { BackButton } from '@/components/layout/BackButton';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { DatePicker } from '@/components/ui/DatePicker';
 import { api } from '@/lib/api';
 import { Cottage } from '@/types';
 import { formatPrice, getToday, parseDate, isPastDate } from '@/lib/utils';
@@ -81,11 +82,11 @@ export default function CottagesPage() {
               <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div>
                   <label className="vintage-label">Check-in</label>
-                  <Input type="date" value={checkIn} onChange={handleCheckInChange} min={today} />
+                  <DatePicker value={checkIn} onChange={(v) => { setCheckIn(v); setAvailabilityChecked(false); if (checkOut && parseDate(checkOut) <= parseDate(v)) { setCheckOut(''); } }} min={today} />
                 </div>
                 <div>
                   <label className="vintage-label">Check-out</label>
-                  <Input type="date" value={checkOut} onChange={handleCheckOutChange} min={checkIn || today} />
+                  <DatePicker value={checkOut} onChange={(v) => { setCheckOut(v); setAvailabilityChecked(false); }} min={checkIn || today} />
                 </div>
                 <div className="flex items-end">
                   <Button variant="primary" size="md" className="w-full" onClick={handleCheckAvailability} disabled={!checkIn || !checkOut || checking}>

@@ -20,6 +20,7 @@ import {
 import { countries } from '@/lib/countries';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
+import { DatePicker } from '@/components/ui/DatePicker';
 
 const indianIdProofTypes = ['Aadhaar Card', 'Passport', 'Driving License'];
 const foreignIdProofTypes = ['Passport'];
@@ -332,18 +333,12 @@ export default function BookingPage() {
                         <div className="space-y-4">
                           <div>
                             <label className="vintage-label">Check-in Date *</label>
-                            <div className="relative">
-                              <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gold-400 pointer-events-none" />
-                              <Input type="date" value={checkIn} onChange={(e) => { const v = e.target.value; if (isPastDate(v)) { setDateError('Check-in date cannot be in the past'); return; } setCheckIn(v); setDateError(''); if (checkOut && parseDate(checkOut) <= parseDate(v)) { setCheckOut(''); setDateError('Check-out must be after check-in'); } }} min={getToday()} className="pl-10" />
-                            </div>
+                            <DatePicker value={checkIn} onChange={(v) => { setCheckIn(v); setDateError(''); if (checkOut && parseDate(checkOut) <= parseDate(v)) { setCheckOut(''); setDateError('Check-out must be after check-in'); } }} min={getToday()} />
                           </div>
                           <div>
                             <label className="vintage-label">Check-out Date *</label>
-                            <div className="relative">
-                              <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gold-400 pointer-events-none" />
-                              <Input type="date" value={checkOut} onChange={(e) => handleCheckOutChange(e.target.value)} min={checkIn || new Date().toISOString().split('T')[0]} className="pl-10" />
-                          {dateError && <p className="text-red-500 text-xs mt-1">{dateError}</p>}
-                            </div>
+                            <DatePicker value={checkOut} onChange={(v) => { handleCheckOutChange(v); }} min={checkIn || getToday()} />
+                            {dateError && <p className="text-red-500 text-xs mt-1">{dateError}</p>}
                           </div>
                           <Button variant="primary" size="lg" onClick={handleAvailabilityCheck} disabled={!checkIn || !checkOut || stepLoading} className="w-full mt-4">
                             {stepLoading ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Checking...</> : 'Check Availability'}

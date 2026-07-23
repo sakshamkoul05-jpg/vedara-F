@@ -16,6 +16,7 @@ import { WeatherWidget } from '@/components/public/WeatherWidget';
 import { AvailabilityHeatmap } from '@/components/public/AvailabilityHeatmap';
 import { AiTimings } from '@/components/ai/AiTimings';
 import { getToday, parseDate, isPastDate } from '@/lib/utils';
+import { DatePicker } from '@/components/ui/DatePicker';
 
 const cottages = [
   { slug: 'monal-haven', name: 'Monal Haven', price: '₹12,000', desc: 'Premium Duplex Family Suite with private jacuzzi, attic yoga balcony, and sweeping mountain views', image: '/images/hero-1.jpg', category: 'Premium Duplex Family Suite' },
@@ -250,11 +251,11 @@ export default function HomePage() {
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3 items-end mb-3">
                 <div>
                   <label className="vintage-label">Check In</label>
-                  <input type="date" value={homeCheckIn} onChange={handleCheckInChange} min={today} className="vintage-input" style={{ borderBottom: '1px solid var(--clr-stone)', fontSize: '0.9rem', padding: '8px 0' }} />
+                  <DatePicker value={homeCheckIn} onChange={(v) => { setHomeCheckIn(v); setDateError(''); if (homeCheckOut && parseDate(homeCheckOut) <= parseDate(v)) { setHomeCheckOut(''); } }} min={today} />
                 </div>
                 <div>
                   <label className="vintage-label">Check Out</label>
-                  <input type="date" value={homeCheckOut} onChange={handleCheckOutChange} min={homeCheckIn || today} className="vintage-input" style={{ borderBottom: '1px solid var(--clr-stone)', fontSize: '0.9rem', padding: '8px 0' }} />
+                  <DatePicker value={homeCheckOut} onChange={(v) => { setHomeCheckOut(v); setDateError(''); }} min={homeCheckIn || today} />
                 </div>
                 <div>
                   <label className="vintage-label">Adults</label>

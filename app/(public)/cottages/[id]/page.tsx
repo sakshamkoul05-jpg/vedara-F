@@ -13,6 +13,7 @@ import { ScrollReveal } from '@/components/animations/ScrollReveal';
 import { Badge } from '@/components/ui/badge';
 import { FormattedText } from '@/components/ui/formatted-text';
 import { api } from '@/lib/api';
+import { DatePicker } from '@/components/ui/DatePicker';
 import { Cottage } from '@/types';
 import { formatPrice, calculateNights, getToday, parseDate, isPastDate } from '@/lib/utils';
 
@@ -301,43 +302,29 @@ export default function CottageDetailPage() {
                     <div className="space-y-4">
                       <div>
                         <label className="vintage-label">Check-in</label>
-                        <div className="relative">
-                          <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gold-400 pointer-events-none" />
-                          <input
-                            type="date"
-                            value={checkIn}
-                            onChange={(e) => {
-                              const v = e.target.value;
-                              if (isPastDate(v)) return;
-                              setCheckIn(v);
-                              if (checkOut && parseDate(checkOut) <= parseDate(v)) {
-                                setCheckOut('');
-                              }
-                            }}
-                            min={today}
-                            className="vintage-input pl-10"
-                          />
-                        </div>
+                        <DatePicker
+                          value={checkIn}
+                          onChange={(v) => {
+                            setCheckIn(v);
+                            if (checkOut && parseDate(checkOut) <= parseDate(v)) {
+                              setCheckOut('');
+                            }
+                          }}
+                          min={today}
+                        />
                       </div>
                       <div>
                         <label className="vintage-label">Check-out</label>
-                        <div className="relative">
-                          <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gold-400 pointer-events-none" />
-                          <input
-                            type="date"
-                            value={checkOut}
-                            onChange={(e) => {
-                              const v = e.target.value;
-                              if (isPastDate(v)) return;
-                              setCheckOut(v);
-                              if (checkIn && parseDate(v) <= parseDate(checkIn)) {
-                                setCheckOut('');
-                              }
-                            }}
-                            min={checkIn || today}
-                            className="vintage-input pl-10"
-                          />
-                        </div>
+                        <DatePicker
+                          value={checkOut}
+                          onChange={(v) => {
+                            setCheckOut(v);
+                            if (checkIn && parseDate(v) <= parseDate(checkIn)) {
+                              setCheckOut('');
+                            }
+                          }}
+                          min={checkIn || today}
+                        />
                       </div>
 
                       {nights > 0 && (
