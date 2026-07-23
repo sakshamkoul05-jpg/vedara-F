@@ -29,6 +29,13 @@ export function formatDateShort(date: Date | string): string {
   });
 }
 
+export function parseDate(dateStr: string): Date {
+  if (!dateStr) return new Date(NaN);
+  if (dateStr.includes('T')) return new Date(dateStr);
+  const [y, m, d] = dateStr.split('-').map(Number);
+  return new Date(y, m - 1, d);
+}
+
 export function calculateNights(checkIn: Date, checkOut: Date): number {
   return Math.max(1, Math.round((checkOut.getTime() - checkIn.getTime()) / (1000 * 60 * 60 * 24)));
 }

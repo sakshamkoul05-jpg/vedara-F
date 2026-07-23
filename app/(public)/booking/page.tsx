@@ -11,7 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { api } from '@/lib/api';
 import { Cottage } from '@/types';
-import { formatPrice, calculateNights, getToday } from '@/lib/utils';
+import { formatPrice, calculateNights, getToday, parseDate } from '@/lib/utils';
 import { useCouponStore } from '@/store/coupon';
 import {
   Calendar, Home, User, Check, ArrowRight, ArrowLeft,
@@ -105,7 +105,7 @@ export default function BookingPage() {
   const handleCheckOutChange = (value: string) => {
     setCheckOut(value);
     setDateError('');
-    if (checkIn && value && new Date(value) <= new Date(checkIn)) {
+    if (checkIn && value && parseDate(value) <= parseDate(checkIn)) {
       setDateError('Check-out date must be after check-in date');
       setCheckOut('');
     }
@@ -113,7 +113,7 @@ export default function BookingPage() {
 
   const handleAvailabilityCheck = async () => {
     if (!checkIn || !checkOut) return;
-    if (new Date(checkOut) <= new Date(checkIn)) {
+    if (parseDate(checkOut) <= parseDate(checkIn)) {
       setDateError('Check-out date must be after check-in date');
       return;
     }
@@ -254,7 +254,7 @@ export default function BookingPage() {
   };
 
   const selectedCottageData = cottages.find((c) => c.id === selectedCottage);
-  const nights = checkIn && checkOut ? calculateNights(new Date(checkIn), new Date(checkOut)) : 0;
+  const nights = checkIn && checkOut ? calculateNights(parseDate(checkIn), parseDate(checkOut)) : 0;
   const subtotal = selectedCottageData ? selectedCottageData.pricePerNight * nights : 0;
   const cottageCapacity = selectedCottageData?.capacity ?? 2;
   const extraGuests = Math.max(0, adults + children - cottageCapacity);
@@ -331,7 +331,7 @@ export default function BookingPage() {
                             <label className="vintage-label">Check-in Date *</label>
                             <div className="relative">
                               <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gold-400 pointer-events-none" />
-                              <Input type="date" value={checkIn} onChange={(e) => { setCheckIn(e.target.value); setDateError(''); if (checkOut && new Date(checkOut) <= new Date(e.target.value)) { setCheckOut(''); setDateError('Check-out must be after check-in'); } }} min={getToday()} className="pl-10" />
+                              <Input type="date" value={checkIn} onChange={(e) => { setCheckIn(e.target.value); setDateError(''); if (checkOut && parseDate(checkOut) <= parseDate(e.target.value)) { setCheckOut(''); setDateError('Check-out must be after check-in'); } }} min={getToday()} className="pl-10" />
                             </div>
                           </div>
                           <div>
@@ -444,7 +444,7 @@ export default function BookingPage() {
                               <Home className="w-4 h-4 text-gold-500" />
                               <p className="font-medium text-foreground">{selectedCottageData.name}</p>
                             </div>
-                            <p className="text-sm text-muted-foreground">{new Date(checkIn).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} → {new Date(checkOut).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} ({nights} {nights === 1 ? 'night' : 'nights'})</p>
+                            <p className="text-sm text-muted-foreground">{parseDate(checkIn).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} → {parseDate(checkOut).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} ({nights} {nights === 1 ? 'night' : 'nights'})</p>
                           </motion.div>
                         )}
 
@@ -792,7 +792,7 @@ export default function BookingPage() {
                               <Calendar className="w-4 h-4 text-gold-500" />
                             </div>
                             <div>
-                              <p className="text-foreground">{new Date(checkIn).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} → {new Date(checkOut).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</p>
+                              <p className="text-foreground">{parseDate(checkIn).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} → {parseDate(checkOut).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</p>
                               <p className="text-xs text-muted-foreground">{nights} {nights === 1 ? 'night' : 'nights'}</p>
                             </div>
                           </div>

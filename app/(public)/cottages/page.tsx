@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { api } from '@/lib/api';
 import { Cottage } from '@/types';
-import { formatPrice, getToday } from '@/lib/utils';
+import { formatPrice, getToday, parseDate } from '@/lib/utils';
 
 export default function CottagesPage() {
   const [cottages, setCottages] = useState<Cottage[]>([]);
@@ -24,7 +24,7 @@ export default function CottagesPage() {
   const handleCheckInChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCheckIn(e.target.value);
     setAvailabilityChecked(false);
-    if (checkOut && new Date(checkOut) <= new Date(e.target.value)) {
+    if (checkOut && parseDate(checkOut) <= parseDate(e.target.value)) {
       setCheckOut('');
     }
   };

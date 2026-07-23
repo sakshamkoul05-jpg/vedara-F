@@ -14,7 +14,7 @@ import { Badge } from '@/components/ui/badge';
 import { FormattedText } from '@/components/ui/formatted-text';
 import { api } from '@/lib/api';
 import { Cottage } from '@/types';
-import { formatPrice, calculateNights, getToday } from '@/lib/utils';
+import { formatPrice, calculateNights, getToday, parseDate } from '@/lib/utils';
 
 const amenityIcons: Record<string, React.ElementType> = {
   wifi: Wifi, fireplace: Flame, 'room heater': Snowflake,
@@ -62,9 +62,9 @@ export default function CottageDetailPage() {
   }, [id]);
 
   const pricings = Array.isArray(cottage?.seasonalPricings) ? cottage.seasonalPricings : [];
-  const nights = checkIn && checkOut ? calculateNights(new Date(checkIn), new Date(checkOut)) : 0;
+  const nights = checkIn && checkOut ? calculateNights(parseDate(checkIn), parseDate(checkOut)) : 0;
   const activeSeasonal = checkIn && checkOut ? pricings.find(
-    (s) => s.isActive && new Date(checkIn) < new Date(s.endDate) && new Date(checkOut) > new Date(s.startDate)
+    (s) => s.isActive && parseDate(checkIn) < parseDate(s.endDate) && parseDate(checkOut) > parseDate(s.startDate)
   ) : pricings.find(
     (s) => checkIn && checkIn >= s.startDate && checkIn <= s.endDate && s.isActive
   );
@@ -308,7 +308,7 @@ export default function CottageDetailPage() {
                             value={checkIn}
                             onChange={(e) => {
                               setCheckIn(e.target.value);
-                              if (checkOut && new Date(checkOut) <= new Date(e.target.value)) {
+                              if (checkOut && parseDate(checkOut) <= parseDate(e.target.value)) {
                                 setCheckOut('');
                               }
                             }}
@@ -326,7 +326,7 @@ export default function CottageDetailPage() {
                             value={checkOut}
                             onChange={(e) => {
                               setCheckOut(e.target.value);
-                              if (checkIn && new Date(e.target.value) <= new Date(checkIn)) {
+                              if (checkIn && parseDate(e.target.value) <= parseDate(checkIn)) {
                                 setCheckOut('');
                               }
                             }}

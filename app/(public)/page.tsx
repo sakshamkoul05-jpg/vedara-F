@@ -15,7 +15,7 @@ import { PackageBanner } from '@/components/public/PackageBanner';
 import { WeatherWidget } from '@/components/public/WeatherWidget';
 import { AvailabilityHeatmap } from '@/components/public/AvailabilityHeatmap';
 import { AiTimings } from '@/components/ai/AiTimings';
-import { getToday } from '@/lib/utils';
+import { getToday, parseDate } from '@/lib/utils';
 
 const cottages = [
   { slug: 'monal-haven', name: 'Monal Haven', price: '₹12,000', desc: 'Premium Duplex Family Suite with private jacuzzi, attic yoga balcony, and sweeping mountain views', image: '/images/hero-1.jpg', category: 'Premium Duplex Family Suite' },
@@ -118,8 +118,8 @@ export default function HomePage() {
 
   const handleHomeBooking = () => {
     if (!homeCheckIn || !homeCheckOut) return;
-    const checkInDate = new Date(homeCheckIn);
-    const checkOutDate = new Date(homeCheckOut);
+    const checkInDate = parseDate(homeCheckIn);
+    const checkOutDate = parseDate(homeCheckOut);
     if (checkOutDate <= checkInDate) {
       setDateError('Check-out date must be after check-in date');
       return;
@@ -139,7 +139,7 @@ export default function HomePage() {
   const handleCheckInChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setHomeCheckIn(e.target.value);
     setDateError('');
-    if (homeCheckOut && new Date(homeCheckOut) <= new Date(e.target.value)) {
+    if (homeCheckOut && parseDate(homeCheckOut) <= parseDate(e.target.value)) {
       setHomeCheckOut('');
     }
   };
