@@ -14,7 +14,8 @@ export function formatPrice(price: number): string {
 }
 
 export function formatDate(date: Date | string): string {
-  return new Date(date).toLocaleDateString('en-US', {
+  const d = typeof date === 'string' ? parseDate(date) : date;
+  return d.toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
@@ -22,7 +23,8 @@ export function formatDate(date: Date | string): string {
 }
 
 export function formatDateShort(date: Date | string): string {
-  return new Date(date).toLocaleDateString('en-US', {
+  const d = typeof date === 'string' ? parseDate(date) : date;
+  return d.toLocaleDateString('en-US', {
     month: 'short',
     day: 'numeric',
     year: 'numeric',
@@ -34,6 +36,14 @@ export function parseDate(dateStr: string): Date {
   if (dateStr.includes('T')) return new Date(dateStr);
   const [y, m, d] = dateStr.split('-').map(Number);
   return new Date(y, m - 1, d);
+}
+
+export function isPastDate(dateStr: string): boolean {
+  if (!dateStr) return false;
+  const d = parseDate(dateStr);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  return d < today;
 }
 
 export function calculateNights(checkIn: Date, checkOut: Date): number {

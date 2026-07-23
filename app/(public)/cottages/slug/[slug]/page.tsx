@@ -16,7 +16,7 @@ import { Badge } from '@/components/ui/badge';
 import { FormattedText } from '@/components/ui/formatted-text';
 import { api } from '@/lib/api';
 import { Cottage } from '@/types';
-import { formatPrice, calculateNights, getToday, parseDate } from '@/lib/utils';
+import { formatPrice, calculateNights, getToday, parseDate, isPastDate } from '@/lib/utils';
 
 const amenityIcons: Record<string, React.ElementType> = {
   wifi: Wifi, fireplace: Flame, 'room heater': Snowflake,
@@ -335,8 +335,10 @@ export default function CottageBySlugPage() {
                             type="date"
                             value={checkIn}
                             onChange={(e) => {
-                              setCheckIn(e.target.value);
-                              if (checkOut && parseDate(checkOut) <= parseDate(e.target.value)) {
+                              const v = e.target.value;
+                              if (isPastDate(v)) return;
+                              setCheckIn(v);
+                              if (checkOut && parseDate(checkOut) <= parseDate(v)) {
                                 setCheckOut('');
                               }
                             }}
@@ -353,8 +355,10 @@ export default function CottageBySlugPage() {
                             type="date"
                             value={checkOut}
                             onChange={(e) => {
-                              setCheckOut(e.target.value);
-                              if (checkIn && parseDate(e.target.value) <= parseDate(checkIn)) {
+                              const v = e.target.value;
+                              if (isPastDate(v)) return;
+                              setCheckOut(v);
+                              if (checkIn && parseDate(v) <= parseDate(checkIn)) {
                                 setCheckOut('');
                               }
                             }}

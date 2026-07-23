@@ -11,7 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { api } from '@/lib/api';
 import { Cottage } from '@/types';
-import { formatPrice, calculateNights, getToday, parseDate } from '@/lib/utils';
+import { formatPrice, calculateNights, getToday, parseDate, isPastDate } from '@/lib/utils';
 import { useCouponStore } from '@/store/coupon';
 import {
   Calendar, Home, User, Check, ArrowRight, ArrowLeft,
@@ -103,6 +103,7 @@ export default function BookingPage() {
   }, [pincode]);
 
   const handleCheckOutChange = (value: string) => {
+    if (isPastDate(value)) { setDateError('Check-out date cannot be in the past'); setCheckOut(''); return; }
     setCheckOut(value);
     setDateError('');
     if (checkIn && value && parseDate(value) <= parseDate(checkIn)) {
@@ -113,6 +114,8 @@ export default function BookingPage() {
 
   const handleAvailabilityCheck = async () => {
     if (!checkIn || !checkOut) return;
+    if (isPastDate(checkIn)) { setDateError('Check-in date cannot be in the past'); return; }
+    if (isPastDate(checkOut)) { setDateError('Check-out date cannot be in the past'); return; }
     if (parseDate(checkOut) <= parseDate(checkIn)) {
       setDateError('Check-out date must be after check-in date');
       return;
@@ -331,7 +334,7 @@ export default function BookingPage() {
                             <label className="vintage-label">Check-in Date *</label>
                             <div className="relative">
                               <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gold-400 pointer-events-none" />
-                              <Input type="date" value={checkIn} onChange={(e) => { setCheckIn(e.target.value); setDateError(''); if (checkOut && parseDate(checkOut) <= parseDate(e.target.value)) { setCheckOut(''); setDateError('Check-out must be after check-in'); } }} min={getToday()} className="pl-10" />
+                              <Input type="date" value={checkIn} onChange={(e) => { const v = e.target.value; if (isPastDate(v)) { setDateError('Check-in date cannot be in the past'); return; } setCheckIn(v); setDateError(''); if (checkOut && parseDate(checkOut) <= parseDate(v)) { setCheckOut(''); setDateError('Check-out must be after check-in'); } }} min={getToday()} className="pl-10" />
                             </div>
                           </div>
                           <div>

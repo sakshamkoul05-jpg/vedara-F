@@ -15,7 +15,7 @@ import { PackageBanner } from '@/components/public/PackageBanner';
 import { WeatherWidget } from '@/components/public/WeatherWidget';
 import { AvailabilityHeatmap } from '@/components/public/AvailabilityHeatmap';
 import { AiTimings } from '@/components/ai/AiTimings';
-import { getToday, parseDate } from '@/lib/utils';
+import { getToday, parseDate, isPastDate } from '@/lib/utils';
 
 const cottages = [
   { slug: 'monal-haven', name: 'Monal Haven', price: '₹12,000', desc: 'Premium Duplex Family Suite with private jacuzzi, attic yoga balcony, and sweeping mountain views', image: '/images/hero-1.jpg', category: 'Premium Duplex Family Suite' },
@@ -118,6 +118,8 @@ export default function HomePage() {
 
   const handleHomeBooking = () => {
     if (!homeCheckIn || !homeCheckOut) return;
+    if (isPastDate(homeCheckIn)) { setDateError('Check-in date cannot be in the past'); return; }
+    if (isPastDate(homeCheckOut)) { setDateError('Check-out date cannot be in the past'); return; }
     const checkInDate = parseDate(homeCheckIn);
     const checkOutDate = parseDate(homeCheckOut);
     if (checkOutDate <= checkInDate) {
@@ -137,15 +139,19 @@ export default function HomePage() {
   };
 
   const handleCheckInChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setHomeCheckIn(e.target.value);
+    const val = e.target.value;
+    if (isPastDate(val)) { setDateError('Check-in date cannot be in the past'); return; }
+    setHomeCheckIn(val);
     setDateError('');
-    if (homeCheckOut && parseDate(homeCheckOut) <= parseDate(e.target.value)) {
+    if (homeCheckOut && parseDate(homeCheckOut) <= parseDate(val)) {
       setHomeCheckOut('');
     }
   };
 
   const handleCheckOutChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setHomeCheckOut(e.target.value);
+    const val = e.target.value;
+    if (isPastDate(val)) { setDateError('Check-out date cannot be in the past'); return; }
+    setHomeCheckOut(val);
     setDateError('');
   };
 
