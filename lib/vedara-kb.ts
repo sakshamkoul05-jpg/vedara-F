@@ -174,3 +174,158 @@ JSON SCHEMA:
 }`;
 
 export { TRIP_PLANNER_PROMPT };
+
+// === LOCAL JIBHI KNOWLEDGE ===
+
+export const JIBHI_LOCAL = {
+  busStations: [
+    { name: 'Jibhi Bus Stop', distance: '0.5 km', description: 'Local village bus stop, walking distance from The Vedara. Shared jeeps and local HRTC buses.' },
+    { name: 'Banjar Bus Stand', distance: '8 km (15 min)', description: 'Main transit hub. HRTC buses to Aut, Kullu, Manali, Jalori Pass, Shoja. Buses every 45-60 min, 7:30 AM - 5 PM.' },
+    { name: 'Aut Bus Stand', distance: '28 km (45 min)', description: 'Highway stop on NH3. Volvo/ordinary buses to Delhi, Chandigarh, Manali. Key transfer point.' },
+    { name: 'Bhuntar Bus Stand', distance: '56 km (1.5 hrs)', description: 'Near Kullu-Manali Airport. Buses to Kullu, Manali, Leh.' },
+  ],
+  busTimings: {
+    banjarToJibhi: 'Every 45-60 min, 7:30 AM - 5:00 PM. Fare: ₹20. Duration: 20-25 min.',
+    autToBanjar: 'Every 30-45 min, 6:30 AM onwards. Fare: ₹40-70. Duration: 30-40 min.',
+    delhiToAut: 'Overnight Volvo from ISBT Kashmere Gate. 11-12 hours. ₹1,200-1,600.',
+    chandigarhToAut: 'Manali-bound buses. 6-7 hours. ₹800-1,200.',
+  },
+  taxiFares: {
+    banjarToJibhi: '₹400-600 (union rate, 15 min)',
+    autToJibhi: '₹1,200-1,500 (hatchback), ₹1,800-2,200 (SUV)',
+    bhuntarToJibhi: '₹1,500-2,000',
+    chandigarhToJibhi: '₹5,000-6,000',
+  },
+  police: [
+    { name: 'Banjar Police Station (SHO)', phone: '01903-221227', email: 'police.banjar-hp@nic.in', distance: '8 km' },
+    { name: 'Police Post, Sainj', phone: '01903-230065', distance: '25 km' },
+    { name: 'SP Office, Kullu', phone: '01902-224700', email: 'sp-kul-hp@nic.in', distance: '75 km' },
+    { name: 'Emergency (All)', phone: '112', distance: 'N/A' },
+  ],
+  hospitals: [
+    { name: 'Civil Hospital Banjar', phone: '01903-221214', distance: '8 km', type: 'Government Hospital' },
+    { name: 'Arushi Nursing Home, Banjar', phone: '94180-98544', distance: '8 km', type: 'Private Nursing Home' },
+    { name: 'Community Health Centre, Sainj', phone: 'N/A', distance: '25 km', type: 'Government CHC' },
+    { name: 'Ajay Sharma Clinic, Sainj', phone: '98164-73116', distance: '25 km', type: 'Private Clinic' },
+    { name: 'LLR Hospital, Kullu', phone: '01902-222361', distance: '75 km', type: 'Major Government Hospital' },
+    { name: 'Ambulance', phone: '108', distance: 'N/A', type: 'Emergency Ambulance' },
+  ],
+  atms: [
+    { name: 'SBI ATM, Jibhi', bank: 'State Bank of India', distance: '0.5 km', note: 'Only ATM in Jibhi village. Reliability varies.' },
+    { name: 'PNB ATM, Banjar', bank: 'Punjab National Bank', distance: '8 km', note: 'Reliable' },
+    { name: 'SBI ATM, Banjar', bank: 'State Bank of India', distance: '8 km', note: 'Reliable' },
+    { name: 'HDFC ATM, Banjar', bank: 'HDFC Bank', distance: '8 km', note: 'Reliable' },
+    { name: 'ICICI ATM, Banjar', bank: 'ICICI Bank', distance: '8 km', note: 'Reliable' },
+  ],
+  petrol: [
+    { name: 'HP Petrol Pump, Banjar', distance: '8 km' },
+    { name: 'IOC Petrol Pump, Aut', distance: '28 km' },
+  ],
+  mobileNetwork: [
+    { provider: 'BSNL', reliability: 'Best in area', note: 'Most reliable signal in Jibhi valley' },
+    { provider: 'Airtel', reliability: 'Good', note: 'Works in most spots' },
+    { provider: 'Jio', reliability: 'Patchy', note: 'Signal can be weak/intermittent' },
+  ],
+  nearestAirport: { name: 'Kullu-Manali Airport (Bhuntar)', code: 'KUU', distance: '56 km (1.5-2 hrs)', airlines: 'IndiGo, Air India from Delhi', note: 'Flights frequently cancelled in bad weather. Always have road backup.' },
+  nearestRailway: { name: 'Jogindernagar', distance: '95 km (3 hrs)', gauge: 'Narrow gauge toy train from Pathankot', note: 'Scenic but very slow (6+ hrs for 165 km). Chandigarh (230 km) is more practical.' },
+  emergencyNumbers: {
+    police: '100',
+    ambulance: '108',
+    fire: '101',
+    disaster: '108',
+    touristHelpline: '1363',
+    edinburgh: '112',
+  },
+};
+
+// === LIVE WEATHER ===
+
+export interface JibhiWeather {
+  temperature: number;
+  feelsLike: number;
+  humidity: number;
+  windSpeed: number;
+  description: string;
+  icon: string;
+  uvIndex: number;
+  forecast: { day: string; high: number; low: number; description: string; icon: string; rainChance: number }[];
+}
+
+let cachedWeather: JibhiWeather | null = null;
+let weatherCacheTime = 0;
+const WEATHER_CACHE_TTL = 30 * 60 * 1000; // 30 minutes
+
+export async function getJibhiWeather(): Promise<JibhiWeather | null> {
+  const now = Date.now();
+  if (cachedWeather && now - weatherCacheTime < WEATHER_CACHE_TTL) return cachedWeather;
+
+  try {
+    // Open-Meteo free API — Jibhi coordinates: 31.75°N, 77.25°E
+    const url = 'https://api.open-meteo.com/v1/forecast?latitude=31.75&longitude=77.25&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m,uv_index&daily=temperature_2m_max,temperature_2m_min,weather_code,precipitation_probability_max&timezone=Asia/Kolkata&forecast_days=7';
+    const res = await fetch(url, { next: { revalidate: 1800 } });
+    if (!res.ok) return null;
+    const data = await res.json();
+
+    const current = data.current;
+    const daily = data.daily;
+
+    const weatherCodes: Record<number, { desc: string; icon: string }> = {
+      0: { desc: 'Clear sky', icon: '☀️' },
+      1: { desc: 'Mainly clear', icon: '🌤️' },
+      2: { desc: 'Partly cloudy', icon: '⛅' },
+      3: { desc: 'Overcast', icon: '☁️' },
+      45: { desc: 'Foggy', icon: '🌫️' },
+      48: { desc: 'Depositing rime fog', icon: '🌫️' },
+      51: { desc: 'Light drizzle', icon: '🌦️' },
+      53: { desc: 'Moderate drizzle', icon: '🌦️' },
+      55: { desc: 'Dense drizzle', icon: '🌧️' },
+      61: { desc: 'Slight rain', icon: '🌦️' },
+      63: { desc: 'Moderate rain', icon: '🌧️' },
+      65: { desc: 'Heavy rain', icon: '🌧️' },
+      71: { desc: 'Slight snow', icon: '❄️' },
+      73: { desc: 'Moderate snow', icon: '❄️' },
+      75: { desc: 'Heavy snow', icon: '❄️' },
+      80: { desc: 'Slight rain showers', icon: '🌦️' },
+      81: { desc: 'Moderate rain showers', icon: '🌧️' },
+      82: { desc: 'Violent rain showers', icon: '⛈️' },
+      85: { desc: 'Slight snow showers', icon: '🌨️' },
+      86: { desc: 'Heavy snow showers', icon: '❄️' },
+      95: { desc: 'Thunderstorm', icon: '⛈️' },
+      96: { desc: 'Thunderstorm with hail', icon: '⛈️' },
+      99: { desc: 'Thunderstorm with heavy hail', icon: '⛈️' },
+    };
+
+    const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const forecast = daily.time.slice(0, 7).map((date: string, i: number) => {
+      const d = new Date(date + 'T00:00:00');
+      const code = daily.weather_code[i];
+      const info = weatherCodes[code] || { desc: 'Unknown', icon: '🌡️' };
+      return {
+        day: i === 0 ? 'Today' : dayNames[d.getDay()],
+        high: Math.round(daily.temperature_2m_max[i]),
+        low: Math.round(daily.temperature_2m_min[i]),
+        description: info.desc,
+        icon: info.icon,
+        rainChance: daily.precipitation_probability_max[i] || 0,
+      };
+    });
+
+    const currentCode = current.weather_code;
+    const currentInfo = weatherCodes[currentCode] || { desc: 'Unknown', icon: '🌡️' };
+
+    cachedWeather = {
+      temperature: Math.round(current.temperature_2m),
+      feelsLike: Math.round(current.apparent_temperature),
+      humidity: current.relative_humidity_2m,
+      windSpeed: Math.round(current.wind_speed_10m),
+      description: currentInfo.desc,
+      icon: currentInfo.icon,
+      uvIndex: current.uv_index,
+      forecast,
+    };
+    weatherCacheTime = now;
+    return cachedWeather;
+  } catch {
+    return null;
+  }
+}
