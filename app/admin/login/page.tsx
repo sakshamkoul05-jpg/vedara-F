@@ -45,7 +45,9 @@ export default function AdminLoginPage() {
       }
 
       setAuth(data.user, data.token);
-      document.cookie = `vd_token=${data.token}; path=/; max-age=604800; SameSite=Lax`;
+      if (data.refreshToken) {
+        localStorage.setItem('vd_refresh_token', data.refreshToken);
+      }
       if (portal === 'admin') {
         router.push('/admin/dashboard');
       } else if (portal === 'cafe') {

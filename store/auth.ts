@@ -58,6 +58,7 @@ export const useAuthStore = create<AuthState>((set) => ({
     if (typeof window !== 'undefined') {
       localStorage.removeItem('vd_token');
       localStorage.removeItem('vd_user');
+      localStorage.removeItem('vd_refresh_token');
       clearCookie('vd_token');
     }
     set({ user: null, token: null, isAuthenticated: false });

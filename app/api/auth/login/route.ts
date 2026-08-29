@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs';
 import { supabase } from '@/lib/supabase';
 
 const JWT_SECRET = new TextEncoder().encode(
-  process.env.JWT_SECRET || 'vedara-jwt-secret-change-in-production'
+  process.env.JWT_SECRET || 'dev-jwt-secret'
 );
 
 const TOKEN_EXPIRY = '7d';
