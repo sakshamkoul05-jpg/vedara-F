@@ -13,6 +13,16 @@ import { api } from '@/lib/api';
 import { Cottage } from '@/types';
 import { formatPrice, getToday, parseDate, isPastDate } from '@/lib/utils';
 
+const FALLBACK_COTTAGES: Cottage[] = [
+  { id: '1', slug: 'monal-haven', name: 'Monal Haven', description: 'Premium Duplex Family Suite with private jacuzzi, attic yoga balcony, and sweeping mountain views. Wake up to mist rolling over the Himalayas from your private balcony.', shortDesc: 'Premium Duplex Family Suite with private jacuzzi and mountain views', category: 'Premium Duplex Family Suite', pricePerNight: 12000, heaterCharge: 600, capacity: 4, bedrooms: 2, bathrooms: 2, size: 850, amenities: ['wifi', 'fireplace', 'mountain view', 'balcony', 'coffee maker'], images: [], isActive: true, sortOrder: 1 },
+  { id: '2', slug: 'koklass-cove', name: 'Koklass Cove', description: 'Our largest duplex with two viewing balconies, private jacuzzi, and unmatched privacy. A true sanctuary for families seeking spacious luxury.', shortDesc: 'Largest duplex with two viewing balconies and private jacuzzi', category: 'Premium Duplex Family Suite', pricePerNight: 12500, heaterCharge: 600, capacity: 5, bedrooms: 2, bathrooms: 2, size: 950, amenities: ['wifi', 'fireplace', 'mountain view', 'balcony', 'coffee maker'], images: [], isActive: true, sortOrder: 2 },
+  { id: '3', slug: 'magpie-retreat', name: 'Magpie Retreat', description: 'Charming duplex with deep-soak bathtub and dual-balcony setup. A perfect blend of rustic charm and modern comfort.', shortDesc: 'Charming duplex with deep-soak bathtub and dual balconies', category: 'Premium Duplex Family Suite', pricePerNight: 11000, heaterCharge: 600, capacity: 4, bedrooms: 2, bathrooms: 1, size: 780, amenities: ['wifi', 'fireplace', 'mountain view', 'balcony'], images: [], isActive: true, sortOrder: 3 },
+  { id: '4', slug: 'whistling-thrush', name: 'Whistling Thrush', description: 'Intimate Mountain View Suite — a melody of mountain quietude. Elegant single-level sanctuary with dedicated workspace.', shortDesc: 'Intimate Mountain View Suite — a melody of mountain quietude', category: 'Intimate Mountain View Suite', pricePerNight: 7500, heaterCharge: 600, capacity: 2, bedrooms: 1, bathrooms: 1, size: 270, amenities: ['wifi', 'fireplace', 'mountain view', 'coffee maker'], images: [], isActive: true, sortOrder: 4 },
+  { id: '5', slug: 'flycatcher-nook', name: 'Flycatcher Nook', description: 'Intimate Mountain View Suite — your cozy Himalayan hideaway. Thoughtfully designed for couples and solo travelers.', shortDesc: 'Intimate Mountain View Suite — your cozy Himalayan hideaway', category: 'Intimate Mountain View Suite', pricePerNight: 7500, heaterCharge: 600, capacity: 2, bedrooms: 1, bathrooms: 1, size: 270, amenities: ['wifi', 'fireplace', 'mountain view', 'coffee maker'], images: [], isActive: true, sortOrder: 5 },
+  { id: '6', slug: 'bulbul-nest', name: 'Bulbul Nest', description: 'Intimate Mountain View Suite with workstation — where coziness meets the peaks. Perfect for remote professionals.', shortDesc: 'Intimate Mountain View Suite with workstation', category: 'Intimate Mountain View Suite', pricePerNight: 7500, heaterCharge: 600, capacity: 2, bedrooms: 1, bathrooms: 1, size: 270, amenities: ['wifi', 'fireplace', 'mountain view', 'coffee maker'], images: [], isActive: true, sortOrder: 6 },
+  { id: '7', slug: 'the-finch-nook', name: 'The Finch Nook', description: 'Cozy Alpine Studio — small space, boundless solitude. A minimalist escape for solo travelers and digital nomads.', shortDesc: 'Cozy Alpine Studio — small space, boundless solitude', category: 'Cozy Alpine Studio', pricePerNight: 5000, heaterCharge: 600, capacity: 1, bedrooms: 1, bathrooms: 1, size: 180, amenities: ['wifi', 'fireplace', 'mountain view'], images: [], isActive: true, sortOrder: 7 },
+];
+
 export default function CottagesPage() {
   const [cottages, setCottages] = useState<Cottage[]>([]);
   const [loading, setLoading] = useState(true);
@@ -45,9 +55,11 @@ export default function CottagesPage() {
     setAvailabilityChecked(false);
     try {
       const res: any = await api.get(`/bookings/available-cottages?checkIn=${checkIn}&checkOut=${checkOut}`);
-      setCottages(res.data);
+      const data = Array.isArray(res.data) && res.data.length > 0 ? res.data : FALLBACK_COTTAGES;
+      setCottages(data);
       setAvailabilityChecked(true);
     } catch {
+      setCottages(FALLBACK_COTTAGES);
       setAvailabilityChecked(true);
     } finally {
       setChecking(false);
@@ -56,9 +68,16 @@ export default function CottagesPage() {
 
   useEffect(() => {
     api.get('/cottages').then((res: any) => {
-      setCottages(res.data);
+      if (Array.isArray(res.data) && res.data.length > 0) {
+        setCottages(res.data);
+      } else {
+        setCottages(FALLBACK_COTTAGES);
+      }
       setLoading(false);
-    }).catch(() => setLoading(false));
+    }).catch(() => {
+      setCottages(FALLBACK_COTTAGES);
+      setLoading(false);
+    });
   }, []);
 
   return (
@@ -126,7 +145,7 @@ export default function CottagesPage() {
                   <p className="text-sm text-muted-foreground">
                     {cottages.filter((c: any) => c.isAvailable).length} of {cottages.length} cottages available for these dates
                   </p>
-                  <button onClick={() => { setAvailabilityChecked(false); api.get('/cottages').then((res: any) => setCottages(res.data)); }} className="text-sm text-gold-600 dark:text-gold-400 hover:underline">
+                  <button onClick={() => { setAvailabilityChecked(false); api.get('/cottages').then((res: any) => { setCottages(Array.isArray(res.data) && res.data.length > 0 ? res.data : FALLBACK_COTTAGES); }).catch(() => setCottages(FALLBACK_COTTAGES)); }} className="text-sm text-gold-600 dark:text-gold-400 hover:underline">
                     Show all cottages
                   </button>
                 </div>

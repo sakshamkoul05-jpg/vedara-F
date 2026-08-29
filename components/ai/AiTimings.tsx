@@ -3,15 +3,10 @@
 import { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles, Loader2, CalendarClock, RefreshCw } from 'lucide-react';
-import { endpoints } from '@/lib/api';
-
 type State = 'idle' | 'loading' | 'done' | 'error';
 
 const PROMPT =
-  'You are the concierge for The Vedara, a boutique retreat in Jibhi, Himachal Pradesh. ' +
-  'In under 130 words, give: (1) the best time of year to visit and why, and ' +
-  '(2) a sample one-day mountain itinerary with timings from morning to night. ' +
-  'Be warm and specific, and use line breaks between the two parts.';
+  'What is the best time of year to visit The Vedara in Jibhi, and can you suggest a sample one-day mountain itinerary with timings from morning to night?';
 
 export function AiTimings() {
   const [state, setState] = useState<State>('idle');
@@ -20,8 +15,13 @@ export function AiTimings() {
   const ask = useCallback(async () => {
     setState('loading');
     try {
-      const res: any = await endpoints.chatbot.chat(PROMPT);
-      const text = res?.reply || res?.data?.reply || res?.message || '';
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: PROMPT }),
+      });
+      const data = await res.json();
+      const text = data?.reply || '';
       if (!text) throw new Error('empty');
       setReply(text.trim());
       setState('done');

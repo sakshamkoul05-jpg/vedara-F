@@ -25,6 +25,16 @@ const amenityIcons: Record<string, React.ElementType> = {
   balcony: Warehouse, garden: TreePine, 'mountain view': Mountain,
 };
 
+const FALLBACK_COTTAGES: Record<string, Cottage> = {
+  'monal-haven': { id: '1', slug: 'monal-haven', name: 'Monal Haven', description: 'Premium Duplex Family Suite with private jacuzzi, attic yoga balcony, and sweeping mountain views. Wake up to mist rolling over the Himalayas from your private balcony.', shortDesc: 'Premium Duplex Family Suite with private jacuzzi and mountain views', category: 'Premium Duplex Family Suite', pricePerNight: 12000, heaterCharge: 600, capacity: 4, bedrooms: 2, bathrooms: 2, size: 850, amenities: ['wifi', 'fireplace', 'mountain view', 'balcony', 'coffee maker'], images: [], isActive: true, sortOrder: 1 },
+  'koklass-cove': { id: '2', slug: 'koklass-cove', name: 'Koklass Cove', description: 'Our largest duplex with two viewing balconies, private jacuzzi, and unmatched privacy. A true sanctuary for families seeking spacious luxury.', shortDesc: 'Largest duplex with two viewing balconies and private jacuzzi', category: 'Premium Duplex Family Suite', pricePerNight: 12500, heaterCharge: 600, capacity: 5, bedrooms: 2, bathrooms: 2, size: 950, amenities: ['wifi', 'fireplace', 'mountain view', 'balcony', 'coffee maker'], images: [], isActive: true, sortOrder: 2 },
+  'magpie-retreat': { id: '3', slug: 'magpie-retreat', name: 'Magpie Retreat', description: 'Charming duplex with deep-soak bathtub and dual-balcony setup. A perfect blend of rustic charm and modern comfort.', shortDesc: 'Charming duplex with deep-soak bathtub and dual balconies', category: 'Premium Duplex Family Suite', pricePerNight: 11000, heaterCharge: 600, capacity: 4, bedrooms: 2, bathrooms: 1, size: 780, amenities: ['wifi', 'fireplace', 'mountain view', 'balcony'], images: [], isActive: true, sortOrder: 3 },
+  'whistling-thrush': { id: '4', slug: 'whistling-thrush', name: 'Whistling Thrush', description: 'Intimate Mountain View Suite — a melody of mountain quietude. Elegant single-level sanctuary with dedicated workspace.', shortDesc: 'Intimate Mountain View Suite — a melody of mountain quietude', category: 'Intimate Mountain View Suite', pricePerNight: 7500, heaterCharge: 600, capacity: 2, bedrooms: 1, bathrooms: 1, size: 270, amenities: ['wifi', 'fireplace', 'mountain view', 'coffee maker'], images: [], isActive: true, sortOrder: 4 },
+  'flycatcher-nook': { id: '5', slug: 'flycatcher-nook', name: 'Flycatcher Nook', description: 'Intimate Mountain View Suite — your cozy Himalayan hideaway. Thoughtfully designed for couples and solo travelers.', shortDesc: 'Intimate Mountain View Suite — your cozy Himalayan hideaway', category: 'Intimate Mountain View Suite', pricePerNight: 7500, heaterCharge: 600, capacity: 2, bedrooms: 1, bathrooms: 1, size: 270, amenities: ['wifi', 'fireplace', 'mountain view', 'coffee maker'], images: [], isActive: true, sortOrder: 5 },
+  'bulbul-nest': { id: '6', slug: 'bulbul-nest', name: 'Bulbul Nest', description: 'Intimate Mountain View Suite with workstation — where coziness meets the peaks. Perfect for remote professionals.', shortDesc: 'Intimate Mountain View Suite with workstation', category: 'Intimate Mountain View Suite', pricePerNight: 7500, heaterCharge: 600, capacity: 2, bedrooms: 1, bathrooms: 1, size: 270, amenities: ['wifi', 'fireplace', 'mountain view', 'coffee maker'], images: [], isActive: true, sortOrder: 6 },
+  'the-finch-nook': { id: '7', slug: 'the-finch-nook', name: 'The Finch Nook', description: 'Cozy Alpine Studio — small space, boundless solitude. A minimalist escape for solo travelers and digital nomads.', shortDesc: 'Cozy Alpine Studio — small space, boundless solitude', category: 'Cozy Alpine Studio', pricePerNight: 5000, heaterCharge: 600, capacity: 1, bedrooms: 1, bathrooms: 1, size: 180, amenities: ['wifi', 'fireplace', 'mountain view'], images: [], isActive: true, sortOrder: 7 },
+};
+
 export default function CottageBySlugPage() {
   const { slug } = useParams();
   const [cottage, setCottage] = useState<Cottage | null>(null);
@@ -36,9 +46,14 @@ export default function CottageBySlugPage() {
 
   useEffect(() => {
     api.get(`/cottages/slug/${slug}`).then((res: any) => {
-      setCottage(res.data);
+      if (res.data && res.data.id) {
+        setCottage(res.data);
+      } else {
+        setCottage(FALLBACK_COTTAGES[slug as string] || null);
+      }
       setLoading(false);
     }).catch(() => {
+      setCottage(FALLBACK_COTTAGES[slug as string] || null);
       setLoading(false);
     });
   }, [slug]);
