@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
     }
 
     // === LIVE WEATHER ===
-    else if (/weather|temperature|rain|forecast|how.*hot|how.*cold|current.*temp|today.*weather/i.test(lower)) {
+    else if (/\b(weather|temperature)\b|\brain\b|\bforecast\b|how.*hot|how.*cold|current.*temp|today.*weather/i.test(lower)) {
       const weather = await getJibhiWeather();
       if (weather) {
         const now = new Date();
