@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { useAuthStore } from '@/store/auth';
-import { endpoints } from '@/lib/api';
 import { User, KeyRound, ArrowRight, Eye, EyeOff, Shield, Coffee, Users, X } from 'lucide-react';
 
 const portalTabs = [
@@ -29,14 +28,24 @@ export default function AdminLoginPage() {
     setError('');
     setLoading(true);
     try {
-      const res = await endpoints.auth.login(email, password);
-      const loginData = res.data || res;
-      const token = loginData.accessToken || loginData.token;
-      if (!loginData.user || !token) {
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || 'Invalid credentials. Please try again.');
+      }
+
+      if (!data.user || !data.token) {
         throw new Error('Invalid login response — please check your credentials or contact support.');
       }
-      setAuth(loginData.user, token);
-      document.cookie = `vd_token=${token}; path=/; max-age=604800; SameSite=Lax`;
+
+      setAuth(data.user, data.token);
+      document.cookie = `vd_token=${data.token}; path=/; max-age=604800; SameSite=Lax`;
       if (portal === 'admin') {
         router.push('/admin/dashboard');
       } else if (portal === 'cafe') {
