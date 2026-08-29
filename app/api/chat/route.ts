@@ -207,7 +207,7 @@ export async function POST(req: NextRequest) {
     }
 
     // === DIRECTIONS ===
-    else if (/how.*reach|direction|location|where.*exactly|address|map|navigate/i.test(lower)) {
+    else if (/how.*reach|direction|location|where.*exactly|address|map|navigate|chandigarh.*jibhi|jibhi.*chandigarh/i.test(lower)) {
       reply = `📍 The Vedara, Ghiyagi, Jibhi, Himachal Pradesh\n\n🚗 By Road: Delhi → Mandi → Aut → Larji → Jibhi (~480 km, 10-11 hrs)\n🚂 By Rail: Chandigarh (230 km, recommended) or Jogindernagar (95 km, slow)\n✈️ By Air: Bhuntar Airport (56 km, 1.5 hrs taxi)\n\n📍 Nearest landmark: Ghiyagi Bus Stop (5 min walk)\n\nGet directions: https://www.google.com/maps/search/The+Vedara+Jibhi`;
     }
 
