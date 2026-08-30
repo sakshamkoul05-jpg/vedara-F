@@ -2,6 +2,26 @@ import { supabase } from './supabase';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://vedara-backend-production.up.railway.app/api';
 
+async function callBackendAPI(endpoint: string, options: RequestInit = {}): Promise<any> {
+  try {
+    const res = await fetch(`${API_URL}${endpoint}`, {
+      ...options,
+      headers: {
+        'Content-Type': 'application/json',
+        ...options.headers,
+      },
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({ error: 'Backend request failed' }));
+      throw new Error(err.error || `Backend error: ${res.status}`);
+    }
+    return res.json();
+  } catch (err: any) {
+    console.error(`Backend API call failed for ${endpoint}:`, err.message);
+    throw err;
+  }
+}
+
 type RequestOptions = {
   method?: string;
   body?: unknown;
@@ -51,10 +71,16 @@ async function sbQuery<T = any>(endpoint: string, method = 'GET', body?: any, _t
         const checkIn = params.checkIn;
         const checkOut = params.checkOut;
         if (checkIn && checkOut) {
-          const { data: blocked } = await supabase.from('BlockedDate').select('cottageId').gte('date', checkIn).lte('date', checkOut);
-          const blockedIds = new Set((blocked || []).map((b: any) => b.cottageId));
-          const { data: booked } = await supabase.from('Booking').select('cottageId').in('status', ['CONFIRMED', 'RESERVED', 'CHECKED_IN', 'PENDING']).lt('checkIn', checkOut).gt('checkOut', checkIn);
-          const bookedIds = new Set((booked || []).map((b: any) => b.cottageId));
+          let blockedIds = new Set<string>();
+          let bookedIds = new Set<string>();
+          const { data: blocked, error: blockedErr } = await supabase.from('BlockedDate').select('cottageId').gte('date', checkIn).lte('date', checkOut);
+          if (!blockedErr && blocked) {
+            blockedIds = new Set(blocked.map((b: any) => b.cottageId));
+          }
+          const { data: booked, error: bookedErr } = await supabase.from('Booking').select('cottageId').in('status', ['CONFIRMED', 'RESERVED', 'CHECKED_IN', 'PENDING']).lt('checkIn', checkOut).gt('checkOut', checkIn);
+          if (!bookedErr && booked) {
+            bookedIds = new Set(booked.map((b: any) => b.cottageId));
+          }
           const allBlocked = new Set([...blockedIds, ...bookedIds]);
           return { data: (data || []).map((c: any) => ({ ...c, isAvailable: !allBlocked.has(c.id) })) } as T;
         }
@@ -400,7 +426,7 @@ async function sbMutation<T = any>(endpoint: string, method: 'POST' | 'PUT' | 'D
 
     if (method === 'POST' && endpoint.startsWith('/bookings') && endpoint.includes('/approve')) {
       const id = parts[1];
-      const { data, error } = await supabase.from('Booking').update({ status: 'CONFIRMED' }).eq('id', id).select().single();
+      const { data, error } = await supabase.from('Booking').update({ status: 'CONFIRMED', paymentStatus: 'PAID' }).eq('id', id).select().single();
       if (error) throw error;
       return { data } as T;
     }
@@ -422,7 +448,27 @@ async function sbMutation<T = any>(endpoint: string, method: 'POST' | 'PUT' | 'D
     if (method === 'POST' && endpoint === '/bookings') {
       const bookingRef = 'VD' + Date.now().toString(36).toUpperCase() + Math.random().toString(36).substring(2, 5).toUpperCase();
       let guestId = body.guestId;
-      if (!guestId && body.guest) {
+      if (!guestId && body.guestPhone) {
+        let { data: existingGuest } = await supabase.from('Guest').select('id').eq('phone', body.guestPhone).single();
+        if (!existingGuest) {
+          const { data: newGuest } = await supabase.from('Guest').insert({
+            name: body.guestName,
+            email: body.guestEmail || null,
+            phone: body.guestPhone,
+            address: body.address || null,
+            idProof: body.idProof || null,
+          }).select('id').single();
+          guestId = newGuest?.id;
+        } else {
+          guestId = existingGuest.id;
+          if (body.address || body.idProof) {
+            await supabase.from('Guest').update({
+              ...(body.address ? { address: body.address } : {}),
+              ...(body.idProof ? { idProof: body.idProof } : {}),
+            }).eq('id', guestId);
+          }
+        }
+      } else if (!guestId && body.guest) {
         let { data: existingGuest } = await supabase.from('Guest').select('id').eq('phone', body.guest.phone).single();
         if (!existingGuest) {
           const { data: newGuest } = await supabase.from('Guest').insert(body.guest).select('id').single();
@@ -448,15 +494,29 @@ async function sbMutation<T = any>(endpoint: string, method: 'POST' | 'PUT' | 'D
         paymentStatus: 'PENDING',
         source: body.source || 'WEBSITE',
       };
-      const { data, error } = await supabase.from('Booking').insert(bookingData).select('*, cottage:Cottage(*), guest:Guest(*)').single();
+      const { data: bookingRecord, error } = await supabase.from('Booking').insert(bookingData).select('*, cottage:Cottage(*), guest:Guest(*)').single();
       if (error) throw error;
-      return { data } as T;
+
+      let razorpayOrder = null;
+      try {
+        const orderRes = await callBackendAPI('/payments/create-order', {
+          method: 'POST',
+          body: JSON.stringify({ amount: bookingRecord.finalAmount || bookingRecord.totalAmount, currency: 'INR', receipt: bookingRef }),
+        });
+        razorpayOrder = orderRes.data || orderRes;
+      } catch (payErr: any) {
+        console.warn('Razorpay order creation failed, payment will be handled later:', payErr.message);
+      }
+
+      return { data: { booking: bookingRecord, razorpayOrder } } as T;
     }
 
     if (method === 'POST' && endpoint === '/bookings/confirm-payment') {
-      const { bookingId, paymentId, orderId } = body;
-      await supabase.from('Booking').update({ paymentStatus: 'PAID', paymentId, status: 'CONFIRMED' }).eq('id', bookingId);
-      await supabase.from('Payment').insert({ bookingId, paymentId, orderId, amount: body.amount, status: 'PAID', gateway: 'RAZORPAY' });
+      const { bookingId, razorpayPaymentId, razorpayOrderId, razorpaySignature, paymentId: pid, orderId: oid, amount } = body;
+      const paymentIdVal = razorpayPaymentId || pid;
+      const orderIdVal = razorpayOrderId || oid;
+      await supabase.from('Booking').update({ paymentStatus: 'PAID', paymentId: paymentIdVal, status: 'CONFIRMED' }).eq('id', bookingId);
+      await supabase.from('Payment').insert({ bookingId, paymentId: paymentIdVal, orderId: orderIdVal, amount: amount || 0, status: 'PAID', gateway: 'RAZORPAY' });
       return { data: { success: true } } as T;
     }
 
