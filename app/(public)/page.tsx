@@ -16,7 +16,6 @@ import { WeatherWidget } from '@/components/public/WeatherWidget';
 import { AvailabilityHeatmap } from '@/components/public/AvailabilityHeatmap';
 import { AiTimings } from '@/components/ai/AiTimings';
 import { getToday, parseDate, isPastDate } from '@/lib/utils';
-import { DatePicker } from '@/components/ui/DatePicker';
 
 const cottages = [
   { slug: 'monal-haven', name: 'Monal Haven', price: '₹12,000', desc: 'Premium Duplex Family Suite with private jacuzzi, attic yoga balcony, and sweeping mountain views', image: '/images/hero-1.jpg', category: 'Premium Duplex Family Suite' },
@@ -53,12 +52,6 @@ const nearbyAttractions = [
 ];
 
 export default function HomePage() {
-  const [homeCheckIn, setHomeCheckIn] = useState('');
-  const [homeCheckOut, setHomeCheckOut] = useState('');
-  const [homeAdults, setHomeAdults] = useState('2');
-  const [homeChildren, setHomeChildren] = useState('0');
-  const [homeNationality, setHomeNationality] = useState('Indian');
-  const [dateError, setDateError] = useState('');
   const heroRef = useRef<HTMLElement>(null);
   const spotlightRef = useRef<HTMLDivElement>(null);
 
@@ -98,7 +91,85 @@ export default function HomePage() {
       hero.removeEventListener('mousemove', handleMouseMove);
       hero.removeEventListener('mouseleave', handleMouseLeave);
     };
+}, {});
+
+  const today = getToday();
+
+  useEffect(() => {
+    const hero = heroRef.current;
+    const spotlight = spotlightRef.current;
+    if (!hero || !spotlight) return;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      const rect = hero.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      spotlight.style.background = `
+        radial-gradient(
+          circle 220px at ${x}px ${y}px,
+          transparent 0%,
+          rgba(20, 13, 7, 0.7) 100%
+        )
+      `;
+    };
+
+    const handleMouseLeave = () => {
+      spotlight.style.background = `
+        radial-gradient(
+          circle 220px at 50% 50%,
+          transparent 0%,
+          rgba(20, 13, 7, 0.7) 100%
+        )
+      `;
+    };
+
+    hero.addEventListener('mousemove', handleMouseMove);
+    hero.addEventListener('mouseleave', handleMouseLeave);
+    return () => {
+      hero.removeEventListener('mousemove', handleMouseMove);
+      hero.removeEventListener('mouseleave', handleMouseLeave);
+    };
   }, []);
+
+  const today = getToday();
+
+  useEffect(() => {
+    const hero = heroRef.current;
+    const spotlight = spotlightRef.current;
+    if (!hero || !spotlight) return;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      const rect = hero.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      spotlight.style.background = `
+        radial-gradient(
+          circle 220px at ${x}px ${y}px,
+          transparent 0%,
+          rgba(20, 13, 7, 0.7) 100%
+        )
+      `;
+    };
+
+    const handleMouseLeave = () => {
+      spotlight.style.background = `
+        radial-gradient(
+          circle 220px at 50% 50%,
+          transparent 0%,
+          rgba(20, 13, 7, 0.7) 100%
+        )
+      `;
+    };
+
+    hero.addEventListener('mousemove', handleMouseMove);
+    hero.addEventListener('mouseleave', handleMouseLeave);
+    return () => {
+      hero.removeEventListener('mousemove', handleMouseMove);
+      hero.removeEventListener('mouseleave', handleMouseLeave);
+    };
+}, []);
+
+  const today = getToday();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -116,45 +187,6 @@ export default function HomePage() {
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
-  const handleHomeBooking = () => {
-    if (!homeCheckIn || !homeCheckOut) return;
-    if (isPastDate(homeCheckIn)) { setDateError('Check-in date cannot be in the past'); return; }
-    if (isPastDate(homeCheckOut)) { setDateError('Check-out date cannot be in the past'); return; }
-    const checkInDate = parseDate(homeCheckIn);
-    const checkOutDate = parseDate(homeCheckOut);
-    if (checkOutDate <= checkInDate) {
-      setDateError('Check-out date must be after check-in date');
-      return;
-    }
-    setDateError('');
-    const params = new URLSearchParams({
-      checkIn: homeCheckIn,
-      checkOut: homeCheckOut,
-      rooms: '1',
-      adults: homeAdults,
-      children: homeChildren,
-      nationality: homeNationality,
-    });
-    window.location.href = `/booking?${params.toString()}`;
-  };
-
-  const handleCheckInChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const val = e.target.value;
-    if (isPastDate(val)) { setDateError('Check-in date cannot be in the past'); return; }
-    setHomeCheckIn(val);
-    setDateError('');
-    if (homeCheckOut && parseDate(homeCheckOut) <= parseDate(val)) {
-      setHomeCheckOut('');
-    }
-  };
-
-  const handleCheckOutChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const val = e.target.value;
-    if (isPastDate(val)) { setDateError('Check-out date cannot be in the past'); return; }
-    setHomeCheckOut(val);
-    setDateError('');
-  };
 
   return (
     <>
@@ -243,57 +275,10 @@ export default function HomePage() {
 
       <PackageBanner />
 
-      {/* Booking Bar */}
-      <section id="booking-bar" className="relative z-30 mb-12 px-4">
-        <div className="vintage-container max-w-6xl">
-          <div className="grid md:grid-cols-3 gap-4">
-            <div style={{ gridColumn: 'span 2 / span 2', background: 'var(--clr-surface)', borderRadius: '16px', padding: '20px 24px', boxShadow: '0 4px 24px rgba(20,13,7,0.12)', border: '1px solid var(--clr-stone)' }} className="md:col-span-2">
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 items-end mb-3">
-                <div>
-                  <label className="vintage-label">Check In</label>
-                  <DatePicker value={homeCheckIn} onChange={(v) => { setHomeCheckIn(v); setDateError(''); if (homeCheckOut && parseDate(homeCheckOut) <= parseDate(v)) { setHomeCheckOut(''); } }} min={today} />
-                </div>
-                <div>
-                  <label className="vintage-label">Check Out</label>
-                  <DatePicker value={homeCheckOut} onChange={(v) => { setHomeCheckOut(v); setDateError(''); }} min={homeCheckIn || today} />
-                </div>
-                <div>
-                  <label className="vintage-label">Adults</label>
-                  <select value={homeAdults} onChange={(e) => setHomeAdults(e.target.value)} className="vintage-input" style={{ borderBottom: '1px solid var(--clr-stone)', fontSize: '0.9rem', padding: '8px 0', background: 'transparent' }}>
-                    {[1,2,3,4].map(n => <option key={n} value={n}>{n}</option>)}
-                  </select>
-                </div>
-                <div>
-                  <label className="vintage-label">Children</label>
-                  <select value={homeChildren} onChange={(e) => setHomeChildren(e.target.value)} className="vintage-input" style={{ borderBottom: '1px solid var(--clr-stone)', fontSize: '0.9rem', padding: '8px 0', background: 'transparent' }}>
-                    {[0,1,2,3].map(n => <option key={n} value={n}>{n}</option>)}
-                  </select>
-                </div>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 items-end">
-                <div>
-                  <label className="vintage-label">Nationality</label>
-                  <select value={homeNationality} onChange={(e) => setHomeNationality(e.target.value)} className="vintage-input" style={{ borderBottom: '1px solid var(--clr-stone)', fontSize: '0.9rem', padding: '8px 0', background: 'transparent' }}>
-                    <option value="Indian">Indian</option>
-                    <option value="Foreign">Foreign National</option>
-                  </select>
-                </div>
-                <div>
-                  <button onClick={handleHomeBooking} className="vintage-button-primary" style={{ width: '100%', padding: '12px 24px', fontSize: '0.85rem' }}>
-                    {homeCheckIn && homeCheckOut ? 'Check Availability' : 'Book Your Stay'}
-                  </button>
-                </div>
-              </div>
-              {dateError && (
-                <p style={{ color: '#dc2626', fontSize: '0.75rem', marginTop: '8px', textAlign: 'center' }}>{dateError}</p>
-              )}
-            </div>
-            <div className="hidden md:block">
-              <WeatherWidget />
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Weather Widget */}
+      <div className="mb-12">
+        <WeatherWidget />
+      </div>
 
       {/* Welcome */}
       <section id="welcome" className="relative py-16 md:py-20 overflow-hidden section-dark">
