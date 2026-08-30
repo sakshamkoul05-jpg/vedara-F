@@ -15,16 +15,18 @@ import { PackageBanner } from '@/components/public/PackageBanner';
 import { WeatherWidget } from '@/components/public/WeatherWidget';
 import { AvailabilityHeatmap } from '@/components/public/AvailabilityHeatmap';
 import { AiTimings } from '@/components/ai/AiTimings';
-import { getToday, parseDate, isPastDate } from '@/lib/utils';
+import { getToday, parseDate, isPastDate, formatPrice } from '@/lib/utils';
+import { api } from '@/lib/api';
+import { Cottage } from '@/types';
 
-const cottages = [
-  { slug: 'monal-haven', name: 'Monal Haven', price: '₹12,000', desc: 'Premium Duplex Family Suite with private jacuzzi, attic yoga balcony, and sweeping mountain views', image: '/images/hero-1.jpg', category: 'Premium Duplex Family Suite' },
-  { slug: 'koklass-cove', name: 'Koklass Cove', price: '₹12,500', desc: 'Our largest duplex with two viewing balconies, private jacuzzi, and unmatched privacy', image: '/images/hero-2.jpg', category: 'Premium Duplex Family Suite' },
-  { slug: 'magpie-retreat', name: 'Magpie Retreat', price: '₹11,000', desc: 'Charming duplex with deep-soak bathtub and dual-balcony setup', image: '/images/hero-3.jpg', category: 'Premium Duplex Family Suite' },
-  { slug: 'whistling-thrush', name: 'Whistling Thrush', price: '₹7,500', desc: 'Intimate Mountain View Suite — a melody of mountain quietude', image: '/images/hero-1.jpg', category: 'Intimate Mountain View Suite' },
-  { slug: 'flycatcher-nook', name: 'Flycatcher Nook', price: '₹7,500', desc: 'Intimate Mountain View Suite — your cozy Himalayan hideaway', image: '/images/hero-2.jpg', category: 'Intimate Mountain View Suite' },
-  { slug: 'bulbul-nest', name: 'Bulbul Nest', price: '₹7,500', desc: 'Intimate Mountain View Suite with workstation — where coziness meets the peaks', image: '/images/hero-3.jpg', category: 'Intimate Mountain View Suite' },
-  { slug: 'the-finch-nook', name: 'The Finch Nook', price: '₹5,000', desc: 'Cozy Alpine Studio — small space, boundless solitude', image: '/images/hero-1.jpg', category: 'Cozy Alpine Studio' },
+const FALLBACK_COTTAGES = [
+  { slug: 'monal-haven', name: 'Monal Haven', pricePerNight: 12000, desc: 'Premium Duplex Family Suite with private jacuzzi, attic yoga balcony, and sweeping mountain views', image: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&q=80', category: 'Premium Duplex Family Suite' },
+  { slug: 'koklass-cove', name: 'Koklass Cove', pricePerNight: 12500, desc: 'Our largest duplex with two viewing balconies, private jacuzzi, and unmatched privacy', image: 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=600&q=80', category: 'Premium Duplex Family Suite' },
+  { slug: 'magpie-retreat', name: 'Magpie Retreat', pricePerNight: 11000, desc: 'Charming duplex with deep-soak bathtub and dual-balcony setup', image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80', category: 'Premium Duplex Family Suite' },
+  { slug: 'whistling-thrush', name: 'Whistling Thrush', pricePerNight: 7500, desc: 'Intimate Mountain View Suite — a melody of mountain quietude', image: 'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=600&q=80', category: 'Intimate Mountain View Suite' },
+  { slug: 'flycatcher-nook', name: 'Flycatcher Nook', pricePerNight: 7500, desc: 'Intimate Mountain View Suite — your cozy Himalayan hideaway', image: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?w=600&q=80', category: 'Intimate Mountain View Suite' },
+  { slug: 'bulbul-nest', name: 'Bulbul Nest', pricePerNight: 7500, desc: 'Intimate Mountain View Suite with workstation — where coziness meets the peaks', image: 'https://images.unsplash.com/photo-1469476568026-46a7f7b2f9c2?w=600&q=80', category: 'Intimate Mountain View Suite' },
+  { slug: 'the-finch-nook', name: 'The Finch Nook', pricePerNight: 5000, desc: 'Cozy Alpine Studio — small space, boundless solitude', image: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&q=80', category: 'Cozy Alpine Studio' },
 ];
 
 const testimonials = [
@@ -54,8 +56,23 @@ const nearbyAttractions = [
 export default function HomePage() {
   const heroRef = useRef<HTMLElement>(null);
   const spotlightRef = useRef<HTMLDivElement>(null);
+  const [cottages, setCottages] = useState(FALLBACK_COTTAGES);
 
   const today = getToday();
+
+  useEffect(() => {
+    api.get('/cottages').then((res: any) => {
+      const data = Array.isArray(res.data) && res.data.length > 0 ? res.data.map((c: Cottage) => ({
+        slug: c.slug || c.name.toLowerCase().replace(/\s+/g, '-'),
+        name: c.name,
+        pricePerNight: c.pricePerNight,
+        desc: c.shortDesc || c.description,
+        image: (() => { try { const imgs = typeof c.images === 'string' ? JSON.parse(c.images) : c.images; return Array.isArray(imgs) && imgs[0] ? imgs[0] : ''; } catch { return ''; } })(),
+        category: c.category,
+      })) : FALLBACK_COTTAGES;
+      setCottages(data);
+    }).catch(() => {});
+  }, []);
 
   useEffect(() => {
     const hero = heroRef.current;
@@ -259,12 +276,12 @@ export default function HomePage() {
                 <ScrollReveal key={cottage.name} delay={i * 0.08} direction="up" distance={40}>
                     <article className="group vintage-card overflow-hidden reveal h-full flex flex-col">
                     <div className="aspect-[4/3] overflow-hidden bg-sand-200">
-                      <img src={`https://images.unsplash.com/photo-${['1504384308090-c894fdcc538d', '1554118811-1e0d58224f24', '1506905925346-21bda4d32df4'][i]}?w=600&q=80`} alt={`${cottage.name} - premium duplex suite at The Vedara`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                      <img src={cottage.image || `https://images.unsplash.com/photo-${['1504384308090-c894fdcc538d', '1554118811-1e0d58224f24', '1506905925346-21bda4d32df4'][i]}?w=600&q=80`} alt={`${cottage.name} - premium duplex suite at The Vedara`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                     </div>
                     <div className="p-5 flex flex-col flex-1">
                       <div className="flex justify-between items-start mb-2">
                         <h4 className="font-serif text-lg text-foreground">{cottage.name}</h4>
-                        <span className="text-primary font-semibold text-sm">{cottage.price}<span className="text-muted-foreground font-normal text-xs">/night</span></span>
+                        <span className="text-primary font-semibold text-sm">{formatPrice(cottage.pricePerNight)}<span className="text-muted-foreground font-normal text-xs">/night</span></span>
                       </div>
                       <p className="text-muted-foreground text-xs mb-3 leading-relaxed line-clamp-2 flex-1">{cottage.desc}</p>
                       <Link href={`/cottages/slug/${cottage.slug}`} className="text-primary text-xs font-medium inline-flex items-center gap-1 group-hover:gap-2 transition-all duration-500 mt-auto">
@@ -290,12 +307,12 @@ export default function HomePage() {
                 <ScrollReveal key={cottage.name} delay={i * 0.08} direction="up" distance={40}>
                     <article className="group vintage-card overflow-hidden reveal h-full flex flex-col">
                     <div className="aspect-[4/3] overflow-hidden bg-sand-200">
-                      <img src={`https://images.unsplash.com/photo-${['1476514525535-07fb3b4ae5f1', '1519681393784-d120267933ba', '1469476568026-46a7f7b2f9c2'][i]}?w=600&q=80`} alt={`${cottage.name} - intimate mountain view suite at The Vedara`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                      <img src={cottage.image || `https://images.unsplash.com/photo-${['1476514525535-07fb3b4ae5f1', '1519681393784-d120267933ba', '1469476568026-46a7f7b2f9c2'][i]}?w=600&q=80`} alt={`${cottage.name} - intimate mountain view suite at The Vedara`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                     </div>
                     <div className="p-5 flex flex-col flex-1">
                       <div className="flex justify-between items-start mb-2">
                         <h4 className="font-serif text-lg text-foreground">{cottage.name}</h4>
-                        <span className="text-primary font-semibold text-sm">{cottage.price}<span className="text-muted-foreground font-normal text-xs">/night</span></span>
+                        <span className="text-primary font-semibold text-sm">{formatPrice(cottage.pricePerNight)}<span className="text-muted-foreground font-normal text-xs">/night</span></span>
                       </div>
                       <p className="text-muted-foreground text-xs mb-3 leading-relaxed line-clamp-2 flex-1">{cottage.desc}</p>
                       <Link href={`/cottages/slug/${cottage.slug}`} className="text-primary text-xs font-medium inline-flex items-center gap-1 group-hover:gap-2 transition-all duration-500 mt-auto">
@@ -321,12 +338,12 @@ export default function HomePage() {
                 <ScrollReveal key={cottage.name} delay={i * 0.08} direction="up" distance={40}>
                     <article className="group vintage-card overflow-hidden reveal h-full flex flex-col">
                     <div className="aspect-[4/3] overflow-hidden bg-sand-200">
-                      <img src={`https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&q=80`} alt={`${cottage.name} - cozy alpine studio at The Vedara`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                      <img src={cottage.image || `https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&q=80`} alt={`${cottage.name} - cozy alpine studio at The Vedara`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                     </div>
                     <div className="p-5 flex flex-col flex-1">
                       <div className="flex justify-between items-start mb-2">
                         <h4 className="font-serif text-lg text-foreground">{cottage.name}</h4>
-                        <span className="text-primary font-semibold text-sm">{cottage.price}<span className="text-muted-foreground font-normal text-xs">/night</span></span>
+                        <span className="text-primary font-semibold text-sm">{formatPrice(cottage.pricePerNight)}<span className="text-muted-foreground font-normal text-xs">/night</span></span>
                       </div>
                       <p className="text-muted-foreground text-xs mb-3 leading-relaxed line-clamp-2 flex-1">{cottage.desc}</p>
                       <Link href={`/cottages/slug/${cottage.slug}`} className="text-primary text-xs font-medium inline-flex items-center gap-1 group-hover:gap-2 transition-all duration-500 mt-auto">
