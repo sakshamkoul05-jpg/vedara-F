@@ -65,7 +65,7 @@ export default function HomePage() {
       const data = Array.isArray(res.data) && res.data.length > 0 ? res.data.map((c: Cottage) => ({
         slug: c.slug || c.name.toLowerCase().replace(/\s+/g, '-'),
         name: c.name,
-        pricePerNight: c.pricePerNight,
+        pricePerNight: c.pricePerNight || FALLBACK_COTTAGES.find((f) => f.slug === c.slug)?.pricePerNight || 0,
         desc: c.shortDesc || c.description,
         image: (() => { try { const imgs = typeof c.images === 'string' ? JSON.parse(c.images) : c.images; return Array.isArray(imgs) && imgs[0] ? imgs[0] : ''; } catch { return ''; } })(),
         category: c.category,

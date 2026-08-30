@@ -89,7 +89,15 @@ export default function BookingPage() {
   const { code, discount, discountType, isValid, error, loading: couponLoading, setCode, validateCoupon, removeCoupon } = useCouponStore();
 
   useEffect(() => {
-    api.get('/cottages').then((res: any) => setCottages(res.data)).catch((err) => console.error('Failed to load cottages:', err));
+    api.get('/cottages').then((res: any) => {
+      const data = Array.isArray(res.data) ? res.data.map((c: any) => ({
+        ...c,
+        pricePerNight: c.pricePerNight || FALLBACK_COTTAGES.find((f) => f.slug === c.slug)?.pricePerNight || 0,
+        extraGuestCharge: c.extraGuestCharge || 1500,
+        capacity: c.capacity || 2,
+      })) : FALLBACK_COTTAGES;
+      setCottages(data);
+    }).catch(() => setCottages(FALLBACK_COTTAGES));
   }, []);
 
   useEffect(() => {
@@ -134,7 +142,12 @@ export default function BookingPage() {
     setStepLoading(true);
     try {
       const res = await api.get(`/bookings/available-cottages?checkIn=${encodeURIComponent(checkIn)}&checkOut=${encodeURIComponent(checkOut)}`);
-      const data = Array.isArray(res.data) && res.data.length > 0 ? res.data : FALLBACK_COTTAGES;
+      const data = Array.isArray(res.data) && res.data.length > 0 ? res.data.map((c: any) => ({
+        ...c,
+        pricePerNight: c.pricePerNight || FALLBACK_COTTAGES.find((f) => f.slug === c.slug)?.pricePerNight || 0,
+        extraGuestCharge: c.extraGuestCharge || 1500,
+        capacity: c.capacity || 2,
+      })) : FALLBACK_COTTAGES;
       setCottages(data);
       setStep(2);
     } catch (err: any) {

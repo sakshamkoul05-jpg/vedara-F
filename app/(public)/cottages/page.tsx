@@ -55,7 +55,10 @@ export default function CottagesPage() {
     setAvailabilityChecked(false);
     try {
       const res: any = await api.get(`/bookings/available-cottages?checkIn=${checkIn}&checkOut=${checkOut}`);
-      const data = Array.isArray(res.data) && res.data.length > 0 ? res.data : FALLBACK_COTTAGES;
+      const data = Array.isArray(res.data) && res.data.length > 0 ? res.data.map((c: any) => ({
+        ...c,
+        pricePerNight: c.pricePerNight || FALLBACK_COTTAGES.find((f: any) => f.slug === c.slug)?.pricePerNight || 0,
+      })) : FALLBACK_COTTAGES;
       setCottages(data);
       setAvailabilityChecked(true);
     } catch {
@@ -69,7 +72,11 @@ export default function CottagesPage() {
   useEffect(() => {
     api.get('/cottages').then((res: any) => {
       if (Array.isArray(res.data) && res.data.length > 0) {
-        setCottages(res.data);
+        const patched = res.data.map((c: any) => ({
+          ...c,
+          pricePerNight: c.pricePerNight || FALLBACK_COTTAGES.find((f: any) => f.slug === c.slug)?.pricePerNight || 0,
+        }));
+        setCottages(patched);
       } else {
         setCottages(FALLBACK_COTTAGES);
       }
@@ -145,7 +152,7 @@ export default function CottagesPage() {
                   <p className="text-sm text-muted-foreground">
                     {cottages.filter((c: any) => c.isAvailable).length} of {cottages.length} cottages available for these dates
                   </p>
-                  <button onClick={() => { setAvailabilityChecked(false); api.get('/cottages').then((res: any) => { setCottages(Array.isArray(res.data) && res.data.length > 0 ? res.data : FALLBACK_COTTAGES); }).catch(() => setCottages(FALLBACK_COTTAGES)); }} className="text-sm text-gold-600 dark:text-gold-400 hover:underline">
+                  <button onClick={() => { setAvailabilityChecked(false); api.get('/cottages').then((res: any) => { const data = Array.isArray(res.data) && res.data.length > 0 ? res.data.map((c: any) => ({ ...c, pricePerNight: c.pricePerNight || FALLBACK_COTTAGES.find((f: any) => f.slug === c.slug)?.pricePerNight || 0 })) : FALLBACK_COTTAGES; setCottages(data); }).catch(() => setCottages(FALLBACK_COTTAGES)); }} className="text-sm text-gold-600 dark:text-gold-400 hover:underline">
                     Show all cottages
                   </button>
                 </div>
