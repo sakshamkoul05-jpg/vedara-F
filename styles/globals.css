@@ -644,13 +644,53 @@ html.lenis, html.lenis body {
    use, so the light theme is applied consistently across the page.
 
    Only light mode is touched here; `.dark .section-dark` above is unchanged.
-   Marked `!important` because Tailwind emits its utilities in a later cascade
-   layer, which would otherwise win over these rules whatever their specificity.
-   Solid brand-coloured buttons keep their white text, which is why the rules
-   exclude those backgrounds. Translucent `bg-white/N` tints are remapped to a
-   dark tint above, so text on them must flip too.
+
+   Two mechanics worth knowing before editing:
+
+   - `!important` is needed because Tailwind emits its utilities in a later
+     cascade layer, which would otherwise win whatever the specificity.
+   - The exclusions sit inside `:where()`, which contributes no specificity.
+     That keeps these rules at a predictable, low weight so the `.on-media`
+     rules below can override them with a single extra class.
+
+   Text sitting ON TOP OF an image must stay white — it is read against the
+   photograph and its scrim, not against the panel. Mark those overlays with
+   `.on-media`; see the block that follows.
    ======================================================================== */
 @layer components {
+  /* Solid brand-coloured surfaces keep their white text. Translucent
+     `bg-white/N` tints are remapped to a dark tint below, so text on those
+     must flip with them and is deliberately not excluded here. */
+  html:not(.dark) .section-dark .text-white:where(:not([class*="bg-primary"], [class*="bg-gold-"], [class*="bg-clay-"], [class*="bg-earth-"], [class*="bg-gradient"])) {
+    color: #2A2118 !important;
+  }
+
+  /* Opacity variants map to matching ink opacities so the visual hierarchy of
+     the original design survives the theme flip. */
+  html:not(.dark) .section-dark [class*="text-white/9"]:where(:not([class*="bg-primary"], [class*="bg-gold-"], [class*="bg-clay-"], [class*="bg-earth-"], [class*="bg-gradient"])) {
+    color: rgba(42, 33, 24, 0.92) !important;
+  }
+
+  html:not(.dark) .section-dark [class*="text-white/8"]:where(:not([class*="bg-primary"], [class*="bg-gold-"], [class*="bg-clay-"], [class*="bg-earth-"], [class*="bg-gradient"])) {
+    color: rgba(42, 33, 24, 0.86) !important;
+  }
+
+  html:not(.dark) .section-dark [class*="text-white/7"]:where(:not([class*="bg-primary"], [class*="bg-gold-"], [class*="bg-clay-"], [class*="bg-earth-"], [class*="bg-gradient"])) {
+    color: rgba(42, 33, 24, 0.78) !important;
+  }
+
+  html:not(.dark) .section-dark [class*="text-white/6"]:where(:not([class*="bg-primary"], [class*="bg-gold-"], [class*="bg-clay-"], [class*="bg-earth-"], [class*="bg-gradient"])) {
+    color: rgba(42, 33, 24, 0.7) !important;
+  }
+
+  html:not(.dark) .section-dark [class*="text-white/5"]:where(:not([class*="bg-primary"], [class*="bg-gold-"], [class*="bg-clay-"], [class*="bg-earth-"], [class*="bg-gradient"])) {
+    color: rgba(42, 33, 24, 0.62) !important;
+  }
+
+  html:not(.dark) .section-dark [class*="text-white/4"]:where(:not([class*="bg-primary"], [class*="bg-gold-"], [class*="bg-clay-"], [class*="bg-earth-"], [class*="bg-gradient"])) {
+    color: rgba(42, 33, 24, 0.55) !important;
+  }
+
   html:not(.dark) .section-dark {
     background-color: #F5F2EE !important;
     background-image:
@@ -668,36 +708,6 @@ html.lenis, html.lenis body {
     background-color: rgba(151, 111, 45, 0.5) !important;
   }
 
-  /* Text. Opacity variants are mapped to matching ink opacities so the visual
-     hierarchy of the original design survives the theme flip. */
-  html:not(.dark) .section-dark .text-white:not([class*="bg-primary"]):not([class*="bg-gold-"]):not([class*="bg-clay-"]):not([class*="bg-earth-"]):not([class*="bg-gradient"]) {
-    color: #2A2118 !important;
-  }
-
-  html:not(.dark) .section-dark [class*="text-white/9"]:not([class*="bg-primary"]):not([class*="bg-gold-"]):not([class*="bg-clay-"]):not([class*="bg-earth-"]):not([class*="bg-gradient"]) {
-    color: rgba(42, 33, 24, 0.92) !important;
-  }
-
-  html:not(.dark) .section-dark [class*="text-white/8"]:not([class*="bg-primary"]):not([class*="bg-gold-"]):not([class*="bg-clay-"]):not([class*="bg-earth-"]):not([class*="bg-gradient"]) {
-    color: rgba(42, 33, 24, 0.86) !important;
-  }
-
-  html:not(.dark) .section-dark [class*="text-white/7"]:not([class*="bg-primary"]):not([class*="bg-gold-"]):not([class*="bg-clay-"]):not([class*="bg-earth-"]):not([class*="bg-gradient"]) {
-    color: rgba(42, 33, 24, 0.78) !important;
-  }
-
-  html:not(.dark) .section-dark [class*="text-white/6"]:not([class*="bg-primary"]):not([class*="bg-gold-"]):not([class*="bg-clay-"]):not([class*="bg-earth-"]):not([class*="bg-gradient"]) {
-    color: rgba(42, 33, 24, 0.7) !important;
-  }
-
-  html:not(.dark) .section-dark [class*="text-white/5"]:not([class*="bg-primary"]):not([class*="bg-gold-"]):not([class*="bg-clay-"]):not([class*="bg-earth-"]):not([class*="bg-gradient"]) {
-    color: rgba(42, 33, 24, 0.62) !important;
-  }
-
-  html:not(.dark) .section-dark [class*="text-white/4"]:not([class*="bg-primary"]):not([class*="bg-gold-"]):not([class*="bg-clay-"]):not([class*="bg-earth-"]):not([class*="bg-gradient"]) {
-    color: rgba(42, 33, 24, 0.55) !important;
-  }
-
   /* Gold accents are chosen for dark panels; on the light surface they drop to
      roughly 1.5:1 against the background. Use a deeper gold in light mode. */
   html:not(.dark) .section-dark [class*="text-gold-3"],
@@ -705,7 +715,7 @@ html.lenis, html.lenis body {
     color: #8A6420 !important;
   }
 
-  html:not(.dark) .section-dark [class*="text-primary"]:not([class*="bg-"]) {
+  html:not(.dark) .section-dark [class*="text-primary"]:where(:not([class*="bg-"])) {
     color: #2E5A3E !important;
   }
 
@@ -728,6 +738,62 @@ html.lenis, html.lenis body {
      into every child that does not set its own colour. */
   html:not(.dark) footer.section-dark {
     color: #2A2118 !important;
+  }
+}
+
+/* ===========================================================================
+   Text layered over photography
+   ===========================================================================
+   A card caption sitting on an image is read against the photograph and its
+   dark scrim, not against the panel behind it, so it must stay white in both
+   themes. Put `.on-media` on the overlay container.
+
+   These rules carry one more class than the remap above (whose exclusions are
+   wrapped in zero-specificity `:where()`), so they win without `!important`
+   fighting — the `!important` here only matches the utilities layer.
+   ======================================================================== */
+@layer components {
+  html:not(.dark) .section-dark .on-media,
+  html:not(.dark) .section-dark .on-media .text-white {
+    color: #FFFFFF !important;
+  }
+
+  html:not(.dark) .section-dark .on-media [class*="text-white/9"] {
+    color: rgba(255, 255, 255, 0.9) !important;
+  }
+
+  html:not(.dark) .section-dark .on-media [class*="text-white/8"] {
+    color: rgba(255, 255, 255, 0.8) !important;
+  }
+
+  html:not(.dark) .section-dark .on-media [class*="text-white/7"] {
+    color: rgba(255, 255, 255, 0.7) !important;
+  }
+
+  html:not(.dark) .section-dark .on-media [class*="text-white/6"] {
+    color: rgba(255, 255, 255, 0.6) !important;
+  }
+
+  html:not(.dark) .section-dark .on-media [class*="text-white/5"] {
+    color: rgba(255, 255, 255, 0.5) !important;
+  }
+
+  /* Gold accents over photography keep their light tone for the same reason. */
+  html:not(.dark) .section-dark .on-media [class*="text-gold-3"],
+  html:not(.dark) .section-dark .on-media [class*="text-gold-4"] {
+    color: #E2B364 !important;
+  }
+
+  /* The scrim itself must not be remapped to a light tint. */
+  html:not(.dark) .section-dark .on-media[class*="bg-white/1"],
+  html:not(.dark) .section-dark .on-media[class*="bg-white/5"],
+  html:not(.dark) .section-dark .on-media [class*="bg-white/1"],
+  html:not(.dark) .section-dark .on-media [class*="bg-white/5"] {
+    background-color: rgba(255, 255, 255, 0.12) !important;
+  }
+
+  html:not(.dark) .section-dark .on-media [class*="border-white"] {
+    border-color: rgba(255, 255, 255, 0.25) !important;
   }
 }
 
