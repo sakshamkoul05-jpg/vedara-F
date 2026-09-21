@@ -60,7 +60,30 @@ export default function BookingPage() {
   const [checkOut, setCheckOut] = useState(searchParams.get('checkOut') || '');
   const [selectedCottage, setSelectedCottage] = useState<string>(searchParams.get('cottageId') || '');
   const [adults, setAdults] = useState(parseInt(searchParams.get('adults') || '2'));
-  const [children, setChildren] = useState(parseInt(searchParams.get('children') || '0'));
+  /**
+   * One entry per child, holding that child's age. The age drives the child
+   * policy, breakfast band and whether the guest counts as an adult (spec §4),
+   * so it is collected up front rather than a bare child count.
+   */
+  const [childAges, setChildAges] = useState<number[]>(() => {
+    const raw = searchParams.get('childAges');
+    if (raw) {
+      const parsed = raw
+        .split(',')
+        .map((v) => parseInt(v, 10))
+        .filter((v) => Number.isInteger(v) && v >= 0 && v <= 17);
+      if (parsed.length > 0) return parsed;
+    }
+    const count = parseInt(searchParams.get('children') || '0');
+    return Number.isInteger(count) && count > 0 ? Array(Math.min(count, 6)).fill(-1) : [];
+  });
+  const [ratePlan, setRatePlan] = useState<'ROOM_ONLY' | 'BREAKFAST_INCLUDED'>('ROOM_ONLY');
+  const [extraMattresses, setExtraMattresses] = useState(0);
+  const [quote, setQuote] = useState<any>(null);
+  const [quoteLoading, setQuoteLoading] = useState(false);
+  const [quoteError, setQuoteError] = useState('');
+
+  const children = childAges.length;
   const [nationality, setNationality] = useState(
     (() => {
       const n = searchParams.get('nationality');
@@ -105,6 +128,74 @@ export default function BookingPage() {
       setStep(3);
     }
   }, [searchParams]);
+
+  /**
+   * Re-prices the stay whenever anything that affects the tariff changes.
+   * The quote is the single source of truth for every amount displayed.
+   */
+  useEffect(() => {
+    const ready =
+      selectedCottage && checkIn && checkOut && adults > 0 && childAges.every((a) => a >= 0);
+    if (!ready) {
+      setQuote(null);
+      setQuoteError('');
+      return;
+    }
+
+    let cancelled = false;
+    const controller = new AbortController();
+    setQuoteLoading(true);
+    setQuoteError('');
+
+    fetch('/api/pricing/quote', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      signal: controller.signal,
+      body: JSON.stringify({
+        cottageId: selectedCottage,
+        checkIn,
+        checkOut,
+        adults,
+        childAges,
+        ratePlan,
+        extraMattresses,
+        couponCode: isValid ? code : null,
+      }),
+    })
+      .then(async (res) => {
+        const json = await res.json().catch(() => ({}));
+        if (cancelled) return;
+        if (!res.ok) {
+          setQuote(null);
+          setQuoteError(json.error || 'Could not calculate the price for this stay.');
+          return;
+        }
+        setQuote(json.data);
+      })
+      .catch((err) => {
+        if (cancelled || err.name === 'AbortError') return;
+        setQuote(null);
+        setQuoteError('Could not calculate the price. Please try again.');
+      })
+      .finally(() => {
+        if (!cancelled) setQuoteLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+      controller.abort();
+    };
+  }, [selectedCottage, checkIn, checkOut, adults, childAges, ratePlan, extraMattresses, isValid, code]);
+
+  // Occupancy that no longer fits the chosen cottage is clamped rather than
+  // left to fail validation at checkout.
+  useEffect(() => {
+    const cottage = cottages.find((c) => c.id === selectedCottage);
+    if (!cottage) return;
+    const capAdults = cottage.maxAdults ?? cottage.capacity ?? 2;
+    if (adults > capAdults) setAdults(capAdults);
+    if (!cottage.allowsExtraMattress && extraMattresses > 0) setExtraMattresses(0);
+  }, [selectedCottage, cottages, adults, extraMattresses]);
 
   useEffect(() => {
     if (pincode.length === 6 && /^\d{6}$/.test(pincode)) {
@@ -205,28 +296,43 @@ export default function BookingPage() {
     setPaymentLoading(true);
     try {
       const fullAddress = `${address}, ${city}, ${state} - ${pincode}`;
+
+      // The server prices the stay and stores the payable amount; nothing
+      // about the total is sent from here.
       const res = await api.post('/bookings', {
-        guestName, guestEmail, guestPhone, nationality,
+        guestName, guestEmail, guestPhone,
         cottageId: selectedCottage,
         checkIn, checkOut,
-        adults, children,
+        adults,
+        childAges,
+        ratePlan,
+        extraMattresses,
         specialRequests,
         couponCode: isValid ? code : null,
         idProof: `${idProofType}: ${idProofNumber}`,
         address: fullAddress,
-        totalAmount: Math.round(totalAmount),
-        finalAmount: Math.round(totalAmount),
       });
 
-      const { booking, razorpayOrder } = res.data;
+      const { booking } = res.data;
+
+      let razorpayOrder: any = null;
+      try {
+        const orderRes = await api.post('/bookings/create-payment-order', { bookingId: booking.id });
+        razorpayOrder = orderRes.data;
+      } catch (orderErr: any) {
+        // The reservation is held either way, so fall through to the
+        // pay-later confirmation rather than losing the booking.
+        console.error('Could not start payment:', orderErr?.message);
+      }
 
       if (!razorpayOrder || !razorpayOrder.id) {
         setBookingData({ ...booking, confirmed: false, pendingPayment: true });
         setStep(4);
+        setPaymentLoading(false);
         return;
       }
 
-      const razorpayKey = process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID;
+      const razorpayKey = razorpayOrder.keyId || process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID;
       if (!razorpayKey) {
         throw new Error('Payment configuration is missing. Please contact support.');
       }
@@ -250,7 +356,6 @@ export default function BookingPage() {
               razorpayPaymentId: response.razorpay_payment_id,
               razorpayOrderId: response.razorpay_order_id,
               razorpaySignature: response.razorpay_signature,
-              amount: Math.round(totalAmount),
             });
             setBookingData({ ...booking, confirmed: true });
             setStep(4);
@@ -293,14 +398,18 @@ export default function BookingPage() {
 
   const selectedCottageData = cottages.find((c) => c.id === selectedCottage);
   const nights = checkIn && checkOut ? calculateNights(parseDate(checkIn), parseDate(checkOut)) : 0;
-  const subtotal = selectedCottageData ? selectedCottageData.pricePerNight * nights : 0;
-  const cottageCapacity = selectedCottageData?.capacity ?? 2;
-  const extraGuests = Math.max(0, adults + children - cottageCapacity);
-  const cottageExtraGuestCharge = selectedCottageData?.extraGuestCharge ?? 1500;
-  const extraGuestCharges = extraGuests * cottageExtraGuestCharge * nights;
-  const discountAmount = isValid ? Math.min(discountType === 'PERCENTAGE' ? Math.round(subtotal * discount / 100) : discount, subtotal + extraGuestCharges) : 0;
-  const taxes = Math.round((subtotal + extraGuestCharges - discountAmount) * 0.12);
-  const totalAmount = subtotal + extraGuestCharges - discountAmount + taxes;
+
+  const maxAdults = selectedCottageData?.maxAdults ?? selectedCottageData?.capacity ?? 2;
+  const maxOccupancy = selectedCottageData?.maxOccupancy ?? maxAdults + 1;
+  const allowsMattress = Boolean(selectedCottageData?.allowsExtraMattress);
+  const maxMattresses = selectedCottageData?.maxExtraMattresses ?? 0;
+
+  // Every amount shown comes from the server quote. Nothing is priced here.
+  const subtotal = quote?.subtotal ?? 0;
+  const taxes = quote?.taxTotal ?? 0;
+  const totalAmount = quote?.total ?? 0;
+  const discountAmount = quote?.couponDiscount ?? 0;
+  const allAgesEntered = childAges.every((a) => a >= 0);
 
   const stepLabels = ['Dates', 'Cottage', 'Details', 'Confirmation'];
 
@@ -655,39 +764,154 @@ export default function BookingPage() {
                             </div>
                           </div>
 
-                          <div className="grid grid-cols-2 gap-4">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
-                              <label className="vintage-label">
-                                Adults
+                              <label className="vintage-label" htmlFor="adults-select">
+                                Adults <span aria-hidden="true" className="text-red-500">*</span>
                                 {selectedCottageData && (
                                   <span className="font-normal normal-case text-muted-foreground">
-                                    {' '}(base {selectedCottageData.capacity}, extra guests +{formatPrice(cottageExtraGuestCharge)}/night each)
+                                    {' '}(max {maxAdults})
                                   </span>
                                 )}
                               </label>
                               <select
+                                id="adults-select"
+                                required
                                 value={adults}
                                 onChange={(e) => setAdults(parseInt(e.target.value))}
                                 className="vintage-input"
                               >
-                                {Array.from({ length: (selectedCottageData?.capacity || 4) + 4 }, (_, i) => i + 1).map(n => (
-                                  <option key={n} value={n}>{n}{n > (selectedCottageData?.capacity || 4) ? ' (extra)' : ''}</option>
+                                {Array.from({ length: maxAdults }, (_, i) => i + 1).map((n) => (
+                                  <option key={n} value={n}>{n}</option>
                                 ))}
                               </select>
                             </div>
                             <div>
-                              <label className="vintage-label">Children</label>
+                              <label className="vintage-label" htmlFor="children-select">
+                                Children <span aria-hidden="true" className="text-red-500">*</span>
+                                <span className="font-normal normal-case text-muted-foreground"> (under 12)</span>
+                              </label>
                               <select
-                                value={children}
-                                onChange={(e) => setChildren(parseInt(e.target.value))}
+                                id="children-select"
+                                required
+                                value={childAges.length}
+                                onChange={(e) => {
+                                  const next = parseInt(e.target.value);
+                                  setChildAges((prev) =>
+                                    next > prev.length
+                                      ? [...prev, ...Array(next - prev.length).fill(-1)]
+                                      : prev.slice(0, next)
+                                  );
+                                }}
                                 className="vintage-input"
                               >
-                                {[0, 1, 2, 3, 4].map(n => (
+                                {Array.from(
+                                  { length: Math.max(0, maxOccupancy - adults) + 1 },
+                                  (_, i) => i
+                                ).map((n) => (
                                   <option key={n} value={n}>{n}</option>
                                 ))}
                               </select>
                             </div>
                           </div>
+
+                          {/* An age is required for every child: it decides the child
+                              policy, the breakfast band and whether the guest counts
+                              as an adult. */}
+                          {childAges.length > 0 && (
+                            <div>
+                              <label className="vintage-label">
+                                Age of each child <span aria-hidden="true" className="text-red-500">*</span>
+                              </label>
+                              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                                {childAges.map((age, i) => (
+                                  <div key={i}>
+                                    <select
+                                      required
+                                      aria-label={`Age of child ${i + 1}`}
+                                      value={age < 0 ? '' : age}
+                                      onChange={(e) => {
+                                        const v = parseInt(e.target.value);
+                                        setChildAges((prev) =>
+                                          prev.map((a, idx) => (idx === i ? v : a))
+                                        );
+                                      }}
+                                      className={`vintage-input ${age < 0 ? 'border-amber-500' : ''}`}
+                                    >
+                                      <option value="" disabled>Child {i + 1} age</option>
+                                      {Array.from({ length: 18 }, (_, n) => n).map((n) => (
+                                        <option key={n} value={n}>
+                                          {n === 0 ? 'Under 1' : `${n} year${n === 1 ? '' : 's'}`}
+                                        </option>
+                                      ))}
+                                    </select>
+                                  </div>
+                                ))}
+                              </div>
+                              {!allAgesEntered && (
+                                <p className="text-amber-600 text-xs mt-2">
+                                  Please select an age for every child to see your price.
+                                </p>
+                              )}
+                              <p className="text-[11px] text-muted-foreground mt-2">
+                                Children up to 11 years stay complimentary when sharing existing bedding.
+                                Guests aged 12 and above are treated as adults.
+                              </p>
+                            </div>
+                          )}
+
+                          {/* Rate plan choice, offered once a cottage is selected (spec §11). */}
+                          {selectedCottageData && (
+                            <div>
+                              <label className="vintage-label">Rate Plan</label>
+                              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                {([
+                                  { code: 'ROOM_ONLY', title: 'Room Only', desc: 'Accommodation only' },
+                                  { code: 'BREAKFAST_INCLUDED', title: 'Breakfast Included', desc: '₹400 per adult, per night' },
+                                ] as const).map((plan) => (
+                                  <button
+                                    key={plan.code}
+                                    type="button"
+                                    onClick={() => setRatePlan(plan.code)}
+                                    aria-pressed={ratePlan === plan.code}
+                                    className={`text-left rounded-lg border p-3 transition-colors ${
+                                      ratePlan === plan.code
+                                        ? 'border-gold-600 bg-gold-600/10'
+                                        : 'border-border hover:border-gold-600/50'
+                                    }`}
+                                  >
+                                    <span className="block text-sm font-medium text-foreground">{plan.title}</span>
+                                    <span className="block text-xs text-muted-foreground">{plan.desc}</span>
+                                  </button>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Never offered for cottages without an extra-mattress
+                              option (spec 5.1). */}
+                          {allowsMattress && (
+                            <div>
+                              <label className="vintage-label" htmlFor="mattress-select">
+                                Extra Mattress
+                                <span className="font-normal normal-case text-muted-foreground"> (₹1,250 per night)</span>
+                              </label>
+                              <select
+                                id="mattress-select"
+                                value={extraMattresses}
+                                onChange={(e) => setExtraMattresses(parseInt(e.target.value))}
+                                className="vintage-input"
+                              >
+                                {Array.from({ length: maxMattresses + 1 }, (_, i) => i).map((n) => (
+                                  <option key={n} value={n}>{n === 0 ? 'Not required' : n}</option>
+                                ))}
+                              </select>
+                              <p className="text-[11px] text-muted-foreground mt-2">
+                                The extra bedding provided is a mattress only, not a separate bed or cot.
+                              </p>
+                            </div>
+                          )}
+
                           <div>
                             <label className="vintage-label">Special Requests</label>
                             <textarea
@@ -836,37 +1060,109 @@ export default function BookingPage() {
                           </div>
                         )}
 
-                        {nights > 0 && selectedCottageData && (
+                        {/* The full tariff, taxes and final payable amount are
+                            shown before payment (spec 18). Every figure comes
+                            from the server quote. */}
+                        {nights > 0 && selectedCottageData && quoteLoading && !quote && (
+                          <p className="text-xs text-muted-foreground text-center py-4 flex items-center justify-center gap-2">
+                            <Loader2 className="w-3 h-3 animate-spin" /> Calculating your price...
+                          </p>
+                        )}
+
+                        {quoteError && (
+                          <p className="text-xs text-red-500 py-3">{quoteError}</p>
+                        )}
+
+                        {nights > 0 && selectedCottageData && quote && (
                           <div className="space-y-2 pt-1">
-                            <div className="flex justify-between">
-                              <span className="text-muted-foreground">Room Subtotal</span>
-                              <span className="text-foreground">{formatPrice(subtotal)}</span>
-                            </div>
-                            {extraGuests > 0 && (
-                              <div className="flex justify-between text-amber-600">
-                                <span className="flex items-center gap-1">
-                                  <Users className="w-3 h-3" /> Extra Guest ({extraGuests} × {formatPrice(cottageExtraGuestCharge)} × {nights} {nights === 1 ? 'night' : 'nights'})
+                            {/* Per-night breakdown for mixed weekday/weekend and
+                                cross-season stays (spec 16). */}
+                            <details className="group">
+                              <summary className="flex justify-between cursor-pointer list-none">
+                                <span className="text-muted-foreground flex items-center gap-1">
+                                  <ChevronDown className="w-3 h-3 transition-transform group-open:rotate-180" />
+                                  Accommodation ({quote.nights} {quote.nights === 1 ? 'night' : 'nights'})
                                 </span>
-                                <span>+{formatPrice(extraGuestCharges)}</span>
+                                <span className="text-foreground">{formatPrice(quote.accommodationBeforeBenefit)}</span>
+                              </summary>
+                              <div className="mt-2 space-y-1 pl-4 border-l border-border">
+                                {quote.perNight.map((n: any) => (
+                                  <div key={n.date} className="flex justify-between text-[11px]">
+                                    <span className="text-muted-foreground">
+                                      {parseDate(n.date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
+                                      <span className="opacity-60"> · {n.seasonName}{n.isWeekend ? ' · weekend' : ''}</span>
+                                    </span>
+                                    <span className={n.isComplimentary ? 'text-green-600 line-through' : 'text-foreground'}>
+                                      {formatPrice(n.roomRate)}
+                                    </span>
+                                  </div>
+                                ))}
+                              </div>
+                            </details>
+
+                            {quote.longStayApplied && (
+                              <div className="flex justify-between text-green-600">
+                                <span className="flex items-center gap-1">
+                                  <Gift className="w-3 h-3" /> {quote.longStayRuleName}
+                                </span>
+                                <span>-{formatPrice(quote.longStayDiscount)}</span>
                               </div>
                             )}
-                            {isValid && (
+
+                            {quote.breakfastTotal > 0 && (
+                              <div className="flex justify-between">
+                                <span className="text-muted-foreground">
+                                  Breakfast ({quote.billableAdults} {quote.billableAdults === 1 ? 'adult' : 'adults'}
+                                  {quote.childAges.filter((a: number) => a >= 6 && a < 12).length > 0
+                                    ? ` + ${quote.childAges.filter((a: number) => a >= 6 && a < 12).length} child`
+                                    : ''} x {quote.nights} {quote.nights === 1 ? 'night' : 'nights'})
+                                </span>
+                                <span className="text-foreground">{formatPrice(quote.breakfastTotal)}</span>
+                              </div>
+                            )}
+
+                            {quote.mattressTotal > 0 && (
+                              <div className="flex justify-between">
+                                <span className="text-muted-foreground">
+                                  Extra mattress ({quote.extraMattresses} x {quote.nights} {quote.nights === 1 ? 'night' : 'nights'})
+                                </span>
+                                <span className="text-foreground">{formatPrice(quote.mattressTotal)}</span>
+                              </div>
+                            )}
+
+                            {quote.couponDiscount > 0 && (
                               <div className="flex justify-between text-gold-600">
                                 <span className="flex items-center gap-1">
-                                  <Percent className="w-3 h-3" /> Discount ({discountType === 'PERCENTAGE' ? `${discount}%` : 'Fixed'})
+                                  <Percent className="w-3 h-3" /> Coupon {quote.couponCode}
                                 </span>
-                                <span>-{formatPrice(discountAmount)}</span>
+                                <span>-{formatPrice(quote.couponDiscount)}</span>
                               </div>
                             )}
-                            <div className="flex justify-between">
-                              <span className="text-muted-foreground">GST (12%)</span>
-                              <span className="text-foreground">{formatPrice(taxes)}</span>
+
+                            <div className="flex justify-between border-t border-border pt-2">
+                              <span className="text-muted-foreground">Subtotal</span>
+                              <span className="text-foreground">{formatPrice(quote.subtotal)}</span>
                             </div>
+
+                            {quote.taxBreakdown.map((t: any) => (
+                              <div key={t.slabName} className="flex justify-between">
+                                <span className="text-muted-foreground">{t.slabName}</span>
+                                <span className="text-foreground">{formatPrice(t.tax)}</span>
+                              </div>
+                            ))}
+
                             <div className="border-t border-border pt-2 flex justify-between">
-                              <span className="font-serif text-lg text-foreground">Total</span>
-                              <span className="font-bold text-lg text-gold-600">{formatPrice(totalAmount)}</span>
+                              <span className="font-serif text-lg text-foreground">Total Payable</span>
+                              <span className="font-bold text-lg text-gold-600">{formatPrice(quote.total)}</span>
                             </div>
-                            <p className="text-[10px] text-muted-foreground text-right">All rates are exclusive of applicable taxes (12% GST added at checkout)</p>
+
+                            {quote.notes.length > 0 && (
+                              <ul className="pt-1 space-y-1">
+                                {quote.notes.map((note: string, i: number) => (
+                                  <li key={i} className="text-[10px] text-muted-foreground leading-snug">{note}</li>
+                                ))}
+                              </ul>
+                            )}
                           </div>
                         )}
 

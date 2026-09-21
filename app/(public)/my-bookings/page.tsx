@@ -6,6 +6,9 @@ import { ScrollReveal } from '@/components/animations/ScrollReveal';
 import { TextReveal } from '@/components/animations/TextReveal';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
+import { validateEmail, validatePhone } from '@/lib/validation';
 import { Badge } from '@/components/ui/badge';
 import { api, endpoints } from '@/lib/api';
 import { Search, Calendar, Users, Home, Mail, Phone, Loader2 } from 'lucide-react';
@@ -29,9 +32,21 @@ export default function MyBookingsPage() {
   const [loading, setLoading] = useState(false);
   const [searched, setSearched] = useState(false);
   const [error, setError] = useState('');
+  const [validationError, setValidationError] = useState<string | undefined>();
+  const [dialCode, setDialCode] = useState('91');
+
+  // The lookup runs against whatever is typed, so the input is validated before
+  // a request is made rather than after an empty result comes back.
+  const validateQuery = () =>
+    queryType === 'email'
+      ? validateEmail(query)
+      : validatePhone(query, { dialCode });
 
   const handleSearch = async () => {
-    if (!query.trim()) return;
+    const invalid = validateQuery();
+    setValidationError(invalid);
+    if (invalid) return;
+
     setLoading(true);
     setError('');
     setSearched(true);
@@ -67,7 +82,7 @@ export default function MyBookingsPage() {
           <div className="glass-card-light rounded-2xl p-6 md:p-8">
             <div className="flex gap-2 mb-4">
               <button
-                onClick={() => setQueryType('email')}
+                onClick={() => { setQueryType('email'); setQuery(''); setValidationError(undefined); }}
                 className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
                   queryType === 'email'
                     ? 'bg-primary text-primary-foreground'
@@ -78,7 +93,7 @@ export default function MyBookingsPage() {
                 Email
               </button>
               <button
-                onClick={() => setQueryType('phone')}
+                onClick={() => { setQueryType('phone'); setQuery(''); setValidationError(undefined); }}
                 className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
                   queryType === 'phone'
                     ? 'bg-primary text-primary-foreground'
@@ -91,18 +106,48 @@ export default function MyBookingsPage() {
             </div>
 
             <div className="flex gap-3">
-              <Input
-                type={queryType === 'email' ? 'email' : 'tel'}
-                placeholder={queryType === 'email' ? 'your@email.com' : '+91-99999-99999'}
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-                className="flex-1"
-              />
+              {queryType === 'email' ? (
+                <Input
+                  type="email"
+                  placeholder="your@email.com"
+                  autoComplete="email"
+                  value={query}
+                  onChange={(e) => {
+                    setQuery(e.target.value);
+                    if (validationError) setValidationError(undefined);
+                  }}
+                  onBlur={() => setValidationError(validateEmail(query, { required: false }))}
+                  onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+                  className={`flex-1 ${validationError ? 'border-red-500' : ''}`}
+                  aria-invalid={Boolean(validationError)}
+                />
+              ) : (
+                <div className="flex-1">
+                  <PhoneInput
+                    country="in"
+                    preferredCountries={['in', 'gb', 'us', 'ae', 'au', 'sg']}
+                    enableSearch
+                    value={query}
+                    onChange={(value, country: any) => {
+                      setDialCode(country?.dialCode || '');
+                      setQuery(value);
+                      if (validationError) setValidationError(undefined);
+                    }}
+                    onBlur={() =>
+                      setValidationError(validatePhone(query, { required: false, dialCode }))
+                    }
+                    inputProps={{ name: 'phone', autoComplete: 'tel' }}
+                    containerClass="vedara-phone-input"
+                    inputClass={`!w-full !h-11 !bg-transparent !text-foreground ${validationError ? '!border-red-500' : '!border-border'}`}
+                    buttonClass="!bg-transparent !border-border"
+                    dropdownClass="!bg-background !text-foreground"
+                  />
+                </div>
+              )}
               <Button
                 variant="primary"
                 onClick={handleSearch}
-                disabled={loading || !query.trim()}
+                disabled={loading || !query.trim() || Boolean(validationError)}
                 className="px-6"
               >
                 {loading ? (
@@ -115,6 +160,10 @@ export default function MyBookingsPage() {
                 )}
               </Button>
             </div>
+
+            {validationError && (
+              <p className="text-red-500 text-sm mt-3">{validationError}</p>
+            )}
 
             {error && (
               <p className="text-red-500 text-sm mt-3">{error}</p>

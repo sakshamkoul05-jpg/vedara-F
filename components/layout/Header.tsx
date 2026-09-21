@@ -55,11 +55,16 @@ export function Header() {
           {/* Logo — extreme left */}
             <Link href="/" className="flex items-center gap-3 flex-shrink-0 self-center">
             <div className="h-9 md:h-11 w-9 md:w-11 rounded-full overflow-hidden flex-shrink-0">
+              {/* The source is a 1254x1254 square. Requesting a square at 3x the
+                  44px display size keeps it crisp on high-DPI screens; the old
+                  132x52 request forced a non-square downscale that looked soft. */}
               <Image
                 src="/images/vedara-logo.jpeg"
                 alt="The Vedara"
                 width={132}
-                height={52}
+                height={132}
+                sizes="44px"
+                quality={90}
                 className="w-full h-full object-cover"
                 priority
               />
@@ -153,8 +158,8 @@ export function Header() {
               {themeIcon}
             </button>
 
-            <Link href="/booking" className="vintage-button-primary text-xs px-5 py-2.5">
-              Book Stay
+            <Link href="/booking" className="cta-primary cta-sm">
+              Book Your Stay
             </Link>
           </div>
 
@@ -222,7 +227,7 @@ export function Header() {
                     {link.label}
                   </Link>
                 ))}
-                <Link href="/booking" className="vintage-button-primary w-full text-center">
+                <Link href="/booking" className="cta-primary w-full">
                   Book Your Stay
                 </Link>
                 <div className="flex gap-2">

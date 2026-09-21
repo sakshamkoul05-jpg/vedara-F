@@ -371,7 +371,7 @@ export default function CafePage() {
             >
               <p className="text-gold-400 text-sm tracking-[0.3em] uppercase mb-3 font-sans drop-shadow-lg">The Vedara</p>
               <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif text-white mb-4 tracking-wide drop-shadow-lg">
-                Café Charade
+                The Perch
               </h1>
               <p className="text-white text-lg md:text-xl max-w-2xl mx-auto font-light drop-shadow-lg">
                 A Himalayan culinary journey, from mountain mornings to starlit dinners
@@ -675,7 +675,7 @@ export default function CafePage() {
               <Mountain className="w-5 h-5 text-gray-400 dark:text-[#B8A385] mx-auto mb-2" />
               <p className="text-xs text-gray-500 dark:text-[#B8A385] max-w-md">
                 All prices are in INR and include applicable taxes. Pre-orders for select items require 24-hour notice.
-                For special dietary requirements, please inform our staff. Café Charade does not serve alcoholic beverages.
+                For special dietary requirements, please inform our staff. The Perch does not serve alcoholic beverages.
               </p>
             </div>
           </div>

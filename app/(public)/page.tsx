@@ -191,25 +191,11 @@ export default function HomePage() {
              animate={{ opacity: 1, y: 0 }}
              transition={{ delay: 1.3, duration: 0.8 }}
            >
-             <Link href="/booking" className="vintage-button bg-[#2E5A3E] text-white hover:bg-white hover:text-[#2E5A3E] px-12 py-4 text-base md:text-lg font-semibold inline-flex items-center justify-center shadow-glow ring-2 ring-gold-300/40 hover:ring-gold-300/70 hover:-translate-y-0.5 transition-all duration-300">
-                Book Your Stay <ArrowRight className="w-4 h-4 ml-2" />
+             <Link href="/booking" className="cta-on-dark cta-lg">
+                Book Your Stay <ArrowRight className="w-4 h-4" />
               </Link>
            </motion.div>
         </div>
-        <motion.button
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 2, duration: 1 }}
-          onClick={() => {
-            document.getElementById('booking-bar')?.scrollIntoView({ behavior: 'smooth' });
-          }}
-          className="absolute bottom-16 left-1/2 -translate-x-1/2 z-20 cursor-pointer"
-          aria-label="Scroll to booking section"
-        >
-          <motion.div animate={{ y: [0, 8, 0] }} transition={{ duration: 2, repeat: Infinity }} className="text-white/50">
-            <ArrowRight className="w-5 h-5 rotate-90" />
-          </motion.div>
-        </motion.button>
       </section>
 
       <PackageBanner />
@@ -234,7 +220,7 @@ export default function HomePage() {
                 <p className="text-white/60 leading-relaxed mb-8">
                   With six cozy cottages and one alpine studio, and a soulful café, we offer more than a stay. We offer a chance to pause, breathe, and remember what truly matters.
                 </p>
-                <Link href="/about" className="vintage-button bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3.5 shadow-lg btn-bottom-fill">
+                <Link href="/about" className="cta-primary">
                   Read Our Story <ArrowRight className="w-4 h-4 ml-2" />
                 </Link>
               </div>
@@ -414,9 +400,9 @@ export default function HomePage() {
             <ScrollReveal direction="left">
               <div>
                 <p className="eyebrow mb-4">Our Café</p>
-                <h2 className="font-serif text-4xl md:text-5xl text-white mb-6">Café Charade</h2>
+                <h2 className="font-serif text-4xl md:text-5xl text-white mb-6">The Perch</h2>
                 <p className="text-white/80 text-lg leading-relaxed mb-4">
-                  Nestled beside a whispering stream, Café Charade serves handcrafted coffee, wood-fired meals, and mountain-fresh bakes.
+                  Nestled beside a whispering stream, The Perch serves handcrafted coffee, wood-fired meals, and mountain-fresh bakes.
                 </p>
                 <p className="text-white/60 text-sm mb-8 space-y-1">
                   <span className="block">Breakfast 7:30 AM – 10:00 AM</span>
@@ -432,7 +418,7 @@ export default function HomePage() {
                   ))}
                 </div>
                 <MagneticButton>
-                  <Link href="/cafe" className="vintage-button bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3.5 inline-block shadow-lg btn-bottom-fill">
+                  <Link href="/cafe" className="cta-primary">
                     Explore Menu <ArrowRight className="w-4 h-4 ml-2" />
                   </Link>
                 </MagneticButton>
@@ -442,7 +428,7 @@ export default function HomePage() {
               <div className="aspect-[4/5] rounded-lg overflow-hidden shadow-2xl">
                 <ImageReveal
                   src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=600&q=80"
-                  alt="Café Charade at The Vedara"
+                  alt="The Perch at The Vedara"
                 />
               </div>
             </ScrollReveal>
@@ -609,8 +595,8 @@ export default function HomePage() {
               Book your mountain story today. Early check-in and late check-out are subject to availability and prior confirmation.
             </p>
             <MagneticButton>
-              <Link href="/booking" className="vintage-button bg-white/90 text-[#140D07] hover:bg-[#140D07] hover:text-white px-10 py-4 text-base inline-block shadow-xl transition-all duration-300">
-                Begin Your Journey <Sparkles className="w-4 h-4 ml-2" />
+              <Link href="/booking" className="cta-on-dark cta-lg">
+                Book Your Stay <Sparkles className="w-4 h-4" />
               </Link>
             </MagneticButton>
           </ScrollReveal>

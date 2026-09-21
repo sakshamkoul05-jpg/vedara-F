@@ -1,6 +1,13 @@
 import { supabase } from './supabase';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://vedara-backend-production.up.railway.app/api';
+/**
+ * Server-side route handlers that live in this app (app/api/...).
+ *
+ * Anything that must not be computed or authorised in the browser — pricing,
+ * booking creation, Razorpay orders and payment verification — goes through
+ * here rather than straight to Supabase.
+ */
+const API_URL = '/api';
 
 async function callBackendAPI(endpoint: string, options: RequestInit = {}): Promise<any> {
   try {
@@ -446,78 +453,36 @@ async function sbMutation<T = any>(endpoint: string, method: 'POST' | 'PUT' | 'D
     }
 
     if (method === 'POST' && endpoint === '/bookings') {
-      const bookingRef = 'VD' + Date.now().toString(36).toUpperCase() + Math.random().toString(36).substring(2, 5).toUpperCase();
-      let guestId = body.guestId;
-      if (!guestId && body.guestPhone) {
-        let { data: existingGuest } = await supabase.from('Guest').select('id').eq('phone', body.guestPhone).single();
-        if (!existingGuest) {
-          const { data: newGuest } = await supabase.from('Guest').insert({
-            name: body.guestName,
-            email: body.guestEmail || null,
-            phone: body.guestPhone,
-            address: body.address || null,
-            idProof: body.idProof || null,
-          }).select('id').single();
-          guestId = newGuest?.id;
-        } else {
-          guestId = existingGuest.id;
-          if (body.address || body.idProof) {
-            await supabase.from('Guest').update({
-              ...(body.address ? { address: body.address } : {}),
-              ...(body.idProof ? { idProof: body.idProof } : {}),
-            }).eq('id', guestId);
-          }
-        }
-      } else if (!guestId && body.guest) {
-        let { data: existingGuest } = await supabase.from('Guest').select('id').eq('phone', body.guest.phone).single();
-        if (!existingGuest) {
-          const { data: newGuest } = await supabase.from('Guest').insert(body.guest).select('id').single();
-          guestId = newGuest?.id;
-        } else {
-          guestId = existingGuest.id;
-        }
-      }
-      const bookingData = {
-        bookingRef,
-        guestId,
-        cottageId: body.cottageId,
-        checkIn: body.checkIn,
-        checkOut: body.checkOut,
-        adults: body.adults || 2,
-        children: body.children || 0,
-        totalAmount: body.totalAmount,
-        finalAmount: body.finalAmount || body.totalAmount,
-        discount: body.discount || 0,
-        couponCode: body.couponCode || null,
-        specialRequests: body.specialRequests || null,
-        status: 'PENDING',
-        paymentStatus: 'PENDING',
-        source: body.source || 'WEBSITE',
-      };
-      const { data: bookingRecord, error } = await supabase.from('Booking').insert(bookingData).select('*, cottage:Cottage(*), guest:Guest(*)').single();
-      if (error) throw error;
+      // Pricing, availability and the pricing snapshot are all decided by the
+      // server. The browser only supplies stay and guest details.
+      const res = await callBackendAPI('/bookings', {
+        method: 'POST',
+        body: JSON.stringify(body),
+      });
+      return { data: res.data } as T;
+    }
 
-      let razorpayOrder = null;
-      try {
-        const orderRes = await callBackendAPI('/payments/create-order', {
-          method: 'POST',
-          body: JSON.stringify({ amount: bookingRecord.finalAmount || bookingRecord.totalAmount, currency: 'INR', receipt: bookingRef }),
-        });
-        razorpayOrder = orderRes.data || orderRes;
-      } catch (payErr: any) {
-        console.warn('Razorpay order creation failed, payment will be handled later:', payErr.message);
-      }
-
-      return { data: { booking: bookingRecord, razorpayOrder } } as T;
+    if (method === 'POST' && endpoint === '/bookings/create-payment-order') {
+      const res = await callBackendAPI('/payments/create-order', {
+        method: 'POST',
+        body: JSON.stringify({ bookingId: body.bookingId }),
+      });
+      return { data: res.data } as T;
     }
 
     if (method === 'POST' && endpoint === '/bookings/confirm-payment') {
-      const { bookingId, razorpayPaymentId, razorpayOrderId, razorpaySignature, paymentId: pid, orderId: oid, amount } = body;
-      const paymentIdVal = razorpayPaymentId || pid;
-      const orderIdVal = razorpayOrderId || oid;
-      await supabase.from('Booking').update({ paymentStatus: 'PAID', paymentId: paymentIdVal, status: 'CONFIRMED' }).eq('id', bookingId);
-      await supabase.from('Payment').insert({ bookingId, paymentId: paymentIdVal, orderId: orderIdVal, amount: amount || 0, status: 'PAID', gateway: 'RAZORPAY' });
-      return { data: { success: true } } as T;
+      // Confirmation is signature-verified server side; the browser can no
+      // longer mark a booking as paid.
+      const res = await callBackendAPI('/payments/verify', {
+        method: 'POST',
+        body: JSON.stringify({
+          bookingId: body.bookingId,
+          razorpayOrderId: body.razorpayOrderId,
+          razorpayPaymentId: body.razorpayPaymentId,
+          razorpaySignature: body.razorpaySignature,
+        }),
+      });
+      return { data: res.data } as T;
     }
 
     if (method === 'POST' && endpoint === '/cafe/orders') {

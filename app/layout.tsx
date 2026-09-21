@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     default: 'The Vedara - Himalayan Boutique Retreat | Luxury Stay in Jibhi',
     template: '%s | The Vedara - Himalayan Boutique Retreat',
   },
-  description: 'The Vedara is a Himalayan boutique retreat in Jibhi, offering handcrafted luxury cottages, a serene mountain escape, and Café Charade. Book your stay in the heart of Himachal.',
+  description: 'The Vedara is a Himalayan boutique retreat in Jibhi, offering handcrafted luxury cottages, a serene mountain escape, and The Perch. Book your stay in the heart of Himachal.',
   keywords: [
     'boutique stay in Jibhi', 'luxury cottages Jibhi', 'Tirthan Valley stay',
     'nature retreat Himachal', 'boutique resort in Jibhi', 'luxury stay in Tirthan Valley',
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
     'boutique café stay in Himachal', 'top hotels in Jibhi',
     'hotels in Jibhi', 'resorts in Jibhi',
     'Jibhi waterfall stay', 'Jalori Pass hotels', 'Serolsar Lake stay',
-    'The Vedara', 'Café Charade',
+    'The Vedara', 'The Perch',
   ],
   authors: [{ name: 'The Vedara' }],
   creator: 'The Vedara',
@@ -51,14 +51,14 @@ export const metadata: Metadata = {
     locale: 'en_IN',
     siteName: 'The Vedara - Himalayan Boutique Retreat',
     title: 'The Vedara - Himalayan Boutique Retreat | Luxury Stay in Jibhi',
-    description: 'The Vedara is a Himalayan luxury retreat in Jibhi with handcrafted cottages, bonfire nights, and Café Charade. Book your mountain escape in Himachal.',
+    description: 'The Vedara is a Himalayan luxury retreat in Jibhi with handcrafted cottages, bonfire nights, and The Perch. Book your mountain escape in Himachal.',
     url: siteUrl,
     images: [{ url: `${siteUrl}/images/vedlogo.jpeg`, width: 1200, height: 630, alt: 'The Vedara - Himalayan Boutique Retreat' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'The Vedara - Himalayan Boutique Retreat',
-    description: 'Himalayan boutique retreat in Jibhi with luxury cottages and Café Charade. Discover The Vedara, a nature retreat in Himachal.',
+    description: 'Himalayan boutique retreat in Jibhi with luxury cottages and The Perch. Discover The Vedara, a nature retreat in Himachal.',
     images: [`${siteUrl}/images/vedlogo.jpeg`],
   },
   alternates: { canonical: siteUrl },
@@ -69,7 +69,7 @@ const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'LodgingBusiness',
   name: 'The Vedara - A Himalayan Boutique Retreat',
-  description: 'Himalayan luxury retreat in Jibhi offering handcrafted cottages, Café Charade, and serene nature experiences in Himachal Pradesh.',
+  description: 'Himalayan luxury retreat in Jibhi offering handcrafted cottages, The Perch, and serene nature experiences in Himachal Pradesh.',
   url: siteUrl,
   telephone: '+91-9118882242',
   email: 'vedararetreat@gmail.com',
@@ -91,7 +91,7 @@ const jsonLd = {
   amenityFeature: [
     { '@type': 'LocationFeatureSpecification', name: 'Mountain View' },
     { '@type': 'LocationFeatureSpecification', name: 'Bonfire' },
-    { '@type': 'LocationFeatureSpecification', name: 'Café Charade' },
+    { '@type': 'LocationFeatureSpecification', name: 'The Perch' },
     { '@type': 'LocationFeatureSpecification', name: 'Free WiFi' },
     { '@type': 'LocationFeatureSpecification', name: 'Parking' },
   ],
@@ -104,7 +104,7 @@ const jsonLd = {
   knowsAbout: [
     'Boutique stay in Jibhi', 'Luxury cottages Jibhi', 'Tirthan Valley stay',
     'Nature retreat Himachal', 'Mountain retreat Himachal',
-    'The Vedara', 'Café Charade',
+    'The Vedara', 'The Perch',
   ],
 };
 

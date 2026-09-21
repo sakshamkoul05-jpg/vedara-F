@@ -125,7 +125,7 @@ export function WeatherWidget() {
     >
       <div className="flex flex-col md:flex-row items-center gap-4 sm:gap-6">
         {/* Left: Current Weather */}
-        <div className="flex items-center gap-5 flex-shrink-0">
+        <div className="flex items-center gap-5 flex-shrink-0 min-w-0">
           <motion.div
             animate={{ y: [0, -4, 0] }}
             transition={{ duration: 3, repeat: Infinity }}
@@ -166,9 +166,14 @@ export function WeatherWidget() {
         {/* Divider */}
         <div className="hidden md:block w-px h-16" style={{ background: 'var(--clr-stone)' }} />
 
-        {/* Right: Forecast */}
-        <div className="hidden md:block flex-1 w-full md:w-auto">
-          <div className="flex gap-2 md:justify-end">
+        {/* Right: Forecast.
+            `min-w-0` lets this flex child shrink below its content width; without
+            it the five tiles overflowed the card and were clipped by the
+            container's `overflow-hidden`, so the later days went missing on
+            narrower desktop widths. `flex-wrap` gives them a second row rather
+            than cutting them off. */}
+        <div className="hidden md:block flex-1 min-w-0 w-full md:w-auto">
+          <div className="flex flex-wrap gap-2 md:justify-end">
             {weather.forecast.map((f, i) => {
               const FIcon = weatherIcons[f.icon] || Cloud;
               return (

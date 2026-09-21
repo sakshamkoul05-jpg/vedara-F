@@ -17,6 +17,22 @@ export interface Cottage {
   isActive?: boolean;
   sortOrder?: number;
   seasonalPricings?: SeasonalPricing[];
+
+  // --- Pricing engine v2.1 occupancy & bedding configuration ---
+  // Optional because records seeded before the pricing migration will not have
+  // them; callers fall back to `capacity`.
+  pricingCategory?: 'STUDIO' | 'BOUTIQUE' | 'PREMIUM' | 'SIGNATURE';
+  baseAdults?: number;
+  maxAdults?: number;
+  /** Total heads allowed, adults + children. */
+  maxOccupancy?: number;
+  allowsExtraMattress?: boolean;
+  extraMattressPrice?: number | null;
+  maxExtraMattresses?: number;
+  /** Public descriptor for the cottage cards (spec §12). */
+  publicDescriptor?: string;
+  /** Set by the availability check, not stored. */
+  isAvailable?: boolean;
 }
 
 export interface SeasonalPricing {

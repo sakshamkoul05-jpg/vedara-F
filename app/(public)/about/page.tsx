@@ -153,7 +153,7 @@ export default function AboutPage() {
                     </div>
                     <h3 className="font-serif text-xl text-foreground mb-3">The Gastronomy</h3>
                     <p className="text-muted-foreground leading-relaxed text-sm">
-                      Slow food philosophy at Café Charade — farm-to-table meals crafted from scratch using local mountain produce, Himachali delicacies, and artisan coffee.
+                      Slow food philosophy at The Perch — farm-to-table meals crafted from scratch using local mountain produce, Himachali delicacies, and artisan coffee.
                     </p>
                   </div>
                 </article>
@@ -173,6 +173,32 @@ export default function AboutPage() {
                   </div>
                 </article>
               </ScrollReveal>
+            </div>
+          </div>
+        </section>
+
+        {/* Philosophy — "What We Stand For" sits inside The Vedara Philosophy,
+            directly after "Built on Three Pillars". */}
+        <section className="section-padding section-dark">
+          <div className="vintage-container">
+            <ScrollReveal>
+              <div className="text-center max-w-3xl mx-auto mb-16">
+                <p className="text-gold-400 text-sm tracking-[0.2em] uppercase mb-4 font-sans">Philosophy</p>
+                <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-white mb-6">What We Stand For</h2>
+              </div>
+            </ScrollReveal>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {values.map((v, i) => (
+                <ScrollReveal key={v.title} delay={i * 0.1}>
+                  <article className="rounded-2xl p-6 text-center border border-white/8 transition-smooth h-full" style={{ background: 'rgba(255,255,255,0.05)' }}>
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary/25 to-primary/10 flex items-center justify-center mx-auto mb-4">
+                      <v.icon className="w-6 h-6 text-primary" />
+                    </div>
+                    <h3 className="font-serif text-lg text-white mb-2">{v.title}</h3>
+                    <p className="text-white/60 text-sm">{v.desc}</p>
+                  </article>
+                </ScrollReveal>
+              ))}
             </div>
           </div>
         </section>
@@ -316,7 +342,7 @@ export default function AboutPage() {
                 href="https://maps.google.com/maps?q=Ghiyagi+Jibhi+Himachal+Pradesh"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="vintage-button bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3.5 inline-flex items-center gap-2 shadow-lg"
+                className="cta-primary"
               >
                 <MapPin className="w-4 h-4" /> Open in Google Maps
               </a>
@@ -368,30 +394,6 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Philosophy */}
-      <section className="section-padding section-dark">
-        <div className="vintage-container">
-          <ScrollReveal>
-            <div className="text-center max-w-3xl mx-auto mb-16">
-              <p className="text-gold-400 text-sm tracking-[0.2em] uppercase mb-4 font-sans">Philosophy</p>
-              <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-white mb-6">What We Stand For</h2>
-            </div>
-          </ScrollReveal>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {values.map((v, i) => (
-              <ScrollReveal key={v.title} delay={i * 0.1}>
-                <article className="rounded-2xl p-6 text-center border border-white/8 transition-smooth h-full" style={{ background: 'rgba(255,255,255,0.05)' }}>
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary/25 to-primary/10 flex items-center justify-center mx-auto mb-4">
-                    <v.icon className="w-6 h-6 text-primary" />
-                  </div>
-                  <h3 className="font-serif text-lg text-white mb-2">{v.title}</h3>
-                  <p className="text-white/60 text-sm">{v.desc}</p>
-                </article>
-              </ScrollReveal>
-            ))}
-          </div>
-        </div>
-      </section>
     </>
   );
 }

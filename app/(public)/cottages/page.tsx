@@ -30,7 +30,17 @@ export default function CottagesPage() {
   const [checkOut, setCheckOut] = useState('');
   const [availabilityChecked, setAvailabilityChecked] = useState(false);
   const [checking, setChecking] = useState(false);
+  const [availabilityError, setAvailabilityError] = useState('');
+  // Occupancy is part of the availability question: only cottages that can
+  // actually hold the party should come back (spec 11).
+  const [adults, setAdults] = useState(2);
+  const [childAges, setChildAges] = useState<number[]>([]);
   const today = getToday();
+
+  const resetAvailability = () => {
+    setAvailabilityChecked(false);
+    setAvailabilityError('');
+  };
 
   const handleCheckInChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
@@ -51,23 +61,55 @@ export default function CottagesPage() {
 
   const handleCheckAvailability = useCallback(async () => {
     if (!checkIn || !checkOut) return;
+    if (childAges.some((a) => a < 0)) {
+      setAvailabilityError('Please select an age for every child.');
+      return;
+    }
+
     setChecking(true);
     setAvailabilityChecked(false);
+    setAvailabilityError('');
     try {
-      const res: any = await api.get(`/bookings/available-cottages?checkIn=${checkIn}&checkOut=${checkOut}`);
-      const data = Array.isArray(res.data) && res.data.length > 0 ? res.data.map((c: any) => ({
-        ...c,
-        pricePerNight: c.pricePerNight || FALLBACK_COTTAGES.find((f: any) => f.slug === c.slug)?.pricePerNight || 0,
-      })) : FALLBACK_COTTAGES;
+      const res: any = await api.get(
+        `/bookings/available-cottages?checkIn=${encodeURIComponent(checkIn)}&checkOut=${encodeURIComponent(checkOut)}`
+      );
+
+      if (!Array.isArray(res.data)) {
+        throw new Error('Unexpected response');
+      }
+
+      // Guests aged 12+ count as adults, so they affect which cottages fit.
+      const billableAdults = adults + childAges.filter((a) => a >= 12).length;
+      const totalGuests = adults + childAges.length;
+
+      const data = res.data.map((c: any) => {
+        const maxAdults = c.maxAdults ?? c.capacity ?? 2;
+        const maxOccupancy = c.maxOccupancy ?? maxAdults + 1;
+        const fitsParty = billableAdults <= maxAdults && totalGuests <= maxOccupancy;
+        return {
+          ...c,
+          pricePerNight:
+            c.pricePerNight ||
+            FALLBACK_COTTAGES.find((f: any) => f.slug === c.slug)?.pricePerNight ||
+            0,
+          fitsParty,
+          // A cottage too small for the party is not available to this guest,
+          // even if the dates are free.
+          isAvailable: c.isAvailable !== false && fitsParty,
+        };
+      });
+
       setCottages(data);
       setAvailabilityChecked(true);
     } catch {
-      setCottages(FALLBACK_COTTAGES);
-      setAvailabilityChecked(true);
+      // Previously this fell back to a hard-coded list where every cottage was
+      // marked available, so a failed check reported a false "all available".
+      setAvailabilityError('We could not check availability just now. Please try again.');
+      setAvailabilityChecked(false);
     } finally {
       setChecking(false);
     }
-  }, [checkIn, checkOut]);
+  }, [checkIn, checkOut, adults, childAges]);
 
   useEffect(() => {
     api.get('/cottages').then((res: any) => {
@@ -108,22 +150,100 @@ export default function CottagesPage() {
               <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div>
                   <label className="vintage-label">Check-in</label>
-                  <DatePicker value={checkIn} onChange={(v) => { setCheckIn(v); setAvailabilityChecked(false); if (checkOut && parseDate(checkOut) <= parseDate(v)) { setCheckOut(''); } }} min={today} />
+                  <DatePicker value={checkIn} onChange={(v) => { setCheckIn(v); resetAvailability(); if (checkOut && parseDate(checkOut) <= parseDate(v)) { setCheckOut(''); } }} min={today} />
                 </div>
                 <div>
                   <label className="vintage-label">Check-out</label>
-                  <DatePicker value={checkOut} onChange={(v) => { setCheckOut(v); setAvailabilityChecked(false); }} min={checkIn || today} />
+                  <DatePicker value={checkOut} onChange={(v) => { setCheckOut(v); resetAvailability(); }} min={checkIn || today} />
                 </div>
-                <div className="flex items-end">
-                  <Button variant="primary" size="md" className="w-full" onClick={handleCheckAvailability} disabled={!checkIn || !checkOut || checking}>
-                    {checking ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Checking...</> : 'Check Availability'}
-                  </Button>
+                <div>
+                  <label className="vintage-label" htmlFor="stays-adults">
+                    Adults <span aria-hidden="true" className="text-red-500">*</span>
+                  </label>
+                  <select
+                    id="stays-adults"
+                    required
+                    value={adults}
+                    onChange={(e) => { setAdults(parseInt(e.target.value)); resetAvailability(); }}
+                    className="vintage-input"
+                  >
+                    {[1, 2, 3, 4].map((n) => (
+                      <option key={n} value={n}>{n}</option>
+                    ))}
+                  </select>
                 </div>
-                <div className="flex items-end">
-                  <Link href="/booking" className="vintage-button-secondary w-full text-center">
-                    Quick Book
-                  </Link>
+                <div>
+                  <label className="vintage-label" htmlFor="stays-children">
+                    Children <span aria-hidden="true" className="text-red-500">*</span>
+                  </label>
+                  <select
+                    id="stays-children"
+                    required
+                    value={childAges.length}
+                    onChange={(e) => {
+                      const next = parseInt(e.target.value);
+                      setChildAges((prev) =>
+                        next > prev.length
+                          ? [...prev, ...Array(next - prev.length).fill(-1)]
+                          : prev.slice(0, next)
+                      );
+                      resetAvailability();
+                    }}
+                    className="vintage-input"
+                  >
+                    {[0, 1, 2, 3].map((n) => (
+                      <option key={n} value={n}>{n}</option>
+                    ))}
+                  </select>
                 </div>
+              </div>
+
+              {/* An age per child: it decides the child policy, the breakfast
+                  band and whether the guest counts as an adult. */}
+              {childAges.length > 0 && (
+                <div className="mt-4">
+                  <label className="vintage-label">
+                    Age of each child <span aria-hidden="true" className="text-red-500">*</span>
+                  </label>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    {childAges.map((age, i) => (
+                      <select
+                        key={i}
+                        required
+                        aria-label={`Age of child ${i + 1}`}
+                        value={age < 0 ? '' : age}
+                        onChange={(e) => {
+                          const v = parseInt(e.target.value);
+                          setChildAges((prev) => prev.map((a, idx) => (idx === i ? v : a)));
+                          resetAvailability();
+                        }}
+                        className={`vintage-input ${age < 0 ? 'border-amber-500' : ''}`}
+                      >
+                        <option value="" disabled>Child {i + 1} age</option>
+                        {Array.from({ length: 18 }, (_, n) => n).map((n) => (
+                          <option key={n} value={n}>
+                            {n === 0 ? 'Under 1' : `${n} year${n === 1 ? '' : 's'}`}
+                          </option>
+                        ))}
+                      </select>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              <div className="mt-4">
+                <Button
+                  variant="primary"
+                  size="md"
+                  className="w-full sm:w-auto sm:min-w-[220px]"
+                  onClick={handleCheckAvailability}
+                  disabled={!checkIn || !checkOut || checking || childAges.some((a) => a < 0)}
+                >
+                  {checking ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Checking...</> : 'Check Availability'}
+                </Button>
+                {availabilityError && (
+                  <p className="text-sm text-red-500 mt-3">{availabilityError}</p>
+                )}
               </div>
             </div>
           </ScrollReveal>
@@ -151,6 +271,8 @@ export default function CottagesPage() {
                 <div className="flex items-center justify-between mb-6">
                   <p className="text-sm text-muted-foreground">
                     {cottages.filter((c: any) => c.isAvailable).length} of {cottages.length} cottages available for these dates
+                    {' '}({adults} {adults === 1 ? 'adult' : 'adults'}
+                    {childAges.length > 0 ? `, ${childAges.length} ${childAges.length === 1 ? 'child' : 'children'}` : ''})
                   </p>
                   <button onClick={() => { setAvailabilityChecked(false); api.get('/cottages').then((res: any) => { const data = Array.isArray(res.data) && res.data.length > 0 ? res.data.map((c: any) => ({ ...c, pricePerNight: c.pricePerNight || FALLBACK_COTTAGES.find((f: any) => f.slug === c.slug)?.pricePerNight || 0 })) : FALLBACK_COTTAGES; setCottages(data); }).catch(() => setCottages(FALLBACK_COTTAGES)); }} className="text-sm text-gold-600 dark:text-gold-400 hover:underline">
                     Show all cottages

@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils';
 import { useAuthStore } from '@/store/auth';
 import {
   LayoutDashboard, Calendar, Coffee, Settings, BarChart3, LogOut, Mountain, ChevronLeft,
-  Users, HelpCircle, UserPlus, Package
+  Users, HelpCircle, UserPlus, Package, IndianRupee
 } from 'lucide-react';
 
 const adminNav = [
@@ -16,6 +16,7 @@ const adminNav = [
   { href: '/admin/dashboard?tab=cafe', label: 'Cafe Orders', icon: Coffee },
   { href: '/admin/staff', label: 'Staff', icon: UserPlus },
   { href: '/admin/packages', label: 'Packages', icon: Package },
+  { href: '/admin/pricing', label: 'Pricing', icon: IndianRupee },
   { href: '/admin/analytics', label: 'Analytics', icon: BarChart3 },
   { href: '/admin/cms', label: 'CMS', icon: Settings },
 ];
@@ -57,8 +58,10 @@ export function AdminSidebar({ isOpen, onClose }: { isOpen?: boolean; onClose?: 
           <Image
             src="/images/vedara-logo.jpeg"
             alt="Vedara"
-            width={36}
-            height={36}
+            width={108}
+            height={108}
+            sizes="36px"
+            quality={90}
             className="w-full h-full object-cover"
           />
         </div>

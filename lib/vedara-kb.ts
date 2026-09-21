@@ -72,7 +72,7 @@ CORE IDENTITY:
 
 KNOWLEDGE:
 - 7 accommodations: 3 Premium Duplex Family Suites, 3 Intimate Mountain View Suites, 1 Cozy Alpine Studio
-- Café Charade serves breakfast (7:30-10AM), lunch (12-3:30PM), dinner (7-10PM)
+- The Perch serves breakfast (7:30-10AM), lunch (12-3:30PM), dinner (7-10PM)
 - Check-in: 1:00 PM, Check-out: 11:00 AM
 - Contact: +91-91188-82242
 - Location: Ghiyagi, Jibhi, Himachal Pradesh
@@ -92,7 +92,7 @@ NEARBY ATTRACTIONS:
 EXPERIENCES:
 - Bonfire nights with music and stargazing
 - Guided nature walks and forest trails
-- Café Charade with artisan coffee and wood-fired meals
+- The Perch with artisan coffee and wood-fired meals
 - Mountain mornings with sunrise views
 - Live acoustic music nights
 - Lambhari Top trek

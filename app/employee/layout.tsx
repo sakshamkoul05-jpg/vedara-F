@@ -40,8 +40,10 @@ export default function EmployeeLayout({ children }: { children: React.ReactNode
                 <Image
                   src="/images/vedara-logo.jpeg"
                   alt="Vedara"
-                  width={32}
-                  height={32}
+                  width={96}
+                  height={96}
+                  sizes="32px"
+                  quality={90}
                   className="w-full h-full object-cover"
                 />
               </div>

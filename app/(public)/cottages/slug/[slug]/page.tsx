@@ -106,10 +106,10 @@ export default function CottageBySlugPage() {
     return (
       <div className="pt-32 vintage-container pb-20 text-center">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-          <Image src="/images/vedara-logo.jpeg" alt="The Vedara" width={96} height={96} className="w-20 h-20 object-contain mx-auto mb-6 rounded-xl" />
+          <Image src="/images/vedara-logo.jpeg" alt="The Vedara" width={240} height={240} sizes="80px" quality={90} className="w-20 h-20 object-contain mx-auto mb-6 rounded-xl" />
           <h1 className="section-title mb-4">Cottage Not Found</h1>
           <p className="text-muted-foreground mb-8">The cottage you are looking for does not exist or has been removed.</p>
-          <Link href="/cottages" className="vintage-button-primary text-base px-8 py-4">
+          <Link href="/cottages" className="cta-primary cta-lg">
             Back to Cottages
           </Link>
         </motion.div>
@@ -396,9 +396,9 @@ export default function CottageBySlugPage() {
 
                           <Link
                             href={`/booking?cottageId=${cottage.id}&checkIn=${checkIn}&checkOut=${checkOut}`}
-                            className="vintage-button-primary text-base px-8 py-4 w-full text-center block"
+                            className="cta-primary cta-lg w-full"
                           >
-                            Book Now - {formatPrice(totalAmount)}
+                            Book Your Stay — {formatPrice(totalAmount)}
                           </Link>
                         </motion.div>
                       )}

@@ -153,26 +153,26 @@ export async function POST(req: NextRequest) {
     }
 
     // === CAFÉ / FOOD ===
-    else if (/cafe|café|menu|food|eat|breakfast|lunch|dinner|coffee|drink|meal|hungry|restaurant|charade/i.test(lower)) {
+    else if (/cafe|café|menu|food|eat|breakfast|lunch|dinner|coffee|drink|meal|hungry|restaurant|perch/i.test(lower)) {
       if (/breakfast|morning/i.test(lower)) {
         const breakfast = kb.menu.find((c: any) => c.name?.toLowerCase().includes('breakfast'));
         if (breakfast) {
           const items = (breakfast.items || []).slice(0, 8).map((i: any) => `• ${i.name} — ₹${i.price}`).join('\n');
-          reply = `☀️ Café Charade — Breakfast (7:30 AM – 10:00 AM)\n\n${items}\n\nAll breakfasts complimentary with your stay! Full menu at /cafe`;
+          reply = `☀️ The Perch — Breakfast (7:30 AM – 10:00 AM)\n\n${items}\n\nAll breakfasts complimentary with your stay! Full menu at /cafe`;
         } else {
-          reply = 'Breakfast served 7:30-10:00 AM at Café Charade, complimentary with every stay. Full menu at /cafe';
+          reply = 'Breakfast served 7:30-10:00 AM at The Perch, complimentary with every stay. Full menu at /cafe';
         }
       } else if (/coffee|tea|drink|beverage/i.test(lower)) {
         const bev = kb.menu.find((c: any) => c.name?.toLowerCase().includes('beverage'));
         if (bev) {
           const items = (bev.items || []).slice(0, 8).map((i: any) => `• ${i.name} — ₹${i.price}`).join('\n');
-          reply = `☕ Café Charade — Beverages:\n\n${items}\n\nHimalayan Cold Coffee and Filter Coffee are guest favourites! /cafe`;
+          reply = `☕ The Perch — Beverages:\n\n${items}\n\nHimalayan Cold Coffee and Filter Coffee are guest favourites! /cafe`;
         } else {
-          reply = 'Artisan coffees, herbal teas, fresh juices at Café Charade. Full menu at /cafe ☕';
+          reply = 'Artisan coffees, herbal teas, fresh juices at The Perch. Full menu at /cafe ☕';
         }
       } else {
         const cats = kb.menu.map((c: any) => `• ${c.name} (${(c.items || []).length} items)`).join('\n');
-        reply = `🍽️ Café Charade Menu:\n\n${cats}\n\n📍 Hours: Breakfast 7:30-10AM | Lunch 12-3:30PM | Dinner 7-10PM\nBrowse & order at /cafe`;
+        reply = `🍽️ The Perch Menu:\n\n${cats}\n\n📍 Hours: Breakfast 7:30-10AM | Lunch 12-3:30PM | Dinner 7-10PM\nBrowse & order at /cafe`;
       }
     }
 
@@ -287,7 +287,7 @@ export async function POST(req: NextRequest) {
 
     // === HELP ===
     else if (/help|what.*can.*you|what.*do|feature/i.test(lower)) {
-      reply = `🤖 I can help with:\n\n🏠 Cottage info & pricing\n🍽️ Café Charade menu\n📅 Booking & availability\n🚌 Transport (bus, taxi, flights, trains)\n📍 Directions & distances\n🌤️ Live weather & best seasons\n🚨 Emergency contacts (police, hospital)\n💰 ATM & cash info\n📶 Mobile network & WiFi\n🗺️ Nearby attractions & treks\n⭐ Guest reviews\n🎒 Activities & wellness\n📞 Contact info\n🎁 Offers\n\nJust ask me anything!`;
+      reply = `🤖 I can help with:\n\n🏠 Cottage info & pricing\n🍽️ The Perch menu\n📅 Booking & availability\n🚌 Transport (bus, taxi, flights, trains)\n📍 Directions & distances\n🌤️ Live weather & best seasons\n🚨 Emergency contacts (police, hospital)\n💰 ATM & cash info\n📶 Mobile network & WiFi\n🗺️ Nearby attractions & treks\n⭐ Guest reviews\n🎒 Activities & wellness\n📞 Contact info\n🎁 Offers\n\nJust ask me anything!`;
     }
 
     // === INTELLIGENT FALLBACK ===

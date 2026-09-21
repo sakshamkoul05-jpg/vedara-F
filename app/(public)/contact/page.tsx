@@ -8,23 +8,29 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { endpoints } from '@/lib/api';
 import { Mail, Phone, MapPin, Clock, Send, Check } from 'lucide-react';
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
+import { validateEmail, validateName, validatePhone, sanitizeNameInput } from '@/lib/validation';
 
 export default function ContactPage() {
   const [form, setForm] = useState({ name: '', email: '', phone: '', subject: '', message: '' });
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [errors, setErrors] = useState<{ email?: string; phone?: string }>({});
-
-  const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const phoneRe = /^(?:\+91|0)?[6-9]\d{9}$/;
+  const [errors, setErrors] = useState<{ name?: string; email?: string; phone?: string }>({});
+  // Dial code of the country picked in the phone field, so the number can be
+  // validated against the right national length.
+  const [dialCode, setDialCode] = useState('91');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const next: { email?: string; phone?: string } = {};
-    if (!emailRe.test(form.email)) next.email = 'Please enter a valid email address.';
-    if (form.phone && !phoneRe.test(form.phone.replace(/[\s-]/g, ''))) {
-      next.phone = 'Enter a valid 10-digit Indian mobile number.';
-    }
+    const next: { name?: string; email?: string; phone?: string } = {
+      name: validateName(form.name),
+      email: validateEmail(form.email),
+      phone: validatePhone(form.phone, { required: false, dialCode }),
+    };
+    Object.keys(next).forEach((k) => {
+      if (!next[k as keyof typeof next]) delete next[k as keyof typeof next];
+    });
     setErrors(next);
     if (Object.keys(next).length > 0) return;
     setLoading(true);
@@ -71,17 +77,63 @@ export default function ContactPage() {
                     <div className="grid grid-cols-2 gap-4">
                       <div>
                         <label className="vintage-label">Name *</label>
-                        <Input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required />
+                        <Input
+                          value={form.name}
+                          onChange={(e) => {
+                            setForm({ ...form, name: sanitizeNameInput(e.target.value) });
+                            if (errors.name) setErrors((prev) => ({ ...prev, name: undefined }));
+                          }}
+                          onBlur={() => setErrors((prev) => ({ ...prev, name: validateName(form.name) }))}
+                          placeholder="Your full name"
+                          autoComplete="name"
+                          required
+                        />
+                        {errors.name && <p className="text-xs text-destructive mt-1">{errors.name}</p>}
                       </div>
                       <div>
                         <label className="vintage-label">Email *</label>
-                        <Input type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} required />
+                        <Input
+                          type="email"
+                          value={form.email}
+                          onChange={(e) => {
+                            setForm({ ...form, email: e.target.value });
+                            if (errors.email) setErrors((prev) => ({ ...prev, email: undefined }));
+                          }}
+                          onBlur={() => setErrors((prev) => ({ ...prev, email: validateEmail(form.email) }))}
+                          placeholder="you@example.com"
+                          autoComplete="email"
+                          required
+                        />
                         {errors.email && <p className="text-xs text-destructive mt-1">{errors.email}</p>}
                       </div>
                     </div>
                       <div>
                         <label className="vintage-label">Phone</label>
-                        <Input type="tel" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value.replace(/[^\d+\-\s]/g, '') })} placeholder="+91 99999 99999" />
+                        {/* Guests are international, so the number is entered with a
+                            country selector rather than assuming a 10-digit Indian
+                            mobile. */}
+                        <PhoneInput
+                          country="in"
+                          preferredCountries={['in', 'gb', 'us', 'ae', 'au', 'sg']}
+                          enableSearch
+                          value={form.phone}
+                          onChange={(value, country: any) => {
+                            setDialCode(country?.dialCode || '');
+                            setForm({ ...form, phone: value });
+                            if (errors.phone) setErrors((prev) => ({ ...prev, phone: undefined }));
+                          }}
+                          onBlur={() =>
+                            setErrors((prev) => ({
+                              ...prev,
+                              phone: validatePhone(form.phone, { required: false, dialCode }),
+                            }))
+                          }
+                          inputProps={{ name: 'phone', autoComplete: 'tel' }}
+                          containerClass="vedara-phone-input"
+                          inputClass="!w-full !h-11 !bg-transparent !text-foreground !border-border"
+                          buttonClass="!bg-transparent !border-border"
+                          dropdownClass="!bg-background !text-foreground"
+                        />
                         {errors.phone && <p className="text-xs text-destructive mt-1">{errors.phone}</p>}
                       </div>
                     <div>
@@ -149,7 +201,7 @@ export default function ContactPage() {
                     <div>
                       <h3 className="font-medium text-foreground">Reception Hours</h3>
                       <p className="text-muted-foreground text-sm">Daily: 8:00 AM – 10:30 PM</p>
-                      <h3 className="font-medium text-foreground mt-2">Café Charade</h3>
+                      <h3 className="font-medium text-foreground mt-2">The Perch</h3>
                       <p className="text-muted-foreground text-sm">Breakfast: 7:30 AM – 10:00 AM</p>
                       <p className="text-muted-foreground text-sm">Lunch: 12:00 PM – 3:30 PM</p>
                       <p className="text-muted-foreground text-sm">Dinner: 7:00 PM – 10:00 PM</p>

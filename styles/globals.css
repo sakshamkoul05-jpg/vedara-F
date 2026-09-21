@@ -633,3 +633,158 @@ html.lenis, html.lenis body {
     transition: none !important;
   }
 }
+
+/* ===========================================================================
+   Light-mode consistency for the "dark panel" sections
+   ===========================================================================
+   `.section-dark` hard-coded a navy background for both themes, so in light
+   mode the footer and several page sections stayed dark while the rest of the
+   page turned light. Give those panels a warm light surface in light mode, and
+   remap the hard-coded white text/border/background utilities their children
+   use, so the light theme is applied consistently across the page.
+
+   Only light mode is touched here; `.dark .section-dark` above is unchanged.
+   Marked `!important` because Tailwind emits its utilities in a later cascade
+   layer, which would otherwise win over these rules whatever their specificity.
+   Solid brand-coloured buttons keep their white text, which is why the rules
+   exclude those backgrounds. Translucent `bg-white/N` tints are remapped to a
+   dark tint above, so text on them must flip too.
+   ======================================================================== */
+@layer components {
+  html:not(.dark) .section-dark {
+    background-color: #F5F2EE !important;
+    background-image:
+      radial-gradient(58% 48% at 82% 6%, rgba(217, 168, 90, 0.10), transparent 60%),
+      radial-gradient(50% 56% at 8% 100%, rgba(127, 178, 149, 0.08), transparent 62%),
+      linear-gradient(180deg, rgba(28, 43, 58, 0.03), rgba(28, 43, 58, 0));
+    color: #2A2118 !important;
+  }
+
+  html:not(.dark) .section-dark .eyebrow {
+    color: rgba(151, 111, 45, 0.95) !important;
+  }
+
+  html:not(.dark) .section-dark .eyebrow::before {
+    background-color: rgba(151, 111, 45, 0.5) !important;
+  }
+
+  /* Text. Opacity variants are mapped to matching ink opacities so the visual
+     hierarchy of the original design survives the theme flip. */
+  html:not(.dark) .section-dark .text-white:not([class*="bg-primary"]):not([class*="bg-gold-"]):not([class*="bg-clay-"]):not([class*="bg-earth-"]):not([class*="bg-gradient"]) {
+    color: #2A2118 !important;
+  }
+
+  html:not(.dark) .section-dark [class*="text-white/9"]:not([class*="bg-primary"]):not([class*="bg-gold-"]):not([class*="bg-clay-"]):not([class*="bg-earth-"]):not([class*="bg-gradient"]) {
+    color: rgba(42, 33, 24, 0.92) !important;
+  }
+
+  html:not(.dark) .section-dark [class*="text-white/8"]:not([class*="bg-primary"]):not([class*="bg-gold-"]):not([class*="bg-clay-"]):not([class*="bg-earth-"]):not([class*="bg-gradient"]) {
+    color: rgba(42, 33, 24, 0.86) !important;
+  }
+
+  html:not(.dark) .section-dark [class*="text-white/7"]:not([class*="bg-primary"]):not([class*="bg-gold-"]):not([class*="bg-clay-"]):not([class*="bg-earth-"]):not([class*="bg-gradient"]) {
+    color: rgba(42, 33, 24, 0.78) !important;
+  }
+
+  html:not(.dark) .section-dark [class*="text-white/6"]:not([class*="bg-primary"]):not([class*="bg-gold-"]):not([class*="bg-clay-"]):not([class*="bg-earth-"]):not([class*="bg-gradient"]) {
+    color: rgba(42, 33, 24, 0.7) !important;
+  }
+
+  html:not(.dark) .section-dark [class*="text-white/5"]:not([class*="bg-primary"]):not([class*="bg-gold-"]):not([class*="bg-clay-"]):not([class*="bg-earth-"]):not([class*="bg-gradient"]) {
+    color: rgba(42, 33, 24, 0.62) !important;
+  }
+
+  html:not(.dark) .section-dark [class*="text-white/4"]:not([class*="bg-primary"]):not([class*="bg-gold-"]):not([class*="bg-clay-"]):not([class*="bg-earth-"]):not([class*="bg-gradient"]) {
+    color: rgba(42, 33, 24, 0.55) !important;
+  }
+
+  /* Gold accents are chosen for dark panels; on the light surface they drop to
+     roughly 1.5:1 against the background. Use a deeper gold in light mode. */
+  html:not(.dark) .section-dark [class*="text-gold-3"],
+  html:not(.dark) .section-dark [class*="text-gold-4"] {
+    color: #8A6420 !important;
+  }
+
+  html:not(.dark) .section-dark [class*="text-primary"]:not([class*="bg-"]) {
+    color: #2E5A3E !important;
+  }
+
+  /* Hairlines and tinted surfaces. */
+  html:not(.dark) .section-dark[class*="border-white"],
+  html:not(.dark) .section-dark [class*="border-white"] {
+    border-color: rgba(28, 43, 58, 0.12) !important;
+  }
+
+  html:not(.dark) .section-dark [class*="bg-white/1"],
+  html:not(.dark) .section-dark [class*="bg-white/5"] {
+    background-color: rgba(28, 43, 58, 0.04) !important;
+  }
+
+  html:not(.dark) .section-dark [class*="divide-white"] > * + * {
+    border-color: rgba(28, 43, 58, 0.12) !important;
+  }
+
+  /* The footer sets `text-white` on its root, which would otherwise cascade
+     into every child that does not set its own colour. */
+  html:not(.dark) footer.section-dark {
+    color: #2A2118 !important;
+  }
+}
+
+/* ===========================================================================
+   Modal viewport height
+   ===========================================================================
+   `vh` is measured against the full viewport including mobile browser chrome,
+   so a 90vh modal could extend past the visible area and push its footer — and
+   with it the "Next" button — off screen. `dvh` tracks the actually-visible
+   viewport. The `vh` rule stays as a fallback for browsers without `dvh`.
+   ======================================================================== */
+.modal-viewport {
+  max-height: 90vh;
+}
+
+@supports (max-height: 100dvh) {
+  .modal-viewport {
+    max-height: 90dvh;
+  }
+}
+
+/* ===========================================================================
+   Standardised call-to-action buttons
+   ===========================================================================
+   The main booking CTAs had drifted apart: four labels ("Book Your Stay",
+   "Book Stay", "Book Now", "Begin Your Journey"), three colour schemes, and
+   four different hover effects. These two classes are the canonical styles —
+   `.cta-primary` on light surfaces, `.cta-on-dark` over photography and dark
+   panels — and they share the same lift-and-deepen hover so the interaction
+   feels identical wherever a guest meets it.
+   ======================================================================== */
+@layer components {
+  .cta-primary,
+  .cta-on-dark {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl font-sans font-semibold;
+    @apply px-8 py-3.5 text-sm;
+    @apply transition-all duration-300 ease-out;
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold-400 focus-visible:ring-offset-2;
+  }
+
+  .cta-primary {
+    @apply bg-primary text-primary-foreground shadow-soft;
+    @apply hover:bg-primary/90 hover:shadow-float hover:-translate-y-0.5;
+  }
+
+  /* Over hero imagery and the dark panels: a light chip that keeps the same
+     lift on hover rather than inverting to a different colour. */
+  .cta-on-dark {
+    @apply bg-white text-[#1C2B3A] shadow-lg ring-1 ring-white/40;
+    @apply hover:bg-gold-50 hover:shadow-xl hover:-translate-y-0.5 hover:ring-gold-300/70;
+  }
+
+  .cta-sm {
+    @apply px-5 py-2.5 text-xs;
+  }
+
+  .cta-lg {
+    @apply px-10 py-4 text-base;
+  }
+}

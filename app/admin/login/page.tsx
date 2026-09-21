@@ -68,7 +68,7 @@ export default function AdminLoginPage() {
         <div className="absolute inset-0 bg-gradient-to-br from-forest-800 to-forest-600" />
         <div className="absolute inset-0 opacity-5" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=60)', backgroundSize: 'cover' }} />
         <div className="relative z-10 px-16 text-center">
-          <Image src="/images/vedara-logo.jpeg" alt="Vedara" width={80} height={80} className="mx-auto mb-8 rounded-lg opacity-70" />
+          <Image src="/images/vedara-logo.jpeg" alt="Vedara" width={240} height={240} sizes="80px" quality={90} className="mx-auto mb-8 rounded-lg opacity-70 w-20 h-20" />
           <h1 className="font-serif text-4xl text-alabaster mb-4 leading-tight">The Vedara</h1>
           <p className="text-alabaster/60 text-lg font-light">Himalayan Boutique Retreat</p>
           <div className="mt-12 flex items-center justify-center gap-8 text-alabaster/40 text-xs tracking-widest uppercase">

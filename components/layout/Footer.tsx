@@ -16,7 +16,7 @@ export function Footer() {
           <div className="lg:col-span-2">
             <Link href="/" className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0">
-                <Image src="/images/vedara-logo.jpeg" alt="The Vedara" width={80} height={80} className="w-full h-full object-cover" />
+                <Image src="/images/vedara-logo.jpeg" alt="The Vedara" width={120} height={120} sizes="40px" quality={90} className="w-full h-full object-cover" />
               </div>
               <span className="font-serif text-xl font-bold text-white">The Vedara – Himalayan Boutique Retreat</span>
             </Link>
@@ -61,7 +61,7 @@ export function Footer() {
             <ul className="space-y-3">
               <li><Link href="/about" className="text-sm text-white/70 hover:text-white transition-colors duration-500">About Us</Link></li>
               <li><Link href="/cottages" className="text-sm text-white/70 hover:text-white transition-colors duration-500">Our Stays</Link></li>
-              <li><Link href="/cafe" className="text-sm text-white/70 hover:text-white transition-colors duration-500">Café Charade</Link></li>
+              <li><Link href="/cafe" className="text-sm text-white/70 hover:text-white transition-colors duration-500">The Perch</Link></li>
               <li><Link href="/gallery" className="text-sm text-white/70 hover:text-white transition-colors duration-500">Gallery</Link></li>
               <li><Link href="/#how-to-reach" className="text-sm text-white/70 hover:text-white transition-colors duration-500">How to Reach</Link></li>
             </ul>
@@ -82,7 +82,7 @@ export function Footer() {
                 <Instagram className="w-4 h-4" />
               </a>
             </div>
-            <Link href="/booking" className="vintage-button-secondary text-xs px-5 py-2.5 w-full text-center block mt-4">
+            <Link href="/booking" className="cta-primary cta-sm w-full mt-4">
               Book Your Stay
             </Link>
             <Link href="/admin/login" className="text-xs text-white/40 hover:text-white/60 transition-colors mt-3 block text-center">

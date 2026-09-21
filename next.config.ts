@@ -1,14 +1,41 @@
 import type { NextConfig } from 'next';
 
+// Supabase project origin. Derived from the public env var so that pointing the
+// app at a different project does not silently break CSP.
+const SUPABASE_ORIGIN = (() => {
+  const raw = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://ynwczlfkskiwtitwyggq.supabase.co';
+  try {
+    return new URL(raw).origin;
+  } catch {
+    return 'https://ynwczlfkskiwtitwyggq.supabase.co';
+  }
+})();
+
+const SUPABASE_WS_ORIGIN = SUPABASE_ORIGIN.replace(/^https:/, 'wss:');
+
 const ContentSecurityPolicy = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://checkout.razorpay.com https://fonts.googleapis.com https://maps.googleapis.com",
+  // cdn.razorpay.com serves the risk-detection bundle that checkout.js pulls in.
+  "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://checkout.razorpay.com https://cdn.razorpay.com https://fonts.googleapis.com https://maps.googleapis.com",
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
   "font-src 'self' https://fonts.gstatic.com",
   "img-src 'self' data: blob: https: http:",
   "media-src 'self' https:",
-  "connect-src 'self' https://vedara-backend-production.up.railway.app wss://vedara-backend-production.up.railway.app https://vedara-b-production.up.railway.app wss://vedara-b-production.up.railway.app https://maps.googleapis.com https://maps.gstatic.com",
-  "frame-src 'self' https://checkout.razorpay.com",
+  [
+    'connect-src',
+    "'self'",
+    // The site talks to Supabase directly (REST + realtime).
+    SUPABASE_ORIGIN,
+    SUPABASE_WS_ORIGIN,
+    'https://api.razorpay.com',
+    'https://lumberjack.razorpay.com',
+    'https://api.openweathermap.org',
+    'https://api.postalpincode.in',
+    'https://maps.googleapis.com',
+    'https://maps.gstatic.com',
+  ].join(' '),
+  // Razorpay checkout frames api.razorpay.com during the payment handshake.
+  "frame-src 'self' https://checkout.razorpay.com https://api.razorpay.com",
   "object-src 'none'",
   "base-uri 'self'",
   "form-action 'self'",

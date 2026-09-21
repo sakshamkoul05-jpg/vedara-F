@@ -118,23 +118,23 @@ export function TripPlanner() {
             activities: [
               { time: '1:00 PM', activity: 'Arrive & settle into The Vedara', icon: 'Compass', location: 'The Vedara' },
               { time: '3:00 PM', activity: 'Walk to Jibhi Waterfall', icon: 'MapPin', location: 'Jibhi Waterfall' },
-              { time: '5:30 PM', activity: 'Sunset coffee at Café Charade', icon: 'Coffee', location: 'Café Charade' },
+              { time: '5:30 PM', activity: 'Sunset coffee at The Perch', icon: 'Coffee', location: 'The Perch' },
               { time: '8:00 PM', activity: 'Bonfire night under the stars', icon: 'Star', location: 'The Vedara' },
             ],
           },
           {
             day: 'Day 2 – Mountain Adventures',
             activities: [
-              { time: '7:30 AM', activity: 'Breakfast at Café Charade', icon: 'Coffee', location: 'Café Charade' },
+              { time: '7:30 AM', activity: 'Breakfast at The Perch', icon: 'Coffee', location: 'The Perch' },
               { time: '9:30 AM', activity: 'Drive to Jalori Pass', icon: 'Mountain', location: 'Jalori Pass' },
               { time: '12:00 PM', activity: 'Trek to Serolsar Lake', icon: 'TreePine', location: 'Serolsar Lake' },
-              { time: '7:00 PM', activity: 'Dinner at Café Charade', icon: 'Coffee', location: 'Café Charade' },
+              { time: '7:00 PM', activity: 'Dinner at The Perch', icon: 'Coffee', location: 'The Perch' },
             ],
           },
         ],
         tips: [
           'Book Jalori Pass for clear mornings.',
-          'Try the Himalayan Cold Coffee at Café Charade.',
+          'Try the Himalayan Cold Coffee at The Perch.',
           'Carry cash — ATMs are limited in Jibhi.',
           'Download offline maps for treks.',
         ],
@@ -160,14 +160,19 @@ export function TripPlanner() {
 
   return (
     <>
+      {/* Floating trigger. This used to sit in normal document flow at the very
+          bottom of the page, so it only appeared once the guest had scrolled all
+          the way down. It is now pinned and visible throughout.
+          Offset above the chatbot bubble, which occupies bottom-6 right-6. */}
       <motion.button
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         onClick={() => setIsOpen(true)}
-        className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-amber-500 to-orange-600 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-shadow"
+        aria-label="Plan my trip"
+        className="fixed bottom-24 right-6 z-[100] inline-flex items-center gap-2 px-5 py-3 bg-gradient-to-r from-amber-500 to-orange-600 text-white rounded-full sm:rounded-xl font-semibold shadow-lg hover:shadow-xl transition-shadow"
       >
-        <Sparkles className="w-5 h-5" />
-        Plan My Trip
+        <Sparkles className="w-5 h-5 shrink-0" />
+        <span className="hidden sm:inline">Plan My Trip</span>
       </motion.button>
 
       <AnimatePresence>
@@ -176,14 +181,14 @@ export function TripPlanner() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[110] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4"
+            className="fixed inset-0 z-[200] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4"
             onClick={(e) => { if (e.target === e.currentTarget) setIsOpen(false); }}
           >
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="w-full max-w-2xl max-h-[90vh] bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl overflow-hidden flex flex-col"
+              className="w-full max-w-2xl modal-viewport bg-white dark:bg-zinc-900 rounded-2xl shadow-2xl overflow-hidden flex flex-col"
             >
               {/* Header */}
               <div className="bg-gradient-to-r from-amber-500 to-orange-600 text-white px-6 py-4 flex items-center justify-between shrink-0">

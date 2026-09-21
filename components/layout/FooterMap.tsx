@@ -41,12 +41,18 @@ export function FooterMap() {
   }, []);
 
   return (
-    <div
-      ref={ref}
-      className="w-full bg-sand-200"
-      style={{ height: 160 }}
-      role="img"
-      aria-label="The Vedara Retreat location map"
-    />
+    // Leaflet's own stylesheet gives its panes and controls z-index values of
+    // 400-1000, which would otherwise paint over page overlays such as the trip
+    // planner and the chatbot. `isolate` traps those values in this element's
+    // own stacking context.
+    <div className="relative isolate z-0 overflow-hidden">
+      <div
+        ref={ref}
+        className="w-full bg-sand-200"
+        style={{ height: 160 }}
+        role="img"
+        aria-label="The Vedara Retreat location map"
+      />
+    </div>
   );
 }
