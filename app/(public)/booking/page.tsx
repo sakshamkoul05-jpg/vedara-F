@@ -24,6 +24,7 @@ import 'react-phone-input-2/lib/style.css';
 import { DatePicker } from '@/components/ui/DatePicker';
 import { fetchPublicPricing, type PublicPricing } from '@/lib/from-rates';
 import { markVisitConverted } from '@/components/analytics/PageViewTracker';
+import { useInquiryCapture } from '@/lib/follow-up/useInquiryCapture';
 import { childBreakfastBeddingCopy, PRICING_DISCLAIMER, RATE_FOOTNOTE } from '@/lib/pricing/customer-copy';
 
 const FALLBACK_COTTAGES: Cottage[] = [
@@ -143,6 +144,25 @@ export default function BookingPage() {
   const [stepLoading, setStepLoading] = useState(false);
   const [bookingData, setBookingData] = useState<any>(null);
   const [paymentLoading, setPaymentLoading] = useState(false);
+
+  /**
+   * Records the guest as an open enquiry while they fill the form, so that
+   * someone who stops halfway can still be followed up. Abandonment has no
+   * event of its own — they simply leave — so the row has to exist before it.
+   */
+  const inquiry = useInquiryCapture({
+    source: 'BOOKING_FORM',
+    step,
+    name: guestName,
+    email: guestEmail,
+    phone: guestPhone,
+    checkIn,
+    checkOut,
+    adults,
+    children,
+    cottageId: selectedCottage,
+    quotedAmount: quote?.total ?? null,
+  });
   const [dateError, setDateError] = useState('');
   const [couponInput, setCouponInput] = useState('');
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
@@ -395,6 +415,7 @@ export default function BookingPage() {
       // about the total is sent from here.
       const res = await api.post('/bookings', {
         guestName, guestEmail, guestPhone,
+        inquiryId: inquiry.id,
         cottageId: selectedCottage,
         checkIn, checkOut,
         adults,

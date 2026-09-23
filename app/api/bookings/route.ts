@@ -30,6 +30,8 @@ const bookingSchema = z.object({
   idProof: z.string().trim().max(100).optional().nullable(),
   specialRequests: z.string().trim().max(1000).optional().nullable(),
   source: z.string().trim().max(40).default('WEBSITE'),
+  /** The open enquiry this booking came from, if the form recorded one. */
+  inquiryId: z.string().min(1).optional().nullable(),
 });
 
 const HOLD_MINUTES = Number(process.env.BOOKING_HOLD_MINUTES ?? 15);
@@ -165,6 +167,23 @@ export async function POST(request: Request) {
 
     if (couponId && quote.couponCode) {
       await recordCouponUse(supabase, couponId, guestKey, booking.id);
+    }
+
+    // Close the enquiry here rather than from the browser: a guest who closes
+    // the tab the moment payment opens would otherwise keep getting told their
+    // cottage is still free. The worker checks this status before every send.
+    if (input.inquiryId) {
+      const { error: inquiryError } = await supabase
+        .from('Inquiry')
+        .update({
+          status: 'CONVERTED',
+          bookingId: booking.id,
+          convertedAt: nowIso(),
+          updatedAt: nowIso(),
+        })
+        .eq('id', input.inquiryId)
+        .eq('status', 'OPEN');
+      if (inquiryError) console.error('Inquiry conversion failed:', inquiryError.message);
     }
 
     return NextResponse.json({ data: { booking, quote } }, { status: 201 });
