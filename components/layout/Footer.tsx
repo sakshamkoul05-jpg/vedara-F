@@ -15,8 +15,8 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8">
           <div className="lg:col-span-2">
             <Link href="/" className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0">
-                <Image src="/images/vedara-logo.jpeg" alt="The Vedara" width={120} height={120} sizes="40px" quality={90} className="w-full h-full object-cover" />
+              <div className="w-12 h-12 rounded-full overflow-hidden flex-shrink-0">
+                <Image src="/images/vedara-logo.jpeg" alt="The Vedara" width={144} height={144} sizes="48px" quality={90} className="w-full h-full object-cover" />
               </div>
               <span className="font-serif text-xl font-bold text-white">The Vedara – Himalayan Boutique Retreat</span>
             </Link>

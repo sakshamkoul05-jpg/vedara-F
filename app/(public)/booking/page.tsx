@@ -115,6 +115,15 @@ export default function BookingPage() {
   const [searchResults, setSearchResults] = useState<any[] | null>(null);
   const [incompatibleCount, setIncompatibleCount] = useState(0);
   const [searchError, setSearchError] = useState('');
+  // Shown on the cottage step when a cottage chosen elsewhere could not be
+  // carried through — it is full, or too small for the party.
+  const [selectionNotice, setSelectionNotice] = useState('');
+  // A cottage the guest already picked elsewhere (the Stays list or a cottage
+  // page). Held as state, not read inside the search callback, so the decision
+  // is made by whichever component instance is actually mounted.
+  const [pendingPreselect, setPendingPreselect] = useState<string | null>(
+    () => searchParams.get('cottageId') || null
+  );
   const [publicPricing, setPublicPricing] = useState<PublicPricing>({ cottages: [], policy: null });
 
   const { code, discount, discountType, isValid, error, loading: couponLoading, setCode, validateCoupon, removeCoupon } = useCouponStore();
@@ -144,6 +153,32 @@ export default function BookingPage() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
+
+  /**
+   * Honour a cottage the guest already chose, once the search has confirmed it
+   * suits the party and is free (spec §11), so they are not asked to pick a
+   * cottage twice. Runs off `searchResults` rather than inside the fetch, so it
+   * always acts on the mounted component.
+   */
+  useEffect(() => {
+    if (!pendingPreselect || !searchResults) return;
+    const chosen = searchResults.find((c) => c.cottageId === pendingPreselect);
+    setPendingPreselect(null);
+
+    if (chosen?.available) {
+      setSelectedCottage(chosen.cottageId);
+      setStep(3);
+      return;
+    }
+
+    // Not usable: show the list instead, and say why.
+    setSelectedCottage('');
+    setSelectionNotice(
+      chosen
+        ? `${chosen.name} is already booked for these dates. Here are the cottages that are free.`
+        : 'The cottage you picked cannot accommodate your party. Here are the ones that can.'
+    );
+  }, [pendingPreselect, searchResults]);
 
   /**
    * Re-prices the stay whenever anything that affects the tariff changes.
@@ -249,6 +284,7 @@ export default function BookingPage() {
     }
     setStepLoading(true);
     setSearchError('');
+    setSelectionNotice('');
     try {
       const res = await fetch('/api/pricing/search', {
         method: 'POST',
@@ -261,7 +297,7 @@ export default function BookingPage() {
         setSearchError(json.error || 'We could not check availability. Please try again.');
         return;
       }
-      setSearchResults(json.data.cottages);
+      setSearchResults((json.data.cottages ?? []) as any[]);
       setIncompatibleCount(json.data.incompatibleCount ?? 0);
       setStep(2);
     } catch (err: any) {
@@ -607,7 +643,7 @@ export default function BookingPage() {
                           <Button
                             variant="primary"
                             size="lg"
-                            onClick={handleAvailabilityCheck}
+                            onClick={() => handleAvailabilityCheck()}
                             disabled={!checkIn || !checkOut || stepLoading || !allAgesEntered}
                             className="w-full mt-2"
                           >
@@ -644,6 +680,12 @@ export default function BookingPage() {
                     <p className="text-sm text-muted-foreground mb-6">
                       {nights} {nights === 1 ? 'night' : 'nights'} · {partyLabel}. Showing the cottages that suit your party.
                     </p>
+
+                    {selectionNotice && (
+                      <p className="rounded-xl border border-amber-300 bg-amber-50 dark:bg-amber-950/20 px-4 py-3 text-sm text-amber-900 dark:text-amber-200 mb-5">
+                        {selectionNotice}
+                      </p>
+                    )}
 
                     {searchResults && searchResults.length === 0 && (
                       <div className="vintage-card p-6 text-sm text-muted-foreground">

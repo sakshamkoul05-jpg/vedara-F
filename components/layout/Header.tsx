@@ -54,16 +54,15 @@ export function Header() {
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo — extreme left */}
             <Link href="/" className="flex items-center gap-3 flex-shrink-0 self-center">
-            <div className="h-9 md:h-11 w-9 md:w-11 rounded-full overflow-hidden flex-shrink-0">
-              {/* The source is a 1254x1254 square. Requesting a square at 3x the
-                  44px display size keeps it crisp on high-DPI screens; the old
-                  132x52 request forced a non-square downscale that looked soft. */}
+            <div className="h-11 md:h-14 w-11 md:w-14 rounded-full overflow-hidden flex-shrink-0">
+              {/* Square request at 3x the 56px display size, so the mark stays
+                  crisp on high-DPI screens. */}
               <Image
                 src="/images/vedara-logo.jpeg"
                 alt="The Vedara"
-                width={132}
-                height={132}
-                sizes="44px"
+                width={168}
+                height={168}
+                sizes="56px"
                 quality={90}
                 className="w-full h-full object-cover"
                 priority
