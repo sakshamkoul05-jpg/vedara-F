@@ -2,7 +2,8 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MessageCircle, X, Send, Bot, Phone, Clock, Sparkles, ExternalLink } from 'lucide-react';
+import { MessageCircle, X, Send, Bot, Phone, Clock, Sparkles, ExternalLink, Mic, MicOff, Volume2, VolumeX } from 'lucide-react';
+import { speechErrorMessage, useSpeechRecognition, useSpeechSynthesis } from '@/lib/voice';
 
 const SUPPORT_HOURS = { start: 8, end: 22.5 };
 
@@ -47,6 +48,17 @@ export function ChatBot() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  /** Off by default: a voice starting unprompted in a quiet room is startling. */
+  const [speakReplies, setSpeakReplies] = useState(false);
+  const synthesis = useSpeechSynthesis();
+  const recognition = useSpeechRecognition({
+    onResult: (text) => {
+      // Someone who asked out loud expects an answer out loud.
+      setSpeakReplies(true);
+      sendMessage(text);
+    },
+  });
+
   useEffect(() => {
     setIsSupportOnline(isWithinSupportHours());
   }, []);
@@ -60,6 +72,20 @@ export function ChatBot() {
       setTimeout(() => inputRef.current?.focus(), 300);
     }
   }, [isOpen]);
+
+  // Dictation streams into the same field the guest would type into, so what
+  // is about to be sent is always visible.
+  useEffect(() => {
+    if (recognition.listening && recognition.transcript) setInput(recognition.transcript);
+  }, [recognition.listening, recognition.transcript]);
+
+  // Closing the window should not leave the mic live or a voice talking.
+  useEffect(() => {
+    if (!isOpen) {
+      recognition.stop();
+      synthesis.cancel();
+    }
+  }, [isOpen, recognition.stop, synthesis.cancel]);
 
   const sendMessage = async (text: string) => {
     if (!text.trim()) return;
@@ -96,6 +122,7 @@ export function ChatBot() {
       };
 
       setMessages(prev => [...prev, botMsg]);
+      if (speakReplies) synthesis.speak(botMsg.content);
     } catch {
       setMessages(prev => [
         ...prev,
@@ -175,6 +202,21 @@ export function ChatBot() {
                 </div>
               </div>
               <div className="flex items-center gap-2">
+                {synthesis.supported && (
+                  <button
+                    onClick={() => {
+                      // Turning it off mid-sentence should stop that sentence.
+                      if (speakReplies) synthesis.cancel();
+                      setSpeakReplies((on) => !on);
+                    }}
+                    className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center hover:bg-white/30 transition-colors cursor-pointer"
+                    aria-pressed={speakReplies}
+                    title={speakReplies ? 'Stop reading replies aloud' : 'Read replies aloud'}
+                    aria-label={speakReplies ? 'Stop reading replies aloud' : 'Read replies aloud'}
+                  >
+                    {speakReplies ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
+                  </button>
+                )}
                 {isSupportOnline && (
                   <a
                     href="https://wa.me/919118882242"
@@ -291,16 +333,40 @@ export function ChatBot() {
 
             {/* Input */}
             <form onSubmit={handleSubmit} className="px-3 pb-3 pt-2 border-t border-zinc-100 dark:border-zinc-800 shrink-0">
-              <div className="flex items-center gap-2 bg-zinc-50 dark:bg-zinc-800 rounded-xl px-3 py-2">
+              {recognition.error && speechErrorMessage(recognition.error) && (
+                <p className="text-[11px] text-red-500 px-1 pb-1.5">{speechErrorMessage(recognition.error)}</p>
+              )}
+              <div className={`flex items-center gap-2 rounded-xl px-3 py-2 transition-colors ${
+                recognition.listening
+                  ? 'bg-amber-50 dark:bg-amber-900/20 ring-1 ring-amber-400'
+                  : 'bg-zinc-50 dark:bg-zinc-800'
+              }`}>
                 <input
                   ref={inputRef}
                   type="text"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
-                  placeholder="Ask about cottages, café, treks..."
+                  placeholder={recognition.listening ? 'Listening…' : 'Ask about cottages, café, treks...'}
                   className="flex-1 bg-transparent outline-none text-sm text-zinc-800 dark:text-zinc-200 placeholder-zinc-400"
                   disabled={isTyping}
                 />
+                {recognition.supported && (
+                  <button
+                    type="button"
+                    onClick={recognition.toggle}
+                    disabled={isTyping}
+                    aria-pressed={recognition.listening}
+                    aria-label={recognition.listening ? 'Stop listening' : 'Ask by voice'}
+                    title={recognition.listening ? 'Stop listening' : 'Ask by voice'}
+                    className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors shrink-0 cursor-pointer disabled:opacity-40 ${
+                      recognition.listening
+                        ? 'bg-red-500 text-white animate-pulse'
+                        : 'bg-zinc-200 dark:bg-zinc-700 text-zinc-600 dark:text-zinc-300 hover:bg-zinc-300 dark:hover:bg-zinc-600'
+                    }`}
+                  >
+                    {recognition.listening ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
+                  </button>
+                )}
                 <button
                   type="submit"
                   disabled={!input.trim() || isTyping}
