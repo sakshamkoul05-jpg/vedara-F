@@ -12,6 +12,7 @@ import { validateEmail, validatePhone } from '@/lib/validation';
 import { Badge } from '@/components/ui/badge';
 import { endpoints } from '@/lib/api';
 import { Search, Calendar, Users, Mail, Phone, Loader2, KeyRound, ShieldCheck } from 'lucide-react';
+import { ServiceRequestPanel } from '@/components/booking/ServiceRequestPanel';
 
 const statusVariant: Record<string, 'success' | 'warning' | 'danger' | 'secondary'> = {
   CONFIRMED: 'success',
@@ -33,6 +34,9 @@ export default function MyBookingsPage() {
   const [contact, setContact] = useState('');
   const [contactType, setContactType] = useState<'email' | 'phone'>('email');
   const [booking, setBooking] = useState<any>(null);
+  /** The reference and contact that this booking was found with. Kept apart
+   *  from the inputs so editing the form does not invalidate the panel. */
+  const [credential, setCredential] = useState<{ reference: string; contact: string } | null>(null);
   const [loading, setLoading] = useState(false);
   const [searched, setSearched] = useState(false);
   const [error, setError] = useState('');
@@ -53,11 +57,13 @@ export default function MyBookingsPage() {
     try {
       const res = await endpoints.bookings.lookup(reference.trim(), contact.trim());
       setBooking(res.data || null);
+      setCredential(res.data ? { reference: reference.trim(), contact: contact.trim() } : null);
     } catch (err: any) {
       // The route answers the same way for an unknown reference and for a
       // reference that is not yours, so its message is shown as-is.
       setError(err?.message || 'Unable to fetch your booking. Please try again.');
       setBooking(null);
+      setCredential(null);
     } finally {
       setLoading(false);
     }
@@ -270,6 +276,15 @@ export default function MyBookingsPage() {
                 )}
               </div>
             </motion.div>
+
+            {credential && (
+              <ServiceRequestPanel
+                reference={credential.reference}
+                contact={credential.contact}
+                initialRequests={booking.serviceRequests ?? []}
+                closedReason={booking.serviceRequestsClosed ?? null}
+              />
+            )}
           </ScrollReveal>
         )}
       </div>

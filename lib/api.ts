@@ -465,6 +465,15 @@ async function sbMutation<T = any>(endpoint: string, method: 'POST' | 'PUT' | 'D
       return { data: res.data } as T;
     }
 
+    if (method === 'POST' && endpoint === '/service-requests') {
+      // Ownership of the booking is re-proved server side on every request.
+      const res = await callBackendAPI('/service-requests', {
+        method: 'POST',
+        body: JSON.stringify(body),
+      });
+      return { data: res.data } as T;
+    }
+
     if (method === 'POST' && endpoint === '/bookings/create-payment-order') {
       const res = await callBackendAPI('/payments/create-order', {
         method: 'POST',
@@ -673,6 +682,22 @@ export const endpoints = {
       api.post('/bookings/lookup', { reference, contact }),
     list: (token: string | null) => api.get('/bookings/all', token),
     cancel: (id: string, token: string | null) => api.post(`/bookings/${id}/cancel`, {}, token),
+  },
+  serviceRequests: {
+    /**
+     * Raise a housekeeping or maintenance request. The booking reference and
+     * contact detail go with it because the route verifies ownership itself
+     * rather than trusting an earlier lookup.
+     */
+    create: (payload: {
+      reference: string;
+      contact: string;
+      category: string;
+      priority: string;
+      subject: string;
+      description: string;
+      preferredTime?: string | null;
+    }) => api.post('/service-requests', payload),
   },
   cafe: {
     menu: (staff = false) => api.get(`/cafe/menu${staff ? '?staff=true' : ''}`),

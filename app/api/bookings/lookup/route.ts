@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { getServiceClient } from '@/lib/supabase-server';
 import { clientKey, rateLimit } from '@/lib/rate-limit';
+import { NO_MATCH, findVerifiedBooking, publicBookingView, serviceRequestBlockReason } from '@/lib/booking-access';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -25,73 +26,6 @@ const lookupSchema = z.object({
 /** Guessing a reference should be slow enough not to be worth scripting. */
 const MAX_ATTEMPTS = 8;
 const WINDOW_MS = 10 * 60 * 1000;
-
-/**
- * One message for "no such reference" and for "that is not your booking".
- *
- * Distinguishing them would confirm that a reference exists, which is the one
- * thing an attacker with a list of guesses wants to learn.
- */
-const NO_MATCH = 'No booking matches that reference and contact detail. Please check both and try again.';
-
-/** References are printed uppercase and often retyped with spaces or dashes. */
-function normaliseReference(raw: string): string {
-  return raw.toUpperCase().replace(/[\s-]/g, '');
-}
-
-/** Compare phone numbers on their last 10 digits, ignoring country-code style. */
-function phoneMatches(a: string | null | undefined, b: string): boolean {
-  if (!a) return false;
-  const digitsA = a.replace(/\D/g, '');
-  const digitsB = b.replace(/\D/g, '');
-  if (digitsA.length < 6 || digitsB.length < 6) return false;
-  return digitsA.slice(-10) === digitsB.slice(-10);
-}
-
-function emailMatches(a: string | null | undefined, b: string): boolean {
-  if (!a) return false;
-  return a.trim().toLowerCase() === b.trim().toLowerCase();
-}
-
-/**
- * What the guest is allowed to see.
- *
- * Built by naming fields rather than spreading the row, so internal columns —
- * payment ids, staff notes, the cost breakdown we do not show — cannot start
- * leaking because a column was added to the table later.
- */
-function publicView(booking: any) {
-  return {
-    id: booking.id,
-    bookingRef: booking.bookingRef,
-    status: booking.status,
-    paymentStatus: booking.paymentStatus,
-    checkIn: booking.checkIn,
-    checkOut: booking.checkOut,
-    adults: booking.adults,
-    children: booking.children,
-    ratePlan: booking.ratePlan,
-    extraMattresses: booking.extraMattresses,
-    finalAmount: booking.finalAmount,
-    taxAmount: booking.taxAmount,
-    discount: booking.discount,
-    specialRequests: booking.specialRequests,
-    createdAt: booking.createdAt,
-    cancelledAt: booking.cancelledAt,
-    guest: booking.guest
-      ? { name: booking.guest.name, email: booking.guest.email, phone: booking.guest.phone }
-      : null,
-    cottage: booking.cottage
-      ? {
-          id: booking.cottage.id,
-          name: booking.cottage.name,
-          slug: booking.cottage.slug,
-          images: booking.cottage.images,
-          pricingCategory: booking.cottage.pricingCategory ?? null,
-        }
-      : null,
-  };
-}
 
 export async function POST(request: Request) {
   const limit = rateLimit(clientKey(request, 'booking-lookup'), MAX_ATTEMPTS, WINDOW_MS);
@@ -117,9 +51,6 @@ export async function POST(request: Request) {
     );
   }
 
-  const reference = normaliseReference(parsed.data.reference);
-  const contact = parsed.data.contact;
-
   let supabase;
   try {
     supabase = getServiceClient();
@@ -130,23 +61,33 @@ export async function POST(request: Request) {
     );
   }
 
-  const { data, error } = await supabase
-    .from('Booking')
-    .select('*, cottage:Cottage(*), guest:Guest(*)')
-    .eq('bookingRef', reference)
-    .maybeSingle();
-
-  if (error) {
-    console.error('Booking lookup failed:', error.message);
+  let booking;
+  try {
+    booking = await findVerifiedBooking(supabase, parsed.data.reference, parsed.data.contact);
+  } catch (err: any) {
+    console.error('Booking lookup failed:', err?.message);
     return NextResponse.json({ error: 'Lookup failed. Please try again.' }, { status: 500 });
   }
 
-  const guest = data?.guest;
-  const verified = Boolean(data) && (emailMatches(guest?.email, contact) || phoneMatches(guest?.phone, contact));
-
-  if (!verified) {
+  if (!booking) {
     return NextResponse.json({ error: NO_MATCH }, { status: 404 });
   }
 
-  return NextResponse.json({ data: publicView(data) });
+  // The guest's open requests come back with the booking so the portal can show
+  // them without a second round trip and a second ownership check.
+  const { data: requests } = await supabase
+    .from('ServiceRequest')
+    .select('id, category, priority, subject, description, preferredTime, status, createdAt, resolvedAt')
+    .eq('bookingId', booking.id)
+    .order('createdAt', { ascending: false })
+    .limit(20);
+
+  return NextResponse.json({
+    data: {
+      ...publicBookingView(booking),
+      serviceRequests: requests ?? [],
+      /** Null when the guest may raise a request; a reason when they may not. */
+      serviceRequestsClosed: serviceRequestBlockReason(booking),
+    },
+  });
 }
