@@ -21,6 +21,7 @@ const SETTING_SCHEMAS: Record<string, z.ZodTypeAny> = {
   inventoryPricingEnabled: z.boolean(),
   inventoryUpliftCeilingPercent: z.number().min(0).max(100),
   longStayEnabled: z.boolean(),
+  minStayNights: z.number().int().min(1).max(30),
   roundingMode: z.enum(['NONE', 'NEAREST_RUPEE', 'NEAREST_TEN']),
 };
 

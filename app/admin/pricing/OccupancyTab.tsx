@@ -51,7 +51,7 @@ export function CottagesTab({
               </div>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
               <div>
                 <label className="text-xs text-muted-foreground block mb-1">Category</label>
                 <SavingSelect
@@ -92,6 +92,18 @@ export function CottagesTab({
                   value={cottage.maxOccupancy}
                   ariaLabel={`${cottage.name} max occupancy`}
                   onSave={(v) => save(cottage.id, 'maxOccupancy', num(v, 'Max occupancy'))}
+                />
+              </div>
+              <div>
+                <label className="text-xs text-muted-foreground block mb-1">Max children</label>
+                <SavingInput
+                  type="number"
+                  min={0}
+                  value={cottage.maxChildren ?? ''}
+                  disabled={!config.cottageFieldsReady}
+                  placeholder={config.cottageFieldsReady ? '' : 'Run migration'}
+                  ariaLabel={`${cottage.name} max children`}
+                  onSave={(v) => save(cottage.id, 'maxChildren', num(v, 'Max children'))}
                 />
               </div>
             </div>

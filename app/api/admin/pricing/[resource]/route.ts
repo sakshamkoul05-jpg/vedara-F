@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { getAdminSession } from '@/lib/admin-auth';
 import { getServiceClient } from '@/lib/supabase-server';
 import { invalidatePricingConfig } from '@/lib/pricing/load-config';
+import { newId } from '@/lib/ids';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -29,6 +30,7 @@ const RESOURCES = {
       baseAdults: z.number().int().min(1).max(10).optional(),
       maxAdults: z.number().int().min(1).max(10).optional(),
       maxOccupancy: z.number().int().min(1).max(12).optional(),
+      maxChildren: z.number().int().min(0).max(10).optional(),
       allowsExtraMattress: z.boolean().optional(),
       extraMattressPrice: positiveInt.nullable().optional(),
       maxExtraMattresses: z.number().int().min(0).max(3).optional(),
@@ -44,6 +46,8 @@ const RESOURCES = {
       name: z.string().min(1).max(60),
       type: z.enum(['VALUE', 'REGULAR', 'HIGH', 'PEAK', 'SPECIAL_PEAK']),
       months: z.array(z.number().int().min(1).max(12)).max(12),
+      // Optional so creates work before migration 20260923 adds the column.
+      minStay: z.number().int().min(1).max(30).optional(),
       isActive: z.boolean(),
       sortOrder: z.number().int().min(0).max(100),
     }),
@@ -68,6 +72,7 @@ const RESOURCES = {
       name: z.string().min(1).max(100),
       startDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
       endDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+      minStay: z.number().int().min(1).max(30).optional(),
       isActive: z.boolean(),
     }),
     allowCreate: true,
@@ -120,6 +125,25 @@ const RESOURCES = {
       ),
       cottageIds: z.array(z.string()),
       blackoutDates: z.array(z.string().regex(/^\d{4}-\d{2}-\d{2}$/)),
+      validFrom: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).nullable().optional(),
+      validTo: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).nullable().optional(),
+      stackableWithCoupon: z.boolean(),
+      stackableWithOffers: z.boolean().optional(),
+      isActive: z.boolean(),
+    }),
+    allowCreate: true,
+    allowDelete: true,
+  },
+  // Spec §9. Seeded inactive: "Initially require admin activation".
+  'last-minute-offers': {
+    table: 'LastMinuteOffer',
+    schema: z.object({
+      name: z.string().min(1).max(80),
+      offerType: z.enum(['ROOM_DISCOUNT', 'COMPLIMENTARY_BREAKFAST', 'MEAL_CREDIT']),
+      value: z.number().min(0).max(100_000),
+      daysBeforeArrival: z.number().int().min(0).max(60),
+      maxBookedCottages: z.number().int().min(0).max(50),
+      cottageIds: z.array(z.string()),
       stackableWithCoupon: z.boolean(),
       isActive: z.boolean(),
     }),
@@ -203,12 +227,29 @@ function validateRanges(resource: string, data: Record<string, unknown>): string
       return 'Nights charged must be fewer than nights required, or the benefit does nothing.';
     }
   }
+  if (resource === 'long-stay-rules') {
+    const { validFrom, validTo } = data as { validFrom?: string | null; validTo?: string | null };
+    if (validFrom && validTo && validFrom > validTo) {
+      return 'The window start cannot be after its end.';
+    }
+  }
+  if (resource === 'last-minute-offers') {
+    const { offerType, value } = data as { offerType?: string; value?: number };
+    // Spec §9: "up to 10% room discount". The engine caps it too.
+    if (offerType === 'ROOM_DISCOUNT' && value !== undefined && value > 10) {
+      return 'A last-minute room discount can be at most 10%.';
+    }
+  }
   if (resource === 'cottages') {
-    const { baseAdults, maxAdults, maxOccupancy } = data as {
+    const { baseAdults, maxAdults, maxOccupancy, maxChildren } = data as {
       baseAdults?: number;
       maxAdults?: number;
       maxOccupancy?: number;
+      maxChildren?: number;
     };
+    if (maxChildren !== undefined && maxOccupancy !== undefined && maxChildren > maxOccupancy) {
+      return 'Maximum children cannot exceed maximum total occupancy.';
+    }
     if (baseAdults !== undefined && maxAdults !== undefined && baseAdults > maxAdults) {
       return 'Base adults cannot exceed maximum adults.';
     }
@@ -259,7 +300,7 @@ export async function POST(
   // insert signature cannot narrow; the Zod parse above is what guarantees it.
   const { data, error: dbError } = await supabase
     .from(config!.table)
-    .insert(parsed.data as Record<string, unknown>)
+    .insert({ id: newId(), ...(parsed.data as Record<string, unknown>) })
     .select()
     .single();
 

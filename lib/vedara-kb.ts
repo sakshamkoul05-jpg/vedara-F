@@ -1,4 +1,6 @@
 import { supabase } from './supabase';
+import { loadPricingConfig } from './pricing/load-config';
+import { lowestFromRate } from './pricing/engine';
 
 export interface VedaraKB {
   cottages: any[];
@@ -7,6 +9,13 @@ export interface VedaraKB {
   faqs: any[];
   packages: any[];
   settings: Record<string, any>;
+  /** Live pricing-engine policy, so answers match what checkout charges. */
+  pricing: {
+    adultAgeThreshold: number;
+    adultBreakfast: number | null;
+    childBreakfast: { minAge: number; maxAge: number; price: number }[];
+    mattressPrice: number;
+  } | null;
 }
 
 let cachedKB: VedaraKB | null = null;
@@ -26,8 +35,38 @@ export async function getVedaraKB(): Promise<VedaraKB> {
   const settings: Record<string, any> = {};
   (settingsRes.data || []).forEach((s: any) => { settings[s.key] = s.value; });
 
+  // Attach the booking engine's "from" rates and policy (spec §12, §13) so the
+  // concierge never quotes the legacy flat rate or a free-breakfast promise.
+  let cottages = cottagesRes.data || [];
+  let pricing: VedaraKB['pricing'] = null;
+  try {
+    const config = await loadPricingConfig(supabase);
+    const adultAge = config.settings.adultAgeThreshold;
+    cottages = cottages.map((c: any) => {
+      const engine = config.cottages.find((e) => e.id === c.id);
+      return {
+        ...c,
+        fromRate: engine ? lowestFromRate(engine.id, config) : null,
+        publicDescriptor: engine?.publicDescriptor ?? null,
+        maxAdults: engine?.maxAdults ?? c.capacity,
+        allowsExtraMattress: engine?.allowsExtraMattress ?? false,
+      };
+    });
+    pricing = {
+      adultAgeThreshold: adultAge,
+      adultBreakfast: config.breakfastBands.find((b) => b.isActive && b.minAge >= adultAge)?.pricePerNight ?? null,
+      childBreakfast: config.breakfastBands
+        .filter((b) => b.isActive && b.maxAge < adultAge)
+        .map((b) => ({ minAge: b.minAge, maxAge: b.maxAge, price: b.pricePerNight })),
+      mattressPrice: config.settings.extraMattressPrice,
+    };
+  } catch (err) {
+    console.error('Knowledge base: pricing unavailable', err);
+  }
+
   cachedKB = {
-    cottages: cottagesRes.data || [],
+    pricing,
+    cottages,
     menu: menuRes.data || [],
     testimonials: testimonialsRes.data || [],
     faqs: faqsRes.data || [],
@@ -42,7 +81,9 @@ export function buildCottageContext(cottages: any[]): string {
   return cottages.map(c => {
     let amenities: string[] = [];
     try { amenities = typeof c.amenities === 'string' ? JSON.parse(c.amenities) : (c.amenities || []); } catch { amenities = []; }
-    return `- ${c.name} (${c.category || 'Cottage'}): ₹${c.pricePerNight}/night, ${c.capacity} guests, ${c.bedrooms}BR/${c.bathrooms}BA, ${c.size || 'N/A'} sqft. ${c.shortDesc || ''}. Amenities: ${amenities.slice(0, 5).join(', ')}.`;
+    const price = c.fromRate ? `from ₹${c.fromRate}/night room only (2 adults, varies by season, day and occupancy)` : `₹${c.pricePerNight}/night`;
+    const occupancy = c.publicDescriptor || `${c.capacity} guests`;
+    return `- ${c.name} (${occupancy}): ${price}, ${c.bedrooms}BR/${c.bathrooms}BA, ${c.size || 'N/A'} sqft. ${c.shortDesc || ''}. Amenities: ${amenities.slice(0, 5).join(', ')}.`;
   }).join('\n');
 }
 
@@ -76,7 +117,10 @@ KNOWLEDGE:
 - Check-in: 1:00 PM, Check-out: 11:00 AM
 - Contact: +91-91188-82242
 - Location: Ghiyagi, Jibhi, Himachal Pradesh
-- Complimentary breakfast included with every stay
+- Two rate plans: Room Only, or Breakfast Included (₹400 per adult per night; children 0-5 free, 6-11 ₹250 per night)
+- Children up to 11 stay free when sharing existing bedding; guests 12+ count as adults
+- Extra mattress (₹1,250/night) only in Whistling Thrush, Monal Haven and Koklass Cove
+- Stay 4 nights, pay for 3 (Value and Regular seasons); GST extra as applicable
 - Room heater available (₹600/night in winter)
 - Pets not allowed
 - Free WiFi throughout

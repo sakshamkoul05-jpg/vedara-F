@@ -17,7 +17,8 @@ import { FormattedText } from '@/components/ui/formatted-text';
 import { api } from '@/lib/api';
 import { Cottage } from '@/types';
 import { formatPrice, calculateNights, getToday, parseDate, isPastDate } from '@/lib/utils';
-import { fetchFromRates } from '@/lib/from-rates';
+import { fetchPublicPricing, type PublicCottagePricing } from '@/lib/from-rates';
+import { childBreakfastBeddingCopy, PRICING_DISCLAIMER } from '@/lib/pricing/customer-copy';
 import { DatePicker } from '@/components/ui/DatePicker';
 
 const amenityIcons: Record<string, React.ElementType> = {
@@ -47,6 +48,9 @@ export default function CottageBySlugPage() {
   // estimate, both replacing the legacy flat pricing this page used to show.
   const [fromRate, setFromRate] = useState<number | null>(null);
   const [quote, setQuote] = useState<any>(null);
+  // Spec §12 descriptor and the §13 policy copy, from the live configuration.
+  const [publicInfo, setPublicInfo] = useState<PublicCottagePricing | null>(null);
+  const [policyCopy, setPolicyCopy] = useState<string[]>([]);
   const today = getToday();
 
   useEffect(() => {
@@ -67,8 +71,12 @@ export default function CottageBySlugPage() {
   useEffect(() => {
     if (!cottage?.id) return;
     let alive = true;
-    fetchFromRates().then((rates) => {
-      if (alive) setFromRate(rates[cottage.id] ?? rates[cottage.slug] ?? null);
+    fetchPublicPricing().then(({ cottages, policy }) => {
+      if (!alive) return;
+      const pub = cottages.find((c) => c.cottageId === cottage.id || c.slug === cottage.slug) ?? null;
+      setPublicInfo(pub);
+      setFromRate(pub?.fromRate ?? null);
+      setPolicyCopy(childBreakfastBeddingCopy(cottages, policy));
     });
     return () => { alive = false; };
   }, [cottage?.id, cottage?.slug]);
@@ -188,6 +196,9 @@ export default function CottageBySlugPage() {
                 </Badge>
               )}
               <h1 className="font-serif text-3xl md:text-5xl lg:text-6xl text-alabaster mb-2">{cottage.name}</h1>
+              {publicInfo?.publicDescriptor && (
+                <p className="text-alabaster/85 text-xs md:text-sm uppercase tracking-[0.2em] mb-3">{publicInfo.publicDescriptor}</p>
+              )}
               <div className="flex items-baseline gap-2">
                 <span className="text-alabaster/70 text-sm">From</span>
                 <span className="text-2xl md:text-3xl font-bold text-alabaster">{formatPrice(displayFrom)}</span>
@@ -340,7 +351,7 @@ export default function CottageBySlugPage() {
                       {
                         value: 'taxes',
                         title: 'Taxes & Extras',
-                        body: 'All cottage rates are exclusive of applicable taxes (12% GST added at checkout). An extra guest charge of ₹1,500 per night applies beyond two guests, and a room heater is available at ₹600/night.',
+                        body: 'Rates are room only, per cottage per night, and vary by date, season and number of adults; breakfast can be added with the Breakfast Included rate plan. GST extra as applicable. The complete tariff, applicable taxes and final payable amount are shown before payment. A room heater is available at ₹600/night.',
                       },
                       {
                         value: 'pets',
@@ -376,7 +387,7 @@ export default function CottageBySlugPage() {
                   <div className="vintage-card p-6 md:p-8">
                     <h3 className="font-serif text-xl text-foreground mb-2">Book Your Stay</h3>
                     <p className="text-xs text-gold-600 dark:text-gold-400 mb-6 flex items-center gap-1">
-                      <Coffee className="w-3 h-3" /> Sumptuous complimentary breakfast included with every stay
+                      <Coffee className="w-3 h-3" /> Breakfast at The Perch — add it with the Breakfast Included rate plan
                     </p>
                     <div className="space-y-4">
                       <div>
@@ -447,6 +458,24 @@ export default function CottageBySlugPage() {
 
                       {!checkIn && (
                         <p className="text-xs text-muted-foreground text-center pt-2">Select your dates to see pricing and availability</p>
+                      )}
+
+                      {/* Spec §13 child, breakfast & bedding copy and §18 disclaimer. */}
+                      {policyCopy.length > 0 && (
+                        <details className="group pt-3 border-t border-border">
+                          <summary className="cursor-pointer list-none text-xs font-medium text-foreground flex items-center justify-between">
+                            Children, breakfast &amp; bedding
+                            <span className="text-muted-foreground group-open:rotate-180 transition-transform">▾</span>
+                          </summary>
+                          <div className="mt-2 space-y-2">
+                            {policyCopy.map((para, i) => (
+                              <p key={i} className="text-[11px] text-muted-foreground leading-relaxed">{para}</p>
+                            ))}
+                            {PRICING_DISCLAIMER.map((line, i) => (
+                              <p key={`d${i}`} className="text-[10px] text-muted-foreground/80 leading-snug">{line}</p>
+                            ))}
+                          </div>
+                        </details>
                       )}
                     </div>
                   </div>

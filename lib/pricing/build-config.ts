@@ -12,6 +12,7 @@ import {
   SEED_CHILD_BANDS,
   SEED_COTTAGES,
   SEED_INVENTORY_TIERS,
+  SEED_LAST_MINUTE_OFFERS,
   SEED_LONG_STAY_RULE,
   SEED_SEASONS,
   SEED_SETTINGS,
@@ -41,10 +42,12 @@ export function buildSeedConfig(
     category: c.category,
     baseAdults: c.baseAdults,
     maxAdults: c.maxAdults,
+    maxChildren: c.maxChildren,
     maxOccupancy: c.maxOccupancy,
     allowsExtraMattress: c.allowsExtraMattress,
     extraMattressPrice: null,
     maxExtraMattresses: c.maxExtraMattresses,
+    publicDescriptor: c.publicDescriptor,
     isActive: true,
   }));
 
@@ -53,6 +56,7 @@ export function buildSeedConfig(
     name: s.name,
     type: s.type,
     months: s.months,
+    minStay: s.minStay,
     isActive: true,
   }));
 
@@ -94,18 +98,15 @@ export function buildSeedConfig(
     specialPeakPeriods: periods,
     specialPeakRates,
     cottages,
-    breakfastBands: SEED_BREAKFAST_BANDS.map((b, i) => ({
-      id: `bf-${i}`,
-      ...b,
-      isActive: true,
-    })),
+    breakfastBands: SEED_BREAKFAST_BANDS.map((b, i) => ({ id: `bf-${i}`, ...b, isActive: true })),
     childBands: SEED_CHILD_BANDS.map((b, i) => ({ id: `child-${i}`, ...b, isActive: true })),
     longStayRules: [{ id: 'long-stay-1', ...SEED_LONG_STAY_RULE }],
-    inventoryTiers: SEED_INVENTORY_TIERS.map((t, i) => ({
-      id: `inv-${i}`,
-      ...t,
-      isActive: true,
+    lastMinuteOffers: SEED_LAST_MINUTE_OFFERS.map((o, i) => ({
+      id: `lm-${i}`,
+      ...o,
+      cottageIds: [],
     })),
+    inventoryTiers: SEED_INVENTORY_TIERS.map((t, i) => ({ id: `inv-${i}`, ...t, isActive: true })),
     taxSlabs: SEED_TAX_SLABS.map((t, i) => ({ id: `tax-${i}`, ...t, isActive: true })),
     settings: { ...SEED_SETTINGS },
   };

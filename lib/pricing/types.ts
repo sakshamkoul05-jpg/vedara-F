@@ -12,8 +12,13 @@ export type CottageCategory = 'STUDIO' | 'BOUTIQUE' | 'PREMIUM' | 'SIGNATURE';
 
 export type RatePlanCode = 'ROOM_ONLY' | 'BREAKFAST_INCLUDED';
 
+export type LastMinuteOfferType = 'ROOM_DISCOUNT' | 'COMPLIMENTARY_BREAKFAST' | 'MEAL_CREDIT';
+
 /** Engine version stamped onto every pricing snapshot (spec §16). */
-export const PRICING_ENGINE_VERSION = '2.1.0';
+export const PRICING_ENGINE_VERSION = '2.1.1';
+
+/** Spec §9 caps the last-minute room discount at 10%. */
+export const MAX_LAST_MINUTE_DISCOUNT_PERCENT = 10;
 
 // ---------------------------------------------------------------------------
 // Configuration (loaded from the database, editable by admin)
@@ -25,6 +30,8 @@ export interface SeasonDefinition {
   type: SeasonType;
   /** Calendar months (1-12) this season recurs in. Empty for SPECIAL_PEAK. */
   months: number[];
+  /** Minimum nights for a stay touching this season (spec §15). */
+  minStay: number;
   isActive: boolean;
 }
 
@@ -48,6 +55,8 @@ export interface SpecialPeakPeriod {
   startDate: string;
   /** ISO date (YYYY-MM-DD), inclusive. */
   endDate: string;
+  /** Minimum nights for a stay touching this period (spec §15). */
+  minStay: number;
   isActive: boolean;
 }
 
@@ -67,12 +76,16 @@ export interface CottageConfig {
   /** Lowest occupancy tier that has a rate. Always 2 under the current tariff. */
   baseAdults: number;
   maxAdults: number;
+  /** Children below the adult age threshold (spec §15). */
+  maxChildren: number;
   /** Total heads allowed, adults + children. */
   maxOccupancy: number;
   allowsExtraMattress: boolean;
   /** Per-cottage override; falls back to `PricingSettings.extraMattressPrice`. */
   extraMattressPrice?: number | null;
   maxExtraMattresses: number;
+  /** Public descriptor for the cottage cards (spec §12). */
+  publicDescriptor?: string | null;
   isActive: boolean;
 }
 
@@ -114,7 +127,29 @@ export interface LongStayRule {
   cottageIds: string[];
   /** ISO dates on which the benefit is suppressed. */
   blackoutDates: string[];
+  /** Availability window (spec §7). Null means open-ended. */
+  validFrom?: string | null;
+  validTo?: string | null;
   /** Whether the benefit may combine with a coupon. */
+  stackableWithCoupon: boolean;
+  /** Whether the benefit may combine with a last-minute room discount. */
+  stackableWithOffers?: boolean;
+  isActive: boolean;
+}
+
+/** Low-occupancy / last-minute offer (spec §9). */
+export interface LastMinuteOffer {
+  id: string;
+  name: string;
+  offerType: LastMinuteOfferType;
+  /** ROOM_DISCOUNT: percent (max 10). MEAL_CREDIT: rupees per stay. */
+  value: number;
+  /** Offer applies when arrival is within this many days of today. */
+  daysBeforeArrival: number;
+  /** ...and no night of the stay has more than this many cottages booked. */
+  maxBookedCottages: number;
+  /** Empty means all cottages. */
+  cottageIds: string[];
   stackableWithCoupon: boolean;
   isActive: boolean;
 }
@@ -155,6 +190,8 @@ export interface PricingSettings {
   /** Maximum uplift the inventory rule may apply, percent (spec §8). */
   inventoryUpliftCeilingPercent: number;
   longStayEnabled: boolean;
+  /** Global minimum stay floor in nights (spec §15). */
+  minStayNights: number;
   /** Rounding applied to the final payable amount. */
   roundingMode: 'NONE' | 'NEAREST_RUPEE' | 'NEAREST_TEN';
 }
@@ -168,6 +205,7 @@ export interface PricingConfig {
   breakfastBands: BreakfastBand[];
   childBands: ChildBand[];
   longStayRules: LongStayRule[];
+  lastMinuteOffers: LastMinuteOffer[];
   inventoryTiers: InventoryTier[];
   taxSlabs: TaxSlab[];
   settings: PricingSettings;
@@ -176,6 +214,19 @@ export interface PricingConfig {
 // ---------------------------------------------------------------------------
 // Request / response
 // ---------------------------------------------------------------------------
+
+export interface InventoryCount {
+  booked: number;
+  total: number;
+}
+
+export interface CouponInput {
+  code: string;
+  discountType: 'PERCENTAGE' | 'FIXED';
+  discountValue: number;
+  /** Accommodation subtotal the coupon requires before it applies. */
+  minAmount?: number;
+}
 
 export interface QuoteRequest {
   cottageId: string;
@@ -189,11 +240,16 @@ export interface QuoteRequest {
   ratePlan: RatePlanCode;
   extraMattresses?: number;
   /**
-   * How many cottages are already booked for these dates, and how many exist.
-   * Drives the inventory uplift (spec §8).
+   * Cottages booked vs available, per night (ISO date keys). Drives the
+   * inventory uplift (spec §8) and the last-minute offer (spec §9) night by
+   * night, since "4 of 6 booked" is a statement about a specific date.
    */
-  inventory?: { booked: number; total: number };
-  coupon?: { code: string; discountType: 'PERCENTAGE' | 'FIXED'; discountValue: number } | null;
+  inventoryByNight?: Record<string, InventoryCount>;
+  /** Whole-stay fallback when per-night data is not supplied. */
+  inventory?: InventoryCount;
+  coupon?: CouponInput | null;
+  /** ISO date treated as "today" for the last-minute window. Defaults to now. */
+  today?: string;
 }
 
 export interface NightBreakdown {
@@ -212,6 +268,16 @@ export interface NightBreakdown {
   isComplimentary: boolean;
   breakfastTotal: number;
   mattressTotal: number;
+}
+
+export interface AppliedOffer {
+  id: string;
+  name: string;
+  offerType: LastMinuteOfferType;
+  /** Rupees taken off the price. Zero for a pure perk. */
+  discount: number;
+  /** Customer-facing description, e.g. "₹1,500 meal credit at The Perch". */
+  description: string;
 }
 
 export interface QuoteBreakdown {
@@ -235,6 +301,10 @@ export interface QuoteBreakdown {
   longStayDiscount: number;
   longStayApplied: boolean;
   longStayRuleName: string | null;
+  /** Last-minute room discount (spec §9). */
+  promotionDiscount: number;
+  lastMinuteOffer: AppliedOffer | null;
+  /** Accommodation after long-stay, promotion and coupon. */
   accommodationTotal: number;
 
   breakfastTotal: number;
@@ -247,6 +317,9 @@ export interface QuoteBreakdown {
   taxBreakdown: { slabName: string; ratePercent: number; taxableAmount: number; tax: number }[];
   taxTotal: number;
   total: number;
+
+  /** Minimum stay that applied to these dates. */
+  minStay: number;
 
   notes: string[];
 }

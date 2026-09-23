@@ -19,10 +19,32 @@ In the **Supabase SQL editor** (or `psql "$DATABASE_URL" -f <file>`), run in ord
    Loads the v2.1 rate card. Idempotent — re-running updates rows rather than
    duplicating them.
 
-To regenerate the seed after editing `frontend/lib/pricing/seed-data.ts`:
+Then part B, which closes the remaining gaps against the spec:
+
+3. `backend/prisma/migrations/20260923_pricing_engine_v2_1b/migration.sql`
+   Adds last-minute offers (§9), minimum stay (§15), maximum children (§15),
+   the Stay 4 Pay 3 date window (§7), and **database defaults for every `id`
+   and `updatedAt` column**. Without those defaults any insert that does not
+   supply them fails — which is consistent with the data: the newest booking
+   predates the old backend going down, and there are no contact messages or
+   café orders at all. This fixes the contact form and café ordering too.
+
+4. `backend/prisma/migrations/20260923_pricing_engine_v2_1b/seed.sql`
+   Applies the spec's exact cottage mapping, removes rate tiers a cottage can
+   no longer take, seeds the last-minute offer switched **off**, and corrects
+   guest-facing content (the FAQ promising a free breakfast with every stay,
+   and "Café Charade" left in the FAQ, a testimonial and a menu item). Safe on
+   a live database: it only rewrites Magpie Retreat's and Whistling Thrush's
+   rates and otherwise inserts what is missing, leaving admin edits alone.
+
+The code tolerates part B not having run yet — nothing breaks — but the new
+rules and the spec mapping only take effect once it has.
+
+To regenerate a seed after editing `frontend/lib/pricing/seed-data.ts`:
 
 ```bash
-cd frontend && npx tsx scripts/generate-pricing-seed.ts > ../backend/prisma/migrations/20260921_pricing_engine_v2/seed.sql
+cd frontend && npx tsx scripts/generate-pricing-seed.ts   > ../backend/prisma/migrations/20260921_pricing_engine_v2/seed.sql
+cd frontend && npx tsx scripts/generate-pricing-seed-b.ts > ../backend/prisma/migrations/20260923_pricing_engine_v2_1b/seed.sql
 ```
 
 ---
@@ -109,24 +131,23 @@ with no pricing category, missing rate rows, no active tax slab.
 
 ## 5. Decisions taken, worth re-confirming with the client
 
-**Magpie Retreat / Whistling Thrush appear transposed in the pricing spec.**
-Spec §1 lists Magpie Retreat as Boutique (max 2 adults) and Whistling Thrush as
-the bathtub Premium cottage (max 4). Both the official website copy
-(`The_Vedara_7_Cottages_Updated.docx`) and the live database say the opposite:
-Magpie Retreat is the 556 sq ft bathtub duplex sleeping 4, and Whistling Thrush
-is a 270 sq ft suite sleeping 2.
+**The cottage mapping follows the spec exactly, as the client decided.**
+Spec §1 makes Magpie Retreat Boutique and Whistling Thrush Premium:
 
-The seeded mapping follows the website copy and live inventory:
+| Category | Cottages | Max adults | Max children | Extra mattress |
+|---|---|---|---|---|
+| Boutique | Magpie Retreat, Flycatcher Nook, Bulbul Nest | 2 | 1 | No |
+| Premium | Whistling Thrush (bathtub) | 4 | 2 | Yes, ₹1,250 |
+| Signature | Monal Haven, Koklass Cove (jacuzzi) | 4 | 2 | Yes, ₹1,250 |
+| Studio | The Finch Nook | 2 | 1 | No |
 
-| Category | Cottages | Max adults | Extra mattress |
-|---|---|---|---|
-| Studio | The Finch Nook | 2 | No |
-| Boutique | Whistling Thrush, Flycatcher Nook, Bulbul Nest | 2 | No |
-| Premium | Magpie Retreat | 4 | Yes |
-| Signature | Monal Haven, Koklass Cove | 4 | Yes |
-
-If the client confirms the spec was right, change it on the Cottages tab in
-`/admin/pricing` — it is data, not code.
+**The cottage descriptions still say the opposite.** The website copy
+(`The_Vedara_7_Cottages_Updated.docx`) and the Cottage records describe Magpie
+Retreat as a 556 sq ft duplex with a bath tub sleeping 4, and Whistling Thrush
+as a 270 sq ft suite sleeping 2. The booking engine now caps Magpie Retreat at
+2 adults and offers Whistling Thrush up to 4. The client should update those
+two cottages' descriptions, photos, bedroom counts and sizes in the CMS so the
+page a guest reads matches what they can book.
 
 **The Finch Nook is not in the pricing spec at all.** It is a 7th cottage the
 spec predates. Seeded as a Studio tier one step below Boutique
@@ -156,6 +177,13 @@ Tax tab.
   booking logic in `src/services/booking.service.ts` still uses the old flat
   `pricePerNight × nights` calculation. If that backend is ever revived it must
   be pointed at the new engine, or it will price differently from the website.
-- **Booking hold expiry is not swept.** `holdExpiresAt` is set but nothing
-  marks lapsed bookings `EXPIRED`, so their cottage stays blocked. This needs a
-  scheduled job.
+- **Lapsed holds are ignored, not swept.** An unpaid booking whose
+  `holdExpiresAt` has passed no longer blocks the cottage or counts toward the
+  demand uplift, but its row stays `PENDING`. A scheduled job to mark such rows
+  `EXPIRED` would tidy the admin booking list.
+- **No database-level double-booking guard.** Availability is checked before
+  insert, so two guests confirming the same cottage in the same second could
+  both succeed. A Postgres exclusion constraint on (cottage, date range) would
+  close this; it needs existing overlapping rows cleaned up first.
+- **Legacy "Extra Guest Charge"** is still editable in the CMS cottage form but
+  the pricing engine ignores it; occupancy is priced by adult tier instead.

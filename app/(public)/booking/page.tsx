@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ScrollReveal } from '@/components/animations/ScrollReveal';
@@ -21,6 +21,8 @@ import { countries } from '@/lib/countries';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 import { DatePicker } from '@/components/ui/DatePicker';
+import { fetchPublicPricing, type PublicPricing } from '@/lib/from-rates';
+import { childBreakfastBeddingCopy, PRICING_DISCLAIMER, RATE_FOOTNOTE } from '@/lib/pricing/customer-copy';
 
 const FALLBACK_COTTAGES: Cottage[] = [
   { id: '1', slug: 'monal-haven', name: 'Monal Haven', description: 'Premium Duplex Family Suite', shortDesc: 'Premium Duplex Family Suite', category: 'Premium Duplex Family Suite', pricePerNight: 12000, heaterCharge: 600, capacity: 4, bedrooms: 2, bathrooms: 2, size: 850, amenities: ['wifi', 'fireplace', 'mountain view', 'balcony'], images: [], isActive: true, sortOrder: 1, isAvailable: true } as any,
@@ -108,6 +110,12 @@ export default function BookingPage() {
   const [dateError, setDateError] = useState('');
   const [couponInput, setCouponInput] = useState('');
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
+  // Result of the availability search (spec §11): only cottages that suit the
+  // party, each priced under both rate plans.
+  const [searchResults, setSearchResults] = useState<any[] | null>(null);
+  const [incompatibleCount, setIncompatibleCount] = useState(0);
+  const [searchError, setSearchError] = useState('');
+  const [publicPricing, setPublicPricing] = useState<PublicPricing>({ cottages: [], policy: null });
 
   const { code, discount, discountType, isValid, error, loading: couponLoading, setCode, validateCoupon, removeCoupon } = useCouponStore();
 
@@ -121,12 +129,20 @@ export default function BookingPage() {
       })) : FALLBACK_COTTAGES;
       setCottages(data);
     }).catch(() => setCottages(FALLBACK_COTTAGES));
+    fetchPublicPricing().then(setPublicPricing);
   }, []);
 
+  // Arriving from a cottage or the Stays page with dates: run the search at
+  // once so the guest lands on the priced cottage list. The occupancy check
+  // (spec §11) still applies, so a cottage is never skipped straight to.
+  const autoSearched = useRef(false);
   useEffect(() => {
-    if (searchParams.get('cottageId') && searchParams.get('checkIn') && searchParams.get('checkOut')) {
-      setStep(3);
+    if (autoSearched.current) return;
+    if (searchParams.get('checkIn') && searchParams.get('checkOut') && childAges.every((a) => a >= 0)) {
+      autoSearched.current = true;
+      handleAvailabilityCheck();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
 
   /**
@@ -187,15 +203,12 @@ export default function BookingPage() {
     };
   }, [selectedCottage, checkIn, checkOut, adults, childAges, ratePlan, extraMattresses, isValid, code]);
 
-  // Occupancy that no longer fits the chosen cottage is clamped rather than
-  // left to fail validation at checkout.
+  // A mattress chosen for one cottage must not carry over to a cottage that
+  // has none (spec §5.1).
   useEffect(() => {
     const cottage = cottages.find((c) => c.id === selectedCottage);
-    if (!cottage) return;
-    const capAdults = cottage.maxAdults ?? cottage.capacity ?? 2;
-    if (adults > capAdults) setAdults(capAdults);
-    if (!cottage.allowsExtraMattress && extraMattresses > 0) setExtraMattresses(0);
-  }, [selectedCottage, cottages, adults, extraMattresses]);
+    if (cottage && !cottage.allowsExtraMattress && extraMattresses > 0) setExtraMattresses(0);
+  }, [selectedCottage, cottages, extraMattresses]);
 
   useEffect(() => {
     if (pincode.length === 6 && /^\d{6}$/.test(pincode)) {
@@ -230,21 +243,30 @@ export default function BookingPage() {
       setDateError('Check-out date must be after check-in date');
       return;
     }
+    if (childAges.some((a) => a < 0)) {
+      setSearchError('Please select an age for every child.');
+      return;
+    }
     setStepLoading(true);
+    setSearchError('');
     try {
-      const res = await api.get(`/bookings/available-cottages?checkIn=${encodeURIComponent(checkIn)}&checkOut=${encodeURIComponent(checkOut)}`);
-      const data = Array.isArray(res.data) && res.data.length > 0 ? res.data.map((c: any) => ({
-        ...c,
-        pricePerNight: c.pricePerNight || FALLBACK_COTTAGES.find((f) => f.slug === c.slug)?.pricePerNight || 0,
-        extraGuestCharge: c.extraGuestCharge || 1500,
-        capacity: c.capacity || 2,
-      })) : FALLBACK_COTTAGES;
-      setCottages(data);
+      const res = await fetch('/api/pricing/search', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ checkIn, checkOut, adults, childAges }),
+      });
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        // e.g. a minimum-stay rule for these dates — shown, never papered over.
+        setSearchError(json.error || 'We could not check availability. Please try again.');
+        return;
+      }
+      setSearchResults(json.data.cottages);
+      setIncompatibleCount(json.data.incompatibleCount ?? 0);
       setStep(2);
     } catch (err: any) {
-      console.error('Availability check failed:', err);
-      setCottages(FALLBACK_COTTAGES);
-      setStep(2);
+      console.error('Availability search failed:', err);
+      setSearchError('We could not check availability. Please try again.');
     } finally {
       setStepLoading(false);
     }
@@ -411,7 +433,22 @@ export default function BookingPage() {
   const discountAmount = quote?.couponDiscount ?? 0;
   const allAgesEntered = childAges.every((a) => a >= 0);
 
-  const stepLabels = ['Dates', 'Cottage', 'Details', 'Confirmation'];
+  const adultAge = publicPricing.policy?.adultAgeThreshold ?? 12;
+  // Largest party any cottage can take; the search then filters per cottage.
+  const maxAdultsAny = Math.max(4, ...publicPricing.cottages.map((c) => c.maxAdults));
+  const policyCopy = childBreakfastBeddingCopy(publicPricing.cottages, publicPricing.policy);
+  const partyLabel = [
+    `${adults} ${adults === 1 ? 'adult' : 'adults'}`,
+    childAges.length > 0
+      ? `${childAges.length} ${childAges.length === 1 ? 'child' : 'children'} (age ${childAges
+          .map((a) => (a < 0 ? '?' : a))
+          .join(', ')})`
+      : null,
+  ]
+    .filter(Boolean)
+    .join(', ');
+
+  const stepLabels = ['Stay', 'Cottage', 'Details', 'Confirmation'];
 
   return (
     <>
@@ -471,21 +508,120 @@ export default function BookingPage() {
                     exit={{ opacity: 0, x: 20 }}
                   >
                     <ScrollReveal>
-                      <div className="max-w-lg">
-                        <h2 className="font-serif text-2xl text-foreground mb-6">Choose Your Dates</h2>
+                      <div className="max-w-xl">
+                        <h2 className="font-serif text-2xl text-foreground mb-2">Your Stay</h2>
+                        <p className="text-sm text-muted-foreground mb-6">
+                          Tell us your dates and who is travelling. We will show only the cottages that suit your party, with both rate plans priced.
+                        </p>
                         <div className="space-y-4">
-                          <div>
-                            <label className="vintage-label">Check-in Date *</label>
-                            <DatePicker value={checkIn} onChange={(v) => { setCheckIn(v); setDateError(''); if (checkOut && parseDate(checkOut) <= parseDate(v)) { setCheckOut(''); setDateError('Check-out must be after check-in'); } }} min={getToday()} />
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                              <label className="vintage-label">Check-in Date *</label>
+                              <DatePicker value={checkIn} onChange={(v) => { setCheckIn(v); setDateError(''); if (checkOut && parseDate(checkOut) <= parseDate(v)) { setCheckOut(''); setDateError('Check-out must be after check-in'); } }} min={getToday()} />
+                            </div>
+                            <div>
+                              <label className="vintage-label">Check-out Date *</label>
+                              <DatePicker value={checkOut} onChange={(v) => { handleCheckOutChange(v); }} min={checkIn || getToday()} />
+                            </div>
                           </div>
-                          <div>
-                            <label className="vintage-label">Check-out Date *</label>
-                            <DatePicker value={checkOut} onChange={(v) => { handleCheckOutChange(v); }} min={checkIn || getToday()} />
-                            {dateError && <p className="text-red-500 text-xs mt-1">{dateError}</p>}
+                          {dateError && <p className="text-red-500 text-xs">{dateError}</p>}
+
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                              <label className="vintage-label" htmlFor="adults-select">
+                                Adults <span aria-hidden="true" className="text-red-500">*</span>
+                              </label>
+                              <select
+                                id="adults-select"
+                                required
+                                value={adults}
+                                onChange={(e) => setAdults(parseInt(e.target.value))}
+                                className="vintage-input"
+                              >
+                                {Array.from({ length: maxAdultsAny }, (_, i) => i + 1).map((n) => (
+                                  <option key={n} value={n}>{n}</option>
+                                ))}
+                              </select>
+                            </div>
+                            <div>
+                              <label className="vintage-label" htmlFor="children-select">
+                                Children <span aria-hidden="true" className="text-red-500">*</span>
+                                <span className="font-normal normal-case text-muted-foreground"> (under {adultAge})</span>
+                              </label>
+                              <select
+                                id="children-select"
+                                required
+                                value={childAges.length}
+                                onChange={(e) => {
+                                  const next = parseInt(e.target.value);
+                                  setChildAges((prev) =>
+                                    next > prev.length
+                                      ? [...prev, ...Array(next - prev.length).fill(-1)]
+                                      : prev.slice(0, next)
+                                  );
+                                }}
+                                className="vintage-input"
+                              >
+                                {[0, 1, 2, 3, 4].map((n) => (
+                                  <option key={n} value={n}>{n}</option>
+                                ))}
+                              </select>
+                            </div>
                           </div>
-                          <Button variant="primary" size="lg" onClick={handleAvailabilityCheck} disabled={!checkIn || !checkOut || stepLoading} className="w-full mt-4">
+
+                          {/* An age is required for every child: it decides the child
+                              policy, the breakfast band and whether the guest counts
+                              as an adult (spec §4, §11). */}
+                          {childAges.length > 0 && (
+                            <div>
+                              <label className="vintage-label">
+                                Age of each child <span aria-hidden="true" className="text-red-500">*</span>
+                              </label>
+                              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                                {childAges.map((age, i) => (
+                                  <select
+                                    key={i}
+                                    required
+                                    aria-label={`Age of child ${i + 1}`}
+                                    value={age < 0 ? '' : age}
+                                    onChange={(e) => {
+                                      const v = parseInt(e.target.value);
+                                      setChildAges((prev) => prev.map((a, idx) => (idx === i ? v : a)));
+                                    }}
+                                    className={`vintage-input ${age < 0 ? 'border-amber-500' : ''}`}
+                                  >
+                                    <option value="" disabled>Child {i + 1}</option>
+                                    {Array.from({ length: 18 }, (_, n) => n).map((n) => (
+                                      <option key={n} value={n}>
+                                        {n === 0 ? 'Under 1' : `${n} year${n === 1 ? '' : 's'}`}
+                                      </option>
+                                    ))}
+                                  </select>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+
+                          {searchError && <p className="text-red-500 text-sm">{searchError}</p>}
+
+                          <Button
+                            variant="primary"
+                            size="lg"
+                            onClick={handleAvailabilityCheck}
+                            disabled={!checkIn || !checkOut || stepLoading || !allAgesEntered}
+                            className="w-full mt-2"
+                          >
                             {stepLoading ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Checking...</> : 'Check Availability'}
                           </Button>
+
+                          {/* Spec §13 customer copy, generated from live rates. */}
+                          {policyCopy.length > 0 && (
+                            <div className="rounded-xl border border-border bg-muted/30 p-4 space-y-2">
+                              {policyCopy.map((para, i) => (
+                                <p key={i} className="text-xs text-muted-foreground leading-relaxed">{para}</p>
+                              ))}
+                            </div>
+                          )}
                         </div>
                       </div>
                     </ScrollReveal>
@@ -499,59 +635,108 @@ export default function BookingPage() {
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: 20 }}
                   >
-                    <h2 className="font-serif text-2xl text-foreground mb-6">Select a Cottage</h2>
+                    <div className="flex flex-wrap items-baseline justify-between gap-2 mb-1">
+                      <h2 className="font-serif text-2xl text-foreground">Choose a Cottage &amp; Rate Plan</h2>
+                      <button type="button" onClick={() => setStep(1)} className="text-sm text-gold-600 dark:text-gold-400 hover:underline">
+                        Change dates or guests
+                      </button>
+                    </div>
+                    <p className="text-sm text-muted-foreground mb-6">
+                      {nights} {nights === 1 ? 'night' : 'nights'} · {partyLabel}. Showing the cottages that suit your party.
+                    </p>
+
+                    {searchResults && searchResults.length === 0 && (
+                      <div className="vintage-card p-6 text-sm text-muted-foreground">
+                        No cottage can accommodate {partyLabel} for these dates. Try fewer guests, or two cottages — we are happy to help at +91-91188-82242.
+                      </div>
+                    )}
+
                     <div className="grid md:grid-cols-2 gap-6">
-                      {cottages.map((cottage) => {
-                        const isAvailable = (cottage as any).isAvailable !== false;
-                        const imgs = parseField(cottage.images);
-                        const img = imgs[0] || '';
-                        const amenities = parseField(cottage.amenities);
+                      {(searchResults ?? []).map((r: any) => {
+                        const info = cottages.find((c) => c.id === r.cottageId);
+                        const img = parseField(info?.images)[0] || '';
                         return (
-                          <motion.button
-                            key={cottage.id}
-                            onClick={() => { setSelectedCottage(cottage.id); setStep(3); }}
-                            disabled={!isAvailable}
-                            className={`vintage-card p-6 overflow-hidden text-left transition-all ${
-                              !isAvailable ? 'opacity-40 cursor-not-allowed' : 'hover:border-gold-400 cursor-pointer'
-                            } ${selectedCottage === cottage.id ? 'border-gold-500 ring-2 ring-gold-500/20' : ''}`}
-                            whileHover={isAvailable ? { y: -2 } : {}}
+                          <div
+                            key={r.cottageId}
+                            className={`vintage-card p-6 overflow-hidden transition-all ${
+                              !r.available ? 'opacity-50' : ''
+                            } ${selectedCottage === r.cottageId ? 'border-gold-500 ring-2 ring-gold-500/20' : ''}`}
                           >
                             {img && (
                               <div className="relative h-44 rounded-lg overflow-hidden mb-4">
-                                <img src={img} alt={`${cottage.name} cottage at The Vedara`} className="w-full h-full object-cover" />
-                                {cottage.category && (
-                                  <span className="absolute top-2.5 left-2.5 px-2.5 py-1 rounded-full bg-white/90 text-[10px] font-sans uppercase tracking-wider text-gold-600">
-                                    {cottage.category}
-                                  </span>
-                                )}
+                                <img src={img} alt={`${r.name} cottage at The Vedara`} className="w-full h-full object-cover" />
                               </div>
                             )}
-                            <div className="flex items-start justify-between gap-3 mb-1">
-                              <h3 className="font-serif text-lg text-foreground">{cottage.name}</h3>
-                              <span className="text-gold-600 font-semibold whitespace-nowrap">{formatPrice(cottage.pricePerNight)}<span className="text-gold-400 font-normal text-xs">/night</span></span>
+                            <h3 className="font-serif text-lg text-foreground">{r.name}</h3>
+                            {r.publicDescriptor && (
+                              <p className="text-[11px] uppercase tracking-wider text-gold-600 dark:text-gold-400 mb-2">{r.publicDescriptor}</p>
+                            )}
+                            {info && (
+                              <p className="text-sm text-muted-foreground mb-3 line-clamp-2">{info.shortDesc || info.description}</p>
+                            )}
+
+                            <div className="flex flex-wrap gap-2 mb-1">
+                              {/* Spec §11: clearly identify whether Stay 4 Pay 3 applies. */}
+                              {r.longStayApplied && (
+                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 text-[11px] font-medium">
+                                  <Gift className="w-3 h-3" /> {r.longStayRuleName} applied
+                                </span>
+                              )}
+                              {r.lastMinuteOffer && (
+                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-400 text-[11px] font-medium">
+                                  <Sparkles className="w-3 h-3" /> {r.lastMinuteOffer.name}
+                                </span>
+                              )}
                             </div>
-                            {(cottage.capacity || cottage.bedrooms || cottage.bathrooms || cottage.size) && (
-                              <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground mb-3">
-                                {cottage.capacity ? <span>{cottage.capacity} Guests</span> : null}
-                                {cottage.bedrooms ? <span>{cottage.bedrooms} {cottage.bedrooms > 1 ? 'Bedrooms' : 'Bedroom'}</span> : null}
-                                {cottage.bathrooms ? <span>{cottage.bathrooms} {cottage.bathrooms > 1 ? 'Bathrooms' : 'Bathroom'}</span> : null}
-                                {cottage.size ? <span>{cottage.size} sqft</span> : null}
+
+                            {r.available ? (
+                              <div className="grid gap-2 mt-4">
+                                {(['ROOM_ONLY', 'BREAKFAST_INCLUDED'] as const).map((planCode) => {
+                                  const plan = r.plans[planCode];
+                                  return (
+                                    <button
+                                      key={planCode}
+                                      type="button"
+                                      onClick={() => {
+                                        setSelectedCottage(r.cottageId);
+                                        setRatePlan(planCode);
+                                        setExtraMattresses(0);
+                                        setStep(3);
+                                      }}
+                                      className="flex items-center justify-between gap-3 rounded-lg border border-border hover:border-gold-500 hover:bg-gold-50/50 dark:hover:bg-white/5 px-4 py-3 text-left transition-colors"
+                                    >
+                                      <span>
+                                        <span className="block text-sm font-medium text-foreground">
+                                          {planCode === 'ROOM_ONLY' ? 'Room Only' : 'Breakfast Included'}
+                                        </span>
+                                        <span className="block text-[11px] text-muted-foreground">
+                                          {formatPrice(plan.total)} total incl. GST
+                                        </span>
+                                      </span>
+                                      <span className="text-gold-600 dark:text-gold-400 font-semibold whitespace-nowrap">
+                                        {formatPrice(plan.perNight)}
+                                        <span className="text-xs font-normal text-muted-foreground">/night</span>
+                                      </span>
+                                    </button>
+                                  );
+                                })}
                               </div>
+                            ) : (
+                              <p className="text-red-500 text-xs mt-3">Not available for these dates</p>
                             )}
-                            <p className="text-sm text-muted-foreground mb-3 line-clamp-2">{cottage.shortDesc || cottage.description}</p>
-                            {amenities.length > 0 && (
-                              <div className="flex flex-wrap gap-1.5">
-                                {amenities.slice(0, 4).map((a: string, i: number) => (
-                                  <span key={i} className="px-2 py-0.5 rounded-full bg-gold-50 text-gold-600 text-[10px] font-medium">{a}</span>
-                                ))}
-                                {amenities.length > 4 && <span className="px-2 py-0.5 text-[10px] text-muted-foreground">+{amenities.length - 4} more</span>}
-                              </div>
-                            )}
-                            {!isAvailable && <span className="block text-red-500 text-xs mt-2">Not available for selected dates</span>}
-                          </motion.button>
+                          </div>
                         );
                       })}
                     </div>
+
+                    {incompatibleCount > 0 && (
+                      <p className="text-xs text-muted-foreground mt-4">
+                        {incompatibleCount} {incompatibleCount === 1 ? 'cottage is' : 'cottages are'} not shown because {incompatibleCount === 1 ? 'it cannot' : 'they cannot'} accommodate your party.
+                      </p>
+                    )}
+                    <p className="text-[11px] text-muted-foreground mt-2">
+                      Per-night prices are averages before GST for your party. {RATE_FOOTNOTE}
+                    </p>
                     <Button variant="secondary" onClick={() => setStep(1)} className="mt-6">
                       <ArrowLeft className="w-4 h-4 mr-2" /> Back
                     </Button>
@@ -764,101 +949,17 @@ export default function BookingPage() {
                             </div>
                           </div>
 
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          {/* Guests were chosen before the cottage (spec §11); changing
+                              them re-runs the search so only suitable cottages show. */}
+                          <div className="rounded-xl border border-border p-4 flex flex-wrap items-center justify-between gap-3">
                             <div>
-                              <label className="vintage-label" htmlFor="adults-select">
-                                Adults <span aria-hidden="true" className="text-red-500">*</span>
-                                {selectedCottageData && (
-                                  <span className="font-normal normal-case text-muted-foreground">
-                                    {' '}(max {maxAdults})
-                                  </span>
-                                )}
-                              </label>
-                              <select
-                                id="adults-select"
-                                required
-                                value={adults}
-                                onChange={(e) => setAdults(parseInt(e.target.value))}
-                                className="vintage-input"
-                              >
-                                {Array.from({ length: maxAdults }, (_, i) => i + 1).map((n) => (
-                                  <option key={n} value={n}>{n}</option>
-                                ))}
-                              </select>
+                              <p className="vintage-label mb-1">Guests</p>
+                              <p className="text-sm text-foreground">{partyLabel}</p>
                             </div>
-                            <div>
-                              <label className="vintage-label" htmlFor="children-select">
-                                Children <span aria-hidden="true" className="text-red-500">*</span>
-                                <span className="font-normal normal-case text-muted-foreground"> (under 12)</span>
-                              </label>
-                              <select
-                                id="children-select"
-                                required
-                                value={childAges.length}
-                                onChange={(e) => {
-                                  const next = parseInt(e.target.value);
-                                  setChildAges((prev) =>
-                                    next > prev.length
-                                      ? [...prev, ...Array(next - prev.length).fill(-1)]
-                                      : prev.slice(0, next)
-                                  );
-                                }}
-                                className="vintage-input"
-                              >
-                                {Array.from(
-                                  { length: Math.max(0, maxOccupancy - adults) + 1 },
-                                  (_, i) => i
-                                ).map((n) => (
-                                  <option key={n} value={n}>{n}</option>
-                                ))}
-                              </select>
-                            </div>
+                            <button type="button" onClick={() => setStep(1)} className="text-sm text-gold-600 dark:text-gold-400 hover:underline">
+                              Change
+                            </button>
                           </div>
-
-                          {/* An age is required for every child: it decides the child
-                              policy, the breakfast band and whether the guest counts
-                              as an adult. */}
-                          {childAges.length > 0 && (
-                            <div>
-                              <label className="vintage-label">
-                                Age of each child <span aria-hidden="true" className="text-red-500">*</span>
-                              </label>
-                              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                                {childAges.map((age, i) => (
-                                  <div key={i}>
-                                    <select
-                                      required
-                                      aria-label={`Age of child ${i + 1}`}
-                                      value={age < 0 ? '' : age}
-                                      onChange={(e) => {
-                                        const v = parseInt(e.target.value);
-                                        setChildAges((prev) =>
-                                          prev.map((a, idx) => (idx === i ? v : a))
-                                        );
-                                      }}
-                                      className={`vintage-input ${age < 0 ? 'border-amber-500' : ''}`}
-                                    >
-                                      <option value="" disabled>Child {i + 1} age</option>
-                                      {Array.from({ length: 18 }, (_, n) => n).map((n) => (
-                                        <option key={n} value={n}>
-                                          {n === 0 ? 'Under 1' : `${n} year${n === 1 ? '' : 's'}`}
-                                        </option>
-                                      ))}
-                                    </select>
-                                  </div>
-                                ))}
-                              </div>
-                              {!allAgesEntered && (
-                                <p className="text-amber-600 text-xs mt-2">
-                                  Please select an age for every child to see your price.
-                                </p>
-                              )}
-                              <p className="text-[11px] text-muted-foreground mt-2">
-                                Children up to 11 years stay complimentary when sharing existing bedding.
-                                Guests aged 12 and above are treated as adults.
-                              </p>
-                            </div>
-                          )}
 
                           {/* Rate plan choice, offered once a cottage is selected (spec §11). */}
                           {selectedCottageData && (
@@ -1163,6 +1264,14 @@ export default function BookingPage() {
                                 ))}
                               </ul>
                             )}
+                          </div>
+                        )}
+
+                        {quote && (
+                          <div className="mt-4 pt-3 border-t border-border space-y-1.5">
+                            {PRICING_DISCLAIMER.map((line, i) => (
+                              <p key={i} className="text-[10px] text-muted-foreground leading-snug">{line}</p>
+                            ))}
                           </div>
                         )}
 

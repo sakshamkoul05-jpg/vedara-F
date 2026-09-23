@@ -111,6 +111,22 @@ export function RateCardTab({
                   })}
                 </div>
 
+                <div className="w-28 shrink-0">
+                  <SavingInput
+                    type="number"
+                    min={1}
+                    suffix="min nights"
+                    value={season.minStay ?? 1}
+                    ariaLabel={`${season.name} minimum stay`}
+                    onSave={async (v) => {
+                      const n = Math.round(Number(v));
+                      if (!Number.isFinite(n) || n < 1) throw new Error('At least 1 night');
+                      await updateRecord('seasons', { id: season.id, minStay: n });
+                      await reload();
+                    }}
+                  />
+                </div>
+
                 <div className="flex items-center gap-2 shrink-0">
                   <span className="text-xs text-muted-foreground">Active</span>
                   <SavingToggle
@@ -284,6 +300,21 @@ export function SpecialPeakTab({
                     ariaLabel="End date"
                     onSave={async (v) => {
                       await updateRecord('special-peak-periods', { id: period.id, endDate: v });
+                      await reload();
+                    }}
+                  />
+                </div>
+                <div className="w-28">
+                  <label className="text-xs text-muted-foreground block mb-1">Min nights</label>
+                  <SavingInput
+                    type="number"
+                    min={1}
+                    value={period.minStay ?? 1}
+                    ariaLabel="Minimum stay"
+                    onSave={async (v) => {
+                      const n = Math.round(Number(v));
+                      if (!Number.isFinite(n) || n < 1) throw new Error('At least 1 night');
+                      await updateRecord('special-peak-periods', { id: period.id, minStay: n });
                       await reload();
                     }}
                   />

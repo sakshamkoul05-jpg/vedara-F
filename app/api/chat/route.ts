@@ -119,10 +119,14 @@ export async function POST(req: NextRequest) {
 
     // === PRICE / RATES ===
     else if (/price|rate|cost|tariff|how much|expensive|budget|cheapest|affordable/i.test(lower)) {
-      const sorted = [...kb.cottages].sort((a, b) => a.pricePerNight - b.pricePerNight);
-      const cheapest = sorted[0];
-      const expensive = sorted[sorted.length - 1];
-      reply = `Our cottage rates range from ₹${cheapest.pricePerNight} to ₹${expensive.pricePerNight} per night:\n\n${kb.cottages.map(c => `• ${c.name} — ₹${c.pricePerNight}/night (${c.category})`).join('\n')}\n\n💡 Prices are exclusive of 12% GST. Complimentary breakfast is included with every stay! Book at /booking`;
+      // Engine "from" rates (spec §12); the legacy flat rate only as a fallback.
+      const rateOf = (c: any) => c.fromRate ?? c.pricePerNight;
+      const lines = [...kb.cottages]
+        .sort((a, b) => rateOf(a) - rateOf(b))
+        .map((c) => `• ${c.name} — from ₹${rateOf(c).toLocaleString('en-IN')}/night${c.publicDescriptor ? ` (${c.publicDescriptor})` : ''}`)
+        .join('\n');
+      const bf = kb.pricing?.adultBreakfast;
+      reply = `Room-only rates per cottage per night:\n\n${lines}\n\n💡 Rates vary by dates, season, occupancy and availability; a 3rd or 4th adult is priced in the larger cottages.${bf ? ` Add breakfast for ₹${bf} per adult per night.` : ''} Stay 4 nights, pay for 3 in the Value and Regular seasons. GST extra as applicable. See your exact price at /booking`;
     }
 
     // === COTTAGE LIST ===
@@ -158,9 +162,9 @@ export async function POST(req: NextRequest) {
         const breakfast = kb.menu.find((c: any) => c.name?.toLowerCase().includes('breakfast'));
         if (breakfast) {
           const items = (breakfast.items || []).slice(0, 8).map((i: any) => `• ${i.name} — ₹${i.price}`).join('\n');
-          reply = `☀️ The Perch — Breakfast (7:30 AM – 10:00 AM)\n\n${items}\n\nAll breakfasts complimentary with your stay! Full menu at /cafe`;
+          reply = `☀️ The Perch — Breakfast (7:30 AM – 10:00 AM)\n\n${items}\n\n${breakfastPlanNote(kb)} Full menu at /cafe`;
         } else {
-          reply = 'Breakfast served 7:30-10:00 AM at The Perch, complimentary with every stay. Full menu at /cafe';
+          reply = `Breakfast is served 7:30-10:00 AM at The Perch. ${breakfastPlanNote(kb)} Full menu at /cafe`;
         }
       } else if (/coffee|tea|drink|beverage/i.test(lower)) {
         const bev = kb.menu.find((c: any) => c.name?.toLowerCase().includes('beverage'));
@@ -178,7 +182,7 @@ export async function POST(req: NextRequest) {
 
     // === BOOKING ===
     else if (/book|reserve|availability|available|check.?in|check.?out|date|vacancy/i.test(lower)) {
-      reply = `📅 To book at The Vedara:\n\n1. Visit /booking for real-time availability\n2. Select dates, cottage, guests\n3. Pay securely via Razorpay\n\nCheck-in: 1:00 PM | Check-out: 11:00 AM\nComplimentary breakfast included!\n\nHelp? Call +91-91188-82242`;
+      reply = `📅 To book at The Vedara:\n\n1. Visit /booking and enter your dates, adults and each child's age\n2. Pick a cottage and a rate plan (Room Only or Breakfast Included)\n3. Pay securely via Razorpay\n\nCheck-in: 1:00 PM | Check-out: 11:00 AM\nThe full tariff, GST and final amount are shown before you pay.\n\nHelp? Call +91-91188-82242`;
     }
 
     // === CANCELLATION ===
@@ -310,4 +314,20 @@ export async function POST(req: NextRequest) {
     console.error('Chat API error:', error);
     return NextResponse.json({ reply: 'I\'m having a momentary hiccup! 🏔️ Please try again, or call +91-91188-82242 for immediate help.' });
   }
+}
+
+/**
+ * How breakfast is sold (spec §3.2): a supplement on the Breakfast Included rate
+ * plan, not something included in every stay. Figures come from the live rate
+ * card so this never drifts from what checkout charges.
+ */
+function breakfastPlanNote(kb: Awaited<ReturnType<typeof getVedaraKB>>): string {
+  const p = kb.pricing;
+  if (!p || p.adultBreakfast == null) {
+    return 'Choose the Breakfast Included rate plan when booking to add breakfast.';
+  }
+  const kids = p.childBreakfast
+    .map((b) => `children ${b.minAge}-${b.maxAge} ${b.price === 0 ? 'free' : `₹${b.price}`}`)
+    .join(', ');
+  return `Add it with the Breakfast Included rate plan when booking: ₹${p.adultBreakfast} per adult per night${kids ? `, ${kids}` : ''}.`;
 }

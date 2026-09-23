@@ -1,8 +1,9 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { getServiceClient } from '@/lib/supabase-server';
-import { loadInventoryPressure, loadPricingConfig } from '@/lib/pricing/load-config';
+import { loadInventoryPressure, loadPricingConfig, todayInIndia } from '@/lib/pricing/load-config';
 import { calculateQuote } from '@/lib/pricing/engine';
+import { resolveCoupon } from '@/lib/pricing/server';
 import { PricingError } from '@/lib/pricing/types';
 
 export const runtime = 'nodejs';
@@ -19,6 +20,7 @@ const quoteSchema = z.object({
   ratePlan: z.enum(['ROOM_ONLY', 'BREAKFAST_INCLUDED']).default('ROOM_ONLY'),
   extraMattresses: z.number().int().min(0).max(2).default(0),
   couponCode: z.string().trim().max(40).optional().nullable(),
+  guestEmail: z.string().trim().email().optional().nullable(),
 });
 
 /**
@@ -46,19 +48,20 @@ export async function POST(request: Request) {
     const supabase = getServiceClient();
     const config = await loadPricingConfig(supabase);
 
-    // Inventory pressure is measured from the database, never sent by the client.
-    const pressure = await loadInventoryPressure(supabase, input.checkIn, input.checkOut);
-
-    if (pressure.bookedCottageIds.includes(input.cottageId)) {
+    // Inventory is measured from the database, never sent by the client.
+    const pressure = await loadInventoryPressure(supabase, input.checkIn, input.checkOut, config.cottages);
+    if (pressure.unavailableCottageIds.includes(input.cottageId)) {
       return NextResponse.json(
-        { error: 'This cottage is not available for the selected dates' },
+        { error: 'This cottage is not available for the selected dates', code: 'UNAVAILABLE' },
         { status: 409 }
       );
     }
 
-    const coupon = await resolveCoupon(supabase, input.couponCode);
-    if (input.couponCode && !coupon) {
-      return NextResponse.json({ error: 'Invalid or expired coupon code' }, { status: 400 });
+    let coupon = null;
+    if (input.couponCode) {
+      const result = await resolveCoupon(supabase, input.couponCode, input.guestEmail ?? null);
+      if (!result.ok) return NextResponse.json({ error: result.error, code: 'COUPON' }, { status: 400 });
+      coupon = result.coupon;
     }
 
     const quote = calculateQuote(
@@ -70,8 +73,9 @@ export async function POST(request: Request) {
         childAges: input.childAges,
         ratePlan: input.ratePlan,
         extraMattresses: input.extraMattresses,
-        inventory: { booked: pressure.booked, total: pressure.total },
+        inventoryByNight: pressure.byNight,
         coupon,
+        today: todayInIndia(),
       },
       config
     );
@@ -84,28 +88,4 @@ export async function POST(request: Request) {
     console.error('Pricing quote failed:', err);
     return NextResponse.json({ error: 'Unable to calculate price' }, { status: 500 });
   }
-}
-
-async function resolveCoupon(
-  supabase: ReturnType<typeof getServiceClient>,
-  code: string | null | undefined
-) {
-  if (!code) return null;
-
-  const { data } = await supabase
-    .from('Coupon')
-    .select('*')
-    .eq('code', code)
-    .eq('isActive', true)
-    .maybeSingle();
-
-  if (!data) return null;
-  if (data.expiresAt && new Date(data.expiresAt) < new Date()) return null;
-  if (data.maxUsage > 0 && data.usedCount >= data.maxUsage) return null;
-
-  return {
-    code: data.code as string,
-    discountType: data.discountType as 'PERCENTAGE' | 'FIXED',
-    discountValue: data.discountValue as number,
-  };
 }

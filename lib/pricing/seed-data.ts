@@ -5,18 +5,18 @@
  * This is SEED data only. Once written to the database every value here is
  * admin-editable; the engine never reads this file at runtime (spec §16).
  *
- * Cottage-to-category mapping note
- * --------------------------------
- * The spec's §1 inventory table lists Magpie Retreat as Boutique (max 2) and
- * Whistling Thrush as Premium with a bathtub (max 4). Both the official website
- * copy and the live database have these the other way round: Magpie Retreat is
- * the 556 sq ft duplex with the bath tub sleeping 4, and Whistling Thrush is a
- * 270 sq ft suite sleeping 2. The spec's two rows appear to be transposed, and
- * the mapping below follows the website copy and live inventory, confirmed with
- * the client. The spec's rate *tiers* carry over unchanged by category.
+ * Cottage-to-category mapping
+ * ---------------------------
+ * Follows spec §1 exactly, as confirmed with the client: Magpie Retreat,
+ * Flycatcher Nook and Bulbul Nest are Boutique (max 2 adults, no extra
+ * mattress); Whistling Thrush is Premium (bathtub, up to 4 adults); Monal
+ * Haven and Koklass Cove are Signature (jacuzzi, up to 4 adults).
+ *
+ * The Finch Nook is a 7th cottage the spec predates. It is seeded as a Studio
+ * tier one step below Boutique, as agreed with the client.
  */
 
-import type { CottageCategory, SeasonType } from './types';
+import type { CottageCategory, LastMinuteOfferType, SeasonType } from './types';
 
 export interface SeedCottage {
   slug: string;
@@ -24,31 +24,28 @@ export interface SeedCottage {
   category: CottageCategory;
   baseAdults: number;
   maxAdults: number;
+  maxChildren: number;
   maxOccupancy: number;
   allowsExtraMattress: boolean;
   maxExtraMattresses: number;
-  /** Public descriptor for the cottage cards (spec §12). */
+  /** Public descriptor for the cottage cards (spec §12), verbatim. */
   publicDescriptor: string;
 }
 
+/**
+ * Spec §5.1: "Maximum 2 adults; a child under 12 may share the existing double
+ * bed with parents" — so Boutique allows one child, three heads in total.
+ * The spec sets no child limit for the four-adult cottages; two is seeded and
+ * admin-editable.
+ */
 export const SEED_COTTAGES: SeedCottage[] = [
   {
-    slug: 'the-finch-nook',
-    name: 'The Finch Nook',
-    category: 'STUDIO',
-    baseAdults: 2,
-    maxAdults: 2,
-    maxOccupancy: 3,
-    allowsExtraMattress: false,
-    maxExtraMattresses: 0,
-    publicDescriptor: 'Cozy Alpine Studio | 2 Adults',
-  },
-  {
-    slug: 'whistling-thrush',
-    name: 'Whistling Thrush',
+    slug: 'magpie-retreat',
+    name: 'Magpie Retreat',
     category: 'BOUTIQUE',
     baseAdults: 2,
     maxAdults: 2,
+    maxChildren: 1,
     maxOccupancy: 3,
     allowsExtraMattress: false,
     maxExtraMattresses: 0,
@@ -60,6 +57,7 @@ export const SEED_COTTAGES: SeedCottage[] = [
     category: 'BOUTIQUE',
     baseAdults: 2,
     maxAdults: 2,
+    maxChildren: 1,
     maxOccupancy: 3,
     allowsExtraMattress: false,
     maxExtraMattresses: 0,
@@ -71,17 +69,19 @@ export const SEED_COTTAGES: SeedCottage[] = [
     category: 'BOUTIQUE',
     baseAdults: 2,
     maxAdults: 2,
+    maxChildren: 1,
     maxOccupancy: 3,
     allowsExtraMattress: false,
     maxExtraMattresses: 0,
     publicDescriptor: 'Boutique Cottage | 2 Adults',
   },
   {
-    slug: 'magpie-retreat',
-    name: 'Magpie Retreat',
+    slug: 'whistling-thrush',
+    name: 'Whistling Thrush',
     category: 'PREMIUM',
     baseAdults: 2,
     maxAdults: 4,
+    maxChildren: 2,
     maxOccupancy: 5,
     allowsExtraMattress: true,
     maxExtraMattresses: 1,
@@ -93,6 +93,7 @@ export const SEED_COTTAGES: SeedCottage[] = [
     category: 'SIGNATURE',
     baseAdults: 2,
     maxAdults: 4,
+    maxChildren: 2,
     maxOccupancy: 5,
     allowsExtraMattress: true,
     maxExtraMattresses: 1,
@@ -104,10 +105,23 @@ export const SEED_COTTAGES: SeedCottage[] = [
     category: 'SIGNATURE',
     baseAdults: 2,
     maxAdults: 4,
+    maxChildren: 2,
     maxOccupancy: 5,
     allowsExtraMattress: true,
     maxExtraMattresses: 1,
     publicDescriptor: 'Signature Cottage | Jacuzzi | Up to 4 Adults',
+  },
+  {
+    slug: 'the-finch-nook',
+    name: 'The Finch Nook',
+    category: 'STUDIO',
+    baseAdults: 2,
+    maxAdults: 2,
+    maxChildren: 1,
+    maxOccupancy: 3,
+    allowsExtraMattress: false,
+    maxExtraMattresses: 0,
+    publicDescriptor: 'Studio Cottage | 2 Adults',
   },
 ];
 
@@ -115,24 +129,25 @@ export interface SeedSeason {
   type: SeasonType;
   name: string;
   months: number[];
+  minStay: number;
 }
 
 /** Spec §5 seasonal bands. December is HIGH, with Special Peak overriding dates. */
 export const SEED_SEASONS: SeedSeason[] = [
-  { type: 'VALUE', name: 'Value', months: [7, 8] },
-  { type: 'REGULAR', name: 'Regular', months: [2, 3, 9, 11] },
-  { type: 'HIGH', name: 'High', months: [1, 4, 10, 12] },
-  { type: 'PEAK', name: 'Peak', months: [5, 6] },
+  { type: 'VALUE', name: 'Value', months: [7, 8], minStay: 1 },
+  { type: 'REGULAR', name: 'Regular', months: [2, 3, 9, 11], minStay: 1 },
+  { type: 'HIGH', name: 'High', months: [1, 4, 10, 12], minStay: 1 },
+  { type: 'PEAK', name: 'Peak', months: [5, 6], minStay: 1 },
 ];
 
 /** [weekdayRate, weekendRate] per adult-occupancy tier, per season. */
 type RateTier = Record<number, [number, number]>;
 
 /**
- * Seasonal rate matrices from spec §5, by category.
+ * Seasonal rate matrices from spec §5, by category. The Premium row is the
+ * spec's "Whistling Thrush" column; Signature is "Monal Haven / Koklass Cove".
  *
- * STUDIO is not in the spec — The Finch Nook is a 7th cottage the spec predates.
- * Seeded one step below Boutique as agreed with the client; fully admin-editable.
+ * STUDIO is not in the spec — seeded one step below Boutique, admin-editable.
  */
 export const SEED_CATEGORY_RATES: Record<CottageCategory, Record<SeasonType, RateTier>> = {
   STUDIO: {
@@ -190,17 +205,44 @@ export const SEED_LONG_STAY_RULE = {
   enabledSeasonTypes: ['VALUE', 'REGULAR'] as SeasonType[],
   cottageIds: [] as string[],
   blackoutDates: [] as string[],
+  validFrom: null as string | null,
+  validTo: null as string | null,
   stackableWithCoupon: false,
+  stackableWithOffers: false,
   isActive: true,
 };
+
+/**
+ * Spec §9: "If arrival is within 7 days and 2 or fewer cottages are booked,
+ * allow an admin-controlled offer ... Initially require admin activation."
+ * Seeded switched OFF; an admin turns it on.
+ */
+export const SEED_LAST_MINUTE_OFFERS: {
+  name: string;
+  offerType: LastMinuteOfferType;
+  value: number;
+  daysBeforeArrival: number;
+  maxBookedCottages: number;
+  stackableWithCoupon: boolean;
+  isActive: boolean;
+}[] = [
+  {
+    name: 'Last-minute escape',
+    offerType: 'ROOM_DISCOUNT',
+    value: 10,
+    daysBeforeArrival: 7,
+    maxBookedCottages: 2,
+    stackableWithCoupon: false,
+    isActive: false,
+  },
+];
 
 /**
  * Spec §8, expressed as booked ratios so the rule adapts to inventory size.
  *
  * The spec's trigger points are 4-of-6 (0.6667) and 5-of-6 (0.8333). The bounds
  * sit just below each so the exact fractions land inside the intended tier
- * rather than on a floating-point boundary. With 7 cottages these map onto the
- * same "cottages remaining" semantics: 3 left = base, 2 left = +10%, 1 = +20%.
+ * rather than on a floating-point boundary.
  */
 export const SEED_INVENTORY_TIERS = [
   { minBookedRatio: 0.0, maxBookedRatio: 0.66, upliftPercent: 0 },
@@ -226,5 +268,6 @@ export const SEED_SETTINGS = {
   inventoryPricingEnabled: true,
   inventoryUpliftCeilingPercent: 20,
   longStayEnabled: true,
+  minStayNights: 1,
   roundingMode: 'NEAREST_RUPEE' as const,
 };

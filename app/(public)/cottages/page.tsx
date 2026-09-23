@@ -12,7 +12,8 @@ import { DatePicker } from '@/components/ui/DatePicker';
 import { api } from '@/lib/api';
 import { Cottage } from '@/types';
 import { formatPrice, getToday, parseDate, isPastDate } from '@/lib/utils';
-import { fetchFromRates } from '@/lib/from-rates';
+import { fetchFromRates, fetchPublicPricing, indexPublicPricing, type PublicCottagePricing } from '@/lib/from-rates';
+import { RATE_FOOTNOTE } from '@/lib/pricing/customer-copy';
 
 const FALLBACK_COTTAGES: Cottage[] = [
   { id: '1', slug: 'monal-haven', name: 'Monal Haven', description: 'Premium Duplex Family Suite with private jacuzzi, attic yoga balcony, and sweeping mountain views. Wake up to mist rolling over the Himalayas from your private balcony.', shortDesc: 'Premium Duplex Family Suite with private jacuzzi and mountain views', category: 'Premium Duplex Family Suite', pricePerNight: 12000, heaterCharge: 600, capacity: 4, bedrooms: 2, bathrooms: 2, size: 850, amenities: ['wifi', 'fireplace', 'mountain view', 'balcony', 'coffee maker'], images: [], isActive: true, sortOrder: 1, isAvailable: true } as any,
@@ -26,8 +27,16 @@ const FALLBACK_COTTAGES: Cottage[] = [
 
 export default function CottagesPage() {
   const [cottages, setCottages] = useState<Cottage[]>([]);
+  // The full catalogue, so a new search can bring back cottages an earlier
+  // party-size filter hid.
+  const [allCottages, setAllCottages] = useState<Cottage[]>([]);
   // Engine "from" rates (spec §12), keyed by cottage id and slug.
   const [fromRates, setFromRates] = useState<Record<string, number>>({});
+  // Public descriptors (spec §12) and, after a search, each suitable cottage
+  // priced under both rate plans.
+  const [publicMap, setPublicMap] = useState<Record<string, PublicCottagePricing>>({});
+  const [searchMap, setSearchMap] = useState<Record<string, any>>({});
+  const [hiddenCount, setHiddenCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [checkIn, setCheckIn] = useState('');
   const [checkOut, setCheckOut] = useState('');
@@ -39,6 +48,16 @@ export default function CottagesPage() {
   const [adults, setAdults] = useState(2);
   const [childAges, setChildAges] = useState<number[]>([]);
   const today = getToday();
+
+  const cardHref = (cottage: any, slug: string) => {
+    const r = searchMap[cottage.id];
+    if (availabilityChecked && r?.available) {
+      const qs = new URLSearchParams({ checkIn, checkOut, adults: String(adults), cottageId: cottage.id });
+      if (childAges.length) qs.set('childAges', childAges.join(','));
+      return `/booking?${qs.toString()}`;
+    }
+    return `/cottages/slug/${slug}`;
+  };
 
   const resetAvailability = () => {
     setAvailabilityChecked(false);
@@ -73,49 +92,43 @@ export default function CottagesPage() {
     setAvailabilityChecked(false);
     setAvailabilityError('');
     try {
-      const res: any = await api.get(
-        `/bookings/available-cottages?checkIn=${encodeURIComponent(checkIn)}&checkOut=${encodeURIComponent(checkOut)}`
-      );
-
-      if (!Array.isArray(res.data)) {
-        throw new Error('Unexpected response');
+      const res = await fetch('/api/pricing/search', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ checkIn, checkOut, adults, childAges }),
+      });
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        // e.g. a minimum-stay rule for these dates.
+        setAvailabilityError(json.error || 'We could not check availability just now. Please try again.');
+        return;
       }
 
-      // Guests aged 12+ count as adults, so they affect which cottages fit.
-      const billableAdults = adults + childAges.filter((a) => a >= 12).length;
-      const totalGuests = adults + childAges.length;
+      const map: Record<string, any> = {};
+      for (const r of json.data.cottages) map[r.cottageId] = r;
+      setSearchMap(map);
+      setHiddenCount(json.data.incompatibleCount ?? 0);
 
-      const data = res.data.map((c: any) => {
-        const maxAdults = c.maxAdults ?? c.capacity ?? 2;
-        const maxOccupancy = c.maxOccupancy ?? maxAdults + 1;
-        const fitsParty = billableAdults <= maxAdults && totalGuests <= maxOccupancy;
-        return {
-          ...c,
-          pricePerNight:
-            c.pricePerNight ||
-            FALLBACK_COTTAGES.find((f: any) => f.slug === c.slug)?.pricePerNight ||
-            0,
-          fitsParty,
-          // A cottage too small for the party is not available to this guest,
-          // even if the dates are free.
-          isAvailable: c.isAvailable !== false && fitsParty,
-        };
-      });
-
-      setCottages(data);
+      // Spec §11: only cottages compatible with the party are shown.
+      const base = allCottages.length > 0 ? allCottages : FALLBACK_COTTAGES;
+      setCottages(
+        base
+          .filter((c: any) => map[c.id])
+          .map((c: any) => ({ ...c, isAvailable: map[c.id].available }))
+      );
       setAvailabilityChecked(true);
     } catch {
-      // Previously this fell back to a hard-coded list where every cottage was
-      // marked available, so a failed check reported a false "all available".
+      // Never fall back to a list that claims everything is available.
       setAvailabilityError('We could not check availability just now. Please try again.');
       setAvailabilityChecked(false);
     } finally {
       setChecking(false);
     }
-  }, [checkIn, checkOut, adults, childAges]);
+  }, [checkIn, checkOut, adults, childAges, allCottages]);
 
   useEffect(() => {
     fetchFromRates().then(setFromRates);
+    fetchPublicPricing().then((p) => setPublicMap(indexPublicPricing(p.cottages)));
     api.get('/cottages').then((res: any) => {
       if (Array.isArray(res.data) && res.data.length > 0) {
         const patched = res.data.map((c: any) => ({
@@ -123,12 +136,15 @@ export default function CottagesPage() {
           pricePerNight: c.pricePerNight || FALLBACK_COTTAGES.find((f: any) => f.slug === c.slug)?.pricePerNight || 0,
         }));
         setCottages(patched);
+        setAllCottages(patched);
       } else {
         setCottages(FALLBACK_COTTAGES);
+        setAllCottages(FALLBACK_COTTAGES);
       }
       setLoading(false);
     }).catch(() => {
       setCottages(FALLBACK_COTTAGES);
+      setAllCottages(FALLBACK_COTTAGES);
       setLoading(false);
     });
   }, []);
@@ -278,7 +294,7 @@ export default function CottagesPage() {
                     {' '}({adults} {adults === 1 ? 'adult' : 'adults'}
                     {childAges.length > 0 ? `, ${childAges.length} ${childAges.length === 1 ? 'child' : 'children'}` : ''})
                   </p>
-                  <button onClick={() => { setAvailabilityChecked(false); api.get('/cottages').then((res: any) => { const data = Array.isArray(res.data) && res.data.length > 0 ? res.data.map((c: any) => ({ ...c, pricePerNight: c.pricePerNight || FALLBACK_COTTAGES.find((f: any) => f.slug === c.slug)?.pricePerNight || 0 })) : FALLBACK_COTTAGES; setCottages(data); }).catch(() => setCottages(FALLBACK_COTTAGES)); }} className="text-sm text-gold-600 dark:text-gold-400 hover:underline">
+                  <button onClick={() => { setAvailabilityChecked(false); setSearchMap({}); setHiddenCount(0); api.get('/cottages').then((res: any) => { const data = Array.isArray(res.data) && res.data.length > 0 ? res.data.map((c: any) => ({ ...c, pricePerNight: c.pricePerNight || FALLBACK_COTTAGES.find((f: any) => f.slug === c.slug)?.pricePerNight || 0 })) : FALLBACK_COTTAGES; setCottages(data); }).catch(() => setCottages(FALLBACK_COTTAGES)); }} className="text-sm text-gold-600 dark:text-gold-400 hover:underline">
                     Show all cottages
                   </button>
                 </div>
@@ -298,9 +314,11 @@ export default function CottagesPage() {
                     {cottages.filter((c: any) => c.category === 'Premium Duplex Family Suite').map((cottage: any, i) => {
                       const slug = cottage.slug || cottage.name.toLowerCase().replace(/\s+/g, '-');
                       const available = availabilityChecked ? cottage.isAvailable : true;
+                      const result = searchMap[cottage.id];
+                      const pub = publicMap[cottage.id] ?? publicMap[slug];
                       return (
                       <ScrollReveal key={cottage.id} delay={i * 0.1}>
-                        <Link href={`/cottages/slug/${slug}`} className="group block">
+                        <Link href={cardHref(cottage, slug)} className="group block">
                           <div className={`vintage-card overflow-hidden h-full ${availabilityChecked && !available ? 'opacity-50' : ''}`}>
                             <div className="aspect-[4/3] overflow-hidden bg-gold-50 dark:bg-[#231B12]/30 relative">
                               {availabilityChecked && !available && (
@@ -320,9 +338,12 @@ export default function CottagesPage() {
                                 <h3 className="font-serif text-xl text-foreground group-hover:text-gold-600 dark:group-hover:text-gold-400 transition-colors">{cottage.name}</h3>
                                 <span className="text-gold-600 dark:text-gold-400 font-semibold whitespace-nowrap"><span className="text-xs font-normal text-muted-foreground">From </span>{formatPrice(fromRates[cottage.id] ?? fromRates[cottage.slug] ?? cottage.pricePerNight)}<span className="text-gold-400 font-normal text-xs">/night*</span></span>
                               </div>
+                              {pub?.publicDescriptor && (
+                                <p className="text-[11px] uppercase tracking-wider text-gold-600 dark:text-gold-400 mb-2">{pub.publicDescriptor}</p>
+                              )}
                               <p className="text-muted-foreground text-sm mb-4 line-clamp-2">{cottage.shortDesc || cottage.description}</p>
                               <div className="flex gap-4 text-xs text-muted-foreground mb-4">
-                                <span className="flex items-center gap-1"><Users className="w-3 h-3" /> {cottage.capacity} guests</span>
+                                <span className="flex items-center gap-1"><Users className="w-3 h-3" /> {pub ? `Up to ${pub.maxAdults} adults` : `${cottage.capacity} guests`}</span>
                                 <span className="flex items-center gap-1"><Bed className="w-3 h-3" /> {cottage.bedrooms} BR</span>
                                 <span className="flex items-center gap-1"><Bath className="w-3 h-3" /> {cottage.bathrooms} bath</span>
                                 {cottage.size && <span className="flex items-center gap-1"><Maximize className="w-3 h-3" /> {cottage.size} sqft</span>}
@@ -334,10 +355,28 @@ export default function CottagesPage() {
                                   ) : (
                                     <span className="inline-flex items-center gap-1 text-xs text-red-500 font-medium"><XCircle className="w-3 h-3" /> Booked for these dates</span>
                                   )}
+                                  {available && result && (
+                                    <div className="mt-2 space-y-1 text-xs">
+                                      <div className="flex justify-between">
+                                        <span className="text-muted-foreground">Room Only</span>
+                                        <span className="text-foreground font-medium">{formatPrice(result.plans.ROOM_ONLY.perNight)}/night</span>
+                                      </div>
+                                      <div className="flex justify-between">
+                                        <span className="text-muted-foreground">Breakfast Included</span>
+                                        <span className="text-foreground font-medium">{formatPrice(result.plans.BREAKFAST_INCLUDED.perNight)}/night</span>
+                                      </div>
+                                      {result.longStayApplied && (
+                                        <p className="text-green-600 font-medium">{result.longStayRuleName} applied</p>
+                                      )}
+                                      {result.lastMinuteOffer && (
+                                        <p className="text-amber-600 font-medium">{result.lastMinuteOffer.name}</p>
+                                      )}
+                                    </div>
+                                  )}
                                 </div>
                               )}
                               <span className="text-gold-600 dark:text-gold-400 text-sm font-medium inline-flex items-center gap-1 group-hover:gap-2 transition-all">
-                                View Details <ArrowRight className="w-3 h-3" />
+                                {availabilityChecked && result?.available ? 'Book this stay' : 'View Details'} <ArrowRight className="w-3 h-3" />
                               </span>
                             </div>
                           </div>
@@ -362,9 +401,11 @@ export default function CottagesPage() {
                     {cottages.filter((c: any) => c.category === 'Intimate Mountain View Suite').map((cottage: any, i) => {
                       const slug = cottage.slug || cottage.name.toLowerCase().replace(/\s+/g, '-');
                       const available = availabilityChecked ? cottage.isAvailable : true;
+                      const result = searchMap[cottage.id];
+                      const pub = publicMap[cottage.id] ?? publicMap[slug];
                       return (
                       <ScrollReveal key={cottage.id} delay={i * 0.1}>
-                        <Link href={`/cottages/slug/${slug}`} className="group block">
+                        <Link href={cardHref(cottage, slug)} className="group block">
                           <div className={`vintage-card overflow-hidden h-full ${availabilityChecked && !available ? 'opacity-50' : ''}`}>
                             <div className="aspect-[4/3] overflow-hidden bg-gold-50 dark:bg-[#231B12]/30 relative">
                               {availabilityChecked && !available && (
@@ -384,9 +425,12 @@ export default function CottagesPage() {
                                 <h3 className="font-serif text-xl text-foreground group-hover:text-gold-600 dark:group-hover:text-gold-400 transition-colors">{cottage.name}</h3>
                                 <span className="text-gold-600 dark:text-gold-400 font-semibold whitespace-nowrap"><span className="text-xs font-normal text-muted-foreground">From </span>{formatPrice(fromRates[cottage.id] ?? fromRates[cottage.slug] ?? cottage.pricePerNight)}<span className="text-gold-400 font-normal text-xs">/night*</span></span>
                               </div>
+                              {pub?.publicDescriptor && (
+                                <p className="text-[11px] uppercase tracking-wider text-gold-600 dark:text-gold-400 mb-2">{pub.publicDescriptor}</p>
+                              )}
                               <p className="text-muted-foreground text-sm mb-4 line-clamp-2">{cottage.shortDesc || cottage.description}</p>
                               <div className="flex gap-4 text-xs text-muted-foreground mb-4">
-                                <span className="flex items-center gap-1"><Users className="w-3 h-3" /> {cottage.capacity} guests</span>
+                                <span className="flex items-center gap-1"><Users className="w-3 h-3" /> {pub ? `Up to ${pub.maxAdults} adults` : `${cottage.capacity} guests`}</span>
                                 <span className="flex items-center gap-1"><Bed className="w-3 h-3" /> {cottage.bedrooms} BR</span>
                                 <span className="flex items-center gap-1"><Bath className="w-3 h-3" /> {cottage.bathrooms} bath</span>
                                 {cottage.size && <span className="flex items-center gap-1"><Maximize className="w-3 h-3" /> {cottage.size} sqft</span>}
@@ -398,10 +442,28 @@ export default function CottagesPage() {
                                   ) : (
                                     <span className="inline-flex items-center gap-1 text-xs text-red-500 font-medium"><XCircle className="w-3 h-3" /> Booked for these dates</span>
                                   )}
+                                  {available && result && (
+                                    <div className="mt-2 space-y-1 text-xs">
+                                      <div className="flex justify-between">
+                                        <span className="text-muted-foreground">Room Only</span>
+                                        <span className="text-foreground font-medium">{formatPrice(result.plans.ROOM_ONLY.perNight)}/night</span>
+                                      </div>
+                                      <div className="flex justify-between">
+                                        <span className="text-muted-foreground">Breakfast Included</span>
+                                        <span className="text-foreground font-medium">{formatPrice(result.plans.BREAKFAST_INCLUDED.perNight)}/night</span>
+                                      </div>
+                                      {result.longStayApplied && (
+                                        <p className="text-green-600 font-medium">{result.longStayRuleName} applied</p>
+                                      )}
+                                      {result.lastMinuteOffer && (
+                                        <p className="text-amber-600 font-medium">{result.lastMinuteOffer.name}</p>
+                                      )}
+                                    </div>
+                                  )}
                                 </div>
                               )}
                               <span className="text-gold-600 dark:text-gold-400 text-sm font-medium inline-flex items-center gap-1 group-hover:gap-2 transition-all">
-                                View Details <ArrowRight className="w-3 h-3" />
+                                {availabilityChecked && result?.available ? 'Book this stay' : 'View Details'} <ArrowRight className="w-3 h-3" />
                               </span>
                             </div>
                           </div>
@@ -426,9 +488,11 @@ export default function CottagesPage() {
                     {cottages.filter((c: any) => c.category === 'Cozy Alpine Studio').map((cottage: any, i) => {
                       const slug = cottage.slug || cottage.name.toLowerCase().replace(/\s+/g, '-');
                       const available = availabilityChecked ? cottage.isAvailable : true;
+                      const result = searchMap[cottage.id];
+                      const pub = publicMap[cottage.id] ?? publicMap[slug];
                       return (
                       <ScrollReveal key={cottage.id} delay={i * 0.1}>
-                        <Link href={`/cottages/slug/${slug}`} className="group block">
+                        <Link href={cardHref(cottage, slug)} className="group block">
                           <div className={`vintage-card overflow-hidden h-full ${availabilityChecked && !available ? 'opacity-50' : ''}`}>
                             <div className="aspect-[4/3] overflow-hidden bg-gold-50 dark:bg-[#231B12]/30 relative">
                               {availabilityChecked && !available && (
@@ -448,9 +512,12 @@ export default function CottagesPage() {
                                 <h3 className="font-serif text-xl text-foreground group-hover:text-gold-600 dark:group-hover:text-gold-400 transition-colors">{cottage.name}</h3>
                                 <span className="text-gold-600 dark:text-gold-400 font-semibold whitespace-nowrap"><span className="text-xs font-normal text-muted-foreground">From </span>{formatPrice(fromRates[cottage.id] ?? fromRates[cottage.slug] ?? cottage.pricePerNight)}<span className="text-gold-400 font-normal text-xs">/night*</span></span>
                               </div>
+                              {pub?.publicDescriptor && (
+                                <p className="text-[11px] uppercase tracking-wider text-gold-600 dark:text-gold-400 mb-2">{pub.publicDescriptor}</p>
+                              )}
                               <p className="text-muted-foreground text-sm mb-4 line-clamp-2">{cottage.shortDesc || cottage.description}</p>
                               <div className="flex gap-4 text-xs text-muted-foreground mb-4">
-                                <span className="flex items-center gap-1"><Users className="w-3 h-3" /> {cottage.capacity} guests</span>
+                                <span className="flex items-center gap-1"><Users className="w-3 h-3" /> {pub ? `Up to ${pub.maxAdults} adults` : `${cottage.capacity} guests`}</span>
                                 <span className="flex items-center gap-1"><Bed className="w-3 h-3" /> {cottage.bedrooms} BR</span>
                                 <span className="flex items-center gap-1"><Bath className="w-3 h-3" /> {cottage.bathrooms} bath</span>
                                 {cottage.size && <span className="flex items-center gap-1"><Maximize className="w-3 h-3" /> {cottage.size} sqft</span>}
@@ -462,10 +529,28 @@ export default function CottagesPage() {
                                   ) : (
                                     <span className="inline-flex items-center gap-1 text-xs text-red-500 font-medium"><XCircle className="w-3 h-3" /> Booked for these dates</span>
                                   )}
+                                  {available && result && (
+                                    <div className="mt-2 space-y-1 text-xs">
+                                      <div className="flex justify-between">
+                                        <span className="text-muted-foreground">Room Only</span>
+                                        <span className="text-foreground font-medium">{formatPrice(result.plans.ROOM_ONLY.perNight)}/night</span>
+                                      </div>
+                                      <div className="flex justify-between">
+                                        <span className="text-muted-foreground">Breakfast Included</span>
+                                        <span className="text-foreground font-medium">{formatPrice(result.plans.BREAKFAST_INCLUDED.perNight)}/night</span>
+                                      </div>
+                                      {result.longStayApplied && (
+                                        <p className="text-green-600 font-medium">{result.longStayRuleName} applied</p>
+                                      )}
+                                      {result.lastMinuteOffer && (
+                                        <p className="text-amber-600 font-medium">{result.lastMinuteOffer.name}</p>
+                                      )}
+                                    </div>
+                                  )}
                                 </div>
                               )}
                               <span className="text-gold-600 dark:text-gold-400 text-sm font-medium inline-flex items-center gap-1 group-hover:gap-2 transition-all">
-                                View Details <ArrowRight className="w-3 h-3" />
+                                {availabilityChecked && result?.available ? 'Book this stay' : 'View Details'} <ArrowRight className="w-3 h-3" />
                               </span>
                             </div>
                           </div>
@@ -475,6 +560,14 @@ export default function CottagesPage() {
                   </div>
                 </div>
               )}
+              {availabilityChecked && hiddenCount > 0 && (
+                <p className="text-xs text-muted-foreground mt-2">
+                  {hiddenCount} {hiddenCount === 1 ? 'cottage is' : 'cottages are'} hidden because {hiddenCount === 1 ? 'it cannot' : 'they cannot'} accommodate your party.
+                </p>
+              )}
+              <p className="text-[11px] text-muted-foreground mt-6">
+                {availabilityChecked ? 'Per-night prices are averages before GST for your party. ' : ''}{RATE_FOOTNOTE}
+              </p>
               {cottages.length === 0 && (
                 <div className="text-center py-20">
                   <Home className="w-12 h-12 text-muted-foreground mx-auto mb-4" />

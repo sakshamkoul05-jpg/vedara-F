@@ -4,17 +4,23 @@
  * Implements the calculation sequence from spec v2.1 §10, in order:
  *   validate → cottage → season → weekday/weekend → occupancy base rate →
  *   Special Peak override → inventory uplift → Stay 4 Pay 3 → mattress →
- *   breakfast → coupon → GST.
+ *   breakfast → promotion / coupon → GST.
  *
  * This module is pure: it takes a `PricingConfig` loaded from the database and
  * returns a breakdown. No rates live here (spec §16).
  */
 
 import {
+  MAX_LAST_MINUTE_DISCOUNT_PERCENT,
   PRICING_ENGINE_VERSION,
   PricingError,
+  type AppliedOffer,
   type ChildBand,
   type CottageConfig,
+  type CouponInput,
+  type InventoryCount,
+  type LastMinuteOffer,
+  type LongStayRule,
   type NightBreakdown,
   type PricingConfig,
   type QuoteBreakdown,
@@ -52,10 +58,10 @@ export function nightsBetween(checkIn: string, checkOut: string): number {
 }
 
 /** Every night actually occupied, i.e. check-in up to but excluding checkout. */
-function occupiedNights(checkIn: string, checkOut: string): Date[] {
+export function occupiedNightDates(checkIn: string, checkOut: string): string[] {
   const n = nightsBetween(checkIn, checkOut);
   const start = parseDate(checkIn);
-  return Array.from({ length: n }, (_, i) => addDays(start, i));
+  return Array.from({ length: Math.max(0, n) }, (_, i) => formatDate(addDays(start, i)));
 }
 
 // ---------------------------------------------------------------------------
@@ -85,7 +91,7 @@ export function classifyGuests(
   const freeChildAges: number[] = [];
 
   for (const age of childAges) {
-    if (age < 0 || age > 120) {
+    if (!Number.isInteger(age) || age < 0 || age > 120) {
       throw new PricingError('INVALID_CHILD_AGE', `Invalid child age: ${age}`);
     }
     const band = findBand(childBands, age);
@@ -108,21 +114,22 @@ export function classifyGuests(
 // ---------------------------------------------------------------------------
 
 interface ResolvedNight {
-  date: Date;
   iso: string;
   seasonType: SeasonType;
   seasonName: string;
   isWeekend: boolean;
   /** Set when a Special Peak period covers this night. */
   specialPeakPeriodId: string | null;
+  /** Minimum stay imposed by this night's season or Special Peak period. */
+  minStay: number;
 }
 
 function isWithin(iso: string, startDate: string, endDate: string): boolean {
   return iso >= startDate.slice(0, 10) && iso <= endDate.slice(0, 10);
 }
 
-function resolveNight(date: Date, config: PricingConfig): ResolvedNight {
-  const iso = formatDate(date);
+function resolveNight(iso: string, config: PricingConfig): ResolvedNight {
+  const date = parseDate(iso);
   const isWeekend = config.settings.weekendDays.includes(date.getUTCDay());
 
   // Special Peak overrides the normal seasonal tariff entirely (spec §6).
@@ -131,12 +138,12 @@ function resolveNight(date: Date, config: PricingConfig): ResolvedNight {
   );
   if (special) {
     return {
-      date,
       iso,
       seasonType: 'SPECIAL_PEAK',
       seasonName: special.name,
       isWeekend,
       specialPeakPeriodId: special.id,
+      minStay: special.minStay || 1,
     };
   }
 
@@ -147,12 +154,12 @@ function resolveNight(date: Date, config: PricingConfig): ResolvedNight {
   }
 
   return {
-    date,
     iso,
     seasonType: season.type,
     seasonName: season.name,
     isWeekend,
     specialPeakPeriodId: null,
+    minStay: season.minStay || 1,
   };
 }
 
@@ -197,27 +204,25 @@ function lookupRoomRate(
     (r) => r.seasonId === season.id && r.cottageId === cottage.id && r.adults === tier
   );
   if (!rate) {
-    throw new PricingError(
-      'NO_RATE',
-      `No ${season.name} rate for ${cottage.name} at ${tier} adults`
-    );
+    throw new PricingError('NO_RATE', `No ${season.name} rate for ${cottage.name} at ${tier} adults`);
   }
 
   return night.isWeekend ? rate.weekendRate : rate.weekdayRate;
 }
 
 // ---------------------------------------------------------------------------
-// Inventory uplift (spec §8)
+// Inventory (spec §8, §9)
 // ---------------------------------------------------------------------------
 
-function inventoryUpliftPercent(
-  inventory: { booked: number; total: number } | undefined,
-  config: PricingConfig
-): number {
-  if (!config.settings.inventoryPricingEnabled) return 0;
-  if (!inventory || inventory.total <= 0) return 0;
+function inventoryFor(night: string, req: QuoteRequest): InventoryCount | undefined {
+  return req.inventoryByNight?.[night] ?? req.inventory;
+}
 
-  const ratio = inventory.booked / inventory.total;
+function upliftPercentFor(count: InventoryCount | undefined, config: PricingConfig): number {
+  if (!config.settings.inventoryPricingEnabled) return 0;
+  if (!count || count.total <= 0) return 0;
+
+  const ratio = count.booked / count.total;
   const tier = config.inventoryTiers.find(
     (t) => t.isActive && ratio >= t.minBookedRatio && ratio < t.maxBookedRatio
   );
@@ -258,57 +263,171 @@ function breakfastPerNight(
 // Long stay — Stay 4, Pay 3 (spec §7)
 // ---------------------------------------------------------------------------
 
-interface LongStayOutcome {
+interface LongStayCandidate {
+  rule: LongStayRule;
   discount: number;
-  ruleName: string | null;
-  /** Index into `nights` of the complimentary night, or -1. */
+  /** Index into the stay's nights of the complimentary night. */
   freeNightIndex: number;
-  note?: string;
 }
 
-function applyLongStay(
+function evaluateLongStay(
   nights: ResolvedNight[],
   roomRates: number[],
   cottage: CottageConfig,
-  config: PricingConfig,
-  hasCoupon: boolean
-): LongStayOutcome {
-  const none: LongStayOutcome = { discount: 0, ruleName: null, freeNightIndex: -1 };
-  if (!config.settings.longStayEnabled) return none;
+  config: PricingConfig
+): LongStayCandidate | null {
+  if (!config.settings.longStayEnabled) return null;
+
+  let best: LongStayCandidate | null = null;
 
   for (const rule of config.longStayRules) {
     if (!rule.isActive) continue;
     if (nights.length < rule.nightsRequired) continue;
+    if (rule.nightsRequired - rule.nightsCharged <= 0) continue;
     if (rule.cottageIds.length > 0 && !rule.cottageIds.includes(cottage.id)) continue;
-    if (hasCoupon && !rule.stackableWithCoupon) {
-      return { ...none, note: `${rule.name} not combined with coupon` };
-    }
 
-    // Only nights in an enabled season, and not blacked out, are eligible.
+    // Only nights in an enabled season, inside the rule's availability window,
+    // and not blacked out are eligible (spec §7).
     const eligible = nights
       .map((n, i) => ({ n, i }))
-      .filter(
-        ({ n }) =>
-          rule.enabledSeasonTypes.includes(n.seasonType) && !rule.blackoutDates.includes(n.iso)
-      );
+      .filter(({ n }) => {
+        if (!rule.enabledSeasonTypes.includes(n.seasonType)) return false;
+        if (rule.blackoutDates.includes(n.iso)) return false;
+        if (rule.validFrom && n.iso < rule.validFrom.slice(0, 10)) return false;
+        if (rule.validTo && n.iso > rule.validTo.slice(0, 10)) return false;
+        return true;
+      });
 
-    const freeNights = rule.nightsRequired - rule.nightsCharged;
-    if (eligible.length < rule.nightsRequired || freeNights <= 0) continue;
+    if (eligible.length < rule.nightsRequired) continue;
 
-    // The lowest-priced eligible accommodation night is complimentary (spec §7).
+    // The lowest-priced eligible accommodation night is complimentary.
     let cheapest = eligible[0];
     for (const cur of eligible) {
       if (roomRates[cur.i] < roomRates[cheapest.i]) cheapest = cur;
     }
 
-    return {
-      discount: roomRates[cheapest.i],
-      ruleName: rule.name,
-      freeNightIndex: cheapest.i,
-    };
+    const candidate = { rule, discount: roomRates[cheapest.i], freeNightIndex: cheapest.i };
+    if (!best || candidate.discount > best.discount) best = candidate;
   }
 
-  return none;
+  return best;
+}
+
+// ---------------------------------------------------------------------------
+// Last-minute / low-occupancy offers (spec §9)
+// ---------------------------------------------------------------------------
+
+function daysUntil(today: string, checkIn: string): number {
+  return Math.round((parseDate(checkIn).getTime() - parseDate(today).getTime()) / 86400000);
+}
+
+/**
+ * An offer is eligible when arrival is within its window and no night of the
+ * stay has more cottages booked than its threshold. With no inventory data the
+ * low-occupancy condition cannot be verified, so the offer does not apply.
+ */
+function eligibleOffers(
+  req: QuoteRequest,
+  nightDates: string[],
+  cottage: CottageConfig,
+  config: PricingConfig
+): LastMinuteOffer[] {
+  const today = req.today ?? formatDate(new Date());
+  const lead = daysUntil(today, req.checkIn);
+
+  return config.lastMinuteOffers.filter((offer) => {
+    if (!offer.isActive) return false;
+    if (offer.cottageIds.length > 0 && !offer.cottageIds.includes(cottage.id)) return false;
+    if (lead < 0 || lead > offer.daysBeforeArrival) return false;
+    return nightDates.every((d) => {
+      const count = inventoryFor(d, req);
+      return count !== undefined && count.booked <= offer.maxBookedCottages;
+    });
+  });
+}
+
+function formatRupees(n: number): string {
+  return `₹${Math.round(n).toLocaleString('en-IN')}`;
+}
+
+// ---------------------------------------------------------------------------
+// Accommodation discounts: Stay 4 Pay 3, last-minute room discount, coupon
+// ---------------------------------------------------------------------------
+
+type DiscountKey = 'longStay' | 'offer' | 'coupon';
+
+interface DiscountPlan {
+  keys: DiscountKey[];
+  longStay: number;
+  offer: number;
+  coupon: number;
+  total: number;
+}
+
+/**
+ * The spec forbids stacking Stay 4 Pay 3 with another accommodation discount
+ * or coupon unless an admin enables it (§7), and treats the last-minute room
+ * discount as a promotion (§9). When discounts cannot combine, the guest gets
+ * whichever permitted combination is worth the most to them.
+ *
+ * Discounts apply in spec order — long stay, then promotion, then coupon —
+ * each on what remains after the previous one.
+ */
+function bestDiscountPlan(
+  accommodation: number,
+  longStay: LongStayCandidate | null,
+  roomOffer: LastMinuteOffer | null,
+  coupon: CouponInput | null
+): DiscountPlan {
+  const available: DiscountKey[] = [];
+  if (longStay) available.push('longStay');
+  if (roomOffer) available.push('offer');
+  if (coupon) available.push('coupon');
+
+  const compatible = (a: DiscountKey, b: DiscountKey): boolean => {
+    const pair = [a, b].sort().join('+');
+    if (pair === 'coupon+longStay') return Boolean(longStay?.rule.stackableWithCoupon);
+    if (pair === 'longStay+offer') return Boolean(longStay?.rule.stackableWithOffers);
+    if (pair === 'coupon+offer') return Boolean(roomOffer?.stackableWithCoupon);
+    return true;
+  };
+
+  let best: DiscountPlan = { keys: [], longStay: 0, offer: 0, coupon: 0, total: 0 };
+
+  // Every subset of the available discounts; at most 8.
+  for (let mask = 1; mask < 1 << available.length; mask++) {
+    const keys = available.filter((_, i) => mask & (1 << i));
+    const allCompatible = keys.every((a, i) => keys.slice(i + 1).every((b) => compatible(a, b)));
+    if (!allCompatible) continue;
+
+    let remaining = accommodation;
+    let ls = 0;
+    let off = 0;
+    let cp = 0;
+
+    if (keys.includes('longStay') && longStay) {
+      ls = Math.min(longStay.discount, remaining);
+      remaining -= ls;
+    }
+    if (keys.includes('offer') && roomOffer) {
+      const pct = Math.min(roomOffer.value, MAX_LAST_MINUTE_DISCOUNT_PERCENT);
+      off = Math.round((remaining * pct) / 100);
+      remaining -= off;
+    }
+    if (keys.includes('coupon') && coupon) {
+      cp =
+        coupon.discountType === 'PERCENTAGE'
+          ? Math.round((remaining * coupon.discountValue) / 100)
+          : coupon.discountValue;
+      cp = Math.min(cp, remaining);
+      remaining -= cp;
+    }
+
+    const total = ls + off + cp;
+    if (total > best.total) best = { keys, longStay: ls, offer: off, coupon: cp, total };
+  }
+
+  return best;
 }
 
 // ---------------------------------------------------------------------------
@@ -328,29 +447,26 @@ function calculateTax(
 
   const slabFor = (tariff: number) =>
     config.taxSlabs.find(
-      (s) =>
-        s.isActive && tariff >= s.minTariff && (s.maxTariff === null || tariff <= s.maxTariff)
+      (s) => s.isActive && tariff >= s.minTariff && (s.maxTariff === null || tariff <= s.maxTariff)
     );
+
+  const add = (name: string, rate: number, amount: number) => {
+    const cur = buckets.get(name) ?? { ratePercent: rate, taxableAmount: 0 };
+    cur.taxableAmount += amount;
+    buckets.set(name, cur);
+  };
 
   for (const { tariff, amount } of perNightTaxable) {
     if (amount <= 0) continue;
     const slab = slabFor(tariff);
-    if (!slab) continue;
-    const cur = buckets.get(slab.name) ?? { ratePercent: slab.ratePercent, taxableAmount: 0 };
-    cur.taxableAmount += amount;
-    buckets.set(slab.name, cur);
+    if (slab) add(slab.name, slab.ratePercent, amount);
   }
 
   // Add-ons follow the highest room tariff of the stay, which is how the slab
   // is determined for a composite invoice.
   if (otherTaxable > 0 && perNightTaxable.length > 0) {
-    const highest = Math.max(...perNightTaxable.map((p) => p.tariff));
-    const slab = slabFor(highest);
-    if (slab) {
-      const cur = buckets.get(slab.name) ?? { ratePercent: slab.ratePercent, taxableAmount: 0 };
-      cur.taxableAmount += otherTaxable;
-      buckets.set(slab.name, cur);
-    }
+    const slab = slabFor(Math.max(...perNightTaxable.map((p) => p.tariff)));
+    if (slab) add(slab.name, slab.ratePercent, otherTaxable);
   }
 
   return Array.from(buckets.entries()).map(([slabName, v]) => ({
@@ -388,30 +504,36 @@ export function calculateQuote(req: QuoteRequest, config: PricingConfig): QuoteB
   if (!cottage) throw new PricingError('COTTAGE_NOT_FOUND', 'Cottage not found');
   if (!cottage.isActive) throw new PricingError('COTTAGE_INACTIVE', 'Cottage is not bookable');
 
-  const nightCount = nightsBetween(req.checkIn, req.checkOut);
-  if (nightCount < 1) {
+  const nightDates = occupiedNightDates(req.checkIn, req.checkOut);
+  if (nightDates.length < 1) {
     throw new PricingError('INVALID_RANGE', 'Check-out must be after check-in');
   }
-  if (req.adults < 1) {
+  if (!Number.isInteger(req.adults) || req.adults < 1) {
     throw new PricingError('INVALID_ADULTS', 'At least one adult is required');
   }
 
+  const childAges = req.childAges ?? [];
   const { billableAdults, payingChildAges, freeChildAges } = classifyGuests(
     req.adults,
-    req.childAges ?? [],
+    childAges,
     config.childBands,
     config.settings.adultAgeThreshold
   );
+  const childCount = payingChildAges.length + freeChildAges.length;
 
   if (billableAdults > cottage.maxAdults) {
     throw new PricingError(
       'OVER_ADULT_CAPACITY',
-      `${cottage.name} accommodates a maximum of ${cottage.maxAdults} adults`
+      `${cottage.name} accommodates a maximum of ${cottage.maxAdults} adults (guests aged ${config.settings.adultAgeThreshold}+ count as adults)`
     );
   }
-
-  const totalHeads = billableAdults + payingChildAges.length + freeChildAges.length;
-  if (totalHeads > cottage.maxOccupancy) {
+  if (childCount > cottage.maxChildren) {
+    throw new PricingError(
+      'OVER_CHILD_CAPACITY',
+      `${cottage.name} accommodates a maximum of ${cottage.maxChildren} child${cottage.maxChildren === 1 ? '' : 'ren'}`
+    );
+  }
+  if (billableAdults + childCount > cottage.maxOccupancy) {
     throw new PricingError(
       'OVER_CAPACITY',
       `${cottage.name} accommodates a maximum of ${cottage.maxOccupancy} guests`
@@ -435,33 +557,129 @@ export function calculateQuote(req: QuoteRequest, config: PricingConfig): QuoteB
   const mattressPrice = cottage.extraMattressPrice ?? config.settings.extraMattressPrice;
 
   // --- 2-6. Resolve each night and its room rate --------------------------
-  const nights = occupiedNights(req.checkIn, req.checkOut).map((d) => resolveNight(d, config));
-  const baseRates = nights.map((n) => lookupRoomRate(n, cottage, billableAdults, config));
+  const nights = nightDates.map((d) => resolveNight(d, config));
 
-  // --- 7. Inventory uplift (spec §8) --------------------------------------
-  const uplift = inventoryUpliftPercent(req.inventory, config);
-  const roomRates = baseRates.map((r) => Math.round(r * (1 + uplift / 100)));
-  if (uplift > 0) {
-    notes.push(`Limited availability: room rate increased by ${uplift}%.`);
+  // --- Minimum stay (spec §15): the strictest rule across the stay --------
+  const minStay = Math.max(
+    config.settings.minStayNights || 1,
+    ...nights.map((n) => n.minStay)
+  );
+  if (nights.length < minStay) {
+    throw new PricingError(
+      'MIN_STAY',
+      `The minimum stay for these dates is ${minStay} nights`
+    );
   }
 
-  // --- 8. Stay 4 Pay 3 (spec §7) ------------------------------------------
-  const longStay = applyLongStay(
-    nights,
-    roomRates,
-    cottage,
-    config,
-    Boolean(req.coupon)
-  );
-  if (longStay.note) notes.push(longStay.note);
+  const baseRates = nights.map((n) => lookupRoomRate(n, cottage, billableAdults, config));
+
+  // --- 7. Inventory uplift, night by night (spec §8) ----------------------
+  const uplifts = nights.map((n) => upliftPercentFor(inventoryFor(n.iso, req), config));
+  const roomRates = baseRates.map((r, i) => Math.round(r * (1 + uplifts[i] / 100)));
+  const maxUplift = Math.max(0, ...uplifts);
+  if (maxUplift > 0) {
+    notes.push(`High demand: room rate increased by up to ${maxUplift}% on some nights.`);
+  }
+
+  const accommodationBeforeBenefit = roomRates.reduce((s, r) => s + r, 0);
 
   // --- 9-10. Mattress and breakfast, charged on every night ---------------
   // Both remain payable on the complimentary accommodation night (spec §7).
   const perNightBreakfast =
     req.ratePlan === 'BREAKFAST_INCLUDED'
-      ? breakfastPerNight(billableAdults, req.childAges ?? [], config)
+      ? breakfastPerNight(billableAdults, childAges, config)
       : 0;
   const perNightMattress = requestedMattresses * mattressPrice;
+  const breakfastTotal = perNightBreakfast * nights.length;
+  const mattressTotal = perNightMattress * nights.length;
+
+  // --- 8 & 11. Long stay, last-minute offer and coupon --------------------
+  const longStay = evaluateLongStay(nights, roomRates, cottage, config);
+
+  // Only one last-minute offer applies; pick the one worth most to the guest.
+  const offers = eligibleOffers(req, nightDates, cottage, config);
+  const offerValue = (o: LastMinuteOffer): number => {
+    if (o.offerType === 'ROOM_DISCOUNT') {
+      const base = accommodationBeforeBenefit - (longStay?.discount ?? 0);
+      return (base * Math.min(o.value, MAX_LAST_MINUTE_DISCOUNT_PERCENT)) / 100;
+    }
+    if (o.offerType === 'COMPLIMENTARY_BREAKFAST') {
+      // Computed only when such an offer exists, so a property with no
+      // breakfast bands is never blocked by it.
+      return breakfastPerNight(billableAdults, childAges, config) * nights.length;
+    }
+    return o.value;
+  };
+  const offer = offers.length > 0
+    ? offers.reduce((a, b) => (offerValue(b) > offerValue(a) ? b : a))
+    : null;
+
+  // Coupon minimum is checked against the accommodation subtotal.
+  let coupon: CouponInput | null = req.coupon ?? null;
+  if (coupon && coupon.minAmount && accommodationBeforeBenefit < coupon.minAmount) {
+    notes.push(
+      `Coupon ${coupon.code} needs an accommodation total of at least ${formatRupees(coupon.minAmount)}.`
+    );
+    coupon = null;
+  }
+
+  const plan = bestDiscountPlan(
+    accommodationBeforeBenefit,
+    longStay,
+    offer?.offerType === 'ROOM_DISCOUNT' ? offer : null,
+    coupon
+  );
+
+  const longStayApplied = plan.keys.includes('longStay');
+  const freeNightIndex = longStayApplied && longStay ? longStay.freeNightIndex : -1;
+
+  if (longStay && !longStayApplied) {
+    notes.push(
+      `${longStay.rule.name} was not combined with another discount; the better offer for you has been applied.`
+    );
+  }
+  if (req.coupon && coupon && !plan.keys.includes('coupon')) {
+    notes.push(`Coupon ${coupon.code} was not combined with a better offer already applied.`);
+  }
+
+  // --- The last-minute offer, whatever its kind ---------------------------
+  let appliedOffer: AppliedOffer | null = null;
+  let breakfastWaiver = 0;
+  if (offer) {
+    if (offer.offerType === 'ROOM_DISCOUNT') {
+      if (plan.keys.includes('offer')) {
+        appliedOffer = {
+          id: offer.id,
+          name: offer.name,
+          offerType: offer.offerType,
+          discount: plan.offer,
+          description: `${Math.min(offer.value, MAX_LAST_MINUTE_DISCOUNT_PERCENT)}% off the room rate`,
+        };
+      }
+    } else if (offer.offerType === 'COMPLIMENTARY_BREAKFAST') {
+      // On the breakfast plan the supplement is waived; on Room Only the guest
+      // still receives breakfast, at no charge either way.
+      breakfastWaiver = breakfastTotal;
+      appliedOffer = {
+        id: offer.id,
+        name: offer.name,
+        offerType: offer.offerType,
+        discount: breakfastWaiver,
+        description: 'Complimentary breakfast for your party on every morning of your stay',
+      };
+    } else {
+      appliedOffer = {
+        id: offer.id,
+        name: offer.name,
+        offerType: offer.offerType,
+        discount: 0,
+        description: `${formatRupees(offer.value)} meal credit at The Perch`,
+      };
+    }
+  }
+
+  const accommodationTotal = accommodationBeforeBenefit - plan.total;
+  const promotionDiscount = plan.offer + breakfastWaiver;
 
   const perNight: NightBreakdown[] = nights.map((n, i) => ({
     date: n.iso,
@@ -471,42 +689,28 @@ export function calculateQuote(req: QuoteRequest, config: PricingConfig): QuoteB
     baseRate: baseRates[i],
     inventoryUplift: roomRates[i] - baseRates[i],
     roomRate: roomRates[i],
-    isComplimentary: i === longStay.freeNightIndex,
+    isComplimentary: i === freeNightIndex,
     breakfastTotal: perNightBreakfast,
     mattressTotal: perNightMattress,
   }));
 
-  const accommodationBeforeBenefit = roomRates.reduce((s, r) => s + r, 0);
-  const accommodationTotal = accommodationBeforeBenefit - longStay.discount;
-  const breakfastTotal = perNightBreakfast * nights.length;
-  const mattressTotal = perNightMattress * nights.length;
-
-  if (longStay.freeNightIndex >= 0) {
+  if (longStayApplied && longStay) {
     notes.push(
-      `${longStay.ruleName}: the lowest-priced night (${nights[longStay.freeNightIndex].iso}) is complimentary. Breakfast and add-ons remain payable on all nights.`
+      `${longStay.rule.name}: the lowest-priced night (${nights[freeNightIndex].iso}) is complimentary. Breakfast and add-ons remain payable on all nights.`
     );
   }
-
-  // --- 11. Coupon ---------------------------------------------------------
-  // Applied to accommodation only, so add-ons are never discounted twice.
-  let couponDiscount = 0;
-  if (req.coupon) {
-    couponDiscount =
-      req.coupon.discountType === 'PERCENTAGE'
-        ? Math.round((accommodationTotal * req.coupon.discountValue) / 100)
-        : req.coupon.discountValue;
-    couponDiscount = Math.min(couponDiscount, accommodationTotal);
+  if (appliedOffer) {
+    notes.push(`${appliedOffer.name}: ${appliedOffer.description}.`);
   }
 
-  const subtotal = accommodationTotal - couponDiscount + breakfastTotal + mattressTotal;
+  const subtotal = accommodationTotal + breakfastTotal - breakfastWaiver + mattressTotal;
 
   // --- 12. GST (spec §14) -------------------------------------------------
-  // Discounts are spread proportionally so each night is taxed on what it
-  // actually contributed to the subtotal.
-  const totalDiscount = longStay.discount + couponDiscount;
+  // Accommodation discounts are spread proportionally so each night is taxed
+  // on what it actually contributed to the subtotal.
   const discountFactor =
     accommodationBeforeBenefit > 0
-      ? Math.max(0, (accommodationBeforeBenefit - totalDiscount) / accommodationBeforeBenefit)
+      ? Math.max(0, accommodationTotal / accommodationBeforeBenefit)
       : 0;
 
   const perNightTaxable = perNight.map((p) => ({
@@ -514,14 +718,18 @@ export function calculateQuote(req: QuoteRequest, config: PricingConfig): QuoteB
     amount: p.roomRate * discountFactor,
   }));
 
-  const taxBreakdown = calculateTax(perNightTaxable, breakfastTotal + mattressTotal, config);
+  const taxBreakdown = calculateTax(
+    perNightTaxable,
+    breakfastTotal - breakfastWaiver + mattressTotal,
+    config
+  );
   const taxTotal = taxBreakdown.reduce((s, t) => s + t.tax, 0);
 
   const total = applyRounding(subtotal + taxTotal, config.settings.roundingMode);
 
   if (freeChildAges.length > 0) {
     notes.push(
-      `${freeChildAges.length} child(ren) stay complimentary when sharing existing bedding.`
+      `${freeChildAges.length} ${freeChildAges.length === 1 ? 'child stays' : 'children stay'} complimentary when sharing existing bedding.`
     );
   }
 
@@ -534,23 +742,26 @@ export function calculateQuote(req: QuoteRequest, config: PricingConfig): QuoteB
     checkOut: req.checkOut,
     nights: nights.length,
     adults: req.adults,
-    childAges: req.childAges ?? [],
+    childAges,
     billableAdults,
     extraMattresses: requestedMattresses,
     perNight,
     accommodationBeforeBenefit: round2(accommodationBeforeBenefit),
-    longStayDiscount: round2(longStay.discount),
-    longStayApplied: longStay.freeNightIndex >= 0,
-    longStayRuleName: longStay.ruleName,
+    longStayDiscount: round2(plan.longStay),
+    longStayApplied,
+    longStayRuleName: longStayApplied && longStay ? longStay.rule.name : null,
+    promotionDiscount: round2(promotionDiscount),
+    lastMinuteOffer: appliedOffer,
     accommodationTotal: round2(accommodationTotal),
     breakfastTotal: round2(breakfastTotal),
     mattressTotal: round2(mattressTotal),
-    couponCode: req.coupon?.code ?? null,
-    couponDiscount: round2(couponDiscount),
+    couponCode: plan.keys.includes('coupon') && coupon ? coupon.code : null,
+    couponDiscount: round2(plan.coupon),
     subtotal: round2(subtotal),
     taxBreakdown,
     taxTotal: round2(taxTotal),
     total,
+    minStay,
     notes,
   };
 }
@@ -560,9 +771,39 @@ export function calculateQuote(req: QuoteRequest, config: PricingConfig): QuoteB
  * cheapest active season. Drives the public cottage cards (spec §12).
  */
 export function lowestFromRate(cottageId: string, config: PricingConfig): number | null {
+  const activeSeasonIds = new Set(config.seasons.filter((s) => s.isActive).map((s) => s.id));
   const rates = config.seasonRates.filter(
-    (r) => r.cottageId === cottageId && r.adults === 2
+    (r) => r.cottageId === cottageId && r.adults === 2 && activeSeasonIds.has(r.seasonId)
   );
   if (rates.length === 0) return null;
   return Math.min(...rates.map((r) => r.weekdayRate));
+}
+
+/**
+ * Checks whether a party can stay in a cottage at all, without pricing it.
+ * Used to return only compatible cottages from a search (spec §11).
+ */
+export function occupancyProblem(
+  cottage: CottageConfig,
+  adults: number,
+  childAges: number[],
+  config: PricingConfig
+): string | null {
+  try {
+    const { billableAdults, payingChildAges, freeChildAges } = classifyGuests(
+      adults,
+      childAges,
+      config.childBands,
+      config.settings.adultAgeThreshold
+    );
+    const children = payingChildAges.length + freeChildAges.length;
+    if (billableAdults > cottage.maxAdults) return `Up to ${cottage.maxAdults} adults`;
+    if (children > cottage.maxChildren) {
+      return `Up to ${cottage.maxChildren} ${cottage.maxChildren === 1 ? 'child' : 'children'}`;
+    }
+    if (billableAdults + children > cottage.maxOccupancy) return `Up to ${cottage.maxOccupancy} guests`;
+    return null;
+  } catch (e) {
+    return e instanceof Error ? e.message : 'Invalid party';
+  }
 }

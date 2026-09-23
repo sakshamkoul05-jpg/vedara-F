@@ -13,6 +13,8 @@ export interface AdminCottage {
   baseAdults: number;
   maxAdults: number;
   maxOccupancy: number;
+  /** Undefined until migration 20260923 has run. */
+  maxChildren?: number;
   allowsExtraMattress: boolean;
   extraMattressPrice: number | null;
   maxExtraMattresses: number;
@@ -24,6 +26,7 @@ export interface AdminSeason {
   name: string;
   type: SeasonType;
   months: number[];
+  minStay?: number;
   isActive: boolean;
   sortOrder: number;
 }
@@ -42,6 +45,7 @@ export interface AdminSpecialPeakPeriod {
   name: string;
   startDate: string;
   endDate: string;
+  minStay?: number;
   isActive: boolean;
 }
 
@@ -80,8 +84,33 @@ export interface AdminLongStayRule {
   enabledSeasonTypes: SeasonType[];
   cottageIds: string[];
   blackoutDates: string[];
+  validFrom?: string | null;
+  validTo?: string | null;
+  stackableWithCoupon: boolean;
+  stackableWithOffers?: boolean;
+  isActive: boolean;
+}
+
+export type LastMinuteOfferType = 'ROOM_DISCOUNT' | 'COMPLIMENTARY_BREAKFAST' | 'MEAL_CREDIT';
+
+export interface AdminLastMinuteOffer {
+  id: string;
+  name: string;
+  offerType: LastMinuteOfferType;
+  value: number;
+  daysBeforeArrival: number;
+  maxBookedCottages: number;
+  cottageIds: string[];
   stackableWithCoupon: boolean;
   isActive: boolean;
+}
+
+export interface AdminBlackout {
+  id: string;
+  cottageId: string;
+  date: string;
+  reason: string | null;
+  cottage?: { name: string } | null;
 }
 
 export interface AdminInventoryTier {
@@ -108,6 +137,7 @@ export interface AdminPricingSettings {
   inventoryPricingEnabled: boolean;
   inventoryUpliftCeilingPercent: number;
   longStayEnabled: boolean;
+  minStayNights: number;
   roundingMode: 'NONE' | 'NEAREST_RUPEE' | 'NEAREST_TEN';
 }
 
@@ -124,6 +154,9 @@ export interface AdminPricingConfig {
   taxSlabs: AdminTaxSlab[];
   settings: Partial<AdminPricingSettings>;
   coupons: any[];
+  /** Null until migration 20260923 has created the table. */
+  lastMinuteOffers: AdminLastMinuteOffer[] | null;
+  cottageFieldsReady: boolean;
 }
 
 export const SEASON_TYPES: SeasonType[] = ['VALUE', 'REGULAR', 'HIGH', 'PEAK'];

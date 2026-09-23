@@ -31,13 +31,11 @@ export async function GET() {
       taxSlabs,
       settings,
       coupons,
+      lastMinuteOffers,
     ] = await Promise.all([
-      supabase
-        .from('Cottage')
-        .select(
-          'id, name, slug, sortOrder, isActive, pricingCategory, baseAdults, maxAdults, maxOccupancy, allowsExtraMattress, extraMattressPrice, maxExtraMattresses, publicDescriptor'
-        )
-        .order('sortOrder'),
+      // select('*') so a column added by a later migration (maxChildren) does
+      // not break this screen before that migration has run.
+      supabase.from('Cottage').select('*').order('sortOrder'),
       supabase.from('Season').select('*').order('sortOrder'),
       supabase.from('SeasonRate').select('*'),
       supabase.from('SpecialPeakPeriod').select('*').order('startDate'),
@@ -49,6 +47,7 @@ export async function GET() {
       supabase.from('TaxSlab').select('*').order('minTariff'),
       supabase.from('PricingSetting').select('*'),
       supabase.from('Coupon').select('*').order('createdAt', { ascending: false }),
+      supabase.from('LastMinuteOffer').select('*').order('createdAt'),
     ]);
 
     const failed = [
@@ -97,6 +96,9 @@ export async function GET() {
         settings: settingsMap,
         settingRows: settings.data ?? [],
         coupons: coupons.data ?? [],
+        // Null until the 20260923 migration has created the table.
+        lastMinuteOffers: lastMinuteOffers.error ? null : lastMinuteOffers.data ?? [],
+        cottageFieldsReady: (cottages.data ?? []).every((c: any) => 'maxChildren' in c),
       },
     });
   } catch (err) {

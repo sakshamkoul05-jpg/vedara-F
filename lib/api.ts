@@ -71,6 +71,8 @@ async function sbQuery<T = any>(endpoint: string, method = 'GET', body?: any, _t
         if (error) throw error;
         return { data } as T;
       }
+      // Availability queries below ignore PENDING bookings whose reservation
+      // hold has lapsed: an abandoned checkout must not block the cottage.
       case 'bookings/available-cottages': {
         if (method !== 'GET') break;
         const { data, error } = await supabase.from('Cottage').select('*').eq('isActive', true).order('sortOrder', { ascending: true });
@@ -84,7 +86,7 @@ async function sbQuery<T = any>(endpoint: string, method = 'GET', body?: any, _t
           if (!blockedErr && blocked) {
             blockedIds = new Set(blocked.map((b: any) => b.cottageId));
           }
-          const { data: booked, error: bookedErr } = await supabase.from('Booking').select('cottageId').in('status', ['CONFIRMED', 'RESERVED', 'CHECKED_IN', 'PENDING']).lt('checkIn', checkOut).gt('checkOut', checkIn);
+          const { data: booked, error: bookedErr } = await supabase.from('Booking').select('cottageId').in('status', ['CONFIRMED', 'RESERVED', 'CHECKED_IN', 'PENDING']).or(`status.neq.PENDING,holdExpiresAt.is.null,holdExpiresAt.gt.${new Date().toISOString()}`).lt('checkIn', checkOut).gt('checkOut', checkIn);
           if (!bookedErr && booked) {
             bookedIds = new Set(booked.map((b: any) => b.cottageId));
           }
@@ -99,7 +101,7 @@ async function sbQuery<T = any>(endpoint: string, method = 'GET', body?: any, _t
         const checkIn = params.checkIn;
         const checkOut = params.checkOut;
         const { data: blocked } = await supabase.from('BlockedDate').select('date').eq('cottageId', cottageId).gte('date', checkIn).lte('date', checkOut);
-        const { data: booked } = await supabase.from('Booking').select('id').eq('cottageId', cottageId).in('status', ['CONFIRMED', 'RESERVED', 'CHECKED_IN', 'PENDING']).lt('checkIn', checkOut).gt('checkOut', checkIn);
+        const { data: booked } = await supabase.from('Booking').select('id').eq('cottageId', cottageId).in('status', ['CONFIRMED', 'RESERVED', 'CHECKED_IN', 'PENDING']).or(`status.neq.PENDING,holdExpiresAt.is.null,holdExpiresAt.gt.${new Date().toISOString()}`).lt('checkIn', checkOut).gt('checkOut', checkIn);
         const available = (!blocked || blocked.length === 0) && (!booked || booked.length === 0);
         return { data: { available } } as T;
       }
@@ -113,7 +115,7 @@ async function sbQuery<T = any>(endpoint: string, method = 'GET', body?: any, _t
         const endYear = month === 12 ? year + 1 : year;
         const end = `${endYear}-${String(endMonth).padStart(2, '0')}-01`;
         const { data: blocked } = await supabase.from('BlockedDate').select('date,reason').eq('cottageId', cottageId).gte('date', start).lt('date', end);
-        const { data: booked } = await supabase.from('Booking').select('checkIn,checkOut,status').eq('cottageId', cottageId).in('status', ['CONFIRMED', 'RESERVED', 'CHECKED_IN', 'PENDING']).lt('checkIn', end).gt('checkOut', start);
+        const { data: booked } = await supabase.from('Booking').select('checkIn,checkOut,status').eq('cottageId', cottageId).in('status', ['CONFIRMED', 'RESERVED', 'CHECKED_IN', 'PENDING']).or(`status.neq.PENDING,holdExpiresAt.is.null,holdExpiresAt.gt.${new Date().toISOString()}`).lt('checkIn', end).gt('checkOut', start);
         return { data: { blockedDates: blocked || [], bookings: booked || [] } } as T;
       }
       case 'bookings/my-bookings': {

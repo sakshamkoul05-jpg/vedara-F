@@ -8,6 +8,7 @@ import { RateCardTab, SpecialPeakTab } from './RateCardTab';
 import { CottagesTab, GuestPolicyTab } from './OccupancyTab';
 import { DemandTab, LongStayTab, TaxSettingsTab } from './RulesTab';
 import { PreviewTab } from './PreviewTab';
+import { BlackoutsTab, LastMinuteTab } from './OffersTab';
 
 /**
  * Pricing & booking engine administration (spec §15).
@@ -23,6 +24,8 @@ const TABS = [
   { id: 'cottages', label: 'Cottages' },
   { id: 'guests', label: 'Guest policy' },
   { id: 'long-stay', label: 'Long stay' },
+  { id: 'offers', label: 'Last-minute offers' },
+  { id: 'availability', label: 'Blackout dates' },
   { id: 'demand', label: 'Demand pricing' },
   { id: 'tax', label: 'Tax & settings' },
   { id: 'preview', label: 'Preview' },
@@ -118,6 +121,8 @@ export default function PricingAdminPage() {
             {tab === 'cottages' && <CottagesTab config={config} reload={reload} />}
             {tab === 'guests' && <GuestPolicyTab config={config} reload={reload} />}
             {tab === 'long-stay' && <LongStayTab config={config} reload={reload} />}
+            {tab === 'offers' && <LastMinuteTab config={config} reload={reload} />}
+            {tab === 'availability' && <BlackoutsTab config={config} />}
             {tab === 'demand' && <DemandTab config={config} reload={reload} />}
             {tab === 'tax' && <TaxSettingsTab config={config} reload={reload} />}
             {tab === 'preview' && <PreviewTab config={config} />}
@@ -134,6 +139,12 @@ export default function PricingAdminPage() {
  */
 function ConfigWarnings({ config }: { config: AdminPricingConfig }) {
   const warnings: string[] = [];
+
+  if (config.lastMinuteOffers === null || !config.cottageFieldsReady) {
+    warnings.push(
+      'Database migration 20260923_pricing_engine_v2_1b has not been run: last-minute offers, minimum stay, child limits and the spec cottage mapping are not active yet.'
+    );
+  }
 
   const coveredMonths = new Set(
     config.seasons.filter((s) => s.isActive).flatMap((s) => s.months)

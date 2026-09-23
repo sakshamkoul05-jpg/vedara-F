@@ -135,6 +135,45 @@ export function LongStayTab({
                 </button>
               </div>
 
+              <div className="flex flex-wrap items-end gap-3 mb-4">
+                <div className="w-40">
+                  <label className="text-xs text-muted-foreground block mb-1">Valid from</label>
+                  <SavingInput
+                    type="date"
+                    value={rule.validFrom?.slice(0, 10) ?? ''}
+                    ariaLabel="Valid from"
+                    onSave={async (v) => {
+                      await updateRecord('long-stay-rules', { id: rule.id, validFrom: v || null });
+                      await reload();
+                    }}
+                  />
+                </div>
+                <div className="w-40">
+                  <label className="text-xs text-muted-foreground block mb-1">Valid to</label>
+                  <SavingInput
+                    type="date"
+                    value={rule.validTo?.slice(0, 10) ?? ''}
+                    ariaLabel="Valid to"
+                    onSave={async (v) => {
+                      await updateRecord('long-stay-rules', { id: rule.id, validTo: v || null });
+                      await reload();
+                    }}
+                  />
+                </div>
+                <p className="text-[11px] text-muted-foreground pb-2">Leave blank for no limit.</p>
+                <div className="flex items-center gap-2 pb-1">
+                  <SavingToggle
+                    checked={Boolean(rule.stackableWithOffers)}
+                    label={`${rule.name} stacks with last-minute offers`}
+                    onSave={async (next) => {
+                      await updateRecord('long-stay-rules', { id: rule.id, stackableWithOffers: next });
+                      await reload();
+                    }}
+                  />
+                  <span className="text-xs text-muted-foreground">Stacks with last-minute room discount</span>
+                </div>
+              </div>
+
               <div className="mb-4">
                 <label className="text-xs text-muted-foreground block mb-1.5">
                   Available in seasons
@@ -717,6 +756,27 @@ export function TaxSettingsTab({
             </div>
             <p className="text-[11px] text-muted-foreground mt-1.5">
               Applied to the final payable amount only.
+            </p>
+          </div>
+
+          <div>
+            <label className="text-xs text-muted-foreground block mb-1.5">Minimum stay (all dates)</label>
+            <div className="w-40">
+              <SavingInput
+                type="number"
+                min={1}
+                max={30}
+                suffix="nights"
+                value={settings.minStayNights ?? 1}
+                ariaLabel="Global minimum stay"
+                onSave={async (v) => {
+                  await saveSettings({ minStayNights: num(v, 'Minimum stay') || 1 });
+                  await reload();
+                }}
+              />
+            </div>
+            <p className="text-[11px] text-muted-foreground mt-1.5">
+              A floor for every stay. Seasons and Special Peak periods can require more.
             </p>
           </div>
 

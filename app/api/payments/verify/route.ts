@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import crypto from 'node:crypto';
 import { z } from 'zod';
 import { getServiceClient } from '@/lib/supabase-server';
+import { newId, nowIso } from '@/lib/ids';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -83,6 +84,7 @@ export async function POST(request: Request) {
         paymentId: razorpayPaymentId,
         paymentGateway: 'RAZORPAY',
         holdExpiresAt: null,
+        updatedAt: nowIso(),
       })
       .eq('id', bookingId);
 
@@ -92,6 +94,8 @@ export async function POST(request: Request) {
     }
 
     const { error: paymentError } = await supabase.from('Payment').insert({
+      id: newId(),
+      updatedAt: nowIso(),
       bookingId,
       paymentId: razorpayPaymentId,
       orderId: razorpayOrderId,
