@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MessageCircle, X, Send, Bot, Phone, Clock, Sparkles, ExternalLink, Mic, MicOff, Volume2, VolumeX } from 'lucide-react';
 import { speechErrorMessage, useSpeechRecognition, useSpeechSynthesis } from '@/lib/voice';
+import { useLanguage } from '@/lib/i18n/provider';
 
 const SUPPORT_HOURS = { start: 8, end: 22.5 };
 
@@ -50,8 +51,13 @@ export function ChatBot() {
 
   /** Off by default: a voice starting unprompted in a quiet room is startling. */
   const [speakReplies, setSpeakReplies] = useState(false);
-  const synthesis = useSpeechSynthesis();
+  // Voice follows the site language: someone reading the site in Hebrew wants
+  // to dictate in Hebrew, and being answered in an American accent is jarring.
+  const { t, speechTag } = useLanguage();
+
+  const synthesis = useSpeechSynthesis(speechTag);
   const recognition = useSpeechRecognition({
+    lang: speechTag,
     onResult: (text) => {
       // Someone who asked out loud expects an answer out loud.
       setSpeakReplies(true);
@@ -194,7 +200,7 @@ export function ChatBot() {
                   <Sparkles className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-sm">Vedara Concierge</h3>
+                  <h3 className="font-semibold text-sm">{t('chat.title')}</h3>
                   <div className="flex items-center gap-1.5 text-xs opacity-90">
                     <span className={`w-2 h-2 rounded-full ${isSupportOnline ? 'bg-green-300' : 'bg-zinc-300'}`} />
                     {isSupportOnline ? 'AI Online' : 'AI Always Available'}
@@ -211,8 +217,8 @@ export function ChatBot() {
                     }}
                     className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center hover:bg-white/30 transition-colors cursor-pointer"
                     aria-pressed={speakReplies}
-                    title={speakReplies ? 'Stop reading replies aloud' : 'Read replies aloud'}
-                    aria-label={speakReplies ? 'Stop reading replies aloud' : 'Read replies aloud'}
+                    title={speakReplies ? t('chat.stopReading') : t('chat.readAloud')}
+                    aria-label={speakReplies ? t('chat.stopReading') : t('chat.readAloud')}
                   >
                     {speakReplies ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
                   </button>
@@ -346,7 +352,7 @@ export function ChatBot() {
                   type="text"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
-                  placeholder={recognition.listening ? 'Listening…' : 'Ask about cottages, café, treks...'}
+                  placeholder={recognition.listening ? t('chat.listening') : t('chat.placeholder')}
                   className="flex-1 bg-transparent outline-none text-sm text-zinc-800 dark:text-zinc-200 placeholder-zinc-400"
                   disabled={isTyping}
                 />
@@ -356,8 +362,8 @@ export function ChatBot() {
                     onClick={recognition.toggle}
                     disabled={isTyping}
                     aria-pressed={recognition.listening}
-                    aria-label={recognition.listening ? 'Stop listening' : 'Ask by voice'}
-                    title={recognition.listening ? 'Stop listening' : 'Ask by voice'}
+                    aria-label={recognition.listening ? t('chat.stopListening') : t('chat.askByVoice')}
+                    title={recognition.listening ? t('chat.stopListening') : t('chat.askByVoice')}
                     className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors shrink-0 cursor-pointer disabled:opacity-40 ${
                       recognition.listening
                         ? 'bg-red-500 text-white animate-pulse'

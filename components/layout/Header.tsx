@@ -7,21 +7,25 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Mail, Phone, Facebook, Instagram, Sun, Moon, Monitor } from 'lucide-react';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
+import { useLanguage } from '@/lib/i18n/provider';
+import type { MessageKey } from '@/lib/i18n/dictionary';
+import { LanguageSwitcher } from '@/components/layout/LanguageSwitcher';
 import { useThemeStore } from '@/store/theme';
 
 const navLinks = [
-  { href: '/', label: 'Home' },
-  { href: '/about', label: 'About Us' },
-  { href: '/cottages', label: 'Stays' },
-  { href: '/cafe', label: 'Café' },
-  { href: '/gallery', label: 'Gallery' },
-  { href: '/contact', label: 'Contact Us' },
+  { href: '/', key: 'nav.home' },
+  { href: '/about', key: 'nav.about' },
+  { href: '/cottages', key: 'nav.stays' },
+  { href: '/cafe', key: 'nav.cafe' },
+  { href: '/gallery', key: 'nav.gallery' },
+  { href: '/contact', key: 'nav.contact' },
 ];
 
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const pathname = usePathname();
+  const { t } = useLanguage();
   const { theme, toggle } = useThemeStore();
 
   const themeIcon = theme === 'dark' ? <Sun className="w-4 h-4" /> : theme === 'system' ? <Monitor className="w-4 h-4" /> : <Moon className="w-4 h-4" />;
@@ -84,7 +88,7 @@ export function Header() {
                   pathname === link.href && (isTransparent ? 'text-white' : 'text-primary')
                 )}
               >
-                {link.label}
+                {t(link.key as MessageKey)}
                 {pathname === link.href && (
                   <motion.span
                     layoutId="nav-indicator"
@@ -157,8 +161,10 @@ export function Header() {
               {themeIcon}
             </button>
 
+            <LanguageSwitcher />
+
             <Link href="/booking" className="cta-primary cta-sm">
-              Book Your Stay
+              {t('nav.book')}
             </Link>
           </div>
 
@@ -223,11 +229,11 @@ export function Header() {
                         : 'text-foreground/70'
                     )}
                   >
-                    {link.label}
+                    {t(link.key as MessageKey)}
                   </Link>
                 ))}
                 <Link href="/booking" className="cta-primary w-full">
-                  Book Your Stay
+                  {t('nav.book')}
                 </Link>
                 <div className="flex gap-2">
                   {(['light', 'dark', 'system'] as const).map((t) => (

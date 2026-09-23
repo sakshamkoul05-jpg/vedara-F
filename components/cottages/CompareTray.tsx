@@ -10,6 +10,8 @@ import {
 } from '@/components/ui/dialog';
 import { MAX_COMPARE, useCompareStore } from '@/store/compare';
 import { formatPrice } from '@/lib/utils';
+import { useLanguage } from '@/lib/i18n/provider';
+import type { MessageKey } from '@/lib/i18n/dictionary';
 import type { PublicCottagePricing } from '@/lib/from-rates';
 import { Check, Minus, X, Scale, ArrowRight } from 'lucide-react';
 
@@ -20,11 +22,11 @@ import { Check, Minus, X, Scale, ArrowRight } from 'lucide-react';
  * so a rate or description change shows up immediately.
  */
 
-const TIER_LABEL: Record<string, string> = {
-  BOUTIQUE: 'Boutique',
-  PREMIUM: 'Premium',
-  SIGNATURE: 'Signature',
-  STUDIO: 'Studio',
+const TIER_KEY: Record<string, MessageKey> = {
+  BOUTIQUE: 'tier.boutique',
+  PREMIUM: 'tier.premium',
+  SIGNATURE: 'tier.signature',
+  STUDIO: 'tier.studio',
 };
 
 /** Amenity keys are stored lower case and hyphenated; these read better. */
@@ -44,35 +46,42 @@ const asList = (value: string[] | string | undefined | null): string[] => {
   return [];
 };
 
+/** Translate an interface key. Rows are module-level, so this is passed in. */
+type Translate = (key: MessageKey) => string;
+
 type Row = {
-  label: string;
+  labelKey: MessageKey;
   /** Rendered per cottage. Returning null prints an em dash. */
-  value: (cottage: any, pub?: PublicCottagePricing) => React.ReactNode;
+  value: (cottage: any, pub: PublicCottagePricing | undefined, t: Translate) => React.ReactNode;
 };
 
 const ROWS: Row[] = [
   {
-    label: 'Tier',
-    value: (cottage, pub) => {
+    labelKey: 'stay.tier',
+    value: (cottage, pub, t) => {
       const tier = pub?.category ?? cottage.pricingCategory;
-      return tier ? <Badge variant="secondary" size="sm">{TIER_LABEL[tier] ?? tier}</Badge> : null;
+      if (!tier) return null;
+      const key = TIER_KEY[tier];
+      return <Badge variant="secondary" size="sm">{key ? t(key) : tier}</Badge>;
     },
   },
   {
-    label: 'Sleeps',
-    value: (cottage, pub) =>
-      pub ? `Up to ${pub.maxAdults} adult${pub.maxAdults === 1 ? '' : 's'}` : `${cottage.capacity} guests`,
+    labelKey: 'stay.sleeps',
+    value: (cottage, pub, t) =>
+      pub ? `${pub.maxAdults} ${t('stay.adults')}` : `${cottage.capacity} ${t('stay.guests')}`,
   },
-  { label: 'Bedrooms', value: (cottage) => cottage.bedrooms ?? null },
-  { label: 'Bathrooms', value: (cottage) => cottage.bathrooms ?? null },
-  { label: 'Size', value: (cottage) => (cottage.size ? `${cottage.size} sqft` : null) },
+  { labelKey: 'stay.bedrooms', value: (cottage) => cottage.bedrooms ?? null },
+  { labelKey: 'stay.bathrooms', value: (cottage) => cottage.bathrooms ?? null },
+  { labelKey: 'stay.size', value: (cottage) => (cottage.size ? `${cottage.size} sqft` : null) },
   {
-    label: 'Extra mattress',
-    value: (cottage, pub) => {
+    labelKey: 'stay.extraMattress',
+    value: (cottage, pub, t) => {
       const allowed = pub?.allowsExtraMattress ?? cottage.allowsExtraMattress;
-      if (!allowed) return <Minus className="w-4 h-4 text-muted-foreground" aria-label="Not available" />;
+      if (!allowed) return <Minus className="w-4 h-4 text-muted-foreground" aria-label={t('stay.notAvailable')} />;
       const price = pub?.extraMattressPrice ?? cottage.extraMattressPrice;
-      return price ? `${formatPrice(price)}/night` : <Check className="w-4 h-4 text-primary" aria-label="Available" />;
+      return price
+        ? `${formatPrice(price)}/${t('stay.night')}`
+        : <Check className="w-4 h-4 text-primary" aria-label={t('stay.available')} />;
     },
   },
 ];
@@ -88,6 +97,8 @@ function ComparisonTable({
   fromRates: Record<string, number>;
   onRemove: (id: string) => void;
 }) {
+  const { t, td } = useLanguage();
+
   const pubFor = (cottage: any) => publicMap[cottage.id] ?? publicMap[cottage.slug];
 
   // The union across the selected cottages, so a row exists for anything at
@@ -121,9 +132,9 @@ function ComparisonTable({
                     <div className="min-w-0">
                       <p className="font-serif text-base text-foreground leading-tight">{cottage.name}</p>
                       <p className="text-gold-600 dark:text-gold-400 font-semibold text-sm mt-1">
-                        <span className="text-[11px] font-normal text-muted-foreground">From </span>
+                        <span className="text-[11px] font-normal text-muted-foreground">{t('stay.from')} </span>
                         {formatPrice(rate)}
-                        <span className="text-[11px] font-normal text-muted-foreground">/night</span>
+                        <span className="text-[11px] font-normal text-muted-foreground">/{t('stay.night')}</span>
                       </p>
                     </div>
                     <button
@@ -142,11 +153,11 @@ function ComparisonTable({
         </thead>
         <tbody>
           {ROWS.map((row) => (
-            <tr key={row.label} className="border-t border-border">
-              <td className={labelClass}>{row.label}</td>
+            <tr key={row.labelKey} className="border-t border-border">
+              <td className={labelClass}>{t(row.labelKey)}</td>
               {cottages.map((cottage) => (
                 <td key={cottage.id} className={cellClass}>
-                  {row.value(cottage, pubFor(cottage)) ?? <span className="text-muted-foreground">—</span>}
+                  {row.value(cottage, pubFor(cottage), t) ?? <span className="text-muted-foreground">—</span>}
                 </td>
               ))}
             </tr>
@@ -155,21 +166,21 @@ function ComparisonTable({
           {amenities.length > 0 && (
             <tr className="border-t border-border">
               <td colSpan={cottages.length + 1} className="px-3 pt-5 pb-1">
-                <p className="text-xs uppercase tracking-wider text-gold-600 dark:text-gold-400">Amenities</p>
+                <p className="text-xs uppercase tracking-wider text-gold-600 dark:text-gold-400">{t('stay.amenities')}</p>
               </td>
             </tr>
           )}
           {amenities.map(([key, label]) => (
             <tr key={key} className="border-t border-border">
-              <td className={labelClass}>{label}</td>
+              <td className={labelClass}>{td(label)}</td>
               {cottages.map((cottage) => {
                 const has = asList(cottage.amenities).some((a) => a.trim().toLowerCase() === key);
                 return (
                   <td key={cottage.id} className={cellClass}>
                     {has ? (
-                      <Check className="w-4 h-4 text-primary" aria-label="Included" />
+                      <Check className="w-4 h-4 text-primary" aria-label={t('stay.available')} />
                     ) : (
-                      <Minus className="w-4 h-4 text-muted-foreground" aria-label="Not included" />
+                      <Minus className="w-4 h-4 text-muted-foreground" aria-label={t('stay.notAvailable')} />
                     )}
                   </td>
                 );
@@ -185,7 +196,7 @@ function ComparisonTable({
                   href={`/cottages/slug/${cottage.slug}`}
                   className="text-gold-600 dark:text-gold-400 text-sm font-medium inline-flex items-center gap-1 hover:gap-2 transition-all"
                 >
-                  View details <ArrowRight className="w-3 h-3" />
+                  {t('action.viewDetails')} <ArrowRight className="w-3 h-3" />
                 </Link>
               </td>
             ))}
@@ -206,6 +217,7 @@ export function CompareTray({
   fromRates: Record<string, number>;
 }) {
   const { ids, remove, clear } = useCompareStore();
+  const { t } = useLanguage();
   const [open, setOpen] = useState(false);
 
   // A stored id whose cottage is no longer on the page — deactivated, or the
@@ -258,7 +270,7 @@ export function CompareTray({
                   onClick={clear}
                   className="text-xs text-muted-foreground hover:text-foreground px-2"
                 >
-                  Clear
+                  {t('action.clear')}
                 </button>
                 <Button
                   variant="primary"
@@ -266,7 +278,7 @@ export function CompareTray({
                   onClick={() => setOpen(true)}
                   disabled={selected.length < 2}
                 >
-                  {selected.length < 2 ? 'Pick one more' : `Compare ${selected.length}`}
+                  {selected.length < 2 ? t('compare.pickOneMore') : `${t('action.compare')} ${selected.length}`}
                 </Button>
               </div>
             </div>
@@ -277,7 +289,7 @@ export function CompareTray({
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="max-w-4xl max-h-[85vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle className="font-serif text-2xl">Compare cottages</DialogTitle>
+            <DialogTitle className="font-serif text-2xl">{t('compare.title')}</DialogTitle>
             <DialogDescription>
               Side by side, up to {MAX_COMPARE} at a time. Rates shown are the lowest for each cottage
               before GST; your dates and party size decide the final price.
@@ -300,6 +312,7 @@ export function CompareTray({
 /** The tick a cottage card carries to add itself to the comparison. */
 export function CompareToggle({ cottageId, name }: { cottageId: string; name: string }) {
   const { ids, toggle } = useCompareStore();
+  const { t } = useLanguage();
   const selected = ids.includes(cottageId);
   const full = ids.length >= MAX_COMPARE;
 
@@ -311,7 +324,7 @@ export function CompareToggle({ cottageId, name }: { cottageId: string; name: st
       disabled={!selected && full}
       aria-pressed={selected}
       aria-label={selected ? `Remove ${name} from comparison` : `Add ${name} to comparison`}
-      title={!selected && full ? `Comparing ${MAX_COMPARE} already — remove one first` : undefined}
+      title={!selected && full ? `${t('compare.comparing')} ${MAX_COMPARE} — ${t('compare.full')}` : undefined}
       className={`absolute top-3 right-3 z-20 inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium backdrop-blur transition-colors ${
         selected
           ? 'bg-primary text-primary-foreground'
@@ -321,7 +334,7 @@ export function CompareToggle({ cottageId, name }: { cottageId: string; name: st
       }`}
     >
       {selected ? <Check className="w-3 h-3" /> : <Scale className="w-3 h-3" />}
-      {selected ? 'Comparing' : 'Compare'}
+      {selected ? t('compare.comparing') : t('action.compare')}
     </button>
   );
 }

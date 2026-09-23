@@ -15,6 +15,7 @@ import { formatPrice, getToday, parseDate, isPastDate } from '@/lib/utils';
 import { fetchFromRates, fetchPublicPricing, indexPublicPricing, type PublicCottagePricing } from '@/lib/from-rates';
 import { RATE_FOOTNOTE } from '@/lib/pricing/customer-copy';
 import { CompareToggle, CompareTray } from '@/components/cottages/CompareTray';
+import { useLanguage } from '@/lib/i18n/provider';
 
 const FALLBACK_COTTAGES: Cottage[] = [
   { id: '1', slug: 'monal-haven', pricingCategory: 'SIGNATURE', name: 'Monal Haven', description: 'Premium Duplex Family Suite with private jacuzzi, attic yoga balcony, and sweeping mountain views. Wake up to mist rolling over the Himalayas from your private balcony.', shortDesc: 'Premium Duplex Family Suite with private jacuzzi and mountain views', category: 'Premium Duplex Family Suite', pricePerNight: 12000, heaterCharge: 600, capacity: 4, bedrooms: 2, bathrooms: 2, size: 850, amenities: ['wifi', 'fireplace', 'mountain view', 'balcony', 'coffee maker'], images: [], isActive: true, sortOrder: 1, isAvailable: true } as any,
@@ -33,28 +34,28 @@ const FALLBACK_COTTAGES: Cottage[] = [
 const CATEGORY_SECTIONS = [
   {
     key: 'BOUTIQUE',
-    eyebrow: 'Boutique',
+    eyebrowKey: 'tier.boutique',
     title: 'Boutique Cottages',
     blurb:
       'Intimate single-level sanctuaries for couples, solo adventurers and remote professionals — premium warmth, a private balcony and a front-row seat to the Jibhi valley. Two adults; a child under 12 may share the existing bed.',
   },
   {
     key: 'PREMIUM',
-    eyebrow: 'Premium',
+    eyebrowKey: 'tier.premium',
     title: 'Premium Cottage',
     blurb:
       'A multi-level chalet with a signature wooden attic, dual balconies and a deep-soak bath tub. Sleeps up to four adults, with an extra mattress available.',
   },
   {
     key: 'SIGNATURE',
-    eyebrow: 'Signature',
+    eyebrowKey: 'tier.signature',
     title: 'Signature Cottages',
     blurb:
       'Our most expansive duplexes, each with a private jacuzzi, an attic-linked yoga and meditation balcony and a second sitting balcony. Up to four adults, with an extra mattress available.',
   },
   {
     key: 'STUDIO',
-    eyebrow: 'Studio',
+    eyebrowKey: 'tier.studio',
     title: 'Alpine Studio',
     blurb:
       'A minimalist escape built for the solo traveller, remote writer or anyone who wants warmth and utility in a smaller space.',
@@ -89,6 +90,19 @@ export default function CottagesPage() {
    * A cottage's pricing tier. Comes from the engine, with the record's own
    * column as a fallback while the public pricing request is still in flight.
    */
+  const { t, td, registerDynamic } = useLanguage();
+
+  // Cottage copy and the section headings come from the database or from this
+  // file's own constants, so they are registered for translation as soon as the
+  // list settles rather than one string at a time as cards render.
+  useEffect(() => {
+    registerDynamic([
+      ...CATEGORY_SECTIONS.flatMap((section) => [section.title, section.blurb]),
+      ...cottages.flatMap((c: any) => [c.shortDesc, c.description]),
+      ...Object.values(publicMap).map((p) => p.publicDescriptor),
+    ]);
+  }, [cottages, publicMap, registerDynamic]);
+
   const tierOf = (cottage: any): string | null =>
     (publicMap[cottage.id] ?? publicMap[cottage.slug])?.category ?? cottage.pricingCategory ?? null;
 
@@ -346,16 +360,16 @@ export default function CottagesPage() {
               {/* Grouped by the engine tiers the spec publishes (§12):
                   Boutique, Premium, Signature — plus the Studio, a seventh
                   cottage the spec predates. */}
-              {CATEGORY_SECTIONS.map(({ key, eyebrow, title, blurb }) => {
+              {CATEGORY_SECTIONS.map(({ key, eyebrowKey, title, blurb }) => {
                 const group = cottages.filter((c: any) => tierOf(c) === key);
                 if (group.length === 0) return null;
                 return (
                   <div key={key} className="mb-16">
                     <ScrollReveal>
                       <div className="mb-8">
-                        <p className="text-gold-500 text-sm tracking-[0.2em] uppercase mb-2 font-sans">{eyebrow}</p>
-                        <h2 className="font-serif text-2xl md:text-3xl text-foreground mb-3">{title}</h2>
-                        <p className="text-muted-foreground text-sm max-w-2xl">{blurb}</p>
+                        <p className="text-gold-500 text-sm tracking-[0.2em] uppercase mb-2 font-sans">{t(eyebrowKey as any)}</p>
+                        <h2 className="font-serif text-2xl md:text-3xl text-foreground mb-3">{td(title)}</h2>
+                        <p className="text-muted-foreground text-sm max-w-2xl">{td(blurb)}</p>
                       </div>
                     </ScrollReveal>
                   <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -390,7 +404,7 @@ export default function CottagesPage() {
                               {pub?.publicDescriptor && (
                                 <p className="text-[11px] uppercase tracking-wider text-gold-600 dark:text-gold-400 mb-2">{pub.publicDescriptor}</p>
                               )}
-                              <p className="text-muted-foreground text-sm mb-4 line-clamp-2">{cottage.shortDesc || cottage.description}</p>
+                              <p className="text-muted-foreground text-sm mb-4 line-clamp-2">{td(cottage.shortDesc || cottage.description)}</p>
                               <div className="flex gap-4 text-xs text-muted-foreground mb-4">
                                 <span className="flex items-center gap-1"><Users className="w-3 h-3" /> {pub ? `Up to ${pub.maxAdults} adults` : `${cottage.capacity} guests`}</span>
                                 <span className="flex items-center gap-1"><Bed className="w-3 h-3" /> {cottage.bedrooms} BR</span>

@@ -8,6 +8,7 @@ import { Footer } from '@/components/layout/Footer';
 import { ThemeInitializer } from '@/components/layout/ThemeInitializer';
 import { ScrollProgress } from '@/components/animations/ScrollProgress';
 import { Toaster } from 'react-hot-toast';
+import { LanguageProvider } from '@/lib/i18n/provider';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
 
@@ -56,8 +57,11 @@ export function ClientBody({ children }: { children: React.ReactNode }) {
     );
   }
 
+  // Admin and staff screens are left out on purpose: they are worked in every
+  // day by the same few people, and a half-translated back office is harder to
+  // use than an English one.
   return (
-    <>
+    <LanguageProvider>
       <ThemeInitializer />
       <ScrollProgress />
       <FogParticles />
@@ -82,6 +86,6 @@ export function ClientBody({ children }: { children: React.ReactNode }) {
           error: { style: { background: '#7f1d1d', color: '#fefcf5' } },
         }}
       />
-    </>
+    </LanguageProvider>
   );
 }
