@@ -118,15 +118,6 @@ async function sbQuery<T = any>(endpoint: string, method = 'GET', body?: any, _t
         const { data: booked } = await supabase.from('Booking').select('checkIn,checkOut,status').eq('cottageId', cottageId).in('status', ['CONFIRMED', 'RESERVED', 'CHECKED_IN', 'PENDING']).or(`status.neq.PENDING,holdExpiresAt.is.null,holdExpiresAt.gt.${new Date().toISOString()}`).lt('checkIn', end).gt('checkOut', start);
         return { data: { blockedDates: blocked || [], bookings: booked || [] } } as T;
       }
-      case 'bookings/my-bookings': {
-        if (method !== 'GET') break;
-        let query = supabase.from('Booking').select('*, cottage:Cottage(*), guest:Guest(*)');
-        if (params.phone) query = query.eq('guest.phone', params.phone);
-        if (params.email) query = query.eq('guest.email', params.email);
-        const { data, error } = await query.order('createdAt', { ascending: false });
-        if (error) throw error;
-        return { data } as T;
-      }
       case 'bookings/all': {
         let query = supabase.from('Booking').select('*, cottage:Cottage(*), guest:Guest(*)', { count: 'exact' });
         if (params.status) query = query.eq('status', params.status);
@@ -464,6 +455,16 @@ async function sbMutation<T = any>(endpoint: string, method: 'POST' | 'PUT' | 'D
       return { data: res.data } as T;
     }
 
+    if (method === 'POST' && endpoint === '/bookings/lookup') {
+      // Matching a reference against the guest's own contact detail happens
+      // under the service role. The browser never queries Booking directly.
+      const res = await callBackendAPI('/bookings/lookup', {
+        method: 'POST',
+        body: JSON.stringify(body),
+      });
+      return { data: res.data } as T;
+    }
+
     if (method === 'POST' && endpoint === '/bookings/create-payment-order') {
       const res = await callBackendAPI('/payments/create-order', {
         method: 'POST',
@@ -663,12 +664,13 @@ export const endpoints = {
     confirmPayment: (data: any) => api.post('/bookings/confirm-payment', data),
     calendar: (cottageId: string, month: number, year: number) =>
       api.get(`/bookings/calendar?cottageId=${cottageId}&month=${month}&year=${year}`),
-    myBookings: (phone?: string, email?: string) => {
-      const params = new URLSearchParams();
-      if (phone) params.set('phone', phone);
-      if (email) params.set('email', email);
-      return api.get(`/bookings/my-bookings?${params.toString()}`);
-    },
+    /**
+     * Fetch one booking by its reference, verified against the email or phone
+     * it was booked with. There is deliberately no way to list every booking
+     * for a contact detail: knowing someone's email must not reveal their stays.
+     */
+    lookup: (reference: string, contact: string) =>
+      api.post('/bookings/lookup', { reference, contact }),
     list: (token: string | null) => api.get('/bookings/all', token),
     cancel: (id: string, token: string | null) => api.post(`/bookings/${id}/cancel`, {}, token),
   },

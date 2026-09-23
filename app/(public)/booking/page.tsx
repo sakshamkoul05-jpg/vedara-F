@@ -15,7 +15,8 @@ import { formatPrice, calculateNights, getToday, parseDate, isPastDate } from '@
 import { useCouponStore } from '@/store/coupon';
 import {
   Calendar, Home, User, Check, ArrowRight, ArrowLeft,
-  Percent, Tag, Loader2, CreditCard, Sparkles, Gift, ChevronDown, Users
+  Percent, Tag, Loader2, CreditCard, Sparkles, Gift, ChevronDown, Users,
+  Copy, CheckCheck, LifeBuoy
 } from 'lucide-react';
 import { countries } from '@/lib/countries';
 import PhoneInput from 'react-phone-input-2';
@@ -52,6 +53,40 @@ const indianStates = [
   'Dadra and Nagar Haveli and Daman and Diu', 'Delhi', 'Jammu and Kashmir',
   'Ladakh', 'Lakshadweep', 'Puducherry',
 ];
+
+/**
+ * The booking reference is the only credential a guest has for coming back to
+ * their reservation, so the confirmation screen makes it easy to keep rather
+ * than leaving them to transcribe it.
+ */
+function BookingReference({ reference }: { reference: string }) {
+  const [copied, setCopied] = useState(false);
+
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(reference);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // Clipboard is blocked in some embedded browsers; the text is on screen
+      // either way, so there is nothing useful to tell the guest here.
+    }
+  };
+
+  return (
+    <div className="flex items-center gap-3">
+      <p className="font-mono font-bold text-foreground text-lg tracking-wide">{reference}</p>
+      <button
+        type="button"
+        onClick={copy}
+        aria-label={copied ? 'Booking reference copied' : 'Copy booking reference'}
+        className="text-muted-foreground hover:text-primary transition-colors shrink-0"
+      >
+        {copied ? <CheckCheck className="w-4 h-4 text-primary" /> : <Copy className="w-4 h-4" />}
+      </button>
+    </div>
+  );
+}
 
 export default function BookingPage() {
   const searchParams = useSearchParams();
@@ -1148,7 +1183,7 @@ export default function BookingPage() {
                         </p>
                         <div className="bg-gold-50 dark:bg-gold-900/20 rounded-xl p-6 mb-8 text-left">
                           <p className="text-sm text-muted-foreground mb-1">Booking Reference</p>
-                          <p className="font-mono font-bold text-foreground text-lg">{bookingData?.bookingRef}</p>
+                          <BookingReference reference={bookingData?.bookingRef ?? ''} />
                           <div className="border-t border-border mt-4 pt-4 space-y-1 text-sm">
                             <div className="flex justify-between">
                               <span className="text-muted-foreground">Status</span>
@@ -1162,10 +1197,25 @@ export default function BookingPage() {
                             </div>
                           </div>
                         </div>
-                        <p className="text-xs text-muted-foreground mb-6">
-                          WhatsApp confirmation sent to +91-91188-82242 and email to vedararetreat@gmail.com
-                        </p>
-                        <Button variant="primary" onClick={() => router.push('/')}>Back to Home</Button>
+                        <div className="bg-earth-50 dark:bg-earth-900/20 rounded-xl p-4 mb-6 text-left flex gap-3">
+                          <LifeBuoy className="w-4 h-4 text-primary mt-0.5 shrink-0" />
+                          <p className="text-xs text-muted-foreground leading-relaxed">
+                            Keep this reference safe — it is what you will need to pull up your
+                            booking, request housekeeping or reach us about your stay. Our team has
+                            your details and will be in touch on{' '}
+                            <span className="text-foreground">{guestEmail || 'your email'}</span>.
+                            Any questions in the meantime, call{' '}
+                            <a href="tel:+919118882242" className="text-primary hover:underline whitespace-nowrap">
+                              +91-91188-82242
+                            </a>.
+                          </p>
+                        </div>
+                        <div className="flex flex-wrap gap-3 justify-center">
+                          <Button variant="primary" onClick={() => router.push('/my-bookings')}>
+                            Manage Your Booking
+                          </Button>
+                          <Button variant="outline" onClick={() => router.push('/')}>Back to Home</Button>
+                        </div>
                       </div>
                     </ScrollReveal>
                   </motion.div>
