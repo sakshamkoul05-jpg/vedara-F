@@ -16,6 +16,7 @@ import { WeatherWidget } from '@/components/public/WeatherWidget';
 import { AvailabilityHeatmap } from '@/components/public/AvailabilityHeatmap';
 import { AiTimings } from '@/components/ai/AiTimings';
 import { getToday, parseDate, isPastDate, formatPrice } from '@/lib/utils';
+import { fetchFromRates } from '@/lib/from-rates';
 import { api } from '@/lib/api';
 import { Cottage } from '@/types';
 
@@ -57,10 +58,13 @@ export default function HomePage() {
   const heroRef = useRef<HTMLElement>(null);
   const spotlightRef = useRef<HTMLDivElement>(null);
   const [cottages, setCottages] = useState(FALLBACK_COTTAGES);
+  // Engine "from" rates (spec §12), keyed by cottage id and slug.
+  const [fromRates, setFromRates] = useState<Record<string, number>>({});
 
   const today = getToday();
 
   useEffect(() => {
+    fetchFromRates().then(setFromRates);
     api.get('/cottages').then((res: any) => {
       const data = Array.isArray(res.data) && res.data.length > 0 ? res.data.map((c: Cottage) => ({
         slug: c.slug || c.name.toLowerCase().replace(/\s+/g, '-'),
@@ -267,7 +271,7 @@ export default function HomePage() {
                     <div className="p-5 flex flex-col flex-1">
                       <div className="flex justify-between items-start mb-2">
                         <h4 className="font-serif text-lg text-foreground">{cottage.name}</h4>
-                        <span className="text-primary font-semibold text-sm">{formatPrice(cottage.pricePerNight)}<span className="text-muted-foreground font-normal text-xs">/night</span></span>
+                        <span className="text-primary font-semibold text-sm whitespace-nowrap"><span className="text-muted-foreground font-normal text-xs">From </span>{formatPrice(fromRates[(cottage as any).slug] ?? cottage.pricePerNight)}<span className="text-muted-foreground font-normal text-xs">/night*</span></span>
                       </div>
                       <p className="text-muted-foreground text-xs mb-3 leading-relaxed line-clamp-2 flex-1">{cottage.desc}</p>
                       <Link href={`/cottages/slug/${cottage.slug}`} className="text-primary text-xs font-medium inline-flex items-center gap-1 group-hover:gap-2 transition-all duration-500 mt-auto">
@@ -298,7 +302,7 @@ export default function HomePage() {
                     <div className="p-5 flex flex-col flex-1">
                       <div className="flex justify-between items-start mb-2">
                         <h4 className="font-serif text-lg text-foreground">{cottage.name}</h4>
-                        <span className="text-primary font-semibold text-sm">{formatPrice(cottage.pricePerNight)}<span className="text-muted-foreground font-normal text-xs">/night</span></span>
+                        <span className="text-primary font-semibold text-sm whitespace-nowrap"><span className="text-muted-foreground font-normal text-xs">From </span>{formatPrice(fromRates[(cottage as any).slug] ?? cottage.pricePerNight)}<span className="text-muted-foreground font-normal text-xs">/night*</span></span>
                       </div>
                       <p className="text-muted-foreground text-xs mb-3 leading-relaxed line-clamp-2 flex-1">{cottage.desc}</p>
                       <Link href={`/cottages/slug/${cottage.slug}`} className="text-primary text-xs font-medium inline-flex items-center gap-1 group-hover:gap-2 transition-all duration-500 mt-auto">
@@ -329,7 +333,7 @@ export default function HomePage() {
                     <div className="p-5 flex flex-col flex-1">
                       <div className="flex justify-between items-start mb-2">
                         <h4 className="font-serif text-lg text-foreground">{cottage.name}</h4>
-                        <span className="text-primary font-semibold text-sm">{formatPrice(cottage.pricePerNight)}<span className="text-muted-foreground font-normal text-xs">/night</span></span>
+                        <span className="text-primary font-semibold text-sm whitespace-nowrap"><span className="text-muted-foreground font-normal text-xs">From </span>{formatPrice(fromRates[(cottage as any).slug] ?? cottage.pricePerNight)}<span className="text-muted-foreground font-normal text-xs">/night*</span></span>
                       </div>
                       <p className="text-muted-foreground text-xs mb-3 leading-relaxed line-clamp-2 flex-1">{cottage.desc}</p>
                       <Link href={`/cottages/slug/${cottage.slug}`} className="text-primary text-xs font-medium inline-flex items-center gap-1 group-hover:gap-2 transition-all duration-500 mt-auto">

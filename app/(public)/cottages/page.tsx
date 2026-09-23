@@ -12,6 +12,7 @@ import { DatePicker } from '@/components/ui/DatePicker';
 import { api } from '@/lib/api';
 import { Cottage } from '@/types';
 import { formatPrice, getToday, parseDate, isPastDate } from '@/lib/utils';
+import { fetchFromRates } from '@/lib/from-rates';
 
 const FALLBACK_COTTAGES: Cottage[] = [
   { id: '1', slug: 'monal-haven', name: 'Monal Haven', description: 'Premium Duplex Family Suite with private jacuzzi, attic yoga balcony, and sweeping mountain views. Wake up to mist rolling over the Himalayas from your private balcony.', shortDesc: 'Premium Duplex Family Suite with private jacuzzi and mountain views', category: 'Premium Duplex Family Suite', pricePerNight: 12000, heaterCharge: 600, capacity: 4, bedrooms: 2, bathrooms: 2, size: 850, amenities: ['wifi', 'fireplace', 'mountain view', 'balcony', 'coffee maker'], images: [], isActive: true, sortOrder: 1, isAvailable: true } as any,
@@ -25,6 +26,8 @@ const FALLBACK_COTTAGES: Cottage[] = [
 
 export default function CottagesPage() {
   const [cottages, setCottages] = useState<Cottage[]>([]);
+  // Engine "from" rates (spec §12), keyed by cottage id and slug.
+  const [fromRates, setFromRates] = useState<Record<string, number>>({});
   const [loading, setLoading] = useState(true);
   const [checkIn, setCheckIn] = useState('');
   const [checkOut, setCheckOut] = useState('');
@@ -112,6 +115,7 @@ export default function CottagesPage() {
   }, [checkIn, checkOut, adults, childAges]);
 
   useEffect(() => {
+    fetchFromRates().then(setFromRates);
     api.get('/cottages').then((res: any) => {
       if (Array.isArray(res.data) && res.data.length > 0) {
         const patched = res.data.map((c: any) => ({
@@ -314,7 +318,7 @@ export default function CottagesPage() {
                             <div className="p-6">
                               <div className="flex justify-between items-start mb-1">
                                 <h3 className="font-serif text-xl text-foreground group-hover:text-gold-600 dark:group-hover:text-gold-400 transition-colors">{cottage.name}</h3>
-                                <span className="text-gold-600 dark:text-gold-400 font-semibold">{formatPrice(cottage.pricePerNight)}<span className="text-gold-400 font-normal text-xs">/night</span></span>
+                                <span className="text-gold-600 dark:text-gold-400 font-semibold whitespace-nowrap"><span className="text-xs font-normal text-muted-foreground">From </span>{formatPrice(fromRates[cottage.id] ?? fromRates[cottage.slug] ?? cottage.pricePerNight)}<span className="text-gold-400 font-normal text-xs">/night*</span></span>
                               </div>
                               <p className="text-muted-foreground text-sm mb-4 line-clamp-2">{cottage.shortDesc || cottage.description}</p>
                               <div className="flex gap-4 text-xs text-muted-foreground mb-4">
@@ -378,7 +382,7 @@ export default function CottagesPage() {
                             <div className="p-6">
                               <div className="flex justify-between items-start mb-1">
                                 <h3 className="font-serif text-xl text-foreground group-hover:text-gold-600 dark:group-hover:text-gold-400 transition-colors">{cottage.name}</h3>
-                                <span className="text-gold-600 dark:text-gold-400 font-semibold">{formatPrice(cottage.pricePerNight)}<span className="text-gold-400 font-normal text-xs">/night</span></span>
+                                <span className="text-gold-600 dark:text-gold-400 font-semibold whitespace-nowrap"><span className="text-xs font-normal text-muted-foreground">From </span>{formatPrice(fromRates[cottage.id] ?? fromRates[cottage.slug] ?? cottage.pricePerNight)}<span className="text-gold-400 font-normal text-xs">/night*</span></span>
                               </div>
                               <p className="text-muted-foreground text-sm mb-4 line-clamp-2">{cottage.shortDesc || cottage.description}</p>
                               <div className="flex gap-4 text-xs text-muted-foreground mb-4">
@@ -442,7 +446,7 @@ export default function CottagesPage() {
                             <div className="p-6">
                               <div className="flex justify-between items-start mb-1">
                                 <h3 className="font-serif text-xl text-foreground group-hover:text-gold-600 dark:group-hover:text-gold-400 transition-colors">{cottage.name}</h3>
-                                <span className="text-gold-600 dark:text-gold-400 font-semibold">{formatPrice(cottage.pricePerNight)}<span className="text-gold-400 font-normal text-xs">/night</span></span>
+                                <span className="text-gold-600 dark:text-gold-400 font-semibold whitespace-nowrap"><span className="text-xs font-normal text-muted-foreground">From </span>{formatPrice(fromRates[cottage.id] ?? fromRates[cottage.slug] ?? cottage.pricePerNight)}<span className="text-gold-400 font-normal text-xs">/night*</span></span>
                               </div>
                               <p className="text-muted-foreground text-sm mb-4 line-clamp-2">{cottage.shortDesc || cottage.description}</p>
                               <div className="flex gap-4 text-xs text-muted-foreground mb-4">

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Compass, MapPin, Sparkles, Mountain, Coffee, TreePine, Star, Users, Calendar, Loader2, ArrowRight, RotateCcw, ExternalLink, X } from 'lucide-react';
 
@@ -68,6 +68,11 @@ const GROUPS = [
 
 export function TripPlanner() {
   const [isOpen, setIsOpen] = useState(false);
+  // Keeps the draggable button inside the viewport.
+  const dragBoundsRef = useRef<HTMLDivElement>(null);
+  // Set true while a drag is in progress so the drag that ends over the button
+  // does not also fire its click and open the modal.
+  const draggedRef = useRef(false);
   const [step, setStep] = useState(0);
   const [isGenerating, setIsGenerating] = useState(false);
   const [plan, setPlan] = useState<TripPlan | null>(null);
@@ -160,20 +165,32 @@ export function TripPlanner() {
 
   return (
     <>
-      {/* Floating trigger. This used to sit in normal document flow at the very
-          bottom of the page, so it only appeared once the guest had scrolled all
-          the way down. It is now pinned and visible throughout.
-          Offset above the chatbot bubble, which occupies bottom-6 right-6. */}
-      <motion.button
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        onClick={() => setIsOpen(true)}
-        aria-label="Plan my trip"
-        className="fixed bottom-24 right-6 z-[100] inline-flex items-center gap-2 px-5 py-3 bg-gradient-to-r from-amber-500 to-orange-600 text-white rounded-full sm:rounded-xl font-semibold shadow-lg hover:shadow-xl transition-shadow"
-      >
-        <Sparkles className="w-5 h-5 shrink-0" />
-        <span className="hidden sm:inline">Plan My Trip</span>
-      </motion.button>
+      {/* Full-viewport bounds for the draggable trigger. pointer-events-none so
+          it never intercepts clicks on the page; the button re-enables them. */}
+      <div ref={dragBoundsRef} className="fixed inset-4 z-[100] pointer-events-none" aria-hidden="true">
+        {/* Floating trigger. Pinned to the bottom-LEFT so it clears the chatbot
+            and the café cart, which both live in the bottom-right corner. It is
+            draggable, so a guest can reposition it if it ever covers content. */}
+        <motion.button
+          drag
+          dragConstraints={dragBoundsRef}
+          dragMomentum={false}
+          dragElastic={0.08}
+          onDragStart={() => { draggedRef.current = true; }}
+          onDragEnd={() => {
+            // Clear on the next tick, after the click that follows the drag.
+            setTimeout(() => { draggedRef.current = false; }, 0);
+          }}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={() => { if (!draggedRef.current) setIsOpen(true); }}
+          aria-label="Plan my trip"
+          className="pointer-events-auto absolute bottom-0 left-0 inline-flex items-center gap-2 px-5 py-3 bg-gradient-to-r from-amber-500 to-orange-600 text-white rounded-full sm:rounded-xl font-semibold shadow-lg hover:shadow-xl transition-shadow cursor-grab active:cursor-grabbing touch-none"
+        >
+          <Sparkles className="w-5 h-5 shrink-0" />
+          <span className="hidden sm:inline">Plan My Trip</span>
+        </motion.button>
+      </div>
 
       <AnimatePresence>
         {isOpen && (

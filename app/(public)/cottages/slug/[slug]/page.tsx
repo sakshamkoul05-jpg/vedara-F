@@ -17,6 +17,7 @@ import { FormattedText } from '@/components/ui/formatted-text';
 import { api } from '@/lib/api';
 import { Cottage } from '@/types';
 import { formatPrice, calculateNights, getToday, parseDate, isPastDate } from '@/lib/utils';
+import { fetchFromRates } from '@/lib/from-rates';
 import { DatePicker } from '@/components/ui/DatePicker';
 
 const amenityIcons: Record<string, React.ElementType> = {
@@ -42,6 +43,10 @@ export default function CottageBySlugPage() {
   const [selectedImage, setSelectedImage] = useState(0);
   const [checkIn, setCheckIn] = useState('');
   const [checkOut, setCheckOut] = useState('');
+  // Engine "from" rate for the hero (spec §12) and a live quote for the
+  // estimate, both replacing the legacy flat pricing this page used to show.
+  const [fromRate, setFromRate] = useState<number | null>(null);
+  const [quote, setQuote] = useState<any>(null);
   const today = getToday();
 
   useEffect(() => {
@@ -58,16 +63,49 @@ export default function CottageBySlugPage() {
     });
   }, [slug]);
 
-  const pricings = Array.isArray(cottage?.seasonalPricings) ? cottage.seasonalPricings : [];
+  // The published "from" rate for the hero.
+  useEffect(() => {
+    if (!cottage?.id) return;
+    let alive = true;
+    fetchFromRates().then((rates) => {
+      if (alive) setFromRate(rates[cottage.id] ?? rates[cottage.slug] ?? null);
+    });
+    return () => { alive = false; };
+  }, [cottage?.id, cottage?.slug]);
+
+  // A live engine quote once dates are chosen. Occupancy is collected on the
+  // booking page; here we quote the 2-adult base so the estimate is real.
+  useEffect(() => {
+    if (!cottage?.id || !checkIn || !checkOut) {
+      setQuote(null);
+      return;
+    }
+    let alive = true;
+    const controller = new AbortController();
+    fetch('/api/pricing/quote', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      signal: controller.signal,
+      body: JSON.stringify({
+        cottageId: cottage.id,
+        checkIn,
+        checkOut,
+        adults: 2,
+        childAges: [],
+        ratePlan: 'ROOM_ONLY',
+      }),
+    })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((j) => { if (alive) setQuote(j?.data ?? null); })
+      .catch(() => { if (alive) setQuote(null); });
+    return () => { alive = false; controller.abort(); };
+  }, [cottage?.id, checkIn, checkOut]);
+
   const nights = checkIn && checkOut ? calculateNights(parseDate(checkIn), parseDate(checkOut)) : 0;
-  const activeSeasonal = checkIn && checkOut ? pricings.find(
-    (s) => s.isActive && parseDate(checkIn) < parseDate(s.endDate) && parseDate(checkOut) > parseDate(s.startDate)
-  ) : pricings.find(
-    (s) => checkIn && checkIn >= s.startDate && checkIn <= s.endDate && s.isActive
-  );
-  const isPeakSeason = !!activeSeasonal;
-  const effectivePrice = activeSeasonal ? activeSeasonal.pricePerNight : (cottage?.pricePerNight || 0);
-  const totalAmount = nights * effectivePrice;
+  // Hero price: the engine "from" rate, falling back to the stored flat rate.
+  const displayFrom = fromRate ?? cottage?.pricePerNight ?? 0;
+  // Estimate: the live quote when available, else a simple nights × from-rate.
+  const estimateTotal = quote?.total ?? nights * displayFrom;
 
   let parsedImages: string[] = [];
   try {
@@ -144,9 +182,6 @@ export default function CottageBySlugPage() {
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
             <div className="relative z-10 p-6 md:p-10">
-              <Badge variant="default" size="sm" className="mb-3 bg-gold-500 text-alabaster border-none">
-                {isPeakSeason ? 'Peak Season Pricing' : 'Standard Pricing'}
-              </Badge>
               {cottage.category && (
                 <Badge variant="default" size="sm" className="mb-2 bg-gold-600/80 text-alabaster border-none">
                   {cottage.category}
@@ -154,8 +189,9 @@ export default function CottageBySlugPage() {
               )}
               <h1 className="font-serif text-3xl md:text-5xl lg:text-6xl text-alabaster mb-2">{cottage.name}</h1>
               <div className="flex items-baseline gap-2">
-                <span className="text-2xl md:text-3xl font-bold text-alabaster">{formatPrice(effectivePrice)}</span>
-                <span className="text-alabaster/70 text-sm">/ night</span>
+                <span className="text-alabaster/70 text-sm">From</span>
+                <span className="text-2xl md:text-3xl font-bold text-alabaster">{formatPrice(displayFrom)}</span>
+                <span className="text-alabaster/70 text-sm">/ night*</span>
               </div>
             </div>
           </div>
@@ -378,27 +414,33 @@ export default function CottageBySlugPage() {
                         >
                           <div className="bg-gold-50 dark:bg-[#231B12]/30 rounded-xl p-4 space-y-2">
                             <div className="flex justify-between text-sm">
-                              <span className="text-muted-foreground">{formatPrice(effectivePrice)} × {nights} {nights === 1 ? 'night' : 'nights'}</span>
-                              <span className="text-foreground font-medium">{formatPrice(effectivePrice * nights)}</span>
+                              <span className="text-muted-foreground">Accommodation, {nights} {nights === 1 ? 'night' : 'nights'}</span>
+                              <span className="text-foreground font-medium">{formatPrice(quote ? quote.accommodationTotal : nights * displayFrom)}</span>
                             </div>
-                            {activeSeasonal && (
+                            {quote?.longStayApplied && (
+                              <div className="flex justify-between text-sm text-green-600">
+                                <span className="font-medium">{quote.longStayRuleName}</span>
+                                <span>included</span>
+                              </div>
+                            )}
+                            {quote?.taxTotal > 0 && (
                               <div className="flex justify-between text-sm">
-                                <span className="text-gold-500 font-medium">{activeSeasonal.name} premium</span>
-                                <span className="text-foreground">+{formatPrice(activeSeasonal.pricePerNight - cottage.pricePerNight)}/night</span>
+                                <span className="text-muted-foreground">GST</span>
+                                <span className="text-foreground">{formatPrice(quote.taxTotal)}</span>
                               </div>
                             )}
                             <div className="border-t border-border pt-2 flex justify-between">
-                              <span className="font-serif text-lg text-foreground">Total</span>
-                              <span className="font-bold text-lg text-gold-600 dark:text-gold-400">{formatPrice(totalAmount)}</span>
+                              <span className="font-serif text-lg text-foreground">{quote ? 'Total' : 'Estimate'}</span>
+                              <span className="font-bold text-lg text-gold-600 dark:text-gold-400">{formatPrice(estimateTotal)}</span>
                             </div>
-                            <p className="text-[10px] text-muted-foreground text-right">Prices exclusive of applicable taxes (12% GST at checkout)</p>
+                            <p className="text-[10px] text-muted-foreground text-right">Based on 2 adults, room only. Final price for your party and rate plan is shown at checkout.</p>
                           </div>
 
                           <Link
                             href={`/booking?cottageId=${cottage.id}&checkIn=${checkIn}&checkOut=${checkOut}`}
                             className="cta-primary cta-lg w-full"
                           >
-                            Book Your Stay — {formatPrice(totalAmount)}
+                            Book Your Stay — {formatPrice(estimateTotal)}
                           </Link>
                         </motion.div>
                       )}
