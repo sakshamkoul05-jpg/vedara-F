@@ -5,6 +5,7 @@ import { useAuthStore } from '@/store/auth';
 import { api } from '@/lib/api';
 import { ScrollReveal } from '@/components/animations/ScrollReveal';
 import { Calendar, TrendingUp, DollarSign, ShoppingBag } from 'lucide-react';
+import { TrafficReport } from '@/components/admin/TrafficReport';
 
 export default function AnalyticsPage() {
   const { token } = useAuthStore();
@@ -82,6 +83,10 @@ export default function AnalyticsPage() {
             </div>
           </div>
         )}
+
+        <div className="mt-12">
+          <TrafficReport />
+        </div>
       </div>
     </div>
   );

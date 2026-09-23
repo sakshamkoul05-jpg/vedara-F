@@ -16,7 +16,9 @@ const SUPABASE_WS_ORIGIN = SUPABASE_ORIGIN.replace(/^https:/, 'wss:');
 const ContentSecurityPolicy = [
   "default-src 'self'",
   // cdn.razorpay.com serves the risk-detection bundle that checkout.js pulls in.
-  "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://checkout.razorpay.com https://cdn.razorpay.com https://fonts.googleapis.com https://maps.googleapis.com",
+  // googletagmanager serves the GA4 bundle, which only loads when
+  // NEXT_PUBLIC_GA_ID is set.
+  "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://checkout.razorpay.com https://cdn.razorpay.com https://fonts.googleapis.com https://maps.googleapis.com https://www.googletagmanager.com",
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
   "font-src 'self' https://fonts.gstatic.com",
   "img-src 'self' data: blob: https: http:",
@@ -33,6 +35,10 @@ const ContentSecurityPolicy = [
     'https://api.postalpincode.in',
     'https://maps.googleapis.com',
     'https://maps.gstatic.com',
+    // GA4 beacons.
+    'https://www.google-analytics.com',
+    'https://analytics.google.com',
+    'https://www.googletagmanager.com',
   ].join(' '),
   // Razorpay checkout frames api.razorpay.com during the payment handshake.
   "frame-src 'self' https://checkout.razorpay.com https://api.razorpay.com",

@@ -23,6 +23,7 @@ import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 import { DatePicker } from '@/components/ui/DatePicker';
 import { fetchPublicPricing, type PublicPricing } from '@/lib/from-rates';
+import { markVisitConverted } from '@/components/analytics/PageViewTracker';
 import { childBreakfastBeddingCopy, PRICING_DISCLAIMER, RATE_FOOTNOTE } from '@/lib/pricing/customer-copy';
 
 const FALLBACK_COTTAGES: Cottage[] = [
@@ -420,6 +421,7 @@ export default function BookingPage() {
 
       if (!razorpayOrder || !razorpayOrder.id) {
         setBookingData({ ...booking, confirmed: false, pendingPayment: true });
+        markVisitConverted();
         setStep(4);
         setPaymentLoading(false);
         return;
@@ -451,6 +453,7 @@ export default function BookingPage() {
               razorpaySignature: response.razorpay_signature,
             });
             setBookingData({ ...booking, confirmed: true });
+            markVisitConverted();
             setStep(4);
           } catch {
             setFormErrors({ general: 'Payment verification failed. Please contact support at +91-91188-82242.' });

@@ -1,6 +1,9 @@
 import type { Metadata, Viewport } from 'next';
 import { Inter, Cormorant_Garamond } from 'next/font/google';
+import { Suspense } from 'react';
 import { ClientBody } from '@/components/layout/ClientBody';
+import { PageViewTracker } from '@/components/analytics/PageViewTracker';
+import { GoogleAnalytics } from '@/components/analytics/GoogleAnalytics';
 import '@/styles/globals.css';
 
 const inter = Inter({
@@ -129,6 +132,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body className={`min-h-screen bg-background text-foreground font-sans antialiased ${cormorantGaramond.variable} ${inter.variable}`}>
         <ClientBody>{children}</ClientBody>
+        {/* Both read the query string, so they need a boundary of their own;
+            neither renders anything, so the fallback is nothing. */}
+        <Suspense fallback={null}>
+          <PageViewTracker />
+          <GoogleAnalytics />
+        </Suspense>
       </body>
     </html>
   );
