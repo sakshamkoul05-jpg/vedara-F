@@ -16,14 +16,49 @@ import { fetchFromRates, fetchPublicPricing, indexPublicPricing, type PublicCott
 import { RATE_FOOTNOTE } from '@/lib/pricing/customer-copy';
 
 const FALLBACK_COTTAGES: Cottage[] = [
-  { id: '1', slug: 'monal-haven', name: 'Monal Haven', description: 'Premium Duplex Family Suite with private jacuzzi, attic yoga balcony, and sweeping mountain views. Wake up to mist rolling over the Himalayas from your private balcony.', shortDesc: 'Premium Duplex Family Suite with private jacuzzi and mountain views', category: 'Premium Duplex Family Suite', pricePerNight: 12000, heaterCharge: 600, capacity: 4, bedrooms: 2, bathrooms: 2, size: 850, amenities: ['wifi', 'fireplace', 'mountain view', 'balcony', 'coffee maker'], images: [], isActive: true, sortOrder: 1, isAvailable: true } as any,
-  { id: '2', slug: 'koklass-cove', name: 'Koklass Cove', description: 'Our largest duplex with two viewing balconies, private jacuzzi, and unmatched privacy. A true sanctuary for families seeking spacious luxury.', shortDesc: 'Largest duplex with two viewing balconies and private jacuzzi', category: 'Premium Duplex Family Suite', pricePerNight: 12500, heaterCharge: 600, capacity: 5, bedrooms: 2, bathrooms: 2, size: 950, amenities: ['wifi', 'fireplace', 'mountain view', 'balcony', 'coffee maker'], images: [], isActive: true, sortOrder: 2, isAvailable: true } as any,
-  { id: '3', slug: 'magpie-retreat', name: 'Magpie Retreat', description: 'Intimate Mountain View Suite — a sanctuary for couples and solo seekers, with a plush king-size bed and a private panoramic balcony.', shortDesc: 'Intimate Mountain View Suite — where serenity meets soul', category: 'Intimate Mountain View Suite', pricePerNight: 4500, heaterCharge: 600, capacity: 3, bedrooms: 1, bathrooms: 1, size: 270, amenities: ['wifi', 'fireplace', 'mountain view', 'balcony'], images: [], isActive: true, sortOrder: 3, isAvailable: true } as any,
-  { id: '4', slug: 'whistling-thrush', name: 'Whistling Thrush', description: 'Charming duplex with a deep-soak bath tub, structural attic and dual-balcony setup. A perfect blend of rustic charm and modern comfort.', shortDesc: 'Charming duplex with deep-soak bath tub and dual balconies', category: 'Premium Duplex Family Suite', pricePerNight: 6500, heaterCharge: 600, capacity: 5, bedrooms: 2, bathrooms: 1, size: 556, amenities: ['wifi', 'fireplace', 'mountain view', 'coffee maker'], images: [], isActive: true, sortOrder: 4, isAvailable: true } as any,
-  { id: '5', slug: 'flycatcher-nook', name: 'Flycatcher Nook', description: 'Intimate Mountain View Suite — your cozy Himalayan hideaway. Thoughtfully designed for couples and solo travelers.', shortDesc: 'Intimate Mountain View Suite — your cozy Himalayan hideaway', category: 'Intimate Mountain View Suite', pricePerNight: 7500, heaterCharge: 600, capacity: 2, bedrooms: 1, bathrooms: 1, size: 270, amenities: ['wifi', 'fireplace', 'mountain view', 'coffee maker'], images: [], isActive: true, sortOrder: 5, isAvailable: true } as any,
-  { id: '6', slug: 'bulbul-nest', name: 'Bulbul Nest', description: 'Intimate Mountain View Suite with workstation — where coziness meets the peaks. Perfect for remote professionals.', shortDesc: 'Intimate Mountain View Suite with workstation', category: 'Intimate Mountain View Suite', pricePerNight: 7500, heaterCharge: 600, capacity: 2, bedrooms: 1, bathrooms: 1, size: 270, amenities: ['wifi', 'fireplace', 'mountain view', 'coffee maker'], images: [], isActive: true, sortOrder: 6, isAvailable: true } as any,
-  { id: '7', slug: 'the-finch-nook', name: 'The Finch Nook', description: 'Cozy Alpine Studio — small space, boundless solitude. A minimalist escape for solo travelers and digital nomads.', shortDesc: 'Cozy Alpine Studio — small space, boundless solitude', category: 'Cozy Alpine Studio', pricePerNight: 5000, heaterCharge: 600, capacity: 1, bedrooms: 1, bathrooms: 1, size: 180, amenities: ['wifi', 'fireplace', 'mountain view'], images: [], isActive: true, sortOrder: 7, isAvailable: true } as any,
+  { id: '1', slug: 'monal-haven', pricingCategory: 'SIGNATURE', name: 'Monal Haven', description: 'Premium Duplex Family Suite with private jacuzzi, attic yoga balcony, and sweeping mountain views. Wake up to mist rolling over the Himalayas from your private balcony.', shortDesc: 'Premium Duplex Family Suite with private jacuzzi and mountain views', category: 'Premium Duplex Family Suite', pricePerNight: 12000, heaterCharge: 600, capacity: 4, bedrooms: 2, bathrooms: 2, size: 850, amenities: ['wifi', 'fireplace', 'mountain view', 'balcony', 'coffee maker'], images: [], isActive: true, sortOrder: 1, isAvailable: true } as any,
+  { id: '2', slug: 'koklass-cove', pricingCategory: 'SIGNATURE', name: 'Koklass Cove', description: 'Our largest duplex with two viewing balconies, private jacuzzi, and unmatched privacy. A true sanctuary for families seeking spacious luxury.', shortDesc: 'Largest duplex with two viewing balconies and private jacuzzi', category: 'Premium Duplex Family Suite', pricePerNight: 12500, heaterCharge: 600, capacity: 5, bedrooms: 2, bathrooms: 2, size: 950, amenities: ['wifi', 'fireplace', 'mountain view', 'balcony', 'coffee maker'], images: [], isActive: true, sortOrder: 2, isAvailable: true } as any,
+  { id: '3', slug: 'magpie-retreat', pricingCategory: 'BOUTIQUE', name: 'Magpie Retreat', description: 'Intimate Mountain View Suite — a sanctuary for couples and solo seekers, with a plush king-size bed and a private panoramic balcony.', shortDesc: 'Intimate Mountain View Suite — where serenity meets soul', category: 'Intimate Mountain View Suite', pricePerNight: 4500, heaterCharge: 600, capacity: 3, bedrooms: 1, bathrooms: 1, size: 270, amenities: ['wifi', 'fireplace', 'mountain view', 'balcony'], images: [], isActive: true, sortOrder: 3, isAvailable: true } as any,
+  { id: '4', slug: 'whistling-thrush', pricingCategory: 'PREMIUM', name: 'Whistling Thrush', description: 'Charming duplex with a deep-soak bath tub, structural attic and dual-balcony setup. A perfect blend of rustic charm and modern comfort.', shortDesc: 'Charming duplex with deep-soak bath tub and dual balconies', category: 'Premium Duplex Family Suite', pricePerNight: 6500, heaterCharge: 600, capacity: 5, bedrooms: 2, bathrooms: 1, size: 556, amenities: ['wifi', 'fireplace', 'mountain view', 'coffee maker'], images: [], isActive: true, sortOrder: 4, isAvailable: true } as any,
+  { id: '5', slug: 'flycatcher-nook', pricingCategory: 'BOUTIQUE', name: 'Flycatcher Nook', description: 'Intimate Mountain View Suite — your cozy Himalayan hideaway. Thoughtfully designed for couples and solo travelers.', shortDesc: 'Intimate Mountain View Suite — your cozy Himalayan hideaway', category: 'Intimate Mountain View Suite', pricePerNight: 7500, heaterCharge: 600, capacity: 2, bedrooms: 1, bathrooms: 1, size: 270, amenities: ['wifi', 'fireplace', 'mountain view', 'coffee maker'], images: [], isActive: true, sortOrder: 5, isAvailable: true } as any,
+  { id: '6', slug: 'bulbul-nest', pricingCategory: 'BOUTIQUE', name: 'Bulbul Nest', description: 'Intimate Mountain View Suite with workstation — where coziness meets the peaks. Perfect for remote professionals.', shortDesc: 'Intimate Mountain View Suite with workstation', category: 'Intimate Mountain View Suite', pricePerNight: 7500, heaterCharge: 600, capacity: 2, bedrooms: 1, bathrooms: 1, size: 270, amenities: ['wifi', 'fireplace', 'mountain view', 'coffee maker'], images: [], isActive: true, sortOrder: 6, isAvailable: true } as any,
+  { id: '7', slug: 'the-finch-nook', pricingCategory: 'STUDIO', name: 'The Finch Nook', description: 'Cozy Alpine Studio — small space, boundless solitude. A minimalist escape for solo travelers and digital nomads.', shortDesc: 'Cozy Alpine Studio — small space, boundless solitude', category: 'Cozy Alpine Studio', pricePerNight: 5000, heaterCharge: 600, capacity: 1, bedrooms: 1, bathrooms: 1, size: 180, amenities: ['wifi', 'fireplace', 'mountain view'], images: [], isActive: true, sortOrder: 7, isAvailable: true } as any,
 ];
+
+/**
+ * The public grouping from spec §12. Ordered as the spec lists them; the
+ * Studio is a seventh cottage the spec predates.
+ */
+const CATEGORY_SECTIONS = [
+  {
+    key: 'BOUTIQUE',
+    eyebrow: 'Boutique',
+    title: 'Boutique Cottages',
+    blurb:
+      'Intimate single-level sanctuaries for couples, solo adventurers and remote professionals — premium warmth, a private balcony and a front-row seat to the Jibhi valley. Two adults; a child under 12 may share the existing bed.',
+  },
+  {
+    key: 'PREMIUM',
+    eyebrow: 'Premium',
+    title: 'Premium Cottage',
+    blurb:
+      'A multi-level chalet with a signature wooden attic, dual balconies and a deep-soak bath tub. Sleeps up to four adults, with an extra mattress available.',
+  },
+  {
+    key: 'SIGNATURE',
+    eyebrow: 'Signature',
+    title: 'Signature Cottages',
+    blurb:
+      'Our most expansive duplexes, each with a private jacuzzi, an attic-linked yoga and meditation balcony and a second sitting balcony. Up to four adults, with an extra mattress available.',
+  },
+  {
+    key: 'STUDIO',
+    eyebrow: 'Studio',
+    title: 'Alpine Studio',
+    blurb:
+      'A minimalist escape built for the solo traveller, remote writer or anyone who wants warmth and utility in a smaller space.',
+  },
+] as const;
 
 export default function CottagesPage() {
   const [cottages, setCottages] = useState<Cottage[]>([]);
@@ -48,6 +83,13 @@ export default function CottagesPage() {
   const [adults, setAdults] = useState(2);
   const [childAges, setChildAges] = useState<number[]>([]);
   const today = getToday();
+
+  /**
+   * A cottage's pricing tier. Comes from the engine, with the record's own
+   * column as a fallback while the public pricing request is still in flight.
+   */
+  const tierOf = (cottage: any): string | null =>
+    (publicMap[cottage.id] ?? publicMap[cottage.slug])?.category ?? cottage.pricingCategory ?? null;
 
   const cardHref = (cottage: any, slug: string) => {
     const r = searchMap[cottage.id];
@@ -300,18 +342,23 @@ export default function CottagesPage() {
                 </div>
               )}
 
-              {/* Premium Duplex Family Suites */}
-              {cottages.some((c: any) => c.category === 'Premium Duplex Family Suite') && (
-                <div className="mb-16">
-                  <ScrollReveal>
-                    <div className="mb-8">
-                      <p className="text-gold-500 text-sm tracking-[0.2em] uppercase mb-2 font-sans">Cottages 1 – 3</p>
-                      <h2 className="font-serif text-2xl md:text-3xl text-foreground mb-3">Premium Duplex Family Suites</h2>
-                      <p className="text-muted-foreground text-sm max-w-2xl">Perfect for families, groups of four, or couples seeking expansive structural luxury. These multi-level chalets feature signature wooden attic layouts, dual balconies, and private soaking experiences.</p>
-                    </div>
-                  </ScrollReveal>
+              {/* Grouped by the engine tiers the spec publishes (§12):
+                  Boutique, Premium, Signature — plus the Studio, a seventh
+                  cottage the spec predates. */}
+              {CATEGORY_SECTIONS.map(({ key, eyebrow, title, blurb }) => {
+                const group = cottages.filter((c: any) => tierOf(c) === key);
+                if (group.length === 0) return null;
+                return (
+                  <div key={key} className="mb-16">
+                    <ScrollReveal>
+                      <div className="mb-8">
+                        <p className="text-gold-500 text-sm tracking-[0.2em] uppercase mb-2 font-sans">{eyebrow}</p>
+                        <h2 className="font-serif text-2xl md:text-3xl text-foreground mb-3">{title}</h2>
+                        <p className="text-muted-foreground text-sm max-w-2xl">{blurb}</p>
+                      </div>
+                    </ScrollReveal>
                   <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {cottages.filter((c: any) => c.category === 'Premium Duplex Family Suite').map((cottage: any, i) => {
+                    {group.map((cottage: any, i: number) => {
                       const slug = cottage.slug || cottage.name.toLowerCase().replace(/\s+/g, '-');
                       const available = availabilityChecked ? cottage.isAvailable : true;
                       const result = searchMap[cottage.id];
@@ -384,182 +431,10 @@ export default function CottagesPage() {
                       </ScrollReveal>
                     )})}
                   </div>
-                </div>
-              )}
-
-              {/* Intimate Mountain View Suites */}
-              {cottages.some((c: any) => c.category === 'Intimate Mountain View Suite') && (
-                <div className="mb-16">
-                  <ScrollReveal>
-                    <div className="mb-8">
-                      <p className="text-gold-500 text-sm tracking-[0.2em] uppercase mb-2 font-sans">Cottages 4 – 6</p>
-                      <h2 className="font-serif text-2xl md:text-3xl text-foreground mb-3">Intimate Mountain View Suites</h2>
-                      <p className="text-muted-foreground text-sm max-w-2xl">Tailor-made for couples, solo adventurers, and remote professionals. These elegant 270 sq. ft. single-level sanctuaries offer premium warmth, dedicated workspace/dining seating layouts, and a front-row seat to the Jibhi valley vistas.</p>
-                    </div>
-                  </ScrollReveal>
-                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {cottages.filter((c: any) => c.category === 'Intimate Mountain View Suite').map((cottage: any, i) => {
-                      const slug = cottage.slug || cottage.name.toLowerCase().replace(/\s+/g, '-');
-                      const available = availabilityChecked ? cottage.isAvailable : true;
-                      const result = searchMap[cottage.id];
-                      const pub = publicMap[cottage.id] ?? publicMap[slug];
-                      return (
-                      <ScrollReveal key={cottage.id} delay={i * 0.1}>
-                        <Link href={cardHref(cottage, slug)} className="group block">
-                          <div className={`vintage-card overflow-hidden h-full ${availabilityChecked && !available ? 'opacity-50' : ''}`}>
-                            <div className="aspect-[4/3] overflow-hidden bg-gold-50 dark:bg-[#231B12]/30 relative">
-                              {availabilityChecked && !available && (
-                                <div className="absolute inset-0 bg-black/40 z-10 flex items-center justify-center">
-                                  <span className="bg-vedara-900/80 text-alabaster px-4 py-2 rounded-full text-sm font-medium">Not available</span>
-                                </div>
-                              )}
-                              <img
-                                src={`https://images.unsplash.com/photo-${['1476514525535-07fb3b4ae5f1', '1519681393784-d120267933ba', '1469476568026-46a7f7b2f9c2'][i % 3]}?w=600&q=80`}
-                                alt={`${cottage.name} - ${cottage.category || 'mountain view suite'} at The Vedara`}
-                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                                loading="lazy"
-                              />
-                            </div>
-                            <div className="p-6">
-                              <div className="flex justify-between items-start mb-1">
-                                <h3 className="font-serif text-xl text-foreground group-hover:text-gold-600 dark:group-hover:text-gold-400 transition-colors">{cottage.name}</h3>
-                                <span className="text-gold-600 dark:text-gold-400 font-semibold whitespace-nowrap"><span className="text-xs font-normal text-muted-foreground">From </span>{formatPrice(fromRates[cottage.id] ?? fromRates[cottage.slug] ?? cottage.pricePerNight)}<span className="text-gold-400 font-normal text-xs">/night*</span></span>
-                              </div>
-                              {pub?.publicDescriptor && (
-                                <p className="text-[11px] uppercase tracking-wider text-gold-600 dark:text-gold-400 mb-2">{pub.publicDescriptor}</p>
-                              )}
-                              <p className="text-muted-foreground text-sm mb-4 line-clamp-2">{cottage.shortDesc || cottage.description}</p>
-                              <div className="flex gap-4 text-xs text-muted-foreground mb-4">
-                                <span className="flex items-center gap-1"><Users className="w-3 h-3" /> {pub ? `Up to ${pub.maxAdults} adults` : `${cottage.capacity} guests`}</span>
-                                <span className="flex items-center gap-1"><Bed className="w-3 h-3" /> {cottage.bedrooms} BR</span>
-                                <span className="flex items-center gap-1"><Bath className="w-3 h-3" /> {cottage.bathrooms} bath</span>
-                                {cottage.size && <span className="flex items-center gap-1"><Maximize className="w-3 h-3" /> {cottage.size} sqft</span>}
-                              </div>
-                              {availabilityChecked && (
-                                <div className="mb-3">
-                                  {available ? (
-                                    <span className="inline-flex items-center gap-1 text-xs text-green-600 font-medium"><CheckCircle className="w-3 h-3" /> Available</span>
-                                  ) : (
-                                    <span className="inline-flex items-center gap-1 text-xs text-red-500 font-medium"><XCircle className="w-3 h-3" /> Booked for these dates</span>
-                                  )}
-                                  {available && result && (
-                                    <div className="mt-2 space-y-1 text-xs">
-                                      <div className="flex justify-between">
-                                        <span className="text-muted-foreground">Room Only</span>
-                                        <span className="text-foreground font-medium">{formatPrice(result.plans.ROOM_ONLY.perNight)}/night</span>
-                                      </div>
-                                      <div className="flex justify-between">
-                                        <span className="text-muted-foreground">Breakfast Included</span>
-                                        <span className="text-foreground font-medium">{formatPrice(result.plans.BREAKFAST_INCLUDED.perNight)}/night</span>
-                                      </div>
-                                      {result.longStayApplied && (
-                                        <p className="text-green-600 font-medium">{result.longStayRuleName} applied</p>
-                                      )}
-                                      {result.lastMinuteOffer && (
-                                        <p className="text-amber-600 font-medium">{result.lastMinuteOffer.name}</p>
-                                      )}
-                                    </div>
-                                  )}
-                                </div>
-                              )}
-                              <span className="text-gold-600 dark:text-gold-400 text-sm font-medium inline-flex items-center gap-1 group-hover:gap-2 transition-all">
-                                {availabilityChecked && result?.available ? 'Book this stay' : 'View Details'} <ArrowRight className="w-3 h-3" />
-                              </span>
-                            </div>
-                          </div>
-                        </Link>
-                      </ScrollReveal>
-                    )})}
                   </div>
-                </div>
-              )}
+                );
+              })}
 
-              {/* Cozy Alpine Studio */}
-              {cottages.some((c: any) => c.category === 'Cozy Alpine Studio') && (
-                <div className="mb-16">
-                  <ScrollReveal>
-                    <div className="mb-8">
-                      <p className="text-gold-500 text-sm tracking-[0.2em] uppercase mb-2 font-sans">Cottage 6</p>
-                      <h2 className="font-serif text-2xl md:text-3xl text-foreground mb-3">Cozy Alpine Studio</h2>
-                      <p className="text-muted-foreground text-sm max-w-2xl">Thoughtfully tailored minimalist escapes optimized for solo travelers, remote writers, digital nomads, or simple comfort. These rooms pack rich warmth and structural utility into a smartly integrated design.</p>
-                    </div>
-                  </ScrollReveal>
-                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {cottages.filter((c: any) => c.category === 'Cozy Alpine Studio').map((cottage: any, i) => {
-                      const slug = cottage.slug || cottage.name.toLowerCase().replace(/\s+/g, '-');
-                      const available = availabilityChecked ? cottage.isAvailable : true;
-                      const result = searchMap[cottage.id];
-                      const pub = publicMap[cottage.id] ?? publicMap[slug];
-                      return (
-                      <ScrollReveal key={cottage.id} delay={i * 0.1}>
-                        <Link href={cardHref(cottage, slug)} className="group block">
-                          <div className={`vintage-card overflow-hidden h-full ${availabilityChecked && !available ? 'opacity-50' : ''}`}>
-                            <div className="aspect-[4/3] overflow-hidden bg-gold-50 dark:bg-[#231B12]/30 relative">
-                              {availabilityChecked && !available && (
-                                <div className="absolute inset-0 bg-black/40 z-10 flex items-center justify-center">
-                                  <span className="bg-vedara-900/80 text-alabaster px-4 py-2 rounded-full text-sm font-medium">Not available</span>
-                                </div>
-                              )}
-                              <img
-                                src={`https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&q=80`}
-                                alt={`${cottage.name} - cozy alpine studio at The Vedara`}
-                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                                loading="lazy"
-                              />
-                            </div>
-                            <div className="p-6">
-                              <div className="flex justify-between items-start mb-1">
-                                <h3 className="font-serif text-xl text-foreground group-hover:text-gold-600 dark:group-hover:text-gold-400 transition-colors">{cottage.name}</h3>
-                                <span className="text-gold-600 dark:text-gold-400 font-semibold whitespace-nowrap"><span className="text-xs font-normal text-muted-foreground">From </span>{formatPrice(fromRates[cottage.id] ?? fromRates[cottage.slug] ?? cottage.pricePerNight)}<span className="text-gold-400 font-normal text-xs">/night*</span></span>
-                              </div>
-                              {pub?.publicDescriptor && (
-                                <p className="text-[11px] uppercase tracking-wider text-gold-600 dark:text-gold-400 mb-2">{pub.publicDescriptor}</p>
-                              )}
-                              <p className="text-muted-foreground text-sm mb-4 line-clamp-2">{cottage.shortDesc || cottage.description}</p>
-                              <div className="flex gap-4 text-xs text-muted-foreground mb-4">
-                                <span className="flex items-center gap-1"><Users className="w-3 h-3" /> {pub ? `Up to ${pub.maxAdults} adults` : `${cottage.capacity} guests`}</span>
-                                <span className="flex items-center gap-1"><Bed className="w-3 h-3" /> {cottage.bedrooms} BR</span>
-                                <span className="flex items-center gap-1"><Bath className="w-3 h-3" /> {cottage.bathrooms} bath</span>
-                                {cottage.size && <span className="flex items-center gap-1"><Maximize className="w-3 h-3" /> {cottage.size} sqft</span>}
-                              </div>
-                              {availabilityChecked && (
-                                <div className="mb-3">
-                                  {available ? (
-                                    <span className="inline-flex items-center gap-1 text-xs text-green-600 font-medium"><CheckCircle className="w-3 h-3" /> Available</span>
-                                  ) : (
-                                    <span className="inline-flex items-center gap-1 text-xs text-red-500 font-medium"><XCircle className="w-3 h-3" /> Booked for these dates</span>
-                                  )}
-                                  {available && result && (
-                                    <div className="mt-2 space-y-1 text-xs">
-                                      <div className="flex justify-between">
-                                        <span className="text-muted-foreground">Room Only</span>
-                                        <span className="text-foreground font-medium">{formatPrice(result.plans.ROOM_ONLY.perNight)}/night</span>
-                                      </div>
-                                      <div className="flex justify-between">
-                                        <span className="text-muted-foreground">Breakfast Included</span>
-                                        <span className="text-foreground font-medium">{formatPrice(result.plans.BREAKFAST_INCLUDED.perNight)}/night</span>
-                                      </div>
-                                      {result.longStayApplied && (
-                                        <p className="text-green-600 font-medium">{result.longStayRuleName} applied</p>
-                                      )}
-                                      {result.lastMinuteOffer && (
-                                        <p className="text-amber-600 font-medium">{result.lastMinuteOffer.name}</p>
-                                      )}
-                                    </div>
-                                  )}
-                                </div>
-                              )}
-                              <span className="text-gold-600 dark:text-gold-400 text-sm font-medium inline-flex items-center gap-1 group-hover:gap-2 transition-all">
-                                {availabilityChecked && result?.available ? 'Book this stay' : 'View Details'} <ArrowRight className="w-3 h-3" />
-                              </span>
-                            </div>
-                          </div>
-                        </Link>
-                      </ScrollReveal>
-                    )})}
-                  </div>
-                </div>
-              )}
               {availabilityChecked && hiddenCount > 0 && (
                 <p className="text-xs text-muted-foreground mt-2">
                   {hiddenCount} {hiddenCount === 1 ? 'cottage is' : 'cottages are'} hidden because {hiddenCount === 1 ? 'it cannot' : 'they cannot'} accommodate your party.
