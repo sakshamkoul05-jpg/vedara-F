@@ -14,6 +14,7 @@ import { Cottage } from '@/types';
 import { formatPrice, getToday, parseDate, isPastDate } from '@/lib/utils';
 import { fetchFromRates, fetchPublicPricing, indexPublicPricing, type PublicCottagePricing } from '@/lib/from-rates';
 import { RATE_FOOTNOTE } from '@/lib/pricing/customer-copy';
+import { CompareToggle, CompareTray } from '@/components/cottages/CompareTray';
 
 const FALLBACK_COTTAGES: Cottage[] = [
   { id: '1', slug: 'monal-haven', pricingCategory: 'SIGNATURE', name: 'Monal Haven', description: 'Premium Duplex Family Suite with private jacuzzi, attic yoga balcony, and sweeping mountain views. Wake up to mist rolling over the Himalayas from your private balcony.', shortDesc: 'Premium Duplex Family Suite with private jacuzzi and mountain views', category: 'Premium Duplex Family Suite', pricePerNight: 12000, heaterCharge: 600, capacity: 4, bedrooms: 2, bathrooms: 2, size: 850, amenities: ['wifi', 'fireplace', 'mountain view', 'balcony', 'coffee maker'], images: [], isActive: true, sortOrder: 1, isAvailable: true } as any,
@@ -368,6 +369,7 @@ export default function CottagesPage() {
                         <Link href={cardHref(cottage, slug)} className="group block">
                           <div className={`vintage-card overflow-hidden h-full ${availabilityChecked && !available ? 'opacity-50' : ''}`}>
                             <div className="aspect-[4/3] overflow-hidden bg-gold-50 dark:bg-[#231B12]/30 relative">
+                              <CompareToggle cottageId={cottage.id} name={cottage.name} />
                               {availabilityChecked && !available && (
                                 <div className="absolute inset-0 bg-black/40 z-10 flex items-center justify-center">
                                   <span className="bg-vedara-900/80 text-alabaster px-4 py-2 rounded-full text-sm font-medium">Not available</span>
@@ -454,6 +456,8 @@ export default function CottagesPage() {
           )}
         </div>
       </section>
+
+      <CompareTray cottages={cottages} publicMap={publicMap} fromRates={fromRates} />
     </>
   );
 }
