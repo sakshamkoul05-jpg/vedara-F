@@ -74,7 +74,7 @@ const jsonLd = {
   name: 'The Vedara - A Himalayan Boutique Retreat',
   description: 'Himalayan luxury retreat in Jibhi offering handcrafted cottages, The Perch, and serene nature experiences in Himachal Pradesh.',
   url: siteUrl,
-  telephone: '+91-9118882242',
+  telephone: '+91-8091921222',
   email: 'vedararetreat@gmail.com',
   address: {
     '@type': 'PostalAddress',

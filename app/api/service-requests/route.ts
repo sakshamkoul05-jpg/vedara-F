@@ -42,7 +42,7 @@ export async function POST(request: Request) {
   const limit = rateLimit(clientKey(request, 'service-request'), MAX_REQUESTS, WINDOW_MS);
   if (!limit.allowed) {
     return NextResponse.json(
-      { error: 'That is a lot of requests at once. Please call us on +91-91188-82242 so we can help properly.' },
+      { error: 'That is a lot of requests at once. Please call us on +91-80919-21222 so we can help properly.' },
       { status: 429, headers: { 'Retry-After': String(limit.retryAfter) } }
     );
   }
@@ -68,7 +68,7 @@ export async function POST(request: Request) {
     supabase = getServiceClient();
   } catch {
     return NextResponse.json(
-      { error: 'Requests are temporarily unavailable. Please call us on +91-91188-82242.' },
+      { error: 'Requests are temporarily unavailable. Please call us on +91-80919-21222.' },
       { status: 503 }
     );
   }
@@ -98,7 +98,7 @@ export async function POST(request: Request) {
 
   if ((count ?? 0) >= MAX_OPEN_PER_BOOKING) {
     return NextResponse.json(
-      { error: 'You already have several requests open. Please call us on +91-91188-82242 and we will sort them out together.' },
+      { error: 'You already have several requests open. Please call us on +91-80919-21222 and we will sort them out together.' },
       { status: 409 }
     );
   }

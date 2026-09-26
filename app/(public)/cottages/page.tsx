@@ -16,6 +16,7 @@ import { fetchFromRates, fetchPublicPricing, indexPublicPricing, type PublicCott
 import { RATE_FOOTNOTE } from '@/lib/pricing/customer-copy';
 import { CompareToggle, CompareTray } from '@/components/cottages/CompareTray';
 import { useLanguage } from '@/lib/i18n/provider';
+import { coverPhoto, onPhotoError } from '@/lib/cottage-photos';
 
 const FALLBACK_COTTAGES: Cottage[] = [
   { id: '1', slug: 'monal-haven', pricingCategory: 'SIGNATURE', name: 'Monal Haven', description: 'Premium Duplex Family Suite with private jacuzzi, attic yoga balcony, and sweeping mountain views. Wake up to mist rolling over the Himalayas from your private balcony.', shortDesc: 'Premium Duplex Family Suite with private jacuzzi and mountain views', category: 'Premium Duplex Family Suite', pricePerNight: 12000, heaterCharge: 600, capacity: 4, bedrooms: 2, bathrooms: 2, size: 850, amenities: ['wifi', 'fireplace', 'mountain view', 'balcony', 'coffee maker'], images: [], isActive: true, sortOrder: 1, isAvailable: true } as any,
@@ -390,8 +391,9 @@ export default function CottagesPage() {
                                 </div>
                               )}
                               <img
-                                src={`https://images.unsplash.com/photo-${['1504384308090-c894fdcc538d', '1554118811-1e0d58224f24', '1506905925346-21bda4d32df4'][i % 3]}?w=600&q=80`}
-                                alt={`${cottage.name} - ${cottage.category || 'premium duplex suite'} at The Vedara`}
+                                src={coverPhoto(cottage)}
+                                onError={onPhotoError}
+                                alt={`${cottage.name} at The Vedara, Jibhi`}
                                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                                 loading="lazy"
                               />
@@ -463,7 +465,7 @@ export default function CottagesPage() {
                 <div className="text-center py-20">
                   <Home className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
                   <p className="text-foreground font-medium text-lg">No cottages available</p>
-                  <p className="text-muted-foreground text-sm mt-1">Please try different dates or contact us directly at +91-91188-82242.</p>
+                  <p className="text-muted-foreground text-sm mt-1">Please try different dates or contact us directly at +91-80919-21222.</p>
                 </div>
               )}
             </>

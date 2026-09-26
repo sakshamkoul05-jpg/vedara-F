@@ -200,7 +200,7 @@ export default function MyBookingsPage() {
               <ShieldCheck className="w-3.5 h-3.5 mt-0.5 shrink-0 text-primary" />
               Both details are needed so that nobody else can pull up your reservation.
               Lost your reference? Call us on{' '}
-              <a href="tel:+919118882242" className="text-primary hover:underline whitespace-nowrap">+91-91188-82242</a>.
+              <a href="tel:+918091921222" className="text-primary hover:underline whitespace-nowrap">+91-80919-21222</a>.
             </p>
           </div>
         </ScrollReveal>

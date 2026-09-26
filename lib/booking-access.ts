@@ -119,10 +119,10 @@ export function serviceRequestBlockReason(booking: any): string | null {
   if (!SERVICEABLE_STATUSES.has(booking.status)) {
     return booking.status === 'CANCELLED'
       ? 'This booking has been cancelled, so requests are closed. Please call us if you need anything.'
-      : 'Requests are not available for this booking. Please call us on +91-91188-82242.';
+      : 'Requests are not available for this booking. Please call us on +91-80919-21222.';
   }
   if (booking.checkOut && Date.parse(booking.checkOut) + GRACE_MS < Date.now()) {
-    return 'This stay has ended. For anything left behind or still outstanding, please call us on +91-91188-82242.';
+    return 'This stay has ended. For anything left behind or still outstanding, please call us on +91-80919-21222.';
   }
   return null;
 }

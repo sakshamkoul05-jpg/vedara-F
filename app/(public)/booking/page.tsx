@@ -477,7 +477,7 @@ export default function BookingPage() {
             markVisitConverted();
             setStep(4);
           } catch {
-            setFormErrors({ general: 'Payment verification failed. Please contact support at +91-91188-82242.' });
+            setFormErrors({ general: 'Payment verification failed. Please contact support at +91-80919-21222.' });
           }
         },
         prefill: { name: guestName, email: guestEmail, contact: guestPhone },
@@ -748,7 +748,7 @@ export default function BookingPage() {
 
                     {searchResults && searchResults.length === 0 && (
                       <div className="vintage-card p-6 text-sm text-muted-foreground">
-                        No cottage can accommodate {partyLabel} for these dates. Try fewer guests, or two cottages — we are happy to help at +91-91188-82242.
+                        No cottage can accommodate {partyLabel} for these dates. Try fewer guests, or two cottages — we are happy to help at +91-80919-21222.
                       </div>
                     )}
 
@@ -1229,8 +1229,8 @@ export default function BookingPage() {
                             your details and will be in touch on{' '}
                             <span className="text-foreground">{guestEmail || 'your email'}</span>.
                             Any questions in the meantime, call{' '}
-                            <a href="tel:+919118882242" className="text-primary hover:underline whitespace-nowrap">
-                              +91-91188-82242
+                            <a href="tel:+918091921222" className="text-primary hover:underline whitespace-nowrap">
+                              +91-80919-21222
                             </a>.
                           </p>
                         </div>

@@ -12,15 +12,15 @@ const values = [
   { icon: Coffee, title: 'Café + Stay Experience', desc: 'Anchored by a curated in-house café that creates a social yet serene atmosphere where conversations, coffee, and calm coexist.' },
 ];
 
-const highlights = [
+/** What the property *is* -- the four facts a guest checks before anything else. */
+const propertyFacts = [
   { icon: Home, label: '6 Cottages + 1 Alpine Studio', desc: 'Intimate and exclusive mountain retreat' },
   { icon: MapPin, label: 'Ghiyagi, Jibhi', desc: 'Untouched Himalayan beauty, away from crowds' },
   { icon: Leaf, label: 'Launch 2026', desc: 'A haven of wisdom, wilderness, and quiet luxury' },
   { icon: Users, label: 'Target Guests', desc: 'Families, solo travellers, remote workers, and groups seeking stillness' },
-  { icon: Wifi, label: 'High-Speed WiFi', desc: 'Available throughout the property' },
-  { icon: Mountain, label: 'What Makes Us Unique', desc: 'Boutique by Design • Café + Stay Experience • Untouched Location' },
 ];
 
+/** What is in it. WiFi lives here rather than as a banner of its own. */
 const amenities = [
   { icon: Coffee, label: 'In-house Café', desc: 'Multi-cuisine + Himachali delicacies' },
   { icon: Flame, label: 'Bonfire & Outdoor Seating', desc: 'Evening gatherings under the stars' },
@@ -28,6 +28,7 @@ const amenities = [
   { icon: TreePine, label: 'Garden & Relaxation Spaces', desc: 'Lush green spaces to unwind' },
   { icon: Car, label: 'Parking', desc: 'Complimentary on-site parking' },
   { icon: UtensilsCrossed, label: 'Activities', desc: 'Nature walks, waterfall visits, Jalori Pass, café evenings' },
+  { icon: Wifi, label: 'High-Speed WiFi', desc: 'Available throughout the property' },
 ];
 
 const attractions = [
@@ -83,7 +84,11 @@ export default function AboutPage() {
             <div className="max-w-3xl mx-auto text-center">
               <Quote className="w-10 h-10 text-primary mx-auto mb-6" />
               <p className="font-serif text-2xl md:text-3xl lg:text-4xl text-foreground leading-relaxed italic">
-                "Where the peaks meet peace of mind. Welcome to slow living in the heart of the Himalayas."
+                &ldquo;The valley keeps its own time. Deodar shadows by morning, woodsmoke by dusk &mdash;
+                stay long enough, and you will keep it too.&rdquo;
+              </p>
+              <p className="mt-6 text-sm tracking-[0.2em] uppercase text-muted-foreground font-sans">
+                Ghiyagi, Jibhi &middot; 1,600 m
               </p>
               <div className="mt-8 w-16 h-px bg-primary mx-auto" />
             </div>
@@ -204,27 +209,62 @@ export default function AboutPage() {
         </section>
       </div>
 
-      {/* Highlights */}
+      {/* The Property -- what it is, and what is in it */}
       <section className="section-padding bg-background">
         <div className="vintage-container">
           <ScrollReveal>
             <div className="text-center max-w-3xl mx-auto mb-12">
               <p className="text-primary text-sm tracking-[0.2em] uppercase mb-4 font-sans">About the Property</p>
               <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-foreground mb-6">The Vedara – Himalayan Boutique Retreat</h2>
-              <p className="text-muted-foreground text-base md:text-lg max-w-2xl mx-auto">6 cottages + 1 alpine studio | 18–22 guests | Launch 2026 | A nature retreat Himachal</p>
+              <p className="text-muted-foreground text-base md:text-lg max-w-2xl mx-auto">
+                6 cottages + 1 alpine studio | 18–22 guests | Launch 2026 | A nature retreat in Himachal
+              </p>
             </div>
           </ScrollReveal>
+
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {highlights.map((h, i) => (
-              <ScrollReveal key={h.label} delay={i * 0.1}>
+            {propertyFacts.map((fact, i) => (
+              <ScrollReveal key={fact.label} delay={i * 0.1}>
                 <article className="glass-card-light rounded-2xl p-6 text-center transition-smooth h-full flex flex-col justify-center">
-                  <h.icon className="w-8 h-8 text-primary mx-auto mb-3" />
-                  <h3 className="font-serif text-lg text-foreground mb-1">{h.label}</h3>
-                  <p className="text-muted-foreground text-sm">{h.desc}</p>
+                  <fact.icon className="w-8 h-8 text-primary mx-auto mb-3" />
+                  <h3 className="font-serif text-lg text-foreground mb-1">{fact.label}</h3>
+                  <p className="text-muted-foreground text-sm">{fact.desc}</p>
                 </article>
               </ScrollReveal>
             ))}
           </div>
+
+          {/* Facilities follow straight on, rather than repeating the property
+              introduction a full screen further down. */}
+          <ScrollReveal>
+            <div className="text-center max-w-3xl mx-auto mt-20 mb-12">
+              <p className="text-primary text-sm tracking-[0.2em] uppercase mb-4 font-sans">Amenities</p>
+              <h2 className="font-serif text-3xl md:text-4xl text-foreground mb-4">Facilities</h2>
+              <p className="text-muted-foreground text-base md:text-lg">Every comfort thoughtfully curated for your mountain stay</p>
+            </div>
+          </ScrollReveal>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {amenities.map((a, i) => (
+              <ScrollReveal key={a.label} delay={i * 0.08}>
+                <article className="glass-card-light rounded-2xl p-5 flex items-start gap-4 transition-smooth h-full">
+                  <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+                    <a.icon className="w-5 h-5 text-primary" />
+                  </div>
+                  <div>
+                    <h3 className="font-medium text-foreground text-sm">{a.label}</h3>
+                    <p className="text-muted-foreground text-xs mt-0.5">{a.desc}</p>
+                  </div>
+                </article>
+              </ScrollReveal>
+            ))}
+          </div>
+
+          <ScrollReveal delay={0.2}>
+            <p className="text-center text-sm text-muted-foreground mt-10">
+              Boutique by design · Café and stay in one · A location most people drive straight past
+            </p>
+          </ScrollReveal>
         </div>
       </section>
 
@@ -254,40 +294,6 @@ export default function AboutPage() {
               </ScrollReveal>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* Amenities */}
-      <section className="section-padding bg-background">
-        <div className="vintage-container">
-          <ScrollReveal>
-            <div className="text-center max-w-3xl mx-auto mb-16">
-              <p className="text-primary text-sm tracking-[0.2em] uppercase mb-4 font-sans">Amenities</p>
-              <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-foreground mb-6">Facilities</h2>
-              <p className="text-muted-foreground text-base md:text-lg">Every comfort thoughtfully curated for your mountain stay</p>
-            </div>
-          </ScrollReveal>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {amenities.map((a, i) => (
-              <ScrollReveal key={a.label} delay={i * 0.08}>
-                <article className="glass-card-light rounded-2xl p-5 flex items-start gap-4 transition-smooth h-full">
-                  <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
-                    <a.icon className="w-5 h-5 text-primary" />
-                  </div>
-                  <div>
-                    <h3 className="font-medium text-foreground text-sm">{a.label}</h3>
-                    <p className="text-muted-foreground text-xs mt-0.5">{a.desc}</p>
-                  </div>
-                </article>
-              </ScrollReveal>
-            ))}
-          </div>
-          <ScrollReveal delay={0.2}>
-            <div className="mt-8 glass-card-light rounded-2xl p-5 inline-flex items-center gap-3 mx-auto transition-smooth">
-              <Wifi className="w-5 h-5 text-primary" />
-              <span className="text-sm text-foreground"><strong>High-speed WiFi</strong> available throughout the property</span>
-            </div>
-          </ScrollReveal>
         </div>
       </section>
 

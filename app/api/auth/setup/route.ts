@@ -70,7 +70,7 @@ export async function POST(req: NextRequest) {
               ? 'CAFE_STAFF'
               : 'RECEPTIONIST',
             isActive: true,
-            phone: '+91-9118882242',
+            phone: '+91-8091921222',
           });
 
         if (error) {

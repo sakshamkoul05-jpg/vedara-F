@@ -19,6 +19,9 @@ const navLinks = [
   { href: '/cafe', key: 'nav.cafe' },
   { href: '/gallery', key: 'nav.gallery' },
   { href: '/contact', key: 'nav.contact' },
+  // The portal is where a guest manages a booking and raises a housekeeping
+  // request. It existed with nothing linking to it.
+  { href: '/my-bookings', key: 'nav.myBookings' },
 ];
 
 export function Header() {
@@ -161,7 +164,15 @@ export function Header() {
               {themeIcon}
             </button>
 
-            <LanguageSwitcher />
+            <LanguageSwitcher
+              iconOnly
+              className={cn(
+                'px-2.5 py-2.5 rounded-lg transition-all duration-500 min-h-[44px] inline-flex items-center gap-1 justify-center',
+                isTransparent
+                  ? 'text-white/60 hover:text-white'
+                  : 'text-muted-foreground hover:text-primary'
+              )}
+            />
 
             <Link href="/booking" className="cta-primary cta-sm">
               {t('nav.book')}
@@ -190,6 +201,15 @@ export function Header() {
             >
               {themeIcon}
             </button>
+            <LanguageSwitcher
+              iconOnly
+              className={cn(
+                'p-1.5 rounded-lg transition-all duration-500 inline-flex items-center gap-0.5',
+                isTransparent
+                  ? 'text-white/60 hover:text-white'
+                  : 'text-vedara-900/40 hover:text-vedara-900'
+              )}
+            />
             <button
               onClick={() => setIsMobileOpen(!isMobileOpen)}
               className={cn('p-3 min-w-[44px] min-h-[44px] flex items-center justify-center', isTransparent ? 'text-white' : 'text-vedara-900')}
@@ -257,7 +277,7 @@ export function Header() {
                   <a href="mailto:vedararetreat@gmail.com" className="text-muted-foreground hover:text-primary transition-colors duration-500" aria-label="Email">
                     <Mail className="w-5 h-5" />
                   </a>
-                  <a href="tel:+919118882242" className="text-muted-foreground hover:text-primary transition-colors duration-500" aria-label="Phone">
+                  <a href="tel:+918091921222" className="text-muted-foreground hover:text-primary transition-colors duration-500" aria-label="Phone">
                     <Phone className="w-5 h-5" />
                   </a>
                   <a href="https://facebook.com/vedararetreat" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors duration-500" aria-label="Facebook">

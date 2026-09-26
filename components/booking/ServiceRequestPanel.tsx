@@ -254,8 +254,8 @@ export function ServiceRequestPanel({
               <p className="text-xs text-muted-foreground">
                 Something urgent — a leak, no heating on a cold night, anything to do with safety — is
                 always faster by phone:{' '}
-                <a href="tel:+919118882242" className="text-primary hover:underline whitespace-nowrap">
-                  +91-91188-82242
+                <a href="tel:+918091921222" className="text-primary hover:underline whitespace-nowrap">
+                  +91-80919-21222
                 </a>.
               </p>
             </div>

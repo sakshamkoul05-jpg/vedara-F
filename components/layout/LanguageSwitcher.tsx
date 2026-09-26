@@ -14,7 +14,15 @@ import { useLanguage } from '@/lib/i18n/provider';
  * changing it does not mean first working out what it currently is.
  */
 
-export function LanguageSwitcher({ compact = false }: { compact?: boolean }) {
+export function LanguageSwitcher({
+  /** Icon only, to sit in a row of icon buttons. */
+  iconOnly = false,
+  /** Button classes, so a header can match it to its siblings. */
+  className,
+}: {
+  iconOnly?: boolean;
+  className?: string;
+}) {
   const { locale, setLocale, loading, t } = useLanguage();
   const [open, setOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -47,15 +55,25 @@ export function LanguageSwitcher({ compact = false }: { compact?: boolean }) {
         aria-haspopup="listbox"
         aria-expanded={open}
         aria-label={t('language.choose')}
-        title={t('language.label')}
-        className={`inline-flex items-center gap-1.5 rounded-full transition-colors ${
-          compact
-            ? 'px-2.5 py-1.5 text-xs'
-            : 'px-3 py-1.5 text-sm'
-        } text-foreground/80 hover:text-foreground hover:bg-foreground/5`}
+        // The current language in the tooltip, since the icon alone does not
+        // say which one is active.
+        title={`${t('language.label')}: ${current.nativeName}`}
+        className={
+          className ??
+          `inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm transition-colors
+           text-foreground/80 hover:text-foreground hover:bg-foreground/5`
+        }
       >
         {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Globe className="w-4 h-4" />}
-        <span className="font-medium">{current.nativeName}</span>
+        {iconOnly ? (
+          // The code rather than the full name: "EN", "עב", "日本語" would each
+          // need a different width, and the row has to stay a row.
+          <span className="text-[10px] font-semibold uppercase tracking-wide" dir="ltr">
+            {current.code}
+          </span>
+        ) : (
+          <span className="font-medium">{current.nativeName}</span>
+        )}
       </button>
 
       {open && (

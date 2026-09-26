@@ -24,7 +24,7 @@ export type InquiryContext = {
   bookingUrl: string;
 };
 
-const PHONE = '+91-91188-82242';
+const PHONE = '+91-80919-21222';
 
 const formatDate = (iso: string | null) =>
   iso ? new Date(iso).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }) : null;

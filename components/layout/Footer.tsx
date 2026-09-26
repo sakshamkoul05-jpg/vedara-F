@@ -25,8 +25,8 @@ export function Footer() {
               <a href="mailto:vedararetreat@gmail.com" className="flex items-center gap-2 text-white/70 hover:text-gold-400 transition-colors duration-500">
                 <Mail className="w-4 h-4" /> vedararetreat@gmail.com
               </a>
-              <a href="tel:+919118882242" className="flex items-center gap-2 text-white/70 hover:text-gold-400 transition-colors duration-500">
-                <Phone className="w-4 h-4" /> +91-91188-82242
+              <a href="tel:+918091921222" className="flex items-center gap-2 text-white/70 hover:text-gold-400 transition-colors duration-500">
+                <Phone className="w-4 h-4" /> +91-80919-21222
               </a>
               <span className="flex items-start gap-2 text-white/70">
                 <MapPin className="w-4 h-4 mt-0.5 flex-shrink-0" /> Ghiyagi, Jibhi, Himachal Pradesh – 175123

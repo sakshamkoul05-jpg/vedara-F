@@ -178,7 +178,7 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <h3 className="font-medium text-foreground">Phone</h3>
-                      <a href="tel:+919118882242" className="text-muted-foreground text-sm hover:text-gold-600 transition-colors duration-500">+91-91188-82242</a>
+                      <a href="tel:+918091921222" className="text-muted-foreground text-sm hover:text-gold-600 transition-colors duration-500">+91-80919-21222</a>
                     </div>
                   </div>
                 </div>

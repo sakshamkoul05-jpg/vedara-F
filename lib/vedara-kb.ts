@@ -115,7 +115,7 @@ KNOWLEDGE:
 - 7 accommodations: 3 Premium Duplex Family Suites, 3 Intimate Mountain View Suites, 1 Cozy Alpine Studio
 - The Perch serves breakfast (7:30-10AM), lunch (12-3:30PM), dinner (7-10PM)
 - Check-in: 1:00 PM, Check-out: 11:00 AM
-- Contact: +91-91188-82242
+- Contact: +91-80919-21222
 - Location: Ghiyagi, Jibhi, Himachal Pradesh
 - Two rate plans: Room Only, or Breakfast Included (₹400 per adult per night; children 0-5 free, 6-11 ₹250 per night)
 - Children up to 11 stay free when sharing existing bedding; guests 12+ count as adults
@@ -152,7 +152,7 @@ POLICIES:
 
 RULES:
 - Always be helpful and accurate
-- If you don't know something specific, suggest calling +91-91188-82242
+- If you don't know something specific, suggest calling +91-80919-21222
 - For bookings, direct to /booking page
 - For café orders, direct to /cafe page
 - Never make up prices or availability — use the data provided

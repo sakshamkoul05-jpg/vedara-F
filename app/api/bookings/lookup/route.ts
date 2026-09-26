@@ -56,7 +56,7 @@ export async function POST(request: Request) {
     supabase = getServiceClient();
   } catch {
     return NextResponse.json(
-      { error: 'Booking lookup is temporarily unavailable. Please call us on +91-91188-82242.' },
+      { error: 'Booking lookup is temporarily unavailable. Please call us on +91-80919-21222.' },
       { status: 503 }
     );
   }

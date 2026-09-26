@@ -99,7 +99,7 @@ export function AiTimings() {
               className="text-center py-6"
             >
               <p className="text-muted-foreground text-sm mb-4">
-                The concierge is momentarily offline. Call us at +91-91188-82242 or message us on WhatsApp.
+                The concierge is momentarily offline. Call us at +91-80919-21222 or message us on WhatsApp.
               </p>
               <button onClick={ask} className="vintage-button-secondary text-sm px-6 py-3">Try again</button>
             </motion.div>

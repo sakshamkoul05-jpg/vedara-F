@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
+import { photosFor } from '@/lib/cottage-photos';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
@@ -119,7 +120,12 @@ export default function CottageBySlugPage() {
   try {
     parsedImages = typeof cottage?.images === 'string' ? JSON.parse(cottage.images as string) : (cottage?.images as string[] || []);
   } catch { parsedImages = []; }
-  const images = Array.isArray(parsedImages) && parsedImages.length ? parsedImages : Array.from({ length: 6 }, (_, i) => `https://images.unsplash.com/photo-${['1504384308090-c894fdcc538d', '1554118811-1e0d58224f24', '1506905925346-21bda4d32df4', '1476514525535-07fb3b4ae5f1', '1519681393784-d120267933ba', '1469476568026-46a7f7b2f9c2'][i]}?w=800&q=80`);
+  // photosFor falls back through uploaded images, then the photographs in the
+  // repo, then the property's own hero shot — so the gallery is never six
+  // pictures of somebody else's chalet.
+  const images = Array.isArray(parsedImages) && parsedImages.length
+    ? parsedImages
+    : photosFor(cottage ?? { slug });
 
   if (loading) {
     return (

@@ -135,7 +135,7 @@ export function ChatBot() {
         {
           id: `error-${Date.now()}`,
           role: 'assistant',
-          content: 'I\'m having a connection hiccup! 🏔️ Please try again or call us at +91-91188-82242.',
+          content: 'I\'m having a connection hiccup! 🏔️ Please try again or call us at +91-80919-21222.',
           timestamp: new Date(),
         },
       ]);
@@ -225,7 +225,7 @@ export function ChatBot() {
                 )}
                 {isSupportOnline && (
                   <a
-                    href="https://wa.me/919118882242"
+                    href="https://wa.me/918091921222"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center hover:bg-white/30 transition-colors"

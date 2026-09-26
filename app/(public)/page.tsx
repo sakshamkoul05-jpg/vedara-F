@@ -21,13 +21,13 @@ import { api } from '@/lib/api';
 import { Cottage } from '@/types';
 
 const FALLBACK_COTTAGES = [
-  { slug: 'monal-haven', name: 'Monal Haven', pricePerNight: 12000, desc: 'Premium Duplex Family Suite with private jacuzzi, attic yoga balcony, and sweeping mountain views', image: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&q=80', category: 'Premium Duplex Family Suite' },
-  { slug: 'koklass-cove', name: 'Koklass Cove', pricePerNight: 12500, desc: 'Our largest duplex with two viewing balconies, private jacuzzi, and unmatched privacy', image: 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=600&q=80', category: 'Premium Duplex Family Suite' },
-  { slug: 'magpie-retreat', name: 'Magpie Retreat', pricePerNight: 4500, desc: 'Intimate Mountain View Suite — where serenity meets soul', image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80', category: 'Intimate Mountain View Suite' },
-  { slug: 'whistling-thrush', name: 'Whistling Thrush', pricePerNight: 6500, desc: 'Charming duplex with deep-soak bath tub and dual balconies', image: 'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=600&q=80', category: 'Premium Duplex Family Suite' },
-  { slug: 'flycatcher-nook', name: 'Flycatcher Nook', pricePerNight: 7500, desc: 'Intimate Mountain View Suite — your cozy Himalayan hideaway', image: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?w=600&q=80', category: 'Intimate Mountain View Suite' },
-  { slug: 'bulbul-nest', name: 'Bulbul Nest', pricePerNight: 7500, desc: 'Intimate Mountain View Suite with workstation — where coziness meets the peaks', image: 'https://images.unsplash.com/photo-1469476568026-46a7f7b2f9c2?w=600&q=80', category: 'Intimate Mountain View Suite' },
-  { slug: 'the-finch-nook', name: 'The Finch Nook', pricePerNight: 5000, desc: 'Cozy Alpine Studio — small space, boundless solitude', image: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&q=80', category: 'Cozy Alpine Studio' },
+  { slug: 'monal-haven', name: 'Monal Haven', pricePerNight: 12000, desc: 'Premium Duplex Family Suite with private jacuzzi, attic yoga balcony, and sweeping mountain views', image: '/images/cottages/monal-haven-1.webp', category: 'Premium Duplex Family Suite' },
+  { slug: 'koklass-cove', name: 'Koklass Cove', pricePerNight: 12500, desc: 'Our largest duplex with two viewing balconies, private jacuzzi, and unmatched privacy', image: '/images/cottages/koklass-cove-1.webp', category: 'Premium Duplex Family Suite' },
+  { slug: 'magpie-retreat', name: 'Magpie Retreat', pricePerNight: 4500, desc: 'Intimate Mountain View Suite — where serenity meets soul', image: '/images/hero-bg.webp', category: 'Intimate Mountain View Suite' },
+  { slug: 'whistling-thrush', name: 'Whistling Thrush', pricePerNight: 6500, desc: 'Charming duplex with deep-soak bath tub and dual balconies', image: '/images/cottages/whistling-thrush-1.webp', category: 'Premium Duplex Family Suite' },
+  { slug: 'flycatcher-nook', name: 'Flycatcher Nook', pricePerNight: 7500, desc: 'Intimate Mountain View Suite — your cozy Himalayan hideaway', image: '/images/hero-bg.webp', category: 'Intimate Mountain View Suite' },
+  { slug: 'bulbul-nest', name: 'Bulbul Nest', pricePerNight: 7500, desc: 'Intimate Mountain View Suite with workstation — where coziness meets the peaks', image: '/images/hero-bg.webp', category: 'Intimate Mountain View Suite' },
+  { slug: 'the-finch-nook', name: 'The Finch Nook', pricePerNight: 5000, desc: 'Cozy Alpine Studio — small space, boundless solitude', image: '/images/hero-bg.webp', category: 'Cozy Alpine Studio' },
 ];
 
 const testimonials = [

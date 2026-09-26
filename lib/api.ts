@@ -414,7 +414,7 @@ async function sbMutation<T = any>(endpoint: string, method: 'POST' | 'PUT' | 'D
     }
 
     if (method === 'POST' && parts[0] === 'chatbot' && parts[1] === 'chat') {
-      return { data: { reply: 'Chatbot is temporarily unavailable. Please contact us at +91-91188-82242.' } } as T;
+      return { data: { reply: 'Chatbot is temporarily unavailable. Please contact us at +91-80919-21222.' } } as T;
     }
 
     if (method === 'POST' && endpoint.startsWith('/bookings') && endpoint.includes('/cancel')) {

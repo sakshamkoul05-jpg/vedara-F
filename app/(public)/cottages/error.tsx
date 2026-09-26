@@ -33,10 +33,10 @@ export default function CottageError({
             <RefreshCw className="w-4 h-4" /> Try Again
           </button>
           <a
-            href="tel:+919118882242"
+            href="tel:+918091921222"
             className="vintage-button-outline text-sm inline-flex items-center gap-2"
           >
-            <Phone className="w-4 h-4" /> Call +91-91188-82242
+            <Phone className="w-4 h-4" /> Call +91-80919-21222
           </a>
           <Link href="/" className="vintage-button-outline text-sm">
             Back to Home

@@ -94,12 +94,12 @@ export async function POST(req: NextRequest) {
 
     // === TAXI / CAB ===
     else if (/taxi|cab|uber|ola|booking.*cab|hire.*car|private.*car/i.test(lower)) {
-      reply = '🚕 **Taxi & Cab Services:**\n\n**Local Taxi Union Rates:**\n• Banjar → Jibhi: ₹400-600 (15 min)\n• Aut → Jibhi: ₹1,200-1,500 (hatchback), ₹1,800-2,200 (SUV)\n• Bhuntar → Jibhi: ₹1,500-2,000\n• Chandigarh → Jibhi: ₹5,000-6,000\n\n**Note:** No Uber/Ola in this area. Use local taxi unions at Banjar Bus Stand or Aut.\n\n📞 **For pre-booked cabs:** Contact us at +91-91188-82242 — we can arrange pickup from Aut, Bhuntar, or Banjar.';
+      reply = '🚕 **Taxi & Cab Services:**\n\n**Local Taxi Union Rates:**\n• Banjar → Jibhi: ₹400-600 (15 min)\n• Aut → Jibhi: ₹1,200-1,500 (hatchback), ₹1,800-2,200 (SUV)\n• Bhuntar → Jibhi: ₹1,500-2,000\n• Chandigarh → Jibhi: ₹5,000-6,000\n\n**Note:** No Uber/Ola in this area. Use local taxi unions at Banjar Bus Stand or Aut.\n\n📞 **For pre-booked cabs:** Contact us at +91-80919-21222 — we can arrange pickup from Aut, Bhuntar, or Banjar.';
     }
 
     // === FLIGHT / AIRPORT ===
     else if (/flight|airport|fly|plane|bhuntar|kullu.*airport/i.test(lower)) {
-      reply = '✈️ **Nearest Airport:** Kullu-Manali Airport (Bhuntar)\n\n📍 **Distance:** 56 km from Jibhi (1.5-2 hours by taxi)\n🎫 **Airlines:** IndiGo, Air India (from Delhi)\n💰 **Taxi fare:** ₹1,500-2,000\n\n⚠️ **Important:** Flights to Bhuntar are frequently cancelled due to mountain weather. Always have a road backup plan!\n\n💡 **Tip:** WhatsApp us at +91-91188-82242 for trusted cab referral from Bhuntar.';
+      reply = '✈️ **Nearest Airport:** Kullu-Manali Airport (Bhuntar)\n\n📍 **Distance:** 56 km from Jibhi (1.5-2 hours by taxi)\n🎫 **Airlines:** IndiGo, Air India (from Delhi)\n💰 **Taxi fare:** ₹1,500-2,000\n\n⚠️ **Important:** Flights to Bhuntar are frequently cancelled due to mountain weather. Always have a road backup plan!\n\n💡 **Tip:** WhatsApp us at +91-80919-21222 for trusted cab referral from Bhuntar.';
     }
 
     // === ATMS / CASH / MONEY ===
@@ -182,12 +182,12 @@ export async function POST(req: NextRequest) {
 
     // === BOOKING ===
     else if (/book|reserve|availability|available|check.?in|check.?out|date|vacancy/i.test(lower)) {
-      reply = `📅 To book at The Vedara:\n\n1. Visit /booking and enter your dates, adults and each child's age\n2. Pick a cottage and a rate plan (Room Only or Breakfast Included)\n3. Pay securely via Razorpay\n\nCheck-in: 1:00 PM | Check-out: 11:00 AM\nThe full tariff, GST and final amount are shown before you pay.\n\nHelp? Call +91-91188-82242`;
+      reply = `📅 To book at The Vedara:\n\n1. Visit /booking and enter your dates, adults and each child's age\n2. Pick a cottage and a rate plan (Room Only or Breakfast Included)\n3. Pay securely via Razorpay\n\nCheck-in: 1:00 PM | Check-out: 11:00 AM\nThe full tariff, GST and final amount are shown before you pay.\n\nHelp? Call +91-80919-21222`;
     }
 
     // === CANCELLATION ===
     else if (/cancel|refund|reschedule|modify.*booking/i.test(lower)) {
-      reply = `📋 Cancellation Policy:\n\n✅ 15+ days: 90% refund\n✅ 8-15 days: 50% refund\n❌ <7 days: No refund\n\nPeak season (Dec-Jan): 21+ days for 50% refund.\n\nCall +91-91188-82242 to cancel/modify. /policies`;
+      reply = `📋 Cancellation Policy:\n\n✅ 15+ days: 90% refund\n✅ 8-15 days: 50% refund\n❌ <7 days: No refund\n\nPeak season (Dec-Jan): 21+ days for 50% refund.\n\nCall +91-80919-21222 to cancel/modify. /policies`;
     }
 
     // === WEATHER (seasons) ===
@@ -202,7 +202,7 @@ export async function POST(req: NextRequest) {
 
     // === CHECK-IN/OUT ===
     else if (/check.?in|check.?out|arrival|early.*check|late.*check/i.test(lower)) {
-      reply = `🕐 Check-in & Check-out:\n\n✅ Check-in: 1:00 PM\n✅ Check-out: 11:00 AM\n\nReception: 8:00 AM – 10:30 PM\n\nEarly/late check-out on request (subject to availability).\n📞 +91-91188-82242`;
+      reply = `🕐 Check-in & Check-out:\n\n✅ Check-in: 1:00 PM\n✅ Check-out: 11:00 AM\n\nReception: 8:00 AM – 10:30 PM\n\nEarly/late check-out on request (subject to availability).\n📞 +91-80919-21222`;
     }
 
     // === PARKING ===
@@ -217,7 +217,7 @@ export async function POST(req: NextRequest) {
 
     // === PHONE / CONTACT ===
     else if (/phone|contact|call|number|reach.*you|talk.*human/i.test(lower)) {
-      reply = `📞 Contact The Vedara:\n\n📱 Phone: +91-91188-82242\n💬 WhatsApp: wa.me/919118882242\n📧 Email: vedararetreat@gmail.com\n\n🕐 Reception: 8:00 AM – 10:30 PM daily`;
+      reply = `📞 Contact The Vedara:\n\n📱 Phone: +91-80919-21222\n💬 WhatsApp: wa.me/918091921222\n📧 Email: vedararetreat@gmail.com\n\n🕐 Reception: 8:00 AM – 10:30 PM daily`;
     }
 
     // === REVIEWS ===
@@ -235,13 +235,13 @@ export async function POST(req: NextRequest) {
       if (kb.packages.length > 0) {
         reply = `🎁 Current packages:\n\n${kb.packages.map(p => `• ${p.title}: ${p.description || 'Special offer'}`).join('\n\n')}\n\nCheck /booking for latest rates!`;
       } else {
-        reply = '🎁 Check our website for seasonal offers! Visit /booking or call +91-91188-82242.';
+        reply = '🎁 Check our website for seasonal offers! Visit /booking or call +91-80919-21222.';
       }
     }
 
     // === PETS ===
     else if (/pet|dog|cat|animal/i.test(lower)) {
-      reply = '🐾 Pets not allowed at The Vedara. Service animals welcome with prior arrangement — call +91-91188-82242.';
+      reply = '🐾 Pets not allowed at The Vedara. Service animals welcome with prior arrangement — call +91-80919-21222.';
     }
 
     // === SMOKING ===
@@ -276,7 +276,7 @@ export async function POST(req: NextRequest) {
 
     // === LIVE SUPPORT ===
     else if (/live.*support|talk.*human|agent|representative|real.*person/i.test(lower)) {
-      reply = '👨‍💼 To connect with our team:\n\n📱 Call: +91-91188-82242 (8 AM - 10:30 PM)\n💬 WhatsApp: wa.me/919118882242';
+      reply = '👨‍💼 To connect with our team:\n\n📱 Call: +91-80919-21222 (8 AM - 10:30 PM)\n💬 WhatsApp: wa.me/918091921222';
     }
 
     // === THANKS ===
@@ -305,14 +305,14 @@ export async function POST(req: NextRequest) {
       if (relevantCottage) {
         reply = `It looks like you're asking about ${relevantCottage.name}! 🏔️\n\n${relevantCottage.name} is a ${relevantCottage.category} at ₹${relevantCottage.pricePerNight}/night, accommodating ${relevantCottage.capacity} guests in ${relevantCottage.size} sqft.\n\nDetails at /cottages/slug/${relevantCottage.slug}\n\nWhat else would you like to know?`;
       } else {
-        reply = `I'd be happy to help! I specialize in The Vedara retreat and the Jibhi area:\n\n🏠 Cottage types & pricing\n🍽️ Café menu & dining\n🚌 Transport (bus, taxi, flights, trains)\n🌤️ Live weather updates\n🚨 Emergency contacts\n💰 ATM & cash info\n📍 Directions & distances\n🗺️ Nearby attractions\n\nCould you rephrase, or ask about any of these? You can also call +91-91188-82242 for immediate help.`;
+        reply = `I'd be happy to help! I specialize in The Vedara retreat and the Jibhi area:\n\n🏠 Cottage types & pricing\n🍽️ Café menu & dining\n🚌 Transport (bus, taxi, flights, trains)\n🌤️ Live weather updates\n🚨 Emergency contacts\n💰 ATM & cash info\n📍 Directions & distances\n🗺️ Nearby attractions\n\nCould you rephrase, or ask about any of these? You can also call +91-80919-21222 for immediate help.`;
       }
     }
 
     return NextResponse.json({ reply });
   } catch (error: any) {
     console.error('Chat API error:', error);
-    return NextResponse.json({ reply: 'I\'m having a momentary hiccup! 🏔️ Please try again, or call +91-91188-82242 for immediate help.' });
+    return NextResponse.json({ reply: 'I\'m having a momentary hiccup! 🏔️ Please try again, or call +91-80919-21222 for immediate help.' });
   }
 }
 
