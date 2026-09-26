@@ -1,0 +1,66 @@
+
+# Drives the abandoned-enquiry follow-up worker.
+#
+# Vercel's Hobby plan allows a cron job to run once a day, which is useless for
+# a ladder whose first nudge is due 45 minutes after someone leaves the booking
+# form. GitHub Actions schedules as often as every five minutes and costs
+# nothing on a public repository, so the real cadence lives here and the daily
+# Vercel cron in vercel.json stays only as a fallback.
+#
+# Running both is safe. The worker claims each follow-up out of PENDING before
+# attempting a send, and the unique key on (inquiry, channel, stage) means a
+# stage cannot exist twice, so an overlapping run duplicates work rather than a
+# message.
+#
+# Two repository secrets are required (Settings -> Secrets and variables ->
+# Actions). Until they exist the workflow runs and reports that it is not
+# configured, rather than failing loudly every quarter of an hour:
+#   CRON_SECRET  the same value set in the Vercel environment
+#   SITE_URL     the deployment to call, e.g. https://vedara-f-tau.vercel.app
+
+name: Enquiry follow-ups
+
+on:
+  schedule:
+    # GitHub queues scheduled runs and can delay them under load, so treat this
+    # as "about every 15 minutes" rather than exactly.
+    - cron: '*/15 * * * *'
+  # So it can be run by hand from the Actions tab when testing.
+  workflow_dispatch:
+
+# A slow run must not overlap with the next tick.
+concurrency:
+  group: follow-ups
+  cancel-in-progress: false
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Send any follow-ups that are due
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+          SITE_URL: ${{ secrets.SITE_URL }}
+        run: |
+          if [ -z "$CRON_SECRET" ] || [ -z "$SITE_URL" ]; then
+            echo "CRON_SECRET or SITE_URL is not set; nothing to do."
+            echo "Add both under Settings -> Secrets and variables -> Actions."
+            exit 0
+          fi
+
+          response=$(mktemp)
+          status=$(curl -sS --max-time 120 -o "$response" -w '%{http_code}' \
+            -H "Authorization: Bearer $CRON_SECRET" \
+            "$SITE_URL/api/cron/follow-ups")
+
+          echo "HTTP $status"
+          cat "$response"
+          echo
+
+          # 401 means the secret here and the one in Vercel disagree, which is
+          # worth failing on: silence would look identical to "nothing due".
+          if [ "$status" != "200" ]; then
+            echo "::error::Follow-up worker returned $status"
+            exit 1
+          fi
