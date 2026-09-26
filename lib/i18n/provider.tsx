@@ -36,6 +36,11 @@ type LanguageContextValue = {
   td: (text: string | null | undefined) => string;
   /** Register database strings to be translated. Safe to call repeatedly. */
   registerDynamic: (texts: (string | null | undefined)[]) => void;
+  /**
+   * Every string the dictionary has already rendered in this language, so the
+   * page translator can recognise its own output and leave it alone.
+   */
+  translatedChrome: Set<string>;
 };
 
 const LanguageContext = createContext<LanguageContextValue | null>(null);
@@ -191,6 +196,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
       t: (key) => messages[key] ?? DICTIONARY[key],
       td: (text) => (text ? dynamic[text.trim()] ?? text : ''),
       registerDynamic,
+      translatedChrome: new Set(Object.values(messages)),
     };
   }, [locale, messages, dynamic, loading, setLocale, registerDynamic]);
 
@@ -216,6 +222,7 @@ export function useLanguage(): LanguageContextValue {
     t: (key) => DICTIONARY[key],
     td: (text) => text ?? '',
     registerDynamic: () => {},
+    translatedChrome: new Set<string>(),
   };
 }
 

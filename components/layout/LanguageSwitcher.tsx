@@ -68,7 +68,7 @@ export function LanguageSwitcher({
         {iconOnly ? (
           // The code rather than the full name: "EN", "עב", "日本語" would each
           // need a different width, and the row has to stay a row.
-          <span className="text-[10px] font-semibold uppercase tracking-wide" dir="ltr">
+          <span className="text-[10px] font-semibold uppercase tracking-wide" dir="ltr" data-no-translate>
             {current.code}
           </span>
         ) : (
@@ -102,7 +102,7 @@ export function LanguageSwitcher({
                 <span className="flex items-center gap-2 shrink-0">
                   {/* The English name too, so staff and anyone who lands on the
                       wrong language can still find their way back. */}
-                  <span className="text-[11px] text-muted-foreground" dir="ltr">{option.name}</span>
+                  <span className="text-[11px] text-muted-foreground" dir="ltr" data-no-translate>{option.name}</span>
                   {selected && <Check className="w-3.5 h-3.5" />}
                 </span>
               </button>

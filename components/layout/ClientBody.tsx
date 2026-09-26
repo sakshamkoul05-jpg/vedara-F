@@ -9,6 +9,7 @@ import { ThemeInitializer } from '@/components/layout/ThemeInitializer';
 import { ScrollProgress } from '@/components/animations/ScrollProgress';
 import { Toaster } from 'react-hot-toast';
 import { LanguageProvider } from '@/lib/i18n/provider';
+import { PageTranslator } from '@/components/i18n/PageTranslator';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
 
@@ -62,6 +63,7 @@ export function ClientBody({ children }: { children: React.ReactNode }) {
   // use than an English one.
   return (
     <LanguageProvider>
+      <PageTranslator />
       <ThemeInitializer />
       <ScrollProgress />
       <FogParticles />

@@ -1,7 +1,8 @@
 'use client';
 
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
+import { useLanguage } from '@/lib/i18n/provider';
 
 interface TextRevealProps {
   children: string;
@@ -13,11 +14,21 @@ interface TextRevealProps {
 export function TextReveal({ children, className = '', delay = 0, as: Tag = 'p' }: TextRevealProps) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-50px' });
+  const { td, registerDynamic } = useLanguage();
 
-  const words = children.split(' ');
+  // This splits the heading into one span per word for the animation, which
+  // would otherwise reach the page translator as a pile of single words —
+  // "Where", "the", "peaks" — and come back as nonsense. So the whole sentence
+  // is translated here, before it is broken up, and the result is marked so the
+  // page translator leaves the pieces alone.
+  useEffect(() => {
+    registerDynamic([children]);
+  }, [children, registerDynamic]);
+
+  const words = td(children).split(' ');
 
   return (
-    <Tag ref={ref} className={className}>
+    <Tag ref={ref} className={className} data-no-translate>
       {words.map((word, i) => (
         <span key={i} className="inline-block overflow-hidden mr-[0.25em]">
           <motion.span

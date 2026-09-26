@@ -20,11 +20,14 @@ export const dynamic = 'force-dynamic';
 const dynamicSchema = z.object({
   locale: z.string().trim().min(2).max(12),
   /** Bounded so one page cannot bill an unlimited translation job. */
-  texts: z.array(z.string().max(4000)).max(120),
+  texts: z.array(z.string().max(4000)).max(100),
   namespace: z.string().trim().max(40).optional(),
 });
 
-const MAX_REQUESTS = 60;
+// A whole page can be several batches, and a visitor browsing quickly in a
+// new language will send a burst. Everything is cached after the first
+// request, so the ceiling only has to survive that first pass.
+const MAX_REQUESTS = 240;
 const WINDOW_MS = 10 * 60 * 1000;
 
 export async function POST(request: Request) {
