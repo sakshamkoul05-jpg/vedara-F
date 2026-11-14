@@ -390,7 +390,14 @@ export default function BookingPage() {
     else if (guestName.trim().length < 2) errors.guestName = 'Name must be at least 2 characters';
     else if (/\d/.test(guestName)) errors.guestName = 'Name should not contain numbers';
     if (!guestPhone) errors.guestPhone = 'Phone is required';
-    if (guestEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(guestEmail)) errors.guestEmail = 'Invalid email address';
+    else if (guestPhone.replace(/\D/g, '').length < 6 || guestPhone.replace(/\D/g, '').length > 15) {
+      errors.guestPhone = 'Please enter a valid phone number';
+    }
+    // The server requires a valid email (it is used as the guest identity), so
+    // an empty email must be rejected here — otherwise /api/bookings answers
+    // 400 "Invalid request" after the form looks complete.
+    if (!guestEmail.trim()) errors.guestEmail = 'Email is required';
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(guestEmail)) errors.guestEmail = 'Invalid email address';
     if (!idProofType) errors.idProofType = 'ID type is required';
     if (!idProofNumber.trim()) errors.idProofNumber = 'ID number is required';
     else {
@@ -887,7 +894,7 @@ export default function BookingPage() {
                           </div>
                           <div className="grid grid-cols-2 gap-4">
                             <div>
-                              <label className="vintage-label">Email</label>
+                              <label className="vintage-label">Email *</label>
                               <Input type="email" value={guestEmail} onChange={(e) => {
                                 setGuestEmail(e.target.value);
                                 if (formErrors.guestEmail) setFormErrors(prev => { const n = { ...prev }; delete n.guestEmail; return n; });
