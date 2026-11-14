@@ -55,7 +55,10 @@ export async function POST(request: Request) {
   const parsed = bookingSchema.safeParse(body);
   if (!parsed.success) {
     return NextResponse.json(
-      { error: 'Invalid request', details: parsed.error.flatten().fieldErrors },
+      {
+        error: 'Some of the details you entered are invalid. Please check the form and try again.',
+        details: parsed.error.flatten().fieldErrors,
+      },
       { status: 400 }
     );
   }

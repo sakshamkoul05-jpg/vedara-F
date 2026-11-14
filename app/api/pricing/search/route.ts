@@ -56,7 +56,10 @@ export async function POST(request: Request) {
   const parsed = searchSchema.safeParse(body);
   if (!parsed.success) {
     return NextResponse.json(
-      { error: 'Invalid request', details: parsed.error.flatten().fieldErrors },
+      {
+        error: 'Some stay details are invalid. Please check your dates and guests.',
+        details: parsed.error.flatten().fieldErrors,
+      },
       { status: 400 }
     );
   }
