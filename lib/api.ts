@@ -71,76 +71,24 @@ async function sbQuery<T = any>(endpoint: string, method = 'GET', body?: any, _t
         if (error) throw error;
         return { data } as T;
       }
-      // Availability queries below ignore PENDING bookings whose reservation
-      // hold has lapsed: an abandoned checkout must not block the cottage.
-      case 'bookings/available-cottages': {
-        if (method !== 'GET') break;
-        const { data, error } = await supabase.from('Cottage').select('*').eq('isActive', true).order('sortOrder', { ascending: true });
-        if (error) throw error;
-        const checkIn = params.checkIn;
-        const checkOut = params.checkOut;
-        if (checkIn && checkOut) {
-          let blockedIds = new Set<string>();
-          let bookedIds = new Set<string>();
-          const { data: blocked, error: blockedErr } = await supabase.from('BlockedDate').select('cottageId').gte('date', checkIn).lte('date', checkOut);
-          if (!blockedErr && blocked) {
-            blockedIds = new Set(blocked.map((b: any) => b.cottageId));
-          }
-          const { data: booked, error: bookedErr } = await supabase.from('Booking').select('cottageId').in('status', ['CONFIRMED', 'RESERVED', 'CHECKED_IN', 'PENDING']).or(`status.neq.PENDING,holdExpiresAt.is.null,holdExpiresAt.gt.${new Date().toISOString()}`).lt('checkIn', checkOut).gt('checkOut', checkIn);
-          if (!bookedErr && booked) {
-            bookedIds = new Set(booked.map((b: any) => b.cottageId));
-          }
-          const allBlocked = new Set([...blockedIds, ...bookedIds]);
-          return { data: (data || []).map((c: any) => ({ ...c, isAvailable: !allBlocked.has(c.id) })) } as T;
-        }
-        return { data: (data || []).map((c: any) => ({ ...c, isAvailable: true })) } as T;
-      }
-      case 'bookings/availability': {
-        if (method !== 'GET') break;
-        const cottageId = params.cottageId;
-        const checkIn = params.checkIn;
-        const checkOut = params.checkOut;
-        const { data: blocked } = await supabase.from('BlockedDate').select('date').eq('cottageId', cottageId).gte('date', checkIn).lte('date', checkOut);
-        const { data: booked } = await supabase.from('Booking').select('id').eq('cottageId', cottageId).in('status', ['CONFIRMED', 'RESERVED', 'CHECKED_IN', 'PENDING']).or(`status.neq.PENDING,holdExpiresAt.is.null,holdExpiresAt.gt.${new Date().toISOString()}`).lt('checkIn', checkOut).gt('checkOut', checkIn);
-        const available = (!blocked || blocked.length === 0) && (!booked || booked.length === 0);
-        return { data: { available } } as T;
-      }
-      case 'bookings/calendar': {
-        if (method !== 'GET') break;
-        const cottageId = params.cottageId;
-        const month = parseInt(params.month || '1');
-        const year = parseInt(params.year || '2026');
-        const start = `${year}-${String(month).padStart(2, '0')}-01`;
-        const endMonth = month === 12 ? 1 : month + 1;
-        const endYear = month === 12 ? year + 1 : year;
-        const end = `${endYear}-${String(endMonth).padStart(2, '0')}-01`;
-        const { data: blocked } = await supabase.from('BlockedDate').select('date,reason').eq('cottageId', cottageId).gte('date', start).lt('date', end);
-        const { data: booked } = await supabase.from('Booking').select('checkIn,checkOut,status').eq('cottageId', cottageId).in('status', ['CONFIRMED', 'RESERVED', 'CHECKED_IN', 'PENDING']).or(`status.neq.PENDING,holdExpiresAt.is.null,holdExpiresAt.gt.${new Date().toISOString()}`).lt('checkIn', end).gt('checkOut', start);
-        return { data: { blockedDates: blocked || [], bookings: booked || [] } } as T;
-      }
+      // Every Booking read goes through a route handler now.
+      //
+      // These used to run here, in the browser, with the anon key: the admin
+      // and employee screens paged through every guest's name, email and phone
+      // number from a table that anyone could query directly. The server
+      // routes carry the session check and run under the service role, so the
+      // table itself no longer has to be readable from the outside.
+      //
+      // Availability ignores PENDING bookings whose reservation hold has
+      // lapsed — an abandoned checkout must not block the cottage — and that
+      // rule now lives in the route rather than being duplicated per caller.
+      case 'bookings/available-cottages':
+      case 'bookings/availability':
+      case 'bookings/calendar':
       case 'bookings/all': {
-        let query = supabase.from('Booking').select('*, cottage:Cottage(*), guest:Guest(*)', { count: 'exact' });
-        if (params.status) query = query.eq('status', params.status);
-        if (params.search) {
-          const s = params.search;
-          query = query.or(`guest.name.ilike.%${s}%,guest.email.ilike.%${s}%,guest.phone.ilike.%${s}%,bookingRef.ilike.%${s}%`);
-        }
-        const page = parseInt(params.page || '1');
-        const limit = parseInt(params.limit || '20');
-        const from = (page - 1) * limit;
-        const to = from + limit - 1;
-        query = query.range(from, to).order('createdAt', { ascending: false });
-        const { data, error, count } = await query;
-        if (error) throw error;
-        return { data, total: count } as T;
-      }
-      case 'bookings': {
-        if (method === 'GET') {
-          const { data, error } = await supabase.from('Booking').select('*, cottage:Cottage(*), guest:Guest(*)').order('createdAt', { ascending: false });
-          if (error) throw error;
-          return { data } as T;
-        }
-        break;
+        if (method !== 'GET') break;
+        const qs = new URLSearchParams(params).toString();
+        return (await callBackendAPI(`/${table}${qs ? `?${qs}` : ''}`)) as T;
       }
       case 'cafe/menu': {
         if (method !== 'GET') break;
@@ -220,22 +168,9 @@ async function sbQuery<T = any>(endpoint: string, method = 'GET', body?: any, _t
         return { data: Object.entries(chartData).map(([date, amount]) => ({ date, amount })) } as T;
       }
       case 'cms/dashboard': {
-        const [bookingsRes, cottagesRes, cafeRes, messagesRes, guestsRes] = await Promise.all([
-          supabase.from('Booking').select('id,createdAt,totalAmount,status'),
-          supabase.from('Cottage').select('id,isActive'),
-          supabase.from('CafeOrder').select('id,createdAt'),
-          supabase.from('ContactMessage').select('id,isRead'),
-          supabase.from('Guest').select('id'),
-        ]);
-        const now = new Date();
-        const monthStart = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
-        const allBookings = bookingsRes.data || [];
-        const monthlyBookings = allBookings.filter((b: any) => b.createdAt >= monthStart);
-        const pendingBookings = allBookings.filter((b: any) => b.status === 'PENDING');
-        const todayOrders = (cafeRes.data || []).filter((o: any) => o.createdAt >= new Date().toISOString().split('T')[0]);
-        const unread = (messagesRes.data || []).filter((m: any) => !m.isRead);
-        const cotts = cottagesRes.data || [];
-        return { data: { totalBookings: allBookings.length, monthlyBookings: monthlyBookings.length, yearlyRevenue: allBookings.reduce((s: number, b: any) => s + (b.totalAmount || 0), 0), totalCottages: cotts.length, activeCottages: cotts.filter((c: any) => c.isActive).length, pendingBookings: pendingBookings.length, totalCafeOrders: (cafeRes.data || []).length, todayCafeOrders: todayOrders.length, unreadMessages: unread.length, totalGuests: (guestsRes.data || []).length } } as T;
+        // Counts over Booking, Guest and ContactMessage — the browser must not
+        // hold those rows, so the arithmetic happens behind the admin session.
+        return (await callBackendAPI('/admin/cms/dashboard')) as T;
       }
       case 'cms/settings': {
         if (method === 'GET') {
@@ -288,12 +223,9 @@ async function sbQuery<T = any>(endpoint: string, method = 'GET', body?: any, _t
         break;
       }
       case 'cms/messages': {
-        if (method === 'GET') {
-          const { data, error } = await supabase.from('ContactMessage').select('*').order('createdAt', { ascending: false });
-          if (error) throw error;
-          return { data } as T;
-        }
-        break;
+        // The inbox holds names, emails, phone numbers and message bodies.
+        if (method !== 'GET') break;
+        return (await callBackendAPI('/admin/cms/messages')) as T;
       }
       case 'cms/coupons': {
         if (method === 'GET') {
@@ -322,22 +254,6 @@ async function sbQuery<T = any>(endpoint: string, method = 'GET', body?: any, _t
           let discount = coupon.discountType === 'PERCENTAGE' ? (amount * coupon.discountValue) / 100 : coupon.discountValue;
           discount = Math.min(discount, amount);
           return { data: { discount, type: coupon.discountType, value: coupon.discountValue } } as T;
-        }
-        break;
-      }
-      case 'cms/activity-logs': {
-        if (method === 'GET') {
-          const { data, error } = await supabase.from('ActivityLog').select('*, user:User(name,email)').order('createdAt', { ascending: false }).limit(100);
-          if (error) throw error;
-          return { data } as T;
-        }
-        break;
-      }
-      case 'cms/users': {
-        if (method === 'GET') {
-          const { data, error } = await supabase.from('User').select('id,name,email,role,phone,isActive,createdAt');
-          if (error) throw error;
-          return { data } as T;
         }
         break;
       }
@@ -393,10 +309,13 @@ async function sbMutation<T = any>(endpoint: string, method: 'POST' | 'PUT' | 'D
 
   try {
     if (method === 'POST' && endpoint === '/auth/login') {
-      const { email, password } = body;
-      const { data: user, error: userError } = await supabase.from('User').select('*').eq('email', email).single();
-      if (userError || !user) throw new Error('Invalid credentials');
-      return { data: { user: { id: user.id, name: user.name, email: user.email, role: user.role, phone: user.phone }, token: 'supabase-session' } } as T;
+      // Password hashes live in `User`; reading that table with the anon key
+      // from the browser would put every hash in the bundle. The route handler
+      // does the lookup and the bcrypt compare server side.
+      return (await callBackendAPI('/auth/login', {
+        method: 'POST',
+        body: JSON.stringify(body),
+      })) as T;
     }
 
     if (method === 'POST' && endpoint === '/auth/refresh') {
@@ -408,41 +327,39 @@ async function sbMutation<T = any>(endpoint: string, method: 'POST' | 'PUT' | 'D
     }
 
     if (method === 'POST' && endpoint === '/contact') {
-      const { data, error } = await supabase.from('ContactMessage').insert(body).select().single();
-      if (error) throw error;
-      return { data } as T;
+      // Written from the browser with the anon key until now, which kept
+      // ContactMessage open to anyone. The form posts to the route instead.
+      return (await callBackendAPI('/contact', {
+        method: 'POST',
+        body: JSON.stringify(body),
+      })) as T;
     }
 
     if (method === 'POST' && parts[0] === 'chatbot' && parts[1] === 'chat') {
       return { data: { reply: 'Chatbot is temporarily unavailable. Please contact us at +91-91188-82242.' } } as T;
     }
 
-    if (method === 'POST' && endpoint.startsWith('/bookings') && endpoint.includes('/cancel')) {
-      const id = parts[1];
-      const { data, error } = await supabase.from('Booking').update({ status: 'CANCELLED', cancelledAt: new Date().toISOString() }).eq('id', id).select().single();
-      if (error) throw error;
-      return { data } as T;
+    // Approve, reject, cancel and check-in/out all write to Booking, and all
+    // of them used to run here in the browser: the admin screen passed a token
+    // that nothing ever checked, so any visitor could POST
+    // `/bookings/<id>/approve` and mark their own booking CONFIRMED and PAID
+    // without paying. The writes happen on the server now, behind a verified
+    // session, and the status route only accepts CHECKED_IN / CHECKED_OUT so it
+    // can never be used to skip payment either.
+    if (method === 'POST' && parts.length === 3 && parts[0] === 'bookings') {
+      const res = await callBackendAPI(`/bookings/${parts[1]}/${parts[2]}`, {
+        method: 'POST',
+        body: JSON.stringify(body ?? {}),
+      });
+      return { data: res.data } as T;
     }
 
-    if (method === 'POST' && endpoint.startsWith('/bookings') && endpoint.includes('/approve')) {
-      const id = parts[1];
-      const { data, error } = await supabase.from('Booking').update({ status: 'CONFIRMED', paymentStatus: 'PAID' }).eq('id', id).select().single();
-      if (error) throw error;
-      return { data } as T;
-    }
-
-    if (method === 'POST' && endpoint.startsWith('/bookings') && endpoint.includes('/reject')) {
-      const id = parts[1];
-      const { data, error } = await supabase.from('Booking').update({ status: 'CANCELLED', cancelReason: 'Rejected by admin' }).eq('id', id).select().single();
-      if (error) throw error;
-      return { data } as T;
-    }
-
-    if (method === 'PUT' && endpoint.startsWith('/bookings') && parts.length === 3 && parts[2] === 'status') {
-      const id = parts[1];
-      const { data, error } = await supabase.from('Booking').update({ status: body.status }).eq('id', id).select().single();
-      if (error) throw error;
-      return { data } as T;
+    if (method === 'PUT' && parts.length === 3 && parts[0] === 'bookings' && parts[2] === 'status') {
+      const res = await callBackendAPI(`/bookings/${parts[1]}/status`, {
+        method: 'PUT',
+        body: JSON.stringify(body),
+      });
+      return { data: res.data } as T;
     }
 
     if (method === 'POST' && endpoint === '/bookings') {
@@ -586,13 +503,26 @@ async function sbMutation<T = any>(endpoint: string, method: 'POST' | 'PUT' | 'D
       return { data } as T;
     }
 
+    // Contact-message handling used to fall through to the generic
+    // update/delete below, which wrote with the anon key. Both now go through
+    // the admin route so `ContactMessage` can be closed to the browser.
+    if (method === 'PUT' && parts[0] === 'cms' && parts[1] === 'messages' && parts[3] === 'read') {
+      return (await callBackendAPI(`/admin/cms/messages/${parts[2]}/read`, {
+        method: 'PUT',
+        body: '{}',
+      })) as T;
+    }
+
+    if (method === 'DELETE' && ((parts[0] === 'contact') || (parts[0] === 'cms' && parts[1] === 'messages'))) {
+      const id = parts[parts.length - 1];
+      return (await callBackendAPI(`/admin/cms/messages/${id}`, { method: 'DELETE' })) as T;
+    }
+
     if (method === 'PUT') {
       const tableName = getTableNameFromEndpoint(parts);
       if (tableName) {
-        const id = parts[parts.length - 1] === 'read' ? parts[parts.length - 2] : parts[parts.length - 1];
-        const actualTable = parts[parts.length - 1] === 'read' ? 'ContactMessage' : tableName;
-        const updateData = parts[parts.length - 1] === 'read' ? { isRead: true } : body;
-        const { data, error } = await supabase.from(actualTable).update(updateData).eq('id', id).select().single();
+        const id = parts[parts.length - 1];
+        const { data, error } = await supabase.from(tableName).update(body).eq('id', id).select().single();
         if (error) throw error;
         return { data } as T;
       }
@@ -614,26 +544,28 @@ async function sbMutation<T = any>(endpoint: string, method: 'POST' | 'PUT' | 'D
   return {} as T;
 }
 
+/**
+ * Which table a generic CMS write belongs to.
+ *
+ * `ContactMessage` is deliberately absent: its reads and writes are handled by
+ * the admin route above, because it holds guest contact details. Nothing that
+ * reaches this function may name a table holding personal data.
+ */
 function getTableNameFromEndpoint(parts: string[]): string | null {
-  if (parts[0] === 'cms' || parts[0] === 'contact') {
-    const mapping: Record<string, string> = {
-      'cottages': 'Cottage',
-      'gallery': 'Gallery',
-      'testimonials': 'Testimonial',
-      'faqs': 'FAQ',
-      'messages': 'ContactMessage',
-      'coupons': 'Coupon',
-      'staff': 'Staff',
-      'packages': 'Package',
-      'items': 'CafeItem',
-      'categories': 'CafeCategory',
-      'orders': 'CafeOrder',
-      'read': 'ContactMessage',
-    };
-    return mapping[parts[1]] || null;
-  }
-  if (parts[0] === 'contact') return 'ContactMessage';
-  return null;
+  if (parts[0] !== 'cms') return null;
+  const mapping: Record<string, string> = {
+    'cottages': 'Cottage',
+    'gallery': 'Gallery',
+    'testimonials': 'Testimonial',
+    'faqs': 'FAQ',
+    'coupons': 'Coupon',
+    'staff': 'Staff',
+    'packages': 'Package',
+    'items': 'CafeItem',
+    'categories': 'CafeCategory',
+    'orders': 'CafeOrder',
+  };
+  return mapping[parts[1]] || null;
 }
 
 async function request<T = any>(endpoint: string, options: RequestOptions = {}): Promise<T> {
@@ -724,10 +656,6 @@ export const endpoints = {
     refresh: () => api.post('/auth/refresh'),
     logout: (token: string | null) => api.post('/auth/logout', {}, token),
     profile: (token: string | null) => api.get('/auth/profile', token),
-    users: (token: string | null) => api.get('/cms/users', token),
-    createUser: (data: any, token: string | null) => api.post('/cms/users', data, token),
-    updateUser: (id: string, data: any, token: string | null) =>
-      api.put(`/cms/users/${id}`, data, token),
   },
   cms: {
     dashboard: (token: string | null) => api.get('/cms/dashboard', token),
@@ -754,8 +682,6 @@ export const endpoints = {
     deleteCoupon: (id: string, token: string | null) => api.delete(`/cms/coupons/${id}`, token),
     validateCoupon: (code: string, amount: number, token?: string | null) =>
       api.post('/cms/coupons/validate', { code, amount }, token),
-    activityLogs: (token: string | null) => api.get('/cms/activity-logs', token),
-    users: (token: string | null) => api.get('/cms/users', token),
     getStaff: (token: string | null) => api.get('/cms/staff', token),
     createStaff: (data: any, token: string | null) => api.post('/cms/staff', data, token),
     updateStaff: (id: string, data: any, token: string | null) => api.put(`/cms/staff/${id}`, data, token),

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import type { ReactNode } from 'react';
 import dynamic from 'next/dynamic';
 import { usePathname } from 'next/navigation';
 import { Header } from '@/components/layout/Header';
@@ -9,28 +9,16 @@ import { ThemeInitializer } from '@/components/layout/ThemeInitializer';
 import { ScrollProgress } from '@/components/animations/ScrollProgress';
 import { Toaster } from 'react-hot-toast';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
-
 const FogParticles = dynamic(() => import('@/components/animations/FogParticles').then(m => ({ default: m.FogParticles })), { ssr: false });
 const ParallaxCursor = dynamic(() => import('@/components/animations/ParallaxCursor').then(m => ({ default: m.ParallaxCursor })), { ssr: false });
 const ChatBot = dynamic(() => import('@/components/chatbot/ChatBot').then(m => ({ default: m.ChatBot })), { ssr: false });
 const TripPlanner = dynamic(() => import('@/components/public/TripPlanner').then(m => ({ default: m.TripPlanner })), { ssr: false });
 const RevealOnScroll = dynamic(() => import('@/components/animations/RevealOnScroll').then(m => ({ default: m.RevealOnScroll })), { ssr: false });
 
-export function ClientBody({ children }: { children: React.ReactNode }) {
+export function ClientBody({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const isAdmin = pathname.startsWith('/admin') && pathname !== '/admin/login';
   const isEmployee = pathname.startsWith('/employee');
-  const [aiPlannerEnabled, setAiPlannerEnabled] = useState(true);
-
-  useEffect(() => {
-    fetch(`${API_URL}/cms/public-settings`, { credentials: 'include' })
-      .then(res => res.json())
-      .then(data => {
-        if (data?.data?.aiPlannerEnabled === 'false') setAiPlannerEnabled(false);
-      })
-      .catch(() => {});
-  }, []);
 
   if (isAdmin || isEmployee) {
     return (
@@ -67,7 +55,11 @@ export function ClientBody({ children }: { children: React.ReactNode }) {
       <main id="main-content">{children}</main>
       <Footer />
       <ChatBot />
-      {aiPlannerEnabled && <TripPlanner />}
+      {/* The planner used to be switched off by a settings fetch to the old
+          Railway backend, which no longer exists — the request was blocked by
+          CSP on every page load and could only ever fail, so the flag could
+          never turn it off anyway. Rendered unconditionally. */}
+      <TripPlanner />
       <Toaster
         position="top-right"
         toastOptions={{

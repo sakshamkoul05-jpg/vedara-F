@@ -170,8 +170,6 @@ Tax tab.
 
 - **Realtime features are dead.** `services/socket.ts` connects to the retired
   Express backend. Admin chat and live kitchen order updates do not work.
-- **`getImageUrl` in `lib/utils.ts`** builds relative image URLs against the
-  same dead backend. Absolute URLs (Cloudinary, Unsplash) are unaffected.
 - **The `vedara-B` repo is not deployed.** Its Prisma schema has been kept in
   step with the migration so it stays the canonical schema definition, but the
   booking logic in `src/services/booking.service.ts` still uses the old flat

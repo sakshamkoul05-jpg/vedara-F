@@ -66,10 +66,3 @@ export function truncate(text: string, length: number): string {
   if (text.length <= length) return text;
   return text.slice(0, length) + '...';
 }
-
-export function getImageUrl(path: string): string {
-  if (!path) return '';
-  if (path.startsWith('http')) return path;
-  const base = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
-  return `${base}${path.startsWith('/') ? '' : '/'}${path}`;
-}

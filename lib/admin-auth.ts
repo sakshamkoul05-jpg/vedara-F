@@ -13,13 +13,16 @@ const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET || 'dev-jwt-s
 
 const ADMIN_ROLES = ['SUPER_ADMIN', 'MANAGER'];
 
+/** Everyone who may sign in to the staff area, not just the approvers. */
+const STAFF_ROLES = ['SUPER_ADMIN', 'MANAGER', 'RECEPTIONIST', 'CAFE_STAFF'];
+
 export interface AdminSession {
   userId: string;
   role: string;
   email?: string;
 }
 
-export async function getAdminSession(): Promise<AdminSession | null> {
+async function sessionFor(roles: string[]): Promise<AdminSession | null> {
   // `cookies()` is async from Next 15 onwards.
   const cookieStore = await cookies();
   const token = cookieStore.get('vd_token')?.value;
@@ -28,7 +31,7 @@ export async function getAdminSession(): Promise<AdminSession | null> {
   try {
     const { payload } = await jwtVerify(token, JWT_SECRET);
     const role = String(payload.role ?? '');
-    if (!ADMIN_ROLES.includes(role)) return null;
+    if (!roles.includes(role)) return null;
 
     return {
       userId: String(payload.sub ?? payload.userId ?? ''),
@@ -38,4 +41,20 @@ export async function getAdminSession(): Promise<AdminSession | null> {
   } catch {
     return null;
   }
+}
+
+/** SUPER_ADMIN or MANAGER — anything that changes money or confirms a stay. */
+export async function getAdminSession(): Promise<AdminSession | null> {
+  return sessionFor(ADMIN_ROLES);
+}
+
+/**
+ * Any signed-in staff member.
+ *
+ * Used for reads (a receptionist listing bookings) and for low-risk status
+ * changes. Approving a booking and marking it PAID stays behind
+ * `getAdminSession`.
+ */
+export async function getStaffSession(): Promise<AdminSession | null> {
+  return sessionFor(STAFF_ROLES);
 }
