@@ -19,15 +19,16 @@ import { getToday, parseDate, isPastDate, formatPrice } from '@/lib/utils';
 import { fetchFromRates } from '@/lib/from-rates';
 import { api } from '@/lib/api';
 import { Cottage } from '@/types';
+import { coverPhoto, onPhotoError } from '@/lib/cottage-photos';
 
 const FALLBACK_COTTAGES = [
-  { slug: 'monal-haven', name: 'Monal Haven', pricePerNight: 12000, desc: 'Premium Duplex Family Suite with private jacuzzi, attic yoga balcony, and sweeping mountain views', image: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&q=80', category: 'Premium Duplex Family Suite' },
-  { slug: 'koklass-cove', name: 'Koklass Cove', pricePerNight: 12500, desc: 'Our largest duplex with two viewing balconies, private jacuzzi, and unmatched privacy', image: 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=600&q=80', category: 'Premium Duplex Family Suite' },
-  { slug: 'magpie-retreat', name: 'Magpie Retreat', pricePerNight: 4500, desc: 'Intimate Mountain View Suite — where serenity meets soul', image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80', category: 'Intimate Mountain View Suite' },
-  { slug: 'whistling-thrush', name: 'Whistling Thrush', pricePerNight: 6500, desc: 'Charming duplex with deep-soak bath tub and dual balconies', image: 'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=600&q=80', category: 'Premium Duplex Family Suite' },
-  { slug: 'flycatcher-nook', name: 'Flycatcher Nook', pricePerNight: 7500, desc: 'Intimate Mountain View Suite — your cozy Himalayan hideaway', image: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?w=600&q=80', category: 'Intimate Mountain View Suite' },
-  { slug: 'bulbul-nest', name: 'Bulbul Nest', pricePerNight: 7500, desc: 'Intimate Mountain View Suite with workstation — where coziness meets the peaks', image: 'https://images.unsplash.com/photo-1469476568026-46a7f7b2f9c2?w=600&q=80', category: 'Intimate Mountain View Suite' },
-  { slug: 'the-finch-nook', name: 'The Finch Nook', pricePerNight: 5000, desc: 'Cozy Alpine Studio — small space, boundless solitude', image: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&q=80', category: 'Cozy Alpine Studio' },
+  { slug: 'monal-haven', name: 'Monal Haven', pricePerNight: 12000, desc: 'Premium Duplex Family Suite with private jacuzzi, attic yoga balcony, and sweeping mountain views', image: coverPhoto({ slug: 'monal-haven' }), category: 'Premium Duplex Family Suite' },
+  { slug: 'koklass-cove', name: 'Koklass Cove', pricePerNight: 12500, desc: 'Our largest duplex with two viewing balconies, private jacuzzi, and unmatched privacy', image: coverPhoto({ slug: 'koklass-cove' }), category: 'Premium Duplex Family Suite' },
+  { slug: 'magpie-retreat', name: 'Magpie Retreat', pricePerNight: 4500, desc: 'Intimate Mountain View Suite — where serenity meets soul', image: coverPhoto({ slug: 'magpie-retreat' }), category: 'Intimate Mountain View Suite' },
+  { slug: 'whistling-thrush', name: 'Whistling Thrush', pricePerNight: 6500, desc: 'Charming duplex with deep-soak bath tub and dual balconies', image: coverPhoto({ slug: 'whistling-thrush' }), category: 'Premium Duplex Family Suite' },
+  { slug: 'flycatcher-nook', name: 'Flycatcher Nook', pricePerNight: 7500, desc: 'Intimate Mountain View Suite — your cozy Himalayan hideaway', image: coverPhoto({ slug: 'flycatcher-nook' }), category: 'Intimate Mountain View Suite' },
+  { slug: 'bulbul-nest', name: 'Bulbul Nest', pricePerNight: 7500, desc: 'Intimate Mountain View Suite with workstation — where coziness meets the peaks', image: coverPhoto({ slug: 'bulbul-nest' }), category: 'Intimate Mountain View Suite' },
+  { slug: 'the-finch-nook', name: 'The Finch Nook', pricePerNight: 5000, desc: 'Cozy Alpine Studio — small space, boundless solitude', image: coverPhoto({ slug: 'the-finch-nook' }), category: 'Cozy Alpine Studio' },
 ];
 
 const testimonials = [
@@ -71,7 +72,9 @@ export default function HomePage() {
         name: c.name,
         pricePerNight: c.pricePerNight || FALLBACK_COTTAGES.find((f) => f.slug === c.slug)?.pricePerNight || 0,
         desc: c.shortDesc || c.description,
-        image: (() => { try { const imgs = typeof c.images === 'string' ? JSON.parse(c.images) : c.images; return Array.isArray(imgs) && imgs[0] ? imgs[0] : ''; } catch { return ''; } })(),
+        // The stored `images` column points at files that were never uploaded,
+        // so resolve through the repository's own photographs instead.
+        image: coverPhoto(c),
         category: c.category,
       })) : FALLBACK_COTTAGES;
       setCottages(data);
@@ -266,7 +269,7 @@ export default function HomePage() {
                 <ScrollReveal key={cottage.name} delay={i * 0.08} direction="up" distance={40}>
                     <article className="group vintage-card overflow-hidden reveal h-full flex flex-col">
                     <div className="aspect-[4/3] overflow-hidden bg-sand-200">
-                      <img src={cottage.image || `https://images.unsplash.com/photo-${['1504384308090-c894fdcc538d', '1554118811-1e0d58224f24', '1506905925346-21bda4d32df4'][i]}?w=600&q=80`} alt={`${cottage.name} - premium duplex suite at The Vedara`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                      <img src={cottage.image} onError={onPhotoError} alt={`${cottage.name} - premium duplex suite at The Vedara`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                     </div>
                     <div className="p-5 flex flex-col flex-1">
                       <div className="flex justify-between items-start mb-2">
@@ -297,7 +300,7 @@ export default function HomePage() {
                 <ScrollReveal key={cottage.name} delay={i * 0.08} direction="up" distance={40}>
                     <article className="group vintage-card overflow-hidden reveal h-full flex flex-col">
                     <div className="aspect-[4/3] overflow-hidden bg-sand-200">
-                      <img src={cottage.image || `https://images.unsplash.com/photo-${['1476514525535-07fb3b4ae5f1', '1519681393784-d120267933ba', '1469476568026-46a7f7b2f9c2'][i]}?w=600&q=80`} alt={`${cottage.name} - intimate mountain view suite at The Vedara`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                      <img src={cottage.image} onError={onPhotoError} alt={`${cottage.name} - intimate mountain view suite at The Vedara`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                     </div>
                     <div className="p-5 flex flex-col flex-1">
                       <div className="flex justify-between items-start mb-2">
@@ -328,7 +331,7 @@ export default function HomePage() {
                 <ScrollReveal key={cottage.name} delay={i * 0.08} direction="up" distance={40}>
                     <article className="group vintage-card overflow-hidden reveal h-full flex flex-col">
                     <div className="aspect-[4/3] overflow-hidden bg-sand-200">
-                      <img src={cottage.image || `https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&q=80`} alt={`${cottage.name} - cozy alpine studio at The Vedara`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                      <img src={cottage.image} onError={onPhotoError} alt={`${cottage.name} - cozy alpine studio at The Vedara`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                     </div>
                     <div className="p-5 flex flex-col flex-1">
                       <div className="flex justify-between items-start mb-2">

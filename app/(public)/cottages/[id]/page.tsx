@@ -18,6 +18,7 @@ import { Cottage } from '@/types';
 import { formatPrice, calculateNights, getToday, parseDate, isPastDate } from '@/lib/utils';
 import { fetchPublicPricing, type PublicCottagePricing } from '@/lib/from-rates';
 import { childBreakfastBeddingCopy, PRICING_DISCLAIMER } from '@/lib/pricing/customer-copy';
+import { photosFor, onPhotoError } from '@/lib/cottage-photos';
 
 const amenityIcons: Record<string, React.ElementType> = {
   wifi: Wifi, fireplace: Flame, 'room heater': Snowflake,
@@ -105,11 +106,9 @@ export default function CottageDetailPage() {
   const displayFrom = fromRate ?? cottage?.pricePerNight ?? 0;
   const estimateTotal = quote?.total ?? nights * displayFrom;
 
-  let parsedImages: string[] = [];
-  try {
-    parsedImages = typeof cottage?.images === 'string' ? JSON.parse(cottage.images as string) : (cottage?.images as string[] || []);
-  } catch { parsedImages = []; }
-  const images = Array.isArray(parsedImages) && parsedImages.length ? parsedImages : Array.from({ length: 6 }, (_, i) => `https://images.unsplash.com/photo-${['1504384308090-c894fdcc538d', '1554118811-1e0d58224f24', '1506905925346-21bda4d32df4', '1476514525535-07fb3b4ae5f1', '1519681393784-d120267933ba', '1469476568026-46a7f7b2f9c2'][i]}?w=800&q=80`);
+  // The stored `images` column points at files that were never uploaded, so
+  // resolve through the repository's own photographs instead.
+  const images = photosFor(cottage);
 
   if (loading) {
     return (
@@ -201,7 +200,7 @@ export default function CottageDetailPage() {
                   selectedImage === i ? 'border-gold-500 ring-2 ring-gold-500/30' : 'border-transparent opacity-70 hover:opacity-100'
                 }`}
               >
-                <img src={img} alt={`${cottage.name} view ${i + 1}`} className="w-full h-full object-cover" />
+                <img src={img} onError={onPhotoError} alt={`${cottage.name} view ${i + 1}`} className="w-full h-full object-cover" />
               </button>
             ))}
           </div>

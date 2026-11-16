@@ -57,7 +57,7 @@ export default function AboutPage() {
     <>
       {/* Hero Hook */}
       <section className="relative min-h-[90vh] flex items-center justify-center section-dark overflow-hidden">
-        <div className="absolute inset-0 bg-[url('/images/hero-bg.jpg')] bg-cover bg-center opacity-40" />
+        <div className="absolute inset-0 bg-[url('/images/hero-bg.webp')] bg-cover bg-center opacity-40" />
         <div className="absolute inset-0 bg-gradient-to-b from-[#140D07]/60 via-[#140D07]/40 to-[#140D07]/80" />
         <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
           <ScrollReveal>

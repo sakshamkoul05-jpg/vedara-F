@@ -19,6 +19,7 @@ import {
   Copy, CheckCheck, LifeBuoy
 } from 'lucide-react';
 import { countries } from '@/lib/countries';
+import { coverPhoto, onPhotoError } from '@/lib/cottage-photos';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 import { DatePicker } from '@/components/ui/DatePicker';
@@ -776,7 +777,10 @@ export default function BookingPage() {
                     <div className="grid md:grid-cols-2 gap-6">
                       {(searchResults ?? []).map((r: any) => {
                         const info = cottages.find((c) => c.id === r.cottageId);
-                        const img = parseField(info?.images)[0] || '';
+                        // The `images` column still holds paths to files that
+                        // were never uploaded, so resolve through the repo's
+                        // own photographs instead of trusting it.
+                        const img = info ? coverPhoto(info) : '';
                         return (
                           <div
                             key={r.cottageId}
@@ -786,7 +790,7 @@ export default function BookingPage() {
                           >
                             {img && (
                               <div className="relative h-44 rounded-lg overflow-hidden mb-4">
-                                <img src={img} alt={`${r.name} cottage at The Vedara`} className="w-full h-full object-cover" />
+                                <img src={img} onError={onPhotoError} alt={`${r.name} cottage at The Vedara`} className="w-full h-full object-cover" />
                               </div>
                             )}
                             <h3 className="font-serif text-lg text-foreground">{r.name}</h3>
