@@ -19,6 +19,7 @@ export function ClientBody({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const isAdmin = pathname.startsWith('/admin') && pathname !== '/admin/login';
   const isEmployee = pathname.startsWith('/employee');
+  const isBooking = pathname === '/booking' || pathname.startsWith('/booking/');
 
   if (isAdmin || isEmployee) {
     return (
@@ -58,8 +59,12 @@ export function ClientBody({ children }: { children: ReactNode }) {
       {/* The planner used to be switched off by a settings fetch to the old
           Railway backend, which no longer exists — the request was blocked by
           CSP on every page load and could only ever fail, so the flag could
-          never turn it off anyway. Rendered unconditionally. */}
-      <TripPlanner />
+          never turn it off anyway. Rendered unconditionally everywhere except
+          the booking flow: it is pinned to the bottom-left of the viewport and
+          sat on top of the reservation form's own controls (the Adults select),
+          which made part of the form unclickable on desktop. Someone already
+          mid-booking has no use for a trip planner either. */}
+      {!isBooking && <TripPlanner />}
       <Toaster
         position="top-right"
         toastOptions={{

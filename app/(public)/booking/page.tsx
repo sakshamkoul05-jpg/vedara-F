@@ -88,6 +88,36 @@ function BookingReference({ reference }: { reference: string }) {
   );
 }
 
+/**
+ * Bring the first thing that stopped the submit into view.
+ *
+ * The guest step is far taller than a desktop viewport, so when Pay rejected
+ * the form the errors were painted a few hundred pixels *above* the fold and
+ * focus stayed on the button: the click looked like it did nothing, which is
+ * exactly the report. Every invalid control already carries a red border and
+ * the banner is marked, so scroll to the first of them and take focus.
+ *
+ * React paints on the frame after setState, so the target may not exist yet —
+ * retry for a handful of frames before giving up.
+ */
+function revealFirstInvalidField(attempt = 0): void {
+  if (typeof document === 'undefined') return;
+
+  const general = document.querySelector<HTMLElement>('[data-booking-error]');
+  const field = document.querySelector<HTMLElement>(
+    'input[class*="border-red-500"], select[class*="border-red-500"], textarea[class*="border-red-500"]'
+  );
+  const target = general || field;
+
+  if (!target) {
+    if (attempt < 12) requestAnimationFrame(() => revealFirstInvalidField(attempt + 1));
+    return;
+  }
+
+  target.scrollIntoView({ block: 'center', behavior: 'smooth' });
+  target.focus({ preventScroll: true });
+}
+
 export default function BookingPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -392,7 +422,12 @@ export default function BookingPage() {
     else if (nationality === 'IN' && !/^\d{6}$/.test(pincode)) errors.pincode = 'Pincode must be 6 digits';
 
     setFormErrors(errors);
-    if (Object.keys(errors).length > 0) return;
+    if (Object.keys(errors).length > 0) {
+      // Without this the errors land wherever the form happens to be laid out
+      // — off the top of the viewport on desktop — and the button looks dead.
+      revealFirstInvalidField();
+      return;
+    }
     setPaymentLoading(true);
     try {
       const fullAddress = `${address}, ${city}, ${state} - ${pincode}`;
@@ -461,6 +496,7 @@ export default function BookingPage() {
             setStep(4);
           } catch {
             setFormErrors({ general: 'Payment verification failed. Please contact support at +91-91188-82242.' });
+            revealFirstInvalidField();
           }
         },
         prefill: { name: guestName, email: guestEmail, contact: guestPhone },
@@ -473,12 +509,14 @@ export default function BookingPage() {
       const rzp = new (window as any).Razorpay(options);
       rzp.on('payment.failed', (response: any) => {
         setFormErrors({ general: `Payment failed: ${response?.error?.description || 'Unknown error'}. Please try again.` });
+        revealFirstInvalidField();
         setPaymentLoading(false);
       });
       rzp.open();
       setPaymentLoading(false);
     } catch (err: any) {
       setFormErrors({ general: err.message || 'Booking failed. Please try again.' });
+      revealFirstInvalidField();
       setPaymentLoading(false);
     }
   };
@@ -839,7 +877,12 @@ export default function BookingPage() {
                         <h2 className="font-serif text-2xl text-foreground mb-6">Guest Details</h2>
 
                         {formErrors.general && (
-                          <div className="bg-red-50 border border-red-200 rounded-lg p-3 mb-4 text-red-700 text-sm">
+                          <div
+                            data-booking-error
+                            role="alert"
+                            tabIndex={-1}
+                            className="bg-red-50 border border-red-200 rounded-lg p-3 mb-4 text-red-700 text-sm focus:outline-none"
+                          >
                             {formErrors.general}
                           </div>
                         )}

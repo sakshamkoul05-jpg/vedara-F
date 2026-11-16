@@ -166,8 +166,11 @@ export function TripPlanner() {
   return (
     <>
       {/* Full-viewport bounds for the draggable trigger. pointer-events-none so
-          it never intercepts clicks on the page; the button re-enables them. */}
-      <div ref={dragBoundsRef} className="fixed inset-4 z-[100] pointer-events-none" aria-hidden="true">
+          it never intercepts clicks on the page; the button re-enables them.
+          Deliberately NOT aria-hidden: the trigger is a real control, and
+          hiding it from assistive tech while leaving it in the tab order put
+          keyboard focus on an invisible element. */}
+      <div ref={dragBoundsRef} className="fixed inset-4 z-[100] pointer-events-none">
         {/* Floating trigger. Pinned to the bottom-LEFT so it clears the chatbot
             and the café cart, which both live in the bottom-right corner. It is
             draggable, so a guest can reposition it if it ever covers content. */}
