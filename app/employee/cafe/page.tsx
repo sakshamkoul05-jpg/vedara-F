@@ -7,7 +7,7 @@ import { api } from '@/lib/api';
 import { ScrollReveal } from '@/components/animations/ScrollReveal';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Coffee, Plus, X, Check, Search, TrendingUp, ToggleLeft, ToggleRight, Save, Edit3, Loader2 } from 'lucide-react';
+import { Coffee, Plus, X, Check, Search, TrendingUp, ToggleLeft, ToggleRight, Save, Edit3, Loader2, IndianRupee } from 'lucide-react';
 import { formatPrice } from '@/lib/utils';
 
 export default function EmployeeCafePage() {
@@ -21,6 +21,7 @@ export default function EmployeeCafePage() {
   const [priceInput, setPriceInput] = useState('');
   const [togglingId, setTogglingId] = useState<string | null>(null);
   const [newItem, setNewItem] = useState({ name: '', description: '', price: '', categoryId: '', isVegetarian: true });
+  const [billingOrders, setBillingOrders] = useState<any[]>([]);
 
   // Analytics state
   const [dailySales, setDailySales] = useState<any>(null);
@@ -42,6 +43,9 @@ export default function EmployeeCafePage() {
       if (tab === 'orders') {
         const res = await api.get('/cafe/kitchen', token);
         setOrders(res.data || []);
+      } else if (tab === 'billing') {
+        const res = await api.get('/cafe/orders?limit=30', token);
+        setBillingOrders(res.data || []);
       } else if (tab === 'menu') {
         const res = await api.get('/cafe/menu?staff=true');
         setMenu(res.data || []);
@@ -65,6 +69,15 @@ export default function EmployeeCafePage() {
   const handleStatusUpdate = async (orderId: string, status: string) => {
     try {
       await api.put(`/cafe/orders/${orderId}/status`, { status }, token);
+      loadData();
+    } catch {}
+  };
+
+  // Desk settlement: the guest pays at the counter (cash / UPI / card) and
+  // staff records it against the order — no online payment is involved.
+  const handleMarkPaid = async (orderId: string, paymentMethod: string) => {
+    try {
+      await api.put(`/cafe/orders/${orderId}/payment`, { paymentStatus: 'PAID', paymentMethod }, token);
       loadData();
     } catch {}
   };
@@ -126,6 +139,7 @@ export default function EmployeeCafePage() {
         <div className="flex gap-3 mb-6">
           {[
             { id: 'orders', label: 'Live Orders', icon: Coffee },
+            { id: 'billing', label: 'Billing', icon: IndianRupee },
             { id: 'menu', label: 'Menu Editor', icon: Edit3 },
             { id: 'analytics', label: 'Analytics', icon: TrendingUp },
           ].map(t => (
@@ -157,9 +171,14 @@ export default function EmployeeCafePage() {
                           <h3 className="font-medium text-foreground dark:text-[#F3ECDA]">Table {order.tableNumber}</h3>
                           {order.guestName && <p className="text-xs text-muted-foreground dark:text-[#B8A385]">{order.guestName}</p>}
                         </div>
-                        <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                          order.status === 'PENDING' ? 'bg-gold-100 text-clay-700 animate-pulse' : 'bg-gold-100 text-forest-700'
-                        }`}>{order.status}</span>
+                        <div className="flex items-center gap-1.5">
+                          <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+                            order.status === 'PENDING' ? 'bg-gold-100 text-clay-700 animate-pulse' : 'bg-gold-100 text-forest-700'
+                          }`}>{order.status}</span>
+                          <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                            order.paymentStatus === 'PAID' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'
+                          }`}>{order.paymentStatus === 'PAID' ? 'PAID' : 'DUE'}</span>
+                        </div>
                       </div>
                       <div className="space-y-1 mb-4 bg-earth-50 dark:bg-[#2E2519] rounded-xl p-3">
                         {order.items?.map((item: any) => (
@@ -191,6 +210,73 @@ export default function EmployeeCafePage() {
                     </div>
                   </ScrollReveal>
                 ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {tab === 'billing' && (
+          <div className="space-y-4">
+            <div className="flex items-center justify-between mb-2">
+              <h2 className="font-serif text-lg text-foreground dark:text-[#F3ECDA]">Billing — Recent Orders</h2>
+              <span className="text-xs text-muted-foreground dark:text-[#B8A385]">
+                {billingOrders.length} most recent · settle at the desk
+              </span>
+            </div>
+            {billingOrders.length === 0 ? (
+              <p className="text-muted-foreground text-center py-12">No orders yet</p>
+            ) : (
+              <div className="grid md:grid-cols-2 gap-4">
+                {billingOrders.map((order: any) => {
+                  const paid = order.paymentStatus === 'PAID';
+                  return (
+                    <ScrollReveal key={order.id}>
+                      <div className="vintage-card dark:bg-[#231B12] dark:border-white/10 p-5">
+                        <div className="flex justify-between items-start mb-3">
+                          <div>
+                            <span className="text-xs text-muted-foreground dark:text-[#B8A385]">Order #{order.orderRef}</span>
+                            <h3 className="font-medium text-foreground dark:text-[#F3ECDA]">{order.guestName || `Table ${order.tableNumber}`}</h3>
+                            <p className="text-[11px] text-muted-foreground dark:text-[#B8A385]">
+                              {new Date(order.createdAt).toLocaleString('en-IN', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })}
+                            </p>
+                          </div>
+                          <div className="flex flex-col items-end gap-1">
+                            <span className="px-3 py-1 rounded-full text-[10px] font-medium bg-gold-100 text-clay-700">{order.status}</span>
+                            <span className={`px-3 py-1 rounded-full text-[10px] font-semibold ${
+                              paid ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'
+                            }`}>
+                              {paid ? `PAID · ${order.paymentMethod || 'CASH'}` : 'DUE AT DESK'}
+                            </span>
+                          </div>
+                        </div>
+                        <div className="space-y-1 mb-3 bg-earth-50 dark:bg-[#2E2519] rounded-xl p-3">
+                          {order.items?.map((item: any) => (
+                            <div key={item.id} className="flex justify-between text-sm">
+                              <span className="text-foreground dark:text-[#F3ECDA]">{item.quantity}x {item.item?.name}</span>
+                              <span className="text-muted-foreground dark:text-[#B8A385]">{formatPrice(item.totalPrice)}</span>
+                            </div>
+                          ))}
+                        </div>
+                        <div className="flex items-center justify-between gap-3">
+                          <p className="text-lg font-bold text-foreground dark:text-[#F3ECDA]">{formatPrice(order.totalAmount)}</p>
+                          {!paid && (
+                            <div className="flex gap-1.5">
+                              {['CASH', 'UPI', 'CARD'].map(m => (
+                                <button
+                                  key={m}
+                                  onClick={() => handleMarkPaid(order.id, m)}
+                                  className="px-3 py-1.5 rounded-full bg-gold-600 text-alabaster text-[11px] font-semibold hover:opacity-90 transition-opacity"
+                                >
+                                  {m}
+                                </button>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </ScrollReveal>
+                  );
+                })}
               </div>
             )}
           </div>

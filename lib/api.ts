@@ -415,19 +415,72 @@ async function sbMutation<T = any>(endpoint: string, method: 'POST' | 'PUT' | 'D
     }
 
     if (method === 'POST' && endpoint === '/cafe/orders') {
+      // Prices are read back from the menu rather than trusted from the
+      // browser: the receipt, the order total and the kitchen copy must all
+      // show the price the menu actually charges.
       const orderRef = 'CF' + Date.now().toString(36).toUpperCase();
-      const items = body.items || [];
+      const bodyItems: any[] = Array.isArray(body.items) ? body.items : [];
+      if (bodyItems.length === 0) throw new Error('Your cart is empty.');
+
+      const itemIds = [...new Set(bodyItems.map((i: any) => i.itemId).filter(Boolean))] as string[];
+      const { data: menuRows, error: menuError } = await supabase
+        .from('CafeItem')
+        .select('id, name, price')
+        .in('id', itemIds);
+      if (menuError) throw menuError;
+      const byId = new Map((menuRows || []).map((r: any) => [r.id, r]));
+      if (byId.size !== itemIds.length) {
+        throw new Error('Some items are no longer on the menu. Please refresh the page and try again.');
+      }
+
       let totalAmount = 0;
-      for (const item of items) {
-        totalAmount += item.unitPrice * item.quantity;
-      }
-      const { data: order, error: orderError } = await supabase.from('CafeOrder').insert({ orderRef, tableNumber: body.tableNumber, guestName: body.guestName, notes: body.notes, totalAmount, status: 'PENDING', paymentStatus: body.paymentStatus || 'PENDING' }).select().single();
+      const priced = bodyItems.map((item: any) => {
+        const row = byId.get(item.itemId);
+        const quantity = Math.max(1, parseInt(item.quantity, 10) || 1);
+        const unitPrice = Number(row.price) || 0;
+        const totalPrice = unitPrice * quantity;
+        totalAmount += totalPrice;
+        return {
+          itemId: item.itemId as string,
+          name: row.name as string,
+          quantity,
+          unitPrice,
+          totalPrice,
+          notes: item.notes || null,
+        };
+      });
+
+      const { data: order, error: orderError } = await supabase.from('CafeOrder').insert({
+        orderRef,
+        tableNumber: Number(body.tableNumber) || 1,
+        guestName: body.guestName || null,
+        notes: body.notes || null,
+        totalAmount,
+        status: 'PENDING',
+        paymentStatus: 'PENDING',
+      }).select().single();
       if (orderError) throw orderError;
-      if (items.length > 0) {
-        const orderItems = items.map((item: any) => ({ orderId: order.id, itemId: item.itemId, quantity: item.quantity, unitPrice: item.unitPrice, totalPrice: item.unitPrice * item.quantity, notes: item.notes || null }));
-        await supabase.from('CafeOrderItem').insert(orderItems);
-      }
-      return { data: order } as T;
+
+      const { error: itemsError } = await supabase.from('CafeOrderItem').insert(
+        priced.map(({ name: _name, ...row }) => ({ ...row, orderId: order.id }))
+      );
+      if (itemsError) throw itemsError;
+
+      // The caller builds the receipt from this payload, so it carries the
+      // priced line items (with menu names) alongside the order row.
+      return { data: { ...order, items: priced } } as T;
+    }
+
+    if (method === 'PUT' && endpoint.match(/\/cafe\/orders\/[^/]+\/payment/)) {
+      // Desk settlement: a member of staff records how the guest paid.
+      const id = parts[2];
+      const patch: { paymentStatus: string; paymentMethod?: string } = {
+        paymentStatus: body.paymentStatus || 'PAID',
+      };
+      if (body.paymentMethod) patch.paymentMethod = body.paymentMethod;
+      const { data, error } = await supabase.from('CafeOrder').update(patch).eq('id', id).select().single();
+      if (error) throw error;
+      return { data } as T;
     }
 
     if (method === 'PUT' && endpoint.match(/\/cafe\/orders\/[^/]+\/status/)) {
@@ -639,6 +692,8 @@ export const endpoints = {
     kitchenOrders: (token: string | null) => api.get('/cafe/kitchen', token),
     updateOrderStatus: (id: string, status: string, token: string | null) =>
       api.put(`/cafe/orders/${id}/status`, { status }, token),
+    updateOrderPayment: (id: string, paymentMethod: string, token: string | null) =>
+      api.put(`/cafe/orders/${id}/payment`, { paymentStatus: 'PAID', paymentMethod }, token),
     categories: (token: string | null) => api.get('/cafe/categories', token),
     addCategory: (data: any, token: string | null) => api.post('/cafe/categories', data, token),
     addItem: (data: any, token: string | null) => api.post('/cafe/items', data, token),

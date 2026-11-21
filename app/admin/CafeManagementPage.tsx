@@ -138,6 +138,20 @@ export function CafeManagementPage() {
     }
   };
 
+  // Desk settlement: the guest pays at the counter and staff records how.
+  const handleMarkPaid = async (orderId: string, paymentMethod: string) => {
+    setActionLoading(orderId);
+    try {
+      await api.put(`/cafe/orders/${orderId}/payment`, { paymentStatus: 'PAID', paymentMethod }, token);
+      setOrders((prev) => prev.map((o) => o.id === orderId ? { ...o, paymentStatus: 'PAID', paymentMethod } : o));
+      showToast('Payment recorded');
+    } catch {
+      showToast('Failed to record payment', 'error');
+    } finally {
+      setActionLoading(null);
+    }
+  };
+
   return (
     <div className="space-y-6">
       {toast && (
@@ -289,7 +303,7 @@ export function CafeManagementPage() {
                     <p className="text-xs text-muted-foreground">{new Date(order.createdAt).toLocaleString()}</p>
                     {order.items && (
                       <p className="text-xs text-muted-foreground mt-1">
-                        {order.items.map((i: any) => `${i.quantity}x ${i.name}`).join(', ')}
+                        {order.items.map((i: any) => `${i.quantity}x ${i.item?.name || 'Item'}`).join(', ')}
                       </p>
                     )}
                   </div>
@@ -297,9 +311,29 @@ export function CafeManagementPage() {
                     <span className={`px-2.5 py-1 rounded-full text-xs font-medium ${statusColors[order.status] || ''}`}>
                       {order.status}
                     </span>
+                    <span className={`px-2.5 py-1 rounded-full text-xs font-semibold ${
+                      order.paymentStatus === 'PAID' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'
+                    }`}>
+                      {order.paymentStatus === 'PAID' ? `PAID · ${order.paymentMethod || 'CASH'}` : 'DUE AT DESK'}
+                    </span>
                     <span className="text-sm font-semibold text-foreground">{formatPrice(order.totalAmount)}</span>
                   </div>
                 </div>
+                {order.paymentStatus !== 'PAID' && (
+                  <div className="flex items-center gap-2 mt-3 pt-3 border-t border-border/50">
+                    <span className="text-xs font-semibold text-amber-600">Payment due at desk:</span>
+                    {['CASH', 'UPI', 'CARD'].map((m) => (
+                      <button
+                        key={m}
+                        onClick={() => handleMarkPaid(order.id, m)}
+                        disabled={actionLoading === order.id}
+                        className="px-3 py-1.5 rounded-lg bg-green-500 text-white text-xs font-medium hover:bg-green-600 transition-colors disabled:opacity-50"
+                      >
+                        {m}
+                      </button>
+                    ))}
+                  </div>
+                )}
                 {(order.status === 'PENDING' || order.status === 'PREPARING') && (
                   <div className="flex gap-2 mt-3 pt-3 border-t border-border/50">
                     {order.status === 'PENDING' && (
