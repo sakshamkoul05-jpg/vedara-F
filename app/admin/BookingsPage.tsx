@@ -82,11 +82,13 @@ export function BookingsPage() {
   };
 
   const handleCancel = async (bookingId: string) => {
-    if (!token || !confirm('Cancel this booking? The guest will be notified.')) return;
+    if (!token) return;
+    const reason = prompt('Enter cancellation reason (optional):');
+    if (reason === null) return;
     setActionLoading(bookingId);
     try {
-      await api.post(`/bookings/${bookingId}/cancel`, {}, token);
-      setBookings((prev) => prev.map((b) => b.id === bookingId ? { ...b, status: 'CANCELLED' } : b));
+      await api.post(`/bookings/${bookingId}/cancel`, { reason: reason || undefined }, token);
+      setBookings((prev) => prev.map((b) => b.id === bookingId ? { ...b, status: 'CANCELLED', cancelReason: reason || 'Cancelled by admin' } : b));
       showToast('Booking cancelled');
     } catch (err: any) {
       showToast(err.message || 'Failed to cancel booking', 'error');
@@ -180,28 +182,28 @@ export function BookingsPage() {
                   )}
                 </div>
               </div>
-              {booking.status === 'PENDING' && (
+              {(booking.status === 'PENDING' || booking.status === 'CONFIRMED') && (
                 <div className="flex gap-2 mt-3 pt-3 border-t border-border/50">
-                  <button
-                    onClick={() => handleApprove(booking.id)}
-                    disabled={actionLoading === booking.id}
-                    className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-green-500 text-white text-xs font-medium hover:bg-green-600 transition-colors disabled:opacity-50"
-                  >
-                    {actionLoading === booking.id ? <Loader2 className="w-3 h-3 animate-spin" /> : <Check className="w-3 h-3" />}
-                    Approve
-                  </button>
-                  <button
-                    onClick={() => handleReject(booking.id)}
-                    disabled={actionLoading === booking.id}
-                    className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-red-500 text-white text-xs font-medium hover:bg-red-600 transition-colors disabled:opacity-50"
-                  >
-                    {actionLoading === booking.id ? <Loader2 className="w-3 h-3 animate-spin" /> : <X className="w-3 h-3" />}
-                    Reject
-                  </button>
-                </div>
-              )}
-              {booking.status === 'CONFIRMED' && (
-                <div className="flex gap-2 mt-3 pt-3 border-t border-border/50">
+                  {booking.status === 'PENDING' && (
+                    <>
+                      <button
+                        onClick={() => handleApprove(booking.id)}
+                        disabled={actionLoading === booking.id}
+                        className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-green-500 text-white text-xs font-medium hover:bg-green-600 transition-colors disabled:opacity-50"
+                      >
+                        {actionLoading === booking.id ? <Loader2 className="w-3 h-3 animate-spin" /> : <Check className="w-3 h-3" />}
+                        Approve
+                      </button>
+                      <button
+                        onClick={() => handleReject(booking.id)}
+                        disabled={actionLoading === booking.id}
+                        className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-red-500 text-white text-xs font-medium hover:bg-red-600 transition-colors disabled:opacity-50"
+                      >
+                        {actionLoading === booking.id ? <Loader2 className="w-3 h-3 animate-spin" /> : <X className="w-3 h-3" />}
+                        Reject
+                      </button>
+                    </>
+                  )}
                   <button
                     onClick={() => handleCancel(booking.id)}
                     disabled={actionLoading === booking.id}
@@ -211,6 +213,9 @@ export function BookingsPage() {
                     Cancel Booking
                   </button>
                 </div>
+              )}
+              {booking.status === 'CANCELLED' && booking.cancelReason && (
+                <p className="text-xs text-red-600 mt-2 italic">Cancelled: {booking.cancelReason}</p>
               )}
               {booking.specialRequests && (
                 <p className="text-xs text-muted-foreground mt-2 italic">&ldquo;{booking.specialRequests}&rdquo;</p>

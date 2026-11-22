@@ -54,8 +54,12 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
     patch.cancelledAt = nowIso();
     patch.cancelReason = reason?.trim() || 'Rejected by admin';
   } else {
+    // Admin-initiated cancel: same end state as a reject, but the reason is
+    // whatever the admin typed (or a plain default) so the guest record says
+    // why the stay was dropped.
     patch.status = 'CANCELLED';
     patch.cancelledAt = nowIso();
+    patch.cancelReason = reason?.trim() || 'Cancelled by admin';
   }
 
   const supabase = getServiceClient();
