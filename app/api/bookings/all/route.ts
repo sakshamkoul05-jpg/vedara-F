@@ -30,14 +30,32 @@ export async function GET(request: Request) {
 
   if (status) query = query.eq('status', status);
 
-  // Interpolated into an `or` filter, so the search term is escaped to stop a
+  // Interpolated into `or` filters, so the search term is escaped to stop a
   // single quote from breaking out of the expression.
+  //
+  // PostgREST will not accept an embedded column (`guest.name`) inside a
+  // top-level `or`, and parsing that expression failed — so every search the
+  // admin typed returned a 500. Guest matches are resolved first, then their
+  // ids are combined with the booking-ref match using columns that do live on
+  // Booking.
   if (search) {
     const s = search.replace(/[,%()]/g, ' ').trim();
     if (s) {
-      query = query.or(
-        `guest.name.ilike.%${s}%,guest.email.ilike.%${s}%,guest.phone.ilike.%${s}%,bookingRef.ilike.%${s}%`
-      );
+      const { data: guestRows, error: guestError } = await supabase
+        .from('Guest')
+        .select('id')
+        .or(`name.ilike.%${s}%,email.ilike.%${s}%,phone.ilike.%${s}%`)
+        .limit(100);
+
+      if (guestError) {
+        console.error('Booking search (guest lookup) failed:', guestError.message);
+        return NextResponse.json({ error: 'Could not load bookings.' }, { status: 500 });
+      }
+
+      // A placeholder id keeps the expression well-formed when nothing matched.
+      const guestIds = (guestRows ?? []).map((g) => g.id);
+      const idList = guestIds.length ? guestIds.join(',') : '00000000-0000-0000-0000-000000000000';
+      query = query.or(`bookingRef.ilike.%${s}%,guestId.in.(${idList})`);
     }
   }
 
